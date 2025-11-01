@@ -1,9 +1,0 @@
-# Ensure consistent line endings and avoid CRLF warnings
-* text=auto
-
-# Keep HTML/props/config as LF to match container Linux defaults
-*.html text eol=lf
-*.ttl text eol=lf
-*.trig text eol=lf
-*.prop text eol=lf
-*.ini  text eol=lf
