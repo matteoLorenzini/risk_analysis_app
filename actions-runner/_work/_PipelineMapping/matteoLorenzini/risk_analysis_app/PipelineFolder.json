@@ -1,0 +1,12 @@
+﻿{
+  "repositoryName": "matteoLorenzini/risk_analysis_app",
+  "pipelineDirectory": "risk_analysis_app",
+  "workspaceDirectory": "risk_analysis_app\\risk_analysis_app",
+  "repositories": {
+    "matteoLorenzini/risk_analysis_app": {
+      "repositoryPath": "risk_analysis_app\\risk_analysis_app",
+      "lastRunOn": "11/01/2025 16:36:33 +01:00"
+    }
+  },
+  "lastRunOn": "11/01/2025 16:36:33 +01:00"
+}
