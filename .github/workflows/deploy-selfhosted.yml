@@ -10,6 +10,9 @@ jobs:
     # Requires a self-hosted runner installed on your Windows machine
     runs-on: self-hosted
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Print context
         shell: powershell
         run: |
@@ -21,6 +24,31 @@ jobs:
           $target = 'C:\\Users\\matte\\researchspace-docker-desktop-main\\researchspace-docker-desktop-main\\researchspace\\runtime-data'
           git -C $target fetch origin
           git -C $target reset --hard origin/main
+
+      - name: Sync repo config/data/ldp into runtime-data
+        shell: powershell
+        run: |
+          $target = 'C:\\Users\\matte\\researchspace-docker-desktop-main\\researchspace-docker-desktop-main\\researchspace\\runtime-data'
+          $src = "$env:GITHUB_WORKSPACE"
+          Write-Host "Syncing from $src to $target"
+          # Ensure target subfolders exist
+          New-Item -ItemType Directory -Force -Path "$target\config" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$target\data" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$target\data\templates" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$target\ldp" | Out-Null
+
+          # Copy config (non-destructive overwrite)
+          if (Test-Path "$src\config") { Copy-Item "$src\config\*" "$target\config" -Recurse -Force }
+
+          # Copy data (templates and others)
+          if (Test-Path "$src\data") { Copy-Item "$src\data\*" "$target\data" -Recurse -Force }
+
+          # Copy LDP configs
+          if (Test-Path "$src\ldp") { Copy-Item "$src\ldp\*" "$target\ldp" -Recurse -Force }
+
+          # Show that the specific template exists after sync
+          $tpl = "$target\data\templates\http%3A%2F%2Fwww.researchspace.org%2Fresource%2FResourceContent.html"
+          if (Test-Path $tpl) { Write-Host "Template synced: $tpl" } else { Write-Error "Template missing after sync: $tpl"; exit 1 }
 
       - name: Restart ResearchSpace service
         shell: powershell
