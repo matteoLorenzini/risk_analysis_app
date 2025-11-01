@@ -1,0 +1,144 @@
+<!-- Event + Magnitudo per [[this]], lowest=green, highest=red -->
+<semantic-table
+  id="risk-table"
+  query='
+PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+
+SELECT
+  ?subject
+  ?event_name
+  (COALESCE( (?minNum + ?maxNum)/2, ?minNum, ?maxNum) AS ?magnitudo)
+  ?bgColor
+  ?bdColor
+WHERE {
+  VALUES ?subject { <[[this]]> }
+
+  {
+    SELECT
+      ?subject ?event ?event_name
+    (SAMPLE(xsd:decimal(?minVal)) AS ?minNum)
+    (SAMPLE(xsd:decimal(?maxVal)) AS ?maxNum)
+    WHERE {
+      ?subject a base:E18_Physical_Thing ;
+               ^base:P31_has_modified ?event .
+
+      ?event a base:E5_Event ;
+             rdfs:label ?event_name ;
+             base:P39i_was_measured_by ?magnitude .
+
+      ?magnitude a crmsci:S21_Measurement ;
+                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+
+      OPTIONAL {
+        ?magnitude base:P40_observed_dimension ?dimMin .
+        ?dimMin a base:E54_Dimension ;
+                base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                base:P90_has_value ?minVal .
+        FILTER(STRSTARTS(STR(?dimMin), "https://w3id.org/sirius/magnitude_score_min/"))
+      }
+
+      OPTIONAL {
+        ?magnitude base:P40_observed_dimension ?dimMax .
+        ?dimMax a base:E54_Dimension ;
+                base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                base:P90_has_value ?maxVal .
+        FILTER(STRSTARTS(STR(?dimMax), "https://w3id.org/sirius/magnitude_score_max/"))
+      }
+    }
+    GROUP BY ?subject ?event ?event_name
+  }
+
+  {
+    SELECT
+      ?subject
+      (MIN(?minNum0) AS ?globalMin)
+      (MAX(?maxNum0) AS ?globalMax)
+    WHERE {
+      ?subject a base:E18_Physical_Thing ;
+               ^base:P31_has_modified ?event0 .
+
+      ?event0 a base:E5_Event ;
+              base:P39i_was_measured_by ?magnitude0 .
+
+      ?magnitude0 a crmsci:S21_Measurement ;
+                  base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+
+      OPTIONAL {
+        ?magnitude0 base:P40_observed_dimension ?dimMin0 .
+        ?dimMin0 a base:E54_Dimension ;
+                 base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                 base:P90_has_value ?minVal0 .
+        FILTER(STRSTARTS(STR(?dimMin0), "https://w3id.org/sirius/magnitude_score_min/"))
+        BIND(xsd:decimal(?minVal0) AS ?minNum0)
+      }
+
+      OPTIONAL {
+        ?magnitude0 base:P40_observed_dimension ?dimMax0 .
+        ?dimMax0 a base:E54_Dimension ;
+                 base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                 base:P90_has_value ?maxVal0 .
+        FILTER(STRSTARTS(STR(?dimMax0), "https://w3id.org/sirius/magnitude_score_max/"))
+        BIND(xsd:decimal(?maxVal0) AS ?maxNum0)
+      }
+    }
+    GROUP BY ?subject
+  }
+
+  # Robust average value: prefer mean of min/max, else whichever exists, else 0
+  BIND(
+    IF(BOUND(?minNum) && BOUND(?maxNum),
+       ((?minNum + ?maxNum) / 2),
+       IF(BOUND(?minNum), ?minNum,
+          IF(BOUND(?maxNum), ?maxNum, xsd:decimal(0))))
+    AS ?avgNum)
+
+  # Robust range and percentage
+  BIND(IF(BOUND(?globalMax) && BOUND(?globalMin), xsd:decimal(?globalMax - ?globalMin), xsd:decimal(1)) AS ?range)
+  BIND(IF(?range > 0, (?avgNum - COALESCE(?globalMin, xsd:decimal(0))) / ?range, 0.5) AS ?pct)
+
+  # Clamp hue to [0,120] and compute HSL strings
+  BIND(ROUND(120 * (1 - ?pct)) AS ?hueRaw)
+  BIND(IF(?hueRaw < 0, 0, IF(?hueRaw > 120, 120, ?hueRaw)) AS ?hue)
+
+  BIND(CONCAT("hsl(", STR(?hue), ",70%,85%)") AS ?bgColor)
+  BIND(CONCAT("hsl(", STR(?hue), ",70%,40%)") AS ?bdColor)
+}
+ORDER BY DESC(?magnitudo)
+'
+  column-configuration='[
+    { "displayName": "Event",              "cellTemplate": "{{> eventCell}}" },
+    { "displayName": "Magnitude (avg)",    "cellTemplate": "{{> magnitudoCell}}" }
+  ]'
+  options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
+
+  <!-- Event name -->
+  <template id="eventCell">
+    {{#if event_name.value}}
+      <div class="pill">{{event_name.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+  <!-- Magnitude cell with inverted colors -->
+  <template id="magnitudoCell">
+    {{#if magnitudo.value}}
+      <div class="pill magnitude-cell"
+           style="background-color: {{bgColor.value}}; border-color: {{bdColor.value}};">
+        {{magnitudo.value}}
+      </div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+</semantic-table>
+
+<style>
+  #risk-table .pill { display:inline-block; padding:.2rem .5rem; border:1px solid #e5e7eb; border-radius:999px; }
+  #risk-table .empty{ text-align:center; opacity:.5; }
+  #risk-table .magnitude-cell { font-weight: 600; }
+</style>

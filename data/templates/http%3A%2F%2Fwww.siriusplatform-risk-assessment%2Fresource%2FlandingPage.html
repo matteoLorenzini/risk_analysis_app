@@ -1,0 +1,68 @@
+[[> sirius:structured-search]]
+<!--
+              <bs-tabs id="tabs">
+                <bs-tab event-key="1" title="Table">
+                  
+<semantic-table query="
+   PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?subject ?label ?label_type ?note WHERE {
+  ?subject a base:E18_Physical_Thing ;
+       base:P1_is_identified_by ?appellation ;
+       base:P3_has_note ?note;
+       base:P2_has_type ?type.
+  ?appellation a base:E41_Appellation ;
+               skos:prefLabel ?value .
+  ?type a base:E55_Type;
+        skos:prefLabel ?label_type .
+}"
+                column-configuration='[{
+                    "displayName": "Site", 
+                    "cellTemplate": "<semantic-link iri={{subject.value}} />" 
+                  },
+                                      {
+                    "displayName": "Typology", 
+                    "cellTemplate": "<div>{{label_type.value}}</div>" 
+                  },
+                                      {
+                    "displayName": "Description", 
+                    "cellTemplate": "<div>{{note.value}}</div>" 
+                  }]'>
+</semantic-table>
+        
+                </bs-tab>
+                <bs-tab event-key="2" title="Map">
+                  
+
+
+<div style='height: 30vw;'>
+ <semantic-map
+query='
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT (CONCAT("Point(", STR(?coords), ")") AS ?wkt) ?label ?subject WHERE {
+  ?subject a base:E18_Physical_Thing ;
+           base:P1_is_identified_by ?appellation ;
+           base:P55_has_current_location ?coords .
+  ?appellation a base:E41_Appellation ;
+               skos:prefLabel ?label .
+}
+'
+tuple-template='{{> template }}'
+>
+  <template id='template'>
+    <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
+
+  </template>
+</semantic-map>
+</div>
+                         
+                </bs-tab>
+              </bs-tabs>
+                		-->

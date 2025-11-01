@@ -1,0 +1,152 @@
+<!-- ONE ROW PER SITE; inside each row a 4x6 matrix of (Dimension × Aspect) notes -->
+<semantic-table
+  id="nara-table-pivot"
+  query='
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+
+SELECT ?subject (COUNT(DISTINCT ?va) AS ?pairCount)
+WHERE {
+  VALUES ?subject { <[[this]]> }        
+
+  ?subject a base:E18_Physical_Thing ;
+           ^base:P129_is_about ?va .
+
+  ?va a base:E89_Propositional_Object ;
+      base:P67_refers_to ?dimension, ?aspect .
+
+  FILTER(CONTAINS(STR(?dimension), "/dimension/"))
+  FILTER(CONTAINS(STR(?aspect),    "/aspect/"))
+}
+GROUP BY ?subject
+ORDER BY ?subject
+
+'
+  column-configuration='[
+    
+    { "displayName": "Pairs",   "cellTemplate": "{{> countCell}}" },
+    { "displayName": "Grid",    "cellTemplate": "{{> gridCell}}" }
+  ]'
+  options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
+
+  <!-- Site IRI 
+  <template id="siteCell">
+    <div class="mono">{{subject.value}}</div>
+  </template>-->
+
+  <!-- Count for quick scannability -->
+  <template id="countCell">
+    <div class="count-pill">{{pairCount.value}}</div>
+  </template>
+
+  <!-- The PIVOT GRID -->
+  <template id="gridCell">
+    <div class="pivot-wrap">
+      <table class="pivot">
+        <thead>
+          <tr>
+            <th>Dimension ↓ / Aspect →</th>
+            <th>Form &amp; Design</th>
+            <th>Materials</th>
+            <th>Use &amp; Functions</th>
+            <th>Technics &amp; Workmanship</th>
+            <th>Location &amp; Setting</th>
+            <th>Spirit &amp; Feelings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Row: ARTISTIC (dimension id=1) -->
+          <tr>
+            <th>Artistic</th>
+            <td>{{> cell d="1" a="1"}}</td>
+            <td>{{> cell d="1" a="2"}}</td>
+            <td>{{> cell d="1" a="3"}}</td>
+            <td>{{> cell d="1" a="4"}}</td>
+            <td>{{> cell d="1" a="5"}}</td>
+            <td>{{> cell d="1" a="6"}}</td>
+          </tr>
+          <!-- Row: HISTORIC (dimension id=2) -->
+          <tr>
+            <th>Historic</th>
+            <td>{{> cell d="2" a="1"}}</td>
+            <td>{{> cell d="2" a="2"}}</td>
+            <td>{{> cell d="2" a="3"}}</td>
+            <td>{{> cell d="2" a="4"}}</td>
+            <td>{{> cell d="2" a="5"}}</td>
+            <td>{{> cell d="2" a="6"}}</td>
+          </tr>
+          <!-- Row: SOCIAL (dimension id=3) -->
+          <tr>
+            <th>Social</th>
+            <td>{{> cell d="3" a="1"}}</td>
+            <td>{{> cell d="3" a="2"}}</td>
+            <td>{{> cell d="3" a="3"}}</td>
+            <td>{{> cell d="3" a="4"}}</td>
+            <td>{{> cell d="3" a="5"}}</td>
+            <td>{{> cell d="3" a="6"}}</td>
+          </tr>
+          <!-- Row: SCIENTIFIC (dimension id=4) -->
+          <tr>
+            <th>Scientific</th>
+            <td>{{> cell d="4" a="1"}}</td>
+            <td>{{> cell d="4" a="2"}}</td>
+            <td>{{> cell d="4" a="3"}}</td>
+            <td>{{> cell d="4" a="4"}}</td>
+            <td>{{> cell d="4" a="5"}}</td>
+            <td>{{> cell d="4" a="6"}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </template>
+
+  <!-- PARTIAL: a single cell (Dimension category d, Aspect category a) -->
+  <template id="cell">
+  <semantic-query
+    query='
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+SELECT (GROUP_CONCAT(DISTINCT ?note; separator=" ⏵ ") AS ?notes)
+WHERE {
+  BIND(<{{subject.value}}> AS ?site)
+  ?site ^base:P129_is_about ?va .
+  ?va a base:E89_Propositional_Object ;
+      base:P3_has_note ?note ;
+      base:P67_refers_to ?dimension, ?aspect .
+  FILTER(CONTAINS(STR(?dimension), "/dimension/id/{{d}}/"))
+  FILTER(CONTAINS(STR(?aspect),    "/aspect/id/{{a}}/"))
+}
+'
+    tuple-template='{{> cellRow}}'>
+    <template id="cellRow">
+      {{#if notes.value}}
+        <div class="cell-note">{{notes.value}}</div>
+      {{else}}
+        <div class="cell-empty">—</div>
+      {{/if}}
+    </template>
+  </semantic-query>
+</template>
+
+
+</semantic-table>
+
+<style>
+  /* monospace IRIs + soft count pill */
+  #nara-table-pivot .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; word-break: break-all; }
+  #nara-table-pivot .count-pill { display:inline-block; min-width:2.2em; text-align:center; padding:.2rem .5rem; border:1px solid #e5e7eb; border-radius:999px; }
+
+  /* pivot grid */
+  .pivot-wrap { overflow-x: auto; }
+  table.pivot { border-collapse: separate; border-spacing: 0; width: 100%; background: #fff; }
+  .pivot th, .pivot td { border: 1px solid #e5e7eb; padding: .45rem .55rem; vertical-align: top; }
+  .pivot thead th { background: #f9fafb; position: sticky; top: 0; z-index: 1; }
+  .pivot tbody th { background: #f9fafb; position: sticky; left: 0; text-align: left; }
+  .pivot td { min-width: 12rem; }
+
+  .cell-note { white-space: pre-wrap; line-height: 1.25; }
+  .cell-empty { text-align: center; opacity: .5; }
+
+  @media (max-width: 900px) {
+    .pivot td { min-width: 10rem; }
+  }
+  
+</style>

@@ -1,0 +1,19 @@
+# ResearchSpace runtime-data Git ignore
+# Ignore temporary and generated files
+/tmp/
+
+# Ignore embedded triple stores / repository native data
+/data/repositories/**
+
+# Ignore Blazegraph journals if any are dropped here
+*.jnl
+
+# Locks and transaction markers
+**/lock/
+**/locked
+**/process
+**/txn-status
+
+# Backup/OS files
+.DS_Store
+Thumbs.db

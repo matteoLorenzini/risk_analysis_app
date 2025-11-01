@@ -1,0 +1,31 @@
+     <div class="col-md-6 inline-composite-2">
+        <semantic-form  new-subject-template='{{scheme}}/{{{{raw}}}}{{UUID}}{{{{/raw}}}}'
+            subject=[[this]]
+            fields='[[fieldDefinitions
+                      site_name="https://w3id.org/sirius/cultural-heritage-site/site_name"
+                      
+                    ]]'
+        > 
+                
+  </div>  
+ 
+                                     
+                                  <semantic-table query="
+     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?s ?value WHERE {
+  ?s a base:E18_Physical_Thing ;
+       base:P1_is_identified_by ?appellation .
+  ?appellation a base:E41_Appellation ;
+               skos:prefLabel ?value .
+}"
+                column-configuration='[
+                  {"variableName": "s",
+                  "displayName": "Subject",
+                  "cellTemplate": "<semantic-link iri={{s.value}} />" 
+                  }
+                ]'>
+</semantic-table>

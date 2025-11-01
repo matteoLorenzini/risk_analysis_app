@@ -1,0 +1,294 @@
+<!-- ONE ROW PER SITE; pulls Agent + Scale A/B/C (min/max + note) + Magnitude (min/max) + Uncertainty (min/max) -->
+<semantic-table
+  id="risk-table"
+  query='
+PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT
+  ?subject
+  ?agent
+  ?event_name
+  ?a_val1 ?a_val2 ?a_val3 ?a_desc
+  ?b_val1 ?b_val2 ?b_val3 ?b_desc
+  ?c_val1 ?c_val2 ?c_val3 ?c_desc
+  ?risk_desc
+  ?magnitude_min_score ?magnitude_max_score
+  ?uncertainty_min_score ?uncertainty_max_score
+WHERE {
+  VALUES ?subject { <[[this]]> }
+  ?subject a base:E18_Physical_Thing .
+
+  # inverse: Thing <-P31_has_modified- Event
+  ?subject ^base:P31_has_modified ?event .
+  ?event a base:E5_Event .
+
+  # Event name
+  OPTIONAL {
+    ?event rdfs:label ?event_name .
+  }
+
+  # Risk Analysis description tied to this event and subject
+  OPTIONAL {
+    ?ra a base:E89_Propositional_Object ;
+        base:P129_is_about ?subject ;
+        base:P129_is_about ?event .
+    OPTIONAL { ?ra base:P3_has_note ?risk_desc }
+  }
+  # Actor (e.g., "Water")
+  OPTIONAL {
+    ?event base:P11_had_participant ?actor .
+    ?actor a base:E39_Actor ;
+           rdfs:label ?agent .
+  }
+
+  # Scale A (aggregate to one row per event; Val.1/2/3 + Description)
+  OPTIONAL {
+    { SELECT ?event (SAMPLE(?v1) AS ?a_val1) (SAMPLE(?v2) AS ?a_val2) (SAMPLE(?v3) AS ?a_val3) (SAMPLE(?d) AS ?a_desc)
+      WHERE {
+        ?event base:P39i_was_measured_by ?measA .
+        ?measA a crmsci:S21_Measurement ;
+               base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+        OPTIONAL {
+          ?measA base:P40_observed_dimension ?dimension_a_1 .
+          ?dimension_a_1 a base:E54_Dimension ;
+                           base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ;
+                           rdfs:label ?v1 .
+        }
+        OPTIONAL {
+          ?measA base:P40_observed_dimension ?dimension_a_2 .
+          ?dimension_a_2 a base:E54_Dimension ;
+                           base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ;
+                           rdfs:label ?v2 .
+        }
+        OPTIONAL {
+          ?measA base:P40_observed_dimension ?dimension_a_3 .
+          ?dimension_a_3 a base:E54_Dimension ;
+                           base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ;
+                           rdfs:label ?v3 .
+        }
+        OPTIONAL { ?measA base:P3_has_note ?d }
+      }
+      GROUP BY ?event
+    }
+  }
+
+  # Scale B (aggregate to one row per event; Val.1/2/3 + Description)
+  OPTIONAL {
+    { SELECT ?event (SAMPLE(?v1) AS ?b_val1) (SAMPLE(?v2) AS ?b_val2) (SAMPLE(?v3) AS ?b_val3) (SAMPLE(?d) AS ?b_desc)
+      WHERE {
+        ?event base:P39i_was_measured_by ?measB .
+        ?measB a crmsci:S21_Measurement ;
+               base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
+        OPTIONAL {
+          ?measB base:P40_observed_dimension ?dimension_b_1 .
+          ?dimension_b_1 a base:E54_Dimension ;
+                           base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ;
+                           rdfs:label ?v1 .
+        }
+        OPTIONAL {
+          ?measB base:P40_observed_dimension ?dimension_b_2 .
+          ?dimension_b_2 a base:E54_Dimension ;
+                           base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ;
+                           rdfs:label ?v2 .
+        }
+        OPTIONAL {
+          ?measB base:P40_observed_dimension ?dimension_b_3 .
+          ?dimension_b_3 a base:E54_Dimension ;
+                           base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ;
+                           rdfs:label ?v3 .
+        }
+        OPTIONAL { ?measB base:P3_has_note ?d }
+      }
+      GROUP BY ?event
+    }
+  }
+
+  # Scale C (aggregate to one row per event; Val.1/2/3 + Description)
+  OPTIONAL {
+    { SELECT ?event (SAMPLE(?v1) AS ?c_val1) (SAMPLE(?v2) AS ?c_val2) (SAMPLE(?v3) AS ?c_val3) (SAMPLE(?d) AS ?c_desc)
+      WHERE {
+        ?event base:P39i_was_measured_by ?measC .
+        ?measC a crmsci:S21_Measurement ;
+               base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
+        OPTIONAL {
+          ?measC base:P40_observed_dimension ?dimension_c_1 .
+          ?dimension_c_1 a base:E54_Dimension ;
+                           base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ;
+                           rdfs:label ?v1 .
+        }
+        OPTIONAL {
+          ?measC base:P40_observed_dimension ?dimension_c_2 .
+          ?dimension_c_2 a base:E54_Dimension ;
+                           base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ;
+                           rdfs:label ?v2 .
+        }
+        OPTIONAL {
+          ?measC base:P40_observed_dimension ?dimension_c_3 .
+          ?dimension_c_3 a base:E54_Dimension ;
+                           base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ;
+                           rdfs:label ?v3 .
+        }
+        OPTIONAL { ?measC base:P3_has_note ?d }
+      }
+      GROUP BY ?event
+    }
+  }
+
+  # Magnitude score (aggregate to one row per event)
+  OPTIONAL {
+    { SELECT ?event (SAMPLE(?minMag) AS ?magnitude_min_score) (SAMPLE(?maxMag) AS ?magnitude_max_score)
+      WHERE {
+        ?event base:P39i_was_measured_by ?magnitude .
+        ?magnitude a crmsci:S21_Measurement ;
+                   base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+        OPTIONAL {
+          ?magnitude base:P40_observed_dimension ?magnitude_dim_min .
+          ?magnitude_dim_min a base:E54_Dimension ;
+                             base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                             base:P90_has_value ?minMag .
+          FILTER(STRSTARTS(STR(?magnitude_dim_min), "https://w3id.org/sirius/magnitude_score_min/"))
+        }
+        OPTIONAL {
+          ?magnitude base:P40_observed_dimension ?magnitude_dim_max .
+          ?magnitude_dim_max a base:E54_Dimension ;
+                             base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                             base:P90_has_value ?maxMag .
+          FILTER(STRSTARTS(STR(?magnitude_dim_max), "https://w3id.org/sirius/magnitude_score_max/"))
+        }
+      }
+      GROUP BY ?event
+    }
+  }
+
+  # Uncertainty score (aggregate to one row per event)
+  OPTIONAL {
+    { SELECT ?event (SAMPLE(?minU) AS ?uncertainty_min_score) (SAMPLE(?maxU) AS ?uncertainty_max_score)
+      WHERE {
+        ?event base:P39i_was_measured_by ?uncertainty .
+        ?uncertainty a crmsci:S21_Measurement ;
+                     base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+        OPTIONAL {
+          ?uncertainty base:P40_observed_dimension ?uncertainty_dim_min .
+          ?uncertainty_dim_min a base:E54_Dimension ;
+                               base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
+                               rdfs:label ?minU .
+          FILTER(STRSTARTS(STR(?uncertainty_dim_min), "https://w3id.org/sirius/uncertainty_min/"))
+        }
+        OPTIONAL {
+          ?uncertainty base:P40_observed_dimension ?uncertainty_dim_max .
+          ?uncertainty_dim_max a base:E54_Dimension ;
+                               base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
+                               rdfs:label ?maxU .
+          FILTER(STRSTARTS(STR(?uncertainty_dim_max), "https://w3id.org/sirius/uncertainty_max/"))
+        }
+      }
+      GROUP BY ?event
+    }
+  }
+}
+'
+   column-configuration='[
+  
+    { "displayName": "Agent",       "cellTemplate": "{{> agentCell}}" },
+  { "displayName": "Event",  "cellTemplate": "{{> eventNameCell}}" },
+  { "displayName": "Scale A",     "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_desc}}" },
+  { "displayName": "Scale B",     "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_desc}}" },
+  { "displayName": "Scale C",     "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_desc}}" },
+  { "displayName": "Description",  "cellTemplate": "{{> descCell}}" },
+    { "displayName": "Magnitude",   "cellTemplate": "{{> valueRangeCell min=magnitude_min_score max=magnitude_max_score}}" },
+    { "displayName": "Uncertainty", "cellTemplate": "{{> valueRangeCell min=uncertainty_min_score max=uncertainty_max_score}}" }
+  ]'
+  options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'> 
+
+
+  <!-- Agent label -->
+  <template id="agentCell">
+    {{#if agent.value}}
+      <div class="pill">{{agent.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+  <!-- Event name label -->
+  <template id="eventNameCell">
+    {{#if event_name.value}}
+      <div class="pill">{{event_name.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+  <!-- Generic min / max value cell (e.g., Magnitude / Uncertainty) -->
+  <template id="valueRangeCell">
+    {{#if min.value}}
+      <div class="val"><span class="dim-label">min</span> {{min.value}}</div>
+      {{#if max.value}}<div class="val"><span class="dim-label">max</span> {{max.value}}</div>{{/if}}
+    {{else}}
+      {{#if max.value}}
+        <div class="val"><span class="dim-label">max</span> {{max.value}}</div>
+      {{else}}
+        <div class="empty">—</div>
+      {{/if}}
+    {{/if}}
+  </template>
+
+  <!-- Scale score: min / max + optional note -->
+  <template id="scaleRangeCell">
+    {{#if min.value}}
+      <div class="val"><strong><span class="dim-label">min</span> {{min.value}}</strong></div>
+      {{#if max.value}}<div class="val"><strong><span class="dim-label">max</span> {{max.value}}</strong></div>{{/if}}
+    {{else}}
+      {{#if max.value}}
+        <div class="val"><strong><span class="dim-label">max</span> {{max.value}}</strong></div>
+      {{else}}
+        <div class="empty">—</div>
+      {{/if}}
+    {{/if}}
+    {{#if note.value}}
+      <div class="note">{{note.value}}</div>
+    {{/if}}
+  </template>
+
+  <!-- Scale score: Val. 1 / Val. 2 / Val. 3 + Description -->
+  <template id="scaleTripleCell">
+    {{#if v1.value}}
+      <div class="val"><strong><span class="dim-label">Val. 1</span> {{v1.value}}</strong></div>
+    {{/if}}
+    {{#if v2.value}}
+      <div class="val"><strong><span class="dim-label">Val. 2</span> {{v2.value}}</strong></div>
+    {{/if}}
+    {{#if v3.value}}
+      <div class="val"><strong><span class="dim-label">Val. 3</span> {{v3.value}}</strong></div>
+    {{/if}}
+    {{#unless v1.value}}
+      {{#unless v2.value}}
+        {{#unless v3.value}}
+          <div class="empty">—</div>
+        {{/unless}}
+      {{/unless}}
+    {{/unless}}
+    <div class="note"><span class="dim-label">Description</span> {{#if desc.value}}{{desc.value}}{{else}}—{{/if}}</div>
+  </template>
+
+  <!-- Risk Analysis description -->
+  <template id="descCell">
+    {{#if risk_desc.value}}
+      <div class="note">{{risk_desc.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+</semantic-table>
+
+<style>
+  #risk-table .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; word-break: break-all; }
+  #risk-table .pill { display:inline-block; padding:.2rem .5rem; border:1px solid #e5e7eb; border-radius:999px; }
+  #risk-table .val  { line-height: 1.25; }
+  #risk-table .note { white-space: pre-wrap; opacity:.9; line-height:1.25; margin-top:.15rem; }
+  #risk-table .empty{ text-align:center; opacity:.5; }
+  #risk-table .dim-label { font-size:.825em; text-transform:uppercase; letter-spacing:.02em; opacity:.7; margin-right:.35rem; }
+</style>
