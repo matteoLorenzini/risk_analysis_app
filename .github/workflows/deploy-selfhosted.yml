@@ -11,19 +11,19 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Print context
-        shell: pwsh
+        shell: powershell
         run: |
           Write-Host "Actor: $env:RUNNER_NAME on $env:RUNNER_OS"
 
       - name: Update runtime-data from origin/main
-        shell: pwsh
+        shell: powershell
         run: |
           $target = 'C:\\Users\\matte\\researchspace-docker-desktop-main\\researchspace-docker-desktop-main\\researchspace\\runtime-data'
           git -C $target fetch origin
           git -C $target reset --hard origin/main
 
       - name: Restart ResearchSpace service
-        shell: pwsh
+        shell: powershell
         run: |
           $root = 'C:\\Users\\matte\\researchspace-docker-desktop-main\\researchspace-docker-desktop-main'
           Set-Location $root
@@ -31,7 +31,7 @@ jobs:
           docker compose restart researchspace
 
       - name: Show service status
-        shell: pwsh
+        shell: powershell
         run: |
           $root = 'C:\\Users\\matte\\researchspace-docker-desktop-main\\researchspace-docker-desktop-main'
           Set-Location $root
