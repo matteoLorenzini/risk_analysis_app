@@ -1,0 +1,3862 @@
+[2025-11-02 15:23:42Z INFO HostContext] No proxy settings were found based on environmental variables (http_proxy/https_proxy/HTTP_PROXY/HTTPS_PROXY)
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known config file 'Credentials': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known config file 'Runner': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\.runner'
+[2025-11-02 15:23:42Z INFO Worker] Version: 2.329.0
+[2025-11-02 15:23:42Z INFO Worker] Commit: c76c59996c8fa32e989164a5a695efb12608ae5a
+[2025-11-02 15:23:42Z INFO Worker] Culture: en-US
+[2025-11-02 15:23:42Z INFO Worker] UI Culture: en-US
+[2025-11-02 15:23:42Z INFO Worker] Waiting to receive the job message from the channel.
+[2025-11-02 15:23:42Z INFO ProcessChannel] Receiving message of length 23251, with hash 'd334e728d19707d2bfc2302dcf7ff5c3adac79e1c74a9ad09d6d4eb0c807d7b7'
+[2025-11-02 15:23:42Z INFO Worker] Message received.
+[2025-11-02 15:23:42Z INFO Worker] Job message:
+ {
+  "fileTable": [
+    ".github/workflows/deploy-selfhosted.yml"
+  ],
+  "mask": [
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    },
+    {
+      "type": "regex",
+      "value": "***"
+    }
+  ],
+  "steps": [
+    {
+      "type": "action",
+      "reference": {
+        "type": "repository",
+        "name": "actions/checkout",
+        "ref": "v4",
+        "repositoryType": "GitHub"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 13,
+        "col": 15,
+        "lit": "Checkout repository"
+      },
+      "contextName": "__actions_checkout",
+      "condition": "success()",
+      "id": "23d72579-3882-4749-a17a-39eb19b9220b",
+      "name": "__actions_checkout"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 16,
+        "col": 15,
+        "lit": "Print context"
+      },
+      "contextName": "__run",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 18,
+              "col": 14,
+              "lit": "Write-Host \"Actor: $env:RUNNER_NAME on $env:RUNNER_OS\"\n"
+            }
+          },
+          {
+            "key": "shell",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 17,
+              "col": 16,
+              "lit": "powershell"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "b2939e40-9728-4559-82f3-bc48abca2f05",
+      "name": "__run"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 21,
+        "col": 15,
+        "lit": "Update runtime-data from origin/main"
+      },
+      "contextName": "__run_2",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 23,
+              "col": 14,
+              "lit": "$target = 'C:\\\\Users\\\\matte\\\\researchspace-docker-desktop-main\\\\researchspace-docker-desktop-main\\\\researchspace\\\\runtime-data'\ngit -C $target fetch origin\ngit -C $target reset --hard origin/main\n"
+            }
+          },
+          {
+            "key": "shell",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 22,
+              "col": 16,
+              "lit": "powershell"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "6782f918-ce61-48f2-b215-3e78159475f4",
+      "name": "__run_2"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 28,
+        "col": 15,
+        "lit": "Sync repo config/data/ldp into runtime-data"
+      },
+      "contextName": "__run_3",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 30,
+              "col": 14,
+              "lit": "$target = 'C:\\\\Users\\\\matte\\\\researchspace-docker-desktop-main\\\\researchspace-docker-desktop-main\\\\researchspace\\\\runtime-data'\n$src = \"$env:GITHUB_WORKSPACE\"\nWrite-Host \"Syncing from $src to $target\"\n# Ensure target subfolders exist\nNew-Item -ItemType Directory -Force -Path \"$target\\config\" | Out-Null\nNew-Item -ItemType Directory -Force -Path \"$target\\data\" | Out-Null\nNew-Item -ItemType Directory -Force -Path \"$target\\data\\templates\" | Out-Null\nNew-Item -ItemType Directory -Force -Path \"$target\\ldp\" | Out-Null\n\n# Copy config (non-destructive overwrite)\nif (Test-Path \"$src\\config\") { Copy-Item \"$src\\config\\*\" \"$target\\config\" -Recurse -Force }\n\n# Copy data (templates and others)\nif (Test-Path \"$src\\data\") { Copy-Item \"$src\\data\\*\" \"$target\\data\" -Recurse -Force }\n\n# Copy LDP configs\nif (Test-Path \"$src\\ldp\") { Copy-Item \"$src\\ldp\\*\" \"$target\\ldp\" -Recurse -Force }\n\n# Show that the specific template exists after sync\n$tpl = \"$target\\data\\templates\\http%3A%2F%2Fwww.researchspace.org%2Fresource%2FResourceContent.html\"\nif (Test-Path $tpl) { Write-Host \"Template synced: $tpl\" } else { Write-Error \"Template missing after sync: $tpl\"; exit 1 }\n"
+            }
+          },
+          {
+            "key": "shell",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 29,
+              "col": 16,
+              "lit": "powershell"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "32585715-f405-4f0c-adf6-150176c46557",
+      "name": "__run_3"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 53,
+        "col": 15,
+        "lit": "Restart ResearchSpace service"
+      },
+      "contextName": "__run_4",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 55,
+              "col": 14,
+              "lit": "$root = 'C:\\\\Users\\\\matte\\\\researchspace-docker-desktop-main\\\\researchspace-docker-desktop-main'\nSet-Location $root\ndocker compose ps researchspace\ndocker compose restart researchspace\n"
+            }
+          },
+          {
+            "key": "shell",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 54,
+              "col": 16,
+              "lit": "powershell"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "2b145b50-4e72-4b3f-9c9e-696ea93a3a83",
+      "name": "__run_4"
+    },
+    {
+      "type": "action",
+      "reference": {
+        "type": "script"
+      },
+      "displayNameToken": {
+        "type": 0,
+        "file": 1,
+        "line": 61,
+        "col": 15,
+        "lit": "Show service status"
+      },
+      "contextName": "__run_5",
+      "inputs": {
+        "type": 2,
+        "map": [
+          {
+            "key": "script",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 63,
+              "col": 14,
+              "lit": "$root = 'C:\\\\Users\\\\matte\\\\researchspace-docker-desktop-main\\\\researchspace-docker-desktop-main'\nSet-Location $root\ndocker compose ps researchspace\n"
+            }
+          },
+          {
+            "key": "shell",
+            "value": {
+              "type": 0,
+              "file": 1,
+              "line": 62,
+              "col": 16,
+              "lit": "powershell"
+            }
+          }
+        ]
+      },
+      "condition": "success()",
+      "id": "ec975b2f-dda4-4ec5-aa91-3a72cbcec098",
+      "name": "__run_5"
+    }
+  ],
+  "variables": {
+    "Actions.EnableHttpRedirects": {
+      "value": "true"
+    },
+    "DistributedTask.AddWarningToNode12Action": {
+      "value": "true"
+    },
+    "DistributedTask.AddWarningToNode16Action": {
+      "value": "true"
+    },
+    "DistributedTask.AllowRunnerContainerHooks": {
+      "value": "true"
+    },
+    "DistributedTask.DeprecateStepOutputCommands": {
+      "value": "true"
+    },
+    "DistributedTask.DetailUntarFailure": {
+      "value": "true"
+    },
+    "DistributedTask.EnableCompositeActions": {
+      "value": "true"
+    },
+    "DistributedTask.EnableJobServerQueueTelemetry": {
+      "value": "true"
+    },
+    "DistributedTask.EnhancedAnnotations": {
+      "value": "true"
+    },
+    "DistributedTask.ForceGithubJavascriptActionsToNode16": {
+      "value": "true"
+    },
+    "DistributedTask.ForceGithubJavascriptActionsToNode20": {
+      "value": "true"
+    },
+    "DistributedTask.LogTemplateErrorsAsDebugMessages": {
+      "value": "true"
+    },
+    "DistributedTask.MarkJobAsFailedOnWorkerCrash": {
+      "value": "true"
+    },
+    "DistributedTask.NewActionMetadata": {
+      "value": "true"
+    },
+    "DistributedTask.UploadStepSummary": {
+      "value": "true"
+    },
+    "DistributedTask.UseActionArchiveCache": {
+      "value": "true"
+    },
+    "DistributedTask.UseWhich2": {
+      "value": "true"
+    },
+    "RunService.FixEmbeddedIssues": {
+      "value": "true"
+    },
+    "actions_add_check_run_id_to_job_context": {
+      "value": "true"
+    },
+    "actions_container_action_runner_temp": {
+      "value": "false"
+    },
+    "actions_display_helpful_actions_download_errors": {
+      "value": "true"
+    },
+    "actions_skip_retry_complete_job_upon_known_errors": {
+      "value": "true"
+    },
+    "actions_uses_cache_service_v2": {
+      "value": "true"
+    },
+    "github_token": {
+      "value": "***",
+      "isSecret": true
+    },
+    "system.from_run_service": {
+      "value": "true"
+    },
+    "system.github.job": {
+      "value": "deploy"
+    },
+    "system.github.launch_endpoint": {
+      "value": "https://launch.actions.githubusercontent.com"
+    },
+    "system.github.results_endpoint": {
+      "value": "https://results-receiver.actions.githubusercontent.com/"
+    },
+    "system.github.results_upload_with_sdk": {
+      "value": "true"
+    },
+    "system.github.token": {
+      "value": "***",
+      "isSecret": true
+    },
+    "system.github.token.permissions": {
+      "value": "{\"Contents\":\"read\",\"Metadata\":\"read\",\"Packages\":\"read\"}"
+    },
+    "system.orchestrationId": {
+      "value": "9b6e76d7-0767-4b6e-95c1-deef12809e6e.deploy.__default"
+    },
+    "system.phaseDisplayName": {
+      "value": "deploy"
+    },
+    "system.runner.lowdiskspacethreshold": {
+      "value": "100"
+    },
+    "system.runnerEnvironment": {
+      "value": "self-hosted"
+    },
+    "system.runnerGroupName": {
+      "value": "Default"
+    }
+  },
+  "messageType": "RunnerJobRequest",
+  "plan": {
+    "scopeIdentifier": "00000000-0000-0000-0000-000000000000",
+    "planType": "actions",
+    "version": 0,
+    "planId": "9b6e76d7-0767-4b6e-95c1-deef12809e6e",
+    "planGroup": null,
+    "artifactUri": null,
+    "artifactLocation": null,
+    "definition": null,
+    "owner": null
+  },
+  "timeline": {
+    "id": "9b6e76d7-0767-4b6e-95c1-deef12809e6e",
+    "changeId": 0,
+    "location": null
+  },
+  "jobId": "b858d3d2-3c73-5663-ba5b-395d5a8b3d2e",
+  "jobDisplayName": "deploy",
+  "jobName": "__default",
+  "requestId": 0,
+  "lockedUntil": "0001-01-01T00:00:00",
+  "resources": {
+    "endpoints": [
+      {
+        "data": {
+          "ServerId": "",
+          "ServerName": "",
+          "CacheServerUrl": "https://artifactcache.actions.githubusercontent.com/xw06FIHW2K1AmaSoDM2l920ewH7mdDie8RThTu0prGEhQH3hhp/",
+          "FeedStreamUrl": "wss://results-receiver.actions.githubusercontent.com/_ws/ingest.sock",
+          "ResultsServiceUrl": "https://results-receiver.actions.githubusercontent.com/",
+          "PipelinesServiceUrl": "https://pipelinesghubeus9.actions.githubusercontent.com/xw06FIHW2K1AmaSoDM2l920ewH7mdDie8RThTu0prGEhQH3hhp/",
+          "GenerateIdTokenUrl": ""
+        },
+        "name": "SystemVssConnection",
+        "url": "https://run-actions-1-azure-eastus.actions.githubusercontent.com/108/",
+        "authorization": {
+          "parameters": {
+            "AccessToken": "***"
+          },
+          "scheme": "OAuth"
+        },
+        "isShared": false,
+        "isReady": true
+      }
+    ]
+  },
+  "contextData": {
+    "github": {
+      "t": 2,
+      "d": [
+        {
+          "k": "ref",
+          "v": "refs/heads/main"
+        },
+        {
+          "k": "sha",
+          "v": "1395bb8fef574ab68fd54b1090f7a2df5e45f355"
+        },
+        {
+          "k": "repository",
+          "v": "matteoLorenzini/risk_analysis_app"
+        },
+        {
+          "k": "repository_owner",
+          "v": "matteoLorenzini"
+        },
+        {
+          "k": "repository_owner_id",
+          "v": "6868238"
+        },
+        {
+          "k": "repositoryUrl",
+          "v": "git://github.com/matteoLorenzini/risk_analysis_app.git"
+        },
+        {
+          "k": "run_id",
+          "v": "19014285780"
+        },
+        {
+          "k": "run_number",
+          "v": "12"
+        },
+        {
+          "k": "retention_days",
+          "v": "90"
+        },
+        {
+          "k": "run_attempt",
+          "v": "1"
+        },
+        {
+          "k": "artifact_cache_size_limit",
+          "v": "10"
+        },
+        {
+          "k": "repository_visibility",
+          "v": "public"
+        },
+        {
+          "k": "actor_id",
+          "v": "6868238"
+        },
+        {
+          "k": "actor",
+          "v": "matteoLorenzini"
+        },
+        {
+          "k": "workflow",
+          "v": "Deploy to Local ResearchSpace (self-hosted)"
+        },
+        {
+          "k": "head_ref",
+          "v": ""
+        },
+        {
+          "k": "base_ref",
+          "v": ""
+        },
+        {
+          "k": "event_name",
+          "v": "push"
+        },
+        {
+          "k": "server_url",
+          "v": "https://github.com"
+        },
+        {
+          "k": "api_url",
+          "v": "https://api.github.com"
+        },
+        {
+          "k": "graphql_url",
+          "v": "https://api.github.com/graphql"
+        },
+        {
+          "k": "ref_name",
+          "v": "main"
+        },
+        {
+          "k": "ref_protected",
+          "v": false
+        },
+        {
+          "k": "ref_type",
+          "v": "branch"
+        },
+        {
+          "k": "secret_source",
+          "v": "Actions"
+        },
+        {
+          "k": "event",
+          "v": {
+            "t": 2,
+            "d": [
+              {
+                "k": "after",
+                "v": "1395bb8fef574ab68fd54b1090f7a2df5e45f355"
+              },
+              {
+                "k": "base_ref",
+                "v": null
+              },
+              {
+                "k": "before",
+                "v": "68c34ce1b3dd6e1872617adcaa2959393bbbc524"
+              },
+              {
+                "k": "commits",
+                "v": {
+                  "t": 1,
+                  "a": [
+                    {
+                      "t": 2,
+                      "d": [
+                        {
+                          "k": "author",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "matteo-lorenzini@outlook.it"
+                              },
+                              {
+                                "k": "name",
+                                "v": "matteoLorenzini"
+                              },
+                              {
+                                "k": "username",
+                                "v": "matteoLorenzini"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "committer",
+                          "v": {
+                            "t": 2,
+                            "d": [
+                              {
+                                "k": "email",
+                                "v": "matteo-lorenzini@outlook.it"
+                              },
+                              {
+                                "k": "name",
+                                "v": "matteoLorenzini"
+                              },
+                              {
+                                "k": "username",
+                                "v": "matteoLorenzini"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "k": "distinct",
+                          "v": true
+                        },
+                        {
+                          "k": "id",
+                          "v": "1395bb8fef574ab68fd54b1090f7a2df5e45f355"
+                        },
+                        {
+                          "k": "message",
+                          "v": "Added descrizione and tiplogia fields"
+                        },
+                        {
+                          "k": "timestamp",
+                          "v": "2025-11-02T16:23:29+01:00"
+                        },
+                        {
+                          "k": "tree_id",
+                          "v": "fe6ffb9fc253cd4210666f8ebfdccc3239ba0a1e"
+                        },
+                        {
+                          "k": "url",
+                          "v": "https://github.com/matteoLorenzini/risk_analysis_app/commit/1395bb8fef574ab68fd54b1090f7a2df5e45f355"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "compare",
+                "v": "https://github.com/matteoLorenzini/risk_analysis_app/compare/68c34ce1b3dd...1395bb8fef57"
+              },
+              {
+                "k": "created",
+                "v": false
+              },
+              {
+                "k": "deleted",
+                "v": false
+              },
+              {
+                "k": "forced",
+                "v": false
+              },
+              {
+                "k": "head_commit",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "author",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "email",
+                            "v": "matteo-lorenzini@outlook.it"
+                          },
+                          {
+                            "k": "name",
+                            "v": "matteoLorenzini"
+                          },
+                          {
+                            "k": "username",
+                            "v": "matteoLorenzini"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "committer",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "email",
+                            "v": "matteo-lorenzini@outlook.it"
+                          },
+                          {
+                            "k": "name",
+                            "v": "matteoLorenzini"
+                          },
+                          {
+                            "k": "username",
+                            "v": "matteoLorenzini"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "distinct",
+                      "v": true
+                    },
+                    {
+                      "k": "id",
+                      "v": "1395bb8fef574ab68fd54b1090f7a2df5e45f355"
+                    },
+                    {
+                      "k": "message",
+                      "v": "Added descrizione and tiplogia fields"
+                    },
+                    {
+                      "k": "timestamp",
+                      "v": "2025-11-02T16:23:29+01:00"
+                    },
+                    {
+                      "k": "tree_id",
+                      "v": "fe6ffb9fc253cd4210666f8ebfdccc3239ba0a1e"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://github.com/matteoLorenzini/risk_analysis_app/commit/1395bb8fef574ab68fd54b1090f7a2df5e45f355"
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "pusher",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "email",
+                      "v": "matteo-lorenzini@outlook.it"
+                    },
+                    {
+                      "k": "name",
+                      "v": "matteoLorenzini"
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "ref",
+                "v": "refs/heads/main"
+              },
+              {
+                "k": "repository",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "allow_forking",
+                      "v": true
+                    },
+                    {
+                      "k": "archive_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/{archive_format}{/ref}"
+                    },
+                    {
+                      "k": "archived",
+                      "v": false
+                    },
+                    {
+                      "k": "assignees_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/assignees{/user}"
+                    },
+                    {
+                      "k": "blobs_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/git/blobs{/sha}"
+                    },
+                    {
+                      "k": "branches_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/branches{/branch}"
+                    },
+                    {
+                      "k": "clone_url",
+                      "v": "https://github.com/matteoLorenzini/risk_analysis_app.git"
+                    },
+                    {
+                      "k": "collaborators_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/collaborators{/collaborator}"
+                    },
+                    {
+                      "k": "comments_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/comments{/number}"
+                    },
+                    {
+                      "k": "commits_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/commits{/sha}"
+                    },
+                    {
+                      "k": "compare_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/compare/{base}...{head}"
+                    },
+                    {
+                      "k": "contents_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/contents/{+path}"
+                    },
+                    {
+                      "k": "contributors_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/contributors"
+                    },
+                    {
+                      "k": "created_at",
+                      "v": 1762008130.0
+                    },
+                    {
+                      "k": "default_branch",
+                      "v": "main"
+                    },
+                    {
+                      "k": "deployments_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/deployments"
+                    },
+                    {
+                      "k": "description",
+                      "v": null
+                    },
+                    {
+                      "k": "disabled",
+                      "v": false
+                    },
+                    {
+                      "k": "downloads_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/downloads"
+                    },
+                    {
+                      "k": "events_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/events"
+                    },
+                    {
+                      "k": "fork",
+                      "v": false
+                    },
+                    {
+                      "k": "forks",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "forks_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "forks_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/forks"
+                    },
+                    {
+                      "k": "full_name",
+                      "v": "matteoLorenzini/risk_analysis_app"
+                    },
+                    {
+                      "k": "git_commits_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/git/commits{/sha}"
+                    },
+                    {
+                      "k": "git_refs_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/git/refs{/sha}"
+                    },
+                    {
+                      "k": "git_tags_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/git/tags{/sha}"
+                    },
+                    {
+                      "k": "git_url",
+                      "v": "git://github.com/matteoLorenzini/risk_analysis_app.git"
+                    },
+                    {
+                      "k": "has_discussions",
+                      "v": false
+                    },
+                    {
+                      "k": "has_downloads",
+                      "v": true
+                    },
+                    {
+                      "k": "has_issues",
+                      "v": true
+                    },
+                    {
+                      "k": "has_pages",
+                      "v": false
+                    },
+                    {
+                      "k": "has_projects",
+                      "v": true
+                    },
+                    {
+                      "k": "has_wiki",
+                      "v": true
+                    },
+                    {
+                      "k": "homepage",
+                      "v": null
+                    },
+                    {
+                      "k": "hooks_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/hooks"
+                    },
+                    {
+                      "k": "html_url",
+                      "v": "https://github.com/matteoLorenzini/risk_analysis_app"
+                    },
+                    {
+                      "k": "id",
+                      "v": 1087737796.0
+                    },
+                    {
+                      "k": "is_template",
+                      "v": false
+                    },
+                    {
+                      "k": "issue_comment_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/issues/comments{/number}"
+                    },
+                    {
+                      "k": "issue_events_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/issues/events{/number}"
+                    },
+                    {
+                      "k": "issues_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/issues{/number}"
+                    },
+                    {
+                      "k": "keys_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/keys{/key_id}"
+                    },
+                    {
+                      "k": "labels_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/labels{/name}"
+                    },
+                    {
+                      "k": "language",
+                      "v": "JavaScript"
+                    },
+                    {
+                      "k": "languages_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/languages"
+                    },
+                    {
+                      "k": "license",
+                      "v": null
+                    },
+                    {
+                      "k": "master_branch",
+                      "v": "main"
+                    },
+                    {
+                      "k": "merges_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/merges"
+                    },
+                    {
+                      "k": "milestones_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/milestones{/number}"
+                    },
+                    {
+                      "k": "mirror_url",
+                      "v": null
+                    },
+                    {
+                      "k": "name",
+                      "v": "risk_analysis_app"
+                    },
+                    {
+                      "k": "node_id",
+                      "v": "R_kgDOQNWPxA"
+                    },
+                    {
+                      "k": "notifications_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/notifications{?since,all,participating}"
+                    },
+                    {
+                      "k": "open_issues",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "open_issues_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "owner",
+                      "v": {
+                        "t": 2,
+                        "d": [
+                          {
+                            "k": "avatar_url",
+                            "v": "https://avatars.githubusercontent.com/u/6868238?v=4"
+                          },
+                          {
+                            "k": "email",
+                            "v": "matteo-lorenzini@outlook.it"
+                          },
+                          {
+                            "k": "events_url",
+                            "v": "https://api.github.com/users/matteoLorenzini/events{/privacy}"
+                          },
+                          {
+                            "k": "followers_url",
+                            "v": "https://api.github.com/users/matteoLorenzini/followers"
+                          },
+                          {
+                            "k": "following_url",
+                            "v": "https://api.github.com/users/matteoLorenzini/following{/other_user}"
+                          },
+                          {
+                            "k": "gists_url",
+                            "v": "https://api.github.com/users/matteoLorenzini/gists{/gist_id}"
+                          },
+                          {
+                            "k": "gravatar_id",
+                            "v": ""
+                          },
+                          {
+                            "k": "html_url",
+                            "v": "https://github.com/matteoLorenzini"
+                          },
+                          {
+                            "k": "id",
+                            "v": 6868238.0
+                          },
+                          {
+                            "k": "login",
+                            "v": "matteoLorenzini"
+                          },
+                          {
+                            "k": "name",
+                            "v": "matteoLorenzini"
+                          },
+                          {
+                            "k": "node_id",
+                            "v": "MDQ6VXNlcjY4NjgyMzg="
+                          },
+                          {
+                            "k": "organizations_url",
+                            "v": "https://api.github.com/users/matteoLorenzini/orgs"
+                          },
+                          {
+                            "k": "received_events_url",
+                            "v": "https://api.github.com/users/matteoLorenzini/received_events"
+                          },
+                          {
+                            "k": "repos_url",
+                            "v": "https://api.github.com/users/matteoLorenzini/repos"
+                          },
+                          {
+                            "k": "site_admin",
+                            "v": false
+                          },
+                          {
+                            "k": "starred_url",
+                            "v": "https://api.github.com/users/matteoLorenzini/starred{/owner}{/repo}"
+                          },
+                          {
+                            "k": "subscriptions_url",
+                            "v": "https://api.github.com/users/matteoLorenzini/subscriptions"
+                          },
+                          {
+                            "k": "type",
+                            "v": "User"
+                          },
+                          {
+                            "k": "url",
+                            "v": "https://api.github.com/users/matteoLorenzini"
+                          },
+                          {
+                            "k": "user_view_type",
+                            "v": "public"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "k": "private",
+                      "v": false
+                    },
+                    {
+                      "k": "pulls_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/pulls{/number}"
+                    },
+                    {
+                      "k": "pushed_at",
+                      "v": 1762097014.0
+                    },
+                    {
+                      "k": "releases_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/releases{/id}"
+                    },
+                    {
+                      "k": "size",
+                      "v": 176791.0
+                    },
+                    {
+                      "k": "ssh_url",
+                      "v": "git@github.com:matteoLorenzini/risk_analysis_app.git"
+                    },
+                    {
+                      "k": "stargazers",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "stargazers_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "stargazers_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/stargazers"
+                    },
+                    {
+                      "k": "statuses_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/statuses/{sha}"
+                    },
+                    {
+                      "k": "subscribers_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/subscribers"
+                    },
+                    {
+                      "k": "subscription_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/subscription"
+                    },
+                    {
+                      "k": "svn_url",
+                      "v": "https://github.com/matteoLorenzini/risk_analysis_app"
+                    },
+                    {
+                      "k": "tags_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/tags"
+                    },
+                    {
+                      "k": "teams_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/teams"
+                    },
+                    {
+                      "k": "topics",
+                      "v": {
+                        "t": 1
+                      }
+                    },
+                    {
+                      "k": "trees_url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app/git/trees{/sha}"
+                    },
+                    {
+                      "k": "updated_at",
+                      "v": "2025-11-02T14:42:04Z"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://api.github.com/repos/matteoLorenzini/risk_analysis_app"
+                    },
+                    {
+                      "k": "visibility",
+                      "v": "public"
+                    },
+                    {
+                      "k": "watchers",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "watchers_count",
+                      "v": 0.0
+                    },
+                    {
+                      "k": "web_commit_signoff_required",
+                      "v": false
+                    }
+                  ]
+                }
+              },
+              {
+                "k": "sender",
+                "v": {
+                  "t": 2,
+                  "d": [
+                    {
+                      "k": "avatar_url",
+                      "v": "https://avatars.githubusercontent.com/u/6868238?v=4"
+                    },
+                    {
+                      "k": "events_url",
+                      "v": "https://api.github.com/users/matteoLorenzini/events{/privacy}"
+                    },
+                    {
+                      "k": "followers_url",
+                      "v": "https://api.github.com/users/matteoLorenzini/followers"
+                    },
+                    {
+                      "k": "following_url",
+                      "v": "https://api.github.com/users/matteoLorenzini/following{/other_user}"
+                    },
+                    {
+                      "k": "gists_url",
+                      "v": "https://api.github.com/users/matteoLorenzini/gists{/gist_id}"
+                    },
+                    {
+                      "k": "gravatar_id",
+                      "v": ""
+                    },
+                    {
+                      "k": "html_url",
+                      "v": "https://github.com/matteoLorenzini"
+                    },
+                    {
+                      "k": "id",
+                      "v": 6868238.0
+                    },
+                    {
+                      "k": "login",
+                      "v": "matteoLorenzini"
+                    },
+                    {
+                      "k": "node_id",
+                      "v": "MDQ6VXNlcjY4NjgyMzg="
+                    },
+                    {
+                      "k": "organizations_url",
+                      "v": "https://api.github.com/users/matteoLorenzini/orgs"
+                    },
+                    {
+                      "k": "received_events_url",
+                      "v": "https://api.github.com/users/matteoLorenzini/received_events"
+                    },
+                    {
+                      "k": "repos_url",
+                      "v": "https://api.github.com/users/matteoLorenzini/repos"
+                    },
+                    {
+                      "k": "site_admin",
+                      "v": false
+                    },
+                    {
+                      "k": "starred_url",
+                      "v": "https://api.github.com/users/matteoLorenzini/starred{/owner}{/repo}"
+                    },
+                    {
+                      "k": "subscriptions_url",
+                      "v": "https://api.github.com/users/matteoLorenzini/subscriptions"
+                    },
+                    {
+                      "k": "type",
+                      "v": "User"
+                    },
+                    {
+                      "k": "url",
+                      "v": "https://api.github.com/users/matteoLorenzini"
+                    },
+                    {
+                      "k": "user_view_type",
+                      "v": "public"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "k": "workflow_ref",
+          "v": "matteoLorenzini/risk_analysis_app/.github/workflows/deploy-selfhosted.yml@refs/heads/main"
+        },
+        {
+          "k": "workflow_sha",
+          "v": "1395bb8fef574ab68fd54b1090f7a2df5e45f355"
+        },
+        {
+          "k": "repository_id",
+          "v": "1087737796"
+        },
+        {
+          "k": "triggering_actor",
+          "v": "matteoLorenzini"
+        }
+      ]
+    },
+    "inputs": {
+      "t": 2
+    },
+    "job": {
+      "t": 2,
+      "d": [
+        {
+          "k": "check_run_id",
+          "v": 54299828665.0
+        }
+      ]
+    },
+    "matrix": null,
+    "needs": {
+      "t": 2
+    },
+    "strategy": {
+      "t": 2,
+      "d": [
+        {
+          "k": "fail-fast",
+          "v": true
+        },
+        {
+          "k": "job-index",
+          "v": 0.0
+        },
+        {
+          "k": "job-total",
+          "v": 1.0
+        },
+        {
+          "k": "max-parallel",
+          "v": 1.0
+        }
+      ]
+    },
+    "vars": {
+      "t": 2
+    }
+  },
+  "billingOwnerId": "U_kgDOAGjNDg"
+}
+[2025-11-02 15:23:42Z INFO JobRunner] Job ID b858d3d2-3c73-5663-ba5b-395d5a8b3d2e
+[2025-11-02 15:23:42Z INFO ConfigurationStore] currentAssemblyLocation: C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin\Runner.Worker.dll
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO ConfigurationStore] binPath: C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO ConfigurationStore] RootFolder: C:\Users\matte\Repo\risk_analysis_app\actions-runner
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known config file 'Runner': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\.runner'
+[2025-11-02 15:23:42Z INFO ConfigurationStore] ConfigFilePath: C:\Users\matte\Repo\risk_analysis_app\actions-runner\.runner
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known config file 'MigratedRunner': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\.runner_migrated'
+[2025-11-02 15:23:42Z INFO ConfigurationStore] MigratedConfigFilePath: C:\Users\matte\Repo\risk_analysis_app\actions-runner\.runner_migrated
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known config file 'Credentials': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials'
+[2025-11-02 15:23:42Z INFO ConfigurationStore] CredFilePath: C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known config file 'MigratedCredentials': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_migrated'
+[2025-11-02 15:23:42Z INFO ConfigurationStore] MigratedCredFilePath: C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_migrated
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known config file 'Service': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\.service'
+[2025-11-02 15:23:42Z INFO ConfigurationStore] ServiceConfigFilePath: C:\Users\matte\Repo\risk_analysis_app\actions-runner\.service
+[2025-11-02 15:23:42Z INFO ConfigurationStore] Read setting file: 411 chars
+[2025-11-02 15:23:42Z INFO JobRunner] Initializing launch client
+[2025-11-02 15:23:42Z INFO JobServerQueue] Initializing results client
+[2025-11-02 15:23:42Z INFO ResultServer] Creating websocket client ...wss://results-receiver.actions.githubusercontent.com/_ws/ingest.sock
+[2025-11-02 15:23:42Z INFO ResultServer] Attempting to start websocket client with delay 00:00:00.
+[2025-11-02 15:23:42Z INFO JobServerQueue] Start process web console line queue.
+[2025-11-02 15:23:42Z INFO JobServerQueue] Start process file upload queue.
+[2025-11-02 15:23:42Z INFO JobServerQueue] Start results file upload queue.
+[2025-11-02 15:23:42Z INFO JobServerQueue] Starting results-based upload queue...
+[2025-11-02 15:23:42Z INFO JobServerQueue] Start process timeline update queue.
+[2025-11-02 15:23:42Z INFO ExecutionContext] Initializing Job context
+[2025-11-02 15:23:42Z INFO ExecutionContext] Initialize GitHub context
+[2025-11-02 15:23:42Z INFO ExecutionContext] Initialize Env context
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:42Z INFO JobRunner] Starting the job execution context.
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:42Z INFO JobRunner] Validating directory permissions for: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Tools': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_tool'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:23:42Z INFO JobRunner] Getting job extension.
+[2025-11-02 15:23:42Z INFO JobRunner] Initialize job. Getting all job steps.
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known config file 'Credentials': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known config file 'SetupInfo': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\.setup_info'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:42Z INFO PipelineDirectoryManager] Loading tracking config if exists: C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_PipelineMapping\matteoLorenzini/risk_analysis_app\PipelineFolder.json
+[2025-11-02 15:23:42Z INFO PipelineDirectoryManager] Updating job run properties.
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:42Z INFO JobExtension] Downloading actions
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:42Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:23:43Z INFO Worker] Listening for cancel message from the channel.
+[2025-11-02 15:23:43Z INFO Worker] Waiting for the job to complete or for a cancel message from the channel.
+[2025-11-02 15:23:43Z INFO ResultServer] Successfully started websocket client.
+[2025-11-02 15:23:43Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'b2bd1ba0-16c1-4eb4-890f-2bf74be902e8', success rate: 1/1.
+[2025-11-02 15:23:43Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:43Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:43Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:43Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:23:43Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:43Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:43Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:43Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:23:43Z INFO ActionManager] Save archive 'https://api.github.com/repos/actions/checkout/zipball/08eba0b27e820071cde6df949e0beb9ba4906955' into C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions\_temp_a9e3a32e-b2c2-42b3-a564-8ffea58d92f4\49db2aca-7948-474e-9b64-0b140bc83338.zip.
+[2025-11-02 15:23:43Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'b2bd1ba0-16c1-4eb4-890f-2bf74be902e8', success rate: 1/1.
+[2025-11-02 15:23:43Z INFO JobServerQueue] Job timeline record has been updated for the first time.
+[2025-11-02 15:23:44Z INFO ActionManager] Request URL: https://api.github.com/repos/actions/checkout/zipball/08eba0b27e820071cde6df949e0beb9ba4906955 X-GitHub-Request-Id: EC8E:227033:3B4C70:54FF69:6907777D Http Status: OK
+[2025-11-02 15:23:44Z INFO ActionManager] Finished getting action repository.
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Load schema file with definitions: [
+  "null",
+  "boolean",
+  "number",
+  "string",
+  "sequence",
+  "mapping",
+  "any",
+  "action-root",
+  "inputs",
+  "input",
+  "outputs",
+  "output-definition",
+  "runs",
+  "container-runs",
+  "container-runs-args",
+  "container-runs-env",
+  "node-runs",
+  "plugin-runs",
+  "composite-runs",
+  "composite-steps",
+  "composite-step",
+  "run-step",
+  "uses-step",
+  "container-runs-context",
+  "output-value",
+  "input-default-context",
+  "non-empty-string",
+  "string-steps-context",
+  "boolean-steps-context",
+  "step-env",
+  "step-if",
+  "step-with"
+]
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "ssh-user"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 14,
+          "lit": "git"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 52,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 54,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 57,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 59,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 60,
+          "col": 3,
+          "lit": "filter"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 64,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 65,
+          "col": 3,
+          "lit": "sparse-checkout"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 69,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 3,
+          "lit": "sparse-checkout-cone-mode"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 73,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 74,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 76,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 77,
+          "col": 3,
+          "lit": "fetch-tags"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 79,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 80,
+          "col": 3,
+          "lit": "show-progress"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 82,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 83,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 85,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 86,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 94,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 95,
+          "col": 3,
+          "lit": "set-safe-directory"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 97,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 98,
+          "col": 3,
+          "lit": "github-server-url"
+        },
+        "value": ""
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "nodeVersion": "node20",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-11-02 15:23:44Z INFO ActionManager] Action node.js file: dist/index.js, no more preparation.
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:23:44Z INFO ActionManager] Load action that reference repository from 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions\actions\checkout\v4'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "ssh-user"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 14,
+          "lit": "git"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 52,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 54,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 57,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 59,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 60,
+          "col": 3,
+          "lit": "filter"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 64,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 65,
+          "col": 3,
+          "lit": "sparse-checkout"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 69,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 3,
+          "lit": "sparse-checkout-cone-mode"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 73,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 74,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 76,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 77,
+          "col": 3,
+          "lit": "fetch-tags"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 79,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 80,
+          "col": 3,
+          "lit": "show-progress"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 82,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 83,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 85,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 86,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 94,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 95,
+          "col": 3,
+          "lit": "set-safe-directory"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 97,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 98,
+          "col": 3,
+          "lit": "github-server-url"
+        },
+        "value": ""
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "nodeVersion": "node20",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-11-02 15:23:44Z INFO ActionManager] Action pre node.js file: N/A.
+[2025-11-02 15:23:44Z INFO ActionManager] Action node.js file: dist/index.js.
+[2025-11-02 15:23:44Z INFO ActionManager] Action post node.js file: dist/index.js.
+[2025-11-02 15:23:44Z INFO JobExtension] Adding .
+[2025-11-02 15:23:44Z INFO JobExtension] Adding .
+[2025-11-02 15:23:44Z INFO JobExtension] Adding .
+[2025-11-02 15:23:44Z INFO JobExtension] Adding .
+[2025-11-02 15:23:44Z INFO JobExtension] Adding .
+[2025-11-02 15:23:44Z INFO JobExtension] Adding .
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO JobExtension] Total accessible running process: 353.
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO JobExtension] Start checking service connectivity in background.
+[2025-11-02 15:23:44Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "setup_job",
+  "type": "runner",
+  "stage": "Pre",
+  "stepId": "b2bd1ba0-16c1-4eb4-890f-2bf74be902e8",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 2,
+  "startTime": "2025-11-02T15:23:42.9530107Z",
+  "finishTime": "2025-11-02T15:23:44.6649041Z"
+}.
+[2025-11-02 15:23:44Z INFO JobRunner] Total job steps: 6.
+[2025-11-02 15:23:44Z INFO JobRunner] Run all job steps.
+[2025-11-02 15:23:44Z INFO StepsRunner] Processing step: DisplayName='Checkout repository'
+[2025-11-02 15:23:44Z INFO StepsRunner] Evaluating: success()
+[2025-11-02 15:23:44Z INFO StepsRunner] Result: true
+[2025-11-02 15:23:44Z INFO StepsRunner] Starting the step.
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-02 15:23:44Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper] Process started with process id 25148, waiting for process exit.
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper] Finished process 25148 with exit code 0, and elapsed time 00:00:00.0165025.
+[2025-11-02 15:23:44Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:23:44Z INFO ActionManager] Load action that reference repository from 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions\actions\checkout\v4'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "ssh-user"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 14,
+          "lit": "git"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 52,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 54,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 57,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 59,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 60,
+          "col": 3,
+          "lit": "filter"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 64,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 65,
+          "col": 3,
+          "lit": "sparse-checkout"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 69,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 3,
+          "lit": "sparse-checkout-cone-mode"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 73,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 74,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 76,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 77,
+          "col": 3,
+          "lit": "fetch-tags"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 79,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 80,
+          "col": 3,
+          "lit": "show-progress"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 82,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 83,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 85,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 86,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 94,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 95,
+          "col": 3,
+          "lit": "set-safe-directory"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 97,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 98,
+          "col": 3,
+          "lit": "github-server-url"
+        },
+        "value": ""
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "nodeVersion": "node20",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-11-02 15:23:44Z INFO ActionManager] Action pre node.js file: N/A.
+[2025-11-02 15:23:44Z INFO ActionManager] Action node.js file: dist/index.js.
+[2025-11-02 15:23:44Z INFO ActionManager] Action post node.js file: dist/index.js.
+[2025-11-02 15:23:44Z INFO ExecutionContext] Reserve record order 8 to 14 for post job actions.
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:23:44Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:23:44Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddPathFileCommand, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetEnvFileCommand, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.CreateStepSummaryCommand, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SaveStateFileCommand, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetOutputFileCommand, Runner.Worker
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'repository': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 6,
+  "col": 14,
+  "lit": "matteoLorenzini/risk_analysis_app"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'ref': default value evaluate result: ""
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'token': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 24,
+  "col": 14,
+  "lit": "***"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'ssh-key': default value evaluate result: ""
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'ssh-known-hosts': default value evaluate result: ""
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'ssh-strict': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 47,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'ssh-user': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 51,
+  "col": 14,
+  "lit": "git"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'persist-credentials': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 54,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'path': default value evaluate result: ""
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'clean': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 59,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'filter': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 64,
+  "col": 14,
+  "lit": ""
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'sparse-checkout': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 69,
+  "col": 14,
+  "lit": ""
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'sparse-checkout-cone-mode': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 73,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'fetch-depth': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 76,
+  "col": 14,
+  "lit": "1"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'fetch-tags': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 79,
+  "col": 14,
+  "lit": "false"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'show-progress': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 82,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'lfs': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 85,
+  "col": 14,
+  "lit": "false"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'submodules': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 94,
+  "col": 14,
+  "lit": "false"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'set-safe-directory': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 97,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:23:44Z INFO ActionManifestManager] Input 'github-server-url': default value evaluate result: ""
+[2025-11-02 15:23:44Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.InternalPluginSetRepoPathCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetEnvCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SetOutputCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.SaveStateCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddPathCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddMaskCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.AddMatcherCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.RemoveMatcherCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.WarningCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.ErrorCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.NoticeCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.DebugCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.GroupCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.EndGroupCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ExtensionManager] Creating instance: GitHub.Runner.Worker.EchoCommandExtension, Runner.Worker
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-02 15:23:44Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:44Z INFO HostContext] Well known directory 'Externals': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\externals'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   File name: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\externals\node20\bin\node.exe'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Arguments: '"C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions\actions\checkout\v4\dist/index.js"'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Encoding web name: utf-8 ; code page: '65001'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:23:44Z INFO ProcessInvokerWrapper] Process started with process id 20800, waiting for process exit.
+[2025-11-02 15:23:44Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'b2bd1ba0-16c1-4eb4-890f-2bf74be902e8', success rate: 1/1.
+[2025-11-02 15:23:44Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:44Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-02 15:23:44Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\9b6e76d7-0767-4b6e-95c1-deef12809e6e_b2bd1ba0-16c1-4eb4-890f-2bf74be902e8.1
+[2025-11-02 15:23:44Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-02 15:23:45Z INFO AddMaskCommandExtension] Add new secret mask with length of 76
+[2025-11-02 15:23:45Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:45Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:45Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-02 15:23:46Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:47Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:47Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:48Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:49Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:49Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:54Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:23:54Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:23:54Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:23:57Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:58Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:58Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:58Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:59Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:59Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:23:59Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:24:00Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:24:01Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper] Finished process 20800 with exit code 0, and elapsed time 00:00:16.4075246.
+[2025-11-02 15:24:01Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_f7600db8-a95b-48d5-b194-c3968496bc66) is empty; skipping attachment upload
+[2025-11-02 15:24:01Z INFO StepsRunner] Step result: 
+[2025-11-02 15:24:01Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "actions/checkout",
+  "ref": "v4",
+  "type": "node20",
+  "stage": "Main",
+  "stepId": "23d72579-3882-4749-a17a-39eb19b9220b",
+  "stepContextName": "__actions_checkout",
+  "hasPreStep": false,
+  "hasPostStep": true,
+  "result": "succeeded",
+  "errorMessages": [
+    "no submodule mapping found in .gitmodules for path 'actions-runner/_work/risk_analysis_app/risk_analysis_app'",
+    "Unable to clean or reset the repository. The repository will be recreated instead."
+  ],
+  "executionTimeInSeconds": 17,
+  "startTime": "2025-11-02T15:23:44.6882791Z",
+  "finishTime": "2025-11-02T15:24:01.2043234Z"
+}.
+[2025-11-02 15:24:01Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-02 15:24:01Z INFO StepsRunner] Current state: job state = ''
+[2025-11-02 15:24:01Z INFO StepsRunner] Processing step: DisplayName='Print context'
+[2025-11-02 15:24:01Z INFO StepsRunner] Evaluating: success()
+[2025-11-02 15:24:01Z INFO StepsRunner] Result: true
+[2025-11-02 15:24:01Z INFO StepsRunner] Starting the step.
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:01Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-02 15:24:01Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper] Process started with process id 26612, waiting for process exit.
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper] Finished process 26612 with exit code 0, and elapsed time 00:00:00.0105866.
+[2025-11-02 15:24:01Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:01Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:01Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-02 15:24:01Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-02 15:24:01Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-02 15:24:01Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-02 15:24:01Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:01Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:01Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-02 15:24:01Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\7de87cec-e157-4013-a52e-2f23b69a9cf3.ps1'"'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:01Z INFO JobServerQueue] Try to append 1 batches web console lines for record '23d72579-3882-4749-a17a-39eb19b9220b', success rate: 1/1.
+[2025-11-02 15:24:01Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'b2939e40-9728-4559-82f3-bc48abca2f05', success rate: 1/1.
+[2025-11-02 15:24:01Z INFO ProcessInvokerWrapper] Process started with process id 2272, waiting for process exit.
+[2025-11-02 15:24:01Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-02 15:24:01Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\9b6e76d7-0767-4b6e-95c1-deef12809e6e_23d72579-3882-4749-a17a-39eb19b9220b.1
+[2025-11-02 15:24:02Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-02 15:24:02Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper] Finished process 2272 with exit code 0, and elapsed time 00:00:01.1155849.
+[2025-11-02 15:24:02Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_76f9749c-5ba2-4c1f-aaa8-d23057eb5c88) is empty; skipping attachment upload
+[2025-11-02 15:24:02Z INFO StepsRunner] Step result: 
+[2025-11-02 15:24:02Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "b2939e40-9728-4559-82f3-bc48abca2f05",
+  "stepContextName": "__run",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 2,
+  "startTime": "2025-11-02T15:24:01.2067192Z",
+  "finishTime": "2025-11-02T15:24:02.3690409Z"
+}.
+[2025-11-02 15:24:02Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-02 15:24:02Z INFO StepsRunner] Current state: job state = ''
+[2025-11-02 15:24:02Z INFO StepsRunner] Processing step: DisplayName='Update runtime-data from origin/main'
+[2025-11-02 15:24:02Z INFO StepsRunner] Evaluating: success()
+[2025-11-02 15:24:02Z INFO StepsRunner] Result: true
+[2025-11-02 15:24:02Z INFO StepsRunner] Starting the step.
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:02Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-02 15:24:02Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper] Process started with process id 22064, waiting for process exit.
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper] Finished process 22064 with exit code 0, and elapsed time 00:00:00.0194607.
+[2025-11-02 15:24:02Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:02Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:02Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-02 15:24:02Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-02 15:24:02Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-02 15:24:02Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-02 15:24:02Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:02Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:02Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-02 15:24:02Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\16023bdf-815b-43f0-8c06-f6001e6f8de7.ps1'"'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:02Z INFO ProcessInvokerWrapper] Process started with process id 18048, waiting for process exit.
+[2025-11-02 15:24:02Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'b2939e40-9728-4559-82f3-bc48abca2f05', success rate: 1/1.
+[2025-11-02 15:24:02Z INFO JobServerQueue] Try to append 1 batches web console lines for record '6782f918-ce61-48f2-b215-3e78159475f4', success rate: 1/1.
+[2025-11-02 15:24:03Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-02 15:24:03Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-02 15:24:03Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\9b6e76d7-0767-4b6e-95c1-deef12809e6e_b2939e40-9728-4559-82f3-bc48abca2f05.1
+[2025-11-02 15:24:03Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-02 15:24:04Z INFO JobServerQueue] Try to append 1 batches web console lines for record '6782f918-ce61-48f2-b215-3e78159475f4', success rate: 1/1.
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper] Finished process 18048 with exit code 0, and elapsed time 00:00:01.7044362.
+[2025-11-02 15:24:04Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_7371edbc-1b38-4ea4-9031-2b5cd7446b79) is empty; skipping attachment upload
+[2025-11-02 15:24:04Z INFO StepsRunner] Step result: 
+[2025-11-02 15:24:04Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "6782f918-ce61-48f2-b215-3e78159475f4",
+  "stepContextName": "__run_2",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 2,
+  "startTime": "2025-11-02T15:24:02.3708894Z",
+  "finishTime": "2025-11-02T15:24:04.1213422Z"
+}.
+[2025-11-02 15:24:04Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-02 15:24:04Z INFO StepsRunner] Current state: job state = ''
+[2025-11-02 15:24:04Z INFO StepsRunner] Processing step: DisplayName='Sync repo config/data/ldp into runtime-data'
+[2025-11-02 15:24:04Z INFO StepsRunner] Evaluating: success()
+[2025-11-02 15:24:04Z INFO StepsRunner] Result: true
+[2025-11-02 15:24:04Z INFO StepsRunner] Starting the step.
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:04Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-02 15:24:04Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper] Process started with process id 10696, waiting for process exit.
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper] Finished process 10696 with exit code 0, and elapsed time 00:00:00.0156908.
+[2025-11-02 15:24:04Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:04Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:04Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-02 15:24:04Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-02 15:24:04Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-02 15:24:04Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-02 15:24:04Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:04Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-02 15:24:04Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\d9bdb421-feac-43e4-ad7e-c4d92b06a645.ps1'"'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:04Z INFO ProcessInvokerWrapper] Process started with process id 19248, waiting for process exit.
+[2025-11-02 15:24:04Z INFO JobServerQueue] Try to append 1 batches web console lines for record '32585715-f405-4f0c-adf6-150176c46557', success rate: 1/1.
+[2025-11-02 15:24:04Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-02 15:24:04Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\9b6e76d7-0767-4b6e-95c1-deef12809e6e_6782f918-ce61-48f2-b215-3e78159475f4.1
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:04Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:05Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-02 15:24:05Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-02 15:24:05Z INFO JobServerQueue] Try to append 1 batches web console lines for record '32585715-f405-4f0c-adf6-150176c46557', success rate: 1/1.
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper] Finished process 19248 with exit code 0, and elapsed time 00:00:00.9985233.
+[2025-11-02 15:24:05Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_25399e83-0a64-410d-b5b5-67603e692028) is empty; skipping attachment upload
+[2025-11-02 15:24:05Z INFO StepsRunner] Step result: 
+[2025-11-02 15:24:05Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "32585715-f405-4f0c-adf6-150176c46557",
+  "stepContextName": "__run_3",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 2,
+  "startTime": "2025-11-02T15:24:04.1234331Z",
+  "finishTime": "2025-11-02T15:24:05.1651263Z"
+}.
+[2025-11-02 15:24:05Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-02 15:24:05Z INFO StepsRunner] Current state: job state = ''
+[2025-11-02 15:24:05Z INFO StepsRunner] Processing step: DisplayName='Restart ResearchSpace service'
+[2025-11-02 15:24:05Z INFO StepsRunner] Evaluating: success()
+[2025-11-02 15:24:05Z INFO StepsRunner] Result: true
+[2025-11-02 15:24:05Z INFO StepsRunner] Starting the step.
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:05Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-02 15:24:05Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper] Process started with process id 24024, waiting for process exit.
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper] Finished process 24024 with exit code 0, and elapsed time 00:00:00.0126881.
+[2025-11-02 15:24:05Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:05Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:05Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-02 15:24:05Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-02 15:24:05Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-02 15:24:05Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-02 15:24:05Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:05Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:05Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-02 15:24:05Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\840a5d4a-894c-4ac7-b860-13d6e672ea3d.ps1'"'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:05Z INFO ProcessInvokerWrapper] Process started with process id 8836, waiting for process exit.
+[2025-11-02 15:24:05Z INFO JobServerQueue] Try to append 1 batches web console lines for record '32585715-f405-4f0c-adf6-150176c46557', success rate: 1/1.
+[2025-11-02 15:24:05Z INFO JobServerQueue] Try to append 1 batches web console lines for record '2b145b50-4e72-4b3f-9c9e-696ea93a3a83', success rate: 1/1.
+[2025-11-02 15:24:06Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-02 15:24:06Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\9b6e76d7-0767-4b6e-95c1-deef12809e6e_32585715-f405-4f0c-adf6-150176c46557.1
+[2025-11-02 15:24:06Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-02 15:24:06Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-02 15:24:06Z INFO JobServerQueue] Try to append 1 batches web console lines for record '2b145b50-4e72-4b3f-9c9e-696ea93a3a83', success rate: 1/1.
+[2025-11-02 15:24:06Z INFO JobServerQueue] Try to append 1 batches web console lines for record '2b145b50-4e72-4b3f-9c9e-696ea93a3a83', success rate: 1/1.
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper] Finished process 8836 with exit code 0, and elapsed time 00:00:02.8685654.
+[2025-11-02 15:24:08Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_5e885cbd-b584-4df6-92f9-b21f0256cc3e) is empty; skipping attachment upload
+[2025-11-02 15:24:08Z INFO StepsRunner] Step result: 
+[2025-11-02 15:24:08Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "2b145b50-4e72-4b3f-9c9e-696ea93a3a83",
+  "stepContextName": "__run_4",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 3,
+  "startTime": "2025-11-02T15:24:05.1668195Z",
+  "finishTime": "2025-11-02T15:24:08.0721772Z"
+}.
+[2025-11-02 15:24:08Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-02 15:24:08Z INFO StepsRunner] Current state: job state = ''
+[2025-11-02 15:24:08Z INFO StepsRunner] Processing step: DisplayName='Show service status'
+[2025-11-02 15:24:08Z INFO StepsRunner] Evaluating: success()
+[2025-11-02 15:24:08Z INFO StepsRunner] Result: true
+[2025-11-02 15:24:08Z INFO StepsRunner] Starting the step.
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:08Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-02 15:24:08Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper] Process started with process id 28988, waiting for process exit.
+[2025-11-02 15:24:08Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper] Finished process 28988 with exit code 0, and elapsed time 00:00:00.0139731.
+[2025-11-02 15:24:08Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:08Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:08Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-02 15:24:08Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-02 15:24:08Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-02 15:24:08Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-02 15:24:08Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:08Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:08Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-02 15:24:08Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\5f6306f9-828a-473c-b8ed-faeb0062e3d5.ps1'"'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:08Z INFO ProcessInvokerWrapper] Process started with process id 26420, waiting for process exit.
+[2025-11-02 15:24:08Z INFO JobServerQueue] Try to append 1 batches web console lines for record '2b145b50-4e72-4b3f-9c9e-696ea93a3a83', success rate: 1/1.
+[2025-11-02 15:24:08Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'ec975b2f-dda4-4ec5-aa91-3a72cbcec098', success rate: 1/1.
+[2025-11-02 15:24:08Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-02 15:24:08Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\9b6e76d7-0767-4b6e-95c1-deef12809e6e_2b145b50-4e72-4b3f-9c9e-696ea93a3a83.1
+[2025-11-02 15:24:08Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-02 15:24:10Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'ec975b2f-dda4-4ec5-aa91-3a72cbcec098', success rate: 1/1.
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper] Finished process 26420 with exit code 0, and elapsed time 00:00:01.9958296.
+[2025-11-02 15:24:10Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_7fd33b55-f80d-4d2d-aa00-916837d9faa1) is empty; skipping attachment upload
+[2025-11-02 15:24:10Z INFO StepsRunner] Step result: 
+[2025-11-02 15:24:10Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "ec975b2f-dda4-4ec5-aa91-3a72cbcec098",
+  "stepContextName": "__run_5",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 3,
+  "startTime": "2025-11-02T15:24:08.0738062Z",
+  "finishTime": "2025-11-02T15:24:10.1159533Z"
+}.
+[2025-11-02 15:24:10Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-02 15:24:10Z INFO StepsRunner] Current state: job state = ''
+[2025-11-02 15:24:10Z INFO StepsRunner] Processing step: DisplayName='Post Checkout repository'
+[2025-11-02 15:24:10Z INFO StepsRunner] Evaluating: always()
+[2025-11-02 15:24:10Z INFO StepsRunner] Result: true
+[2025-11-02 15:24:10Z INFO StepsRunner] Starting the step.
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:10Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-02 15:24:10Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper] Process started with process id 824, waiting for process exit.
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper] Finished process 824 with exit code 0, and elapsed time 00:00:00.0555235.
+[2025-11-02 15:24:10Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:24:10Z INFO ActionManager] Load action that reference repository from 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions\actions\checkout\v4'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "ssh-user"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 14,
+          "lit": "git"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 52,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 54,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 57,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 59,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 60,
+          "col": 3,
+          "lit": "filter"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 64,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 65,
+          "col": 3,
+          "lit": "sparse-checkout"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 69,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 3,
+          "lit": "sparse-checkout-cone-mode"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 73,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 74,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 76,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 77,
+          "col": 3,
+          "lit": "fetch-tags"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 79,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 80,
+          "col": 3,
+          "lit": "show-progress"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 82,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 83,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 85,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 86,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 94,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 95,
+          "col": 3,
+          "lit": "set-safe-directory"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 97,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 98,
+          "col": 3,
+          "lit": "github-server-url"
+        },
+        "value": ""
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "nodeVersion": "node20",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-11-02 15:24:10Z INFO ActionManager] Action pre node.js file: N/A.
+[2025-11-02 15:24:10Z INFO ActionManager] Action node.js file: dist/index.js.
+[2025-11-02 15:24:10Z INFO ActionManager] Action post node.js file: dist/index.js.
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:10Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-02 15:24:10Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'repository': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 6,
+  "col": 14,
+  "lit": "matteoLorenzini/risk_analysis_app"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'ref': default value evaluate result: ""
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'token': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 24,
+  "col": 14,
+  "lit": "***"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'ssh-key': default value evaluate result: ""
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'ssh-known-hosts': default value evaluate result: ""
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'ssh-strict': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 47,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'ssh-user': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 51,
+  "col": 14,
+  "lit": "git"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'persist-credentials': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 54,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'path': default value evaluate result: ""
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'clean': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 59,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'filter': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 64,
+  "col": 14,
+  "lit": ""
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'sparse-checkout': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 69,
+  "col": 14,
+  "lit": ""
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'sparse-checkout-cone-mode': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 73,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'fetch-depth': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 76,
+  "col": 14,
+  "lit": "1"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'fetch-tags': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 79,
+  "col": 14,
+  "lit": "false"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'show-progress': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 82,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'lfs': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 85,
+  "col": 14,
+  "lit": "false"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'submodules': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 94,
+  "col": 14,
+  "lit": "false"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'set-safe-directory': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 97,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-02 15:24:10Z INFO ActionManifestManager] Input 'github-server-url': default value evaluate result: ""
+[2025-11-02 15:24:10Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-02 15:24:10Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:10Z INFO HostContext] Well known directory 'Externals': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\externals'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   File name: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\externals\node20\bin\node.exe'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Arguments: '"C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions\actions\checkout\v4\dist/index.js"'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Encoding web name: utf-8 ; code page: '65001'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-02 15:24:10Z INFO ProcessInvokerWrapper] Process started with process id 2124, waiting for process exit.
+[2025-11-02 15:24:10Z INFO JobServerQueue] Try to append 1 batches web console lines for record '10a57bf7-8c63-40d5-a25b-8e513bc83f83', success rate: 1/1.
+[2025-11-02 15:24:10Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-02 15:24:10Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\9b6e76d7-0767-4b6e-95c1-deef12809e6e_ec975b2f-dda4-4ec5-aa91-3a72cbcec098.1
+[2025-11-02 15:24:11Z INFO JobServerQueue] Try to append 1 batches web console lines for record '10a57bf7-8c63-40d5-a25b-8e513bc83f83', success rate: 1/1.
+[2025-11-02 15:24:11Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-02 15:24:11Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-02 15:24:11Z INFO AddMaskCommandExtension] Add new secret mask with length of 32
+[2025-11-02 15:24:11Z INFO JobServerQueue] Try to append 1 batches web console lines for record '10a57bf7-8c63-40d5-a25b-8e513bc83f83', success rate: 1/1.
+[2025-11-02 15:24:11Z INFO JobServerQueue] Try to append 1 batches web console lines for record '10a57bf7-8c63-40d5-a25b-8e513bc83f83', success rate: 1/1.
+[2025-11-02 15:24:12Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:12Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-02 15:24:12Z INFO ProcessInvokerWrapper] Finished process 2124 with exit code 0, and elapsed time 00:00:02.5647716.
+[2025-11-02 15:24:12Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_92521950-083c-4b10-92ac-27a2cf4d0fba) is empty; skipping attachment upload
+[2025-11-02 15:24:12Z INFO StepsRunner] Step result: 
+[2025-11-02 15:24:12Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "actions/checkout",
+  "ref": "v4",
+  "type": "node20",
+  "stage": "Post",
+  "stepId": "10a57bf7-8c63-40d5-a25b-8e513bc83f83",
+  "result": "succeeded",
+  "errorMessages": [
+    "The process 'C:\\Program Files\\Git\\cmd\\git.exe' failed with exit code 128"
+  ],
+  "executionTimeInSeconds": 3,
+  "startTime": "2025-11-02T15:24:10.1462697Z",
+  "finishTime": "2025-11-02T15:24:12.9128291Z"
+}.
+[2025-11-02 15:24:12Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-02 15:24:12Z INFO StepsRunner] Current state: job state = ''
+[2025-11-02 15:24:12Z INFO JobRunner] Finalize job.
+[2025-11-02 15:24:12Z INFO JobServerQueue] Try to append 1 batches web console lines for record '10a57bf7-8c63-40d5-a25b-8e513bc83f83', success rate: 1/1.
+[2025-11-02 15:24:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:12Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:24:12Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:12Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:12Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:24:12Z INFO JobExtension] Initialize Env context
+[2025-11-02 15:24:12Z INFO JobExtension] Initialize steps context
+[2025-11-02 15:24:12Z INFO JobExtension] Total accessible running process: 359.
+[2025-11-02 15:24:12Z INFO JobExtension] Inspecting process environment variables. PID: 24748 (backgroundTaskHost)
+[2025-11-02 15:24:13Z INFO JobExtension] Inspecting process environment variables. PID: 5496 (SearchProtocolHost)
+[2025-11-02 15:24:13Z WARN JobExtension] Ignore exception during read process environment variables: Access is denied.
+[2025-11-02 15:24:13Z INFO JobExtension] Inspecting process environment variables. PID: 23340 (chrome)
+[2025-11-02 15:24:13Z INFO JobExtension] Inspecting process environment variables. PID: 27640 (chrome)
+[2025-11-02 15:24:13Z INFO JobExtension] Inspecting process environment variables. PID: 27464 (docker)
+[2025-11-02 15:24:13Z WARN JobExtension] Ignore exception during read process environment variables: Cannot process request because the process (27464) has exited.
+[2025-11-02 15:24:13Z INFO JobExtension] Inspecting process environment variables. PID: 14348 (conhost)
+[2025-11-02 15:24:13Z WARN JobExtension] Ignore exception during read process environment variables: Cannot process request because the process (14348) has exited.
+[2025-11-02 15:24:13Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "complete_job",
+  "type": "runner",
+  "stage": "Post",
+  "stepId": "4057ecca-8033-4cf6-98c3-47730449c4b0",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 1,
+  "startTime": "2025-11-02T15:24:12.9366358Z",
+  "finishTime": "2025-11-02T15:24:13.070971Z"
+}.
+[2025-11-02 15:24:13Z INFO JobRunner] Job result after all job steps finish: Succeeded
+[2025-11-02 15:24:13Z INFO JobRunner] Completing the job execution context.
+[2025-11-02 15:24:13Z INFO JobRunner] Shutting down the job server queue.
+[2025-11-02 15:24:13Z INFO JobServerQueue] Fire signal to shutdown all queues.
+[2025-11-02 15:24:13Z INFO JobServerQueue] All queue process task stopped.
+[2025-11-02 15:24:13Z INFO JobServerQueue] Try to append 1 batches web console lines for record '4057ecca-8033-4cf6-98c3-47730449c4b0', success rate: 1/1.
+[2025-11-02 15:24:13Z INFO JobServerQueue] Web console line queue drained.
+[2025-11-02 15:24:13Z INFO JobServerQueue] Uploading 3 files in one shot.
+[2025-11-02 15:24:13Z INFO JobServerQueue] Try to upload 3 log files or attachments, success rate: 3/3.
+[2025-11-02 15:24:13Z INFO JobServerQueue] File upload queue drained.
+[2025-11-02 15:24:13Z INFO JobServerQueue] Starting results-based upload queue...
+[2025-11-02 15:24:13Z INFO JobServerQueue] Uploading 3 file(s) in one shot through results service.
+[2025-11-02 15:24:13Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-02 15:24:13Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\9b6e76d7-0767-4b6e-95c1-deef12809e6e_10a57bf7-8c63-40d5-a25b-8e513bc83f83.1
+[2025-11-02 15:24:13Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-02 15:24:13Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\9b6e76d7-0767-4b6e-95c1-deef12809e6e_4057ecca-8033-4cf6-98c3-47730449c4b0.1
+[2025-11-02 15:24:14Z INFO JobServerQueue] Got a job log file to send to results service.
+[2025-11-02 15:24:14Z INFO JobServerQueue] Starting upload of job log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\9b6e76d7-0767-4b6e-95c1-deef12809e6e_b858d3d2-3c73-5663-ba5b-395d5a8b3d2e.1
+[2025-11-02 15:24:14Z INFO JobServerQueue] Tried to upload 3 file(s) to results, success rate: 3/3.
+[2025-11-02 15:24:14Z INFO JobServerQueue] Results upload queue drained.
+[2025-11-02 15:24:14Z INFO JobServerQueue] Timeline update queue drained.
+[2025-11-02 15:24:14Z INFO JobServerQueue] Disposing job server ...
+[2025-11-02 15:24:14Z INFO JobServerQueue] Disposing results server ...
+[2025-11-02 15:24:14Z INFO JobServerQueue] All queue process tasks have been stopped, and all queues are drained.
+[2025-11-02 15:24:14Z INFO TempDirectoryManager] Cleaning runner temp folder: C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp
+[2025-11-02 15:24:14Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-02 15:24:14Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-02 15:24:14Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-02 15:24:14Z INFO HostContext] Well known config file 'Telemetry': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\.telemetry'
+[2025-11-02 15:24:14Z INFO JobRunner] Raising job completed against run service
+[2025-11-02 15:24:15Z INFO Worker] Job completed.
