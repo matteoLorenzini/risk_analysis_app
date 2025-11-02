@@ -281,8 +281,13 @@
 
                                 <div class="rs-resource-data-table">
                                     <mp-field-visualization subject='[[this]]'
-                                                            fields='[[fieldDefinitionsFromQuery (setQueryBindings "SELECT DISTINCT ?field WHERE {?resource ?field ?o . ?field a <http://www.researchspace.org/resource/system/fields/Field> } ORDER BY DESC(?field)" resource=this.iri) ]]' 
                                                             
+                                                            fields='[[fieldDefinitions
+                                                                    denominazione="http://www.siriusplatform-risk-assessment/field/denominazione"
+                                                                    tipologia="http://www.siriusplatform-risk-assessment/field/tipologia"
+                                                                    descrizione="http://www.siriusplatform-risk-assessment/field/descrizione"
+                  
+                                                                    ]]'
                                                             template='{{> template}}'>
                                         <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
                                     </mp-field-visualization>
