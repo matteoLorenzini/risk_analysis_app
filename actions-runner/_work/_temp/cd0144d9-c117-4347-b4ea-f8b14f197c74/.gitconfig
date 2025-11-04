@@ -1,0 +1,9 @@
+[core]
+	editor = \"C:\\Users\\matte\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\code\" --wait
+[user]
+	name = matteoLorenzini
+	email = matteo-lorenzini@outlook.it
+[gui]
+	recentrepo = C:/Users/matte/Repo/sirius_mapping
+[safe]
+	directory = C:\\Users\\matte\\Repo\\risk_analysis_app\\actions-runner\\_work\\risk_analysis_app\\risk_analysis_app

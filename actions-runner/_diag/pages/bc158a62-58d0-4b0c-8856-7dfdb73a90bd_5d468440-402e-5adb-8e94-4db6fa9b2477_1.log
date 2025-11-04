@@ -1,0 +1,55 @@
+﻿2025-11-04T11:35:09.3532401Z Current runner version: '2.329.0'
+2025-11-04T11:35:09.3566455Z Runner name: 'LAPTOP-KCII9DU6'
+2025-11-04T11:35:09.3574720Z Runner group name: 'Default'
+2025-11-04T11:35:09.3582632Z Machine name: 'LAPTOP-KCII9DU6'
+2025-11-04T11:35:09.3605201Z ##[group]GITHUB_TOKEN Permissions
+2025-11-04T11:35:09.3617329Z Contents: read
+2025-11-04T11:35:09.3619694Z Metadata: read
+2025-11-04T11:35:09.3621460Z Packages: read
+2025-11-04T11:35:09.3624024Z ##[endgroup]
+2025-11-04T11:35:09.3631230Z Secret source: Actions
+2025-11-04T11:35:09.3633147Z Prepare workflow directory
+2025-11-04T11:35:09.5866129Z Prepare all required actions
+2025-11-04T11:35:09.6093978Z Getting action download info
+2025-11-04T11:35:10.3644536Z Download action repository 'actions/checkout@v4' (SHA:08eba0b27e820071cde6df949e0beb9ba4906955)
+2025-11-04T11:35:15.8860087Z Complete job name: deploy
+2025-11-04T11:35:16.9935527Z ##[group]Run actions/checkout@v4
+2025-11-04T11:35:16.9951926Z with:
+2025-11-04T11:35:16.9958885Z   repository: matteoLorenzini/risk_analysis_app
+2025-11-04T11:35:16.9973180Z   token: ***
+2025-11-04T11:35:16.9985327Z   ssh-strict: true
+2025-11-04T11:35:16.9991094Z   ssh-user: git
+2025-11-04T11:35:16.9996960Z   persist-credentials: true
+2025-11-04T11:35:17.0003439Z   clean: true
+2025-11-04T11:35:17.0009237Z   sparse-checkout-cone-mode: true
+2025-11-04T11:35:17.0016436Z   fetch-depth: 1
+2025-11-04T11:35:17.0027004Z   fetch-tags: false
+2025-11-04T11:35:17.0037019Z   show-progress: true
+2025-11-04T11:35:17.0043585Z   lfs: false
+2025-11-04T11:35:17.0199387Z   submodules: false
+2025-11-04T11:35:17.0205785Z   set-safe-directory: true
+2025-11-04T11:35:17.0214053Z ##[endgroup]
+2025-11-04T11:35:23.9273728Z Syncing repository: matteoLorenzini/risk_analysis_app
+2025-11-04T11:35:23.9277035Z ##[group]Getting Git version info
+2025-11-04T11:35:23.9278667Z Working directory is 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+2025-11-04T11:35:23.9280864Z [command]"C:\Program Files\Git\cmd\git.exe" version
+2025-11-04T11:35:24.0085920Z git version 2.48.1.windows.1
+2025-11-04T11:35:24.0217204Z ##[endgroup]
+2025-11-04T11:35:24.0260371Z Copying 'C:\Users\matte\.gitconfig' to 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\cd0144d9-c117-4347-b4ea-f8b14f197c74\.gitconfig'
+2025-11-04T11:35:24.0329001Z Temporarily overriding HOME='C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\cd0144d9-c117-4347-b4ea-f8b14f197c74' before making global git config changes
+2025-11-04T11:35:24.0333802Z Adding repository directory to the temporary git global config as a safe directory
+2025-11-04T11:35:24.0365782Z [command]"C:\Program Files\Git\cmd\git.exe" config --global --add safe.directory C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app
+2025-11-04T11:35:24.1287952Z [command]"C:\Program Files\Git\cmd\git.exe" config --local --get remote.origin.url
+2025-11-04T11:35:24.2003934Z https://github.com/matteoLorenzini/risk_analysis_app
+2025-11-04T11:35:24.2149366Z ##[group]Removing previously created refs, to avoid conflicts
+2025-11-04T11:35:24.2176702Z [command]"C:\Program Files\Git\cmd\git.exe" rev-parse --symbolic-full-name --verify --quiet HEAD
+2025-11-04T11:35:24.3007512Z refs/heads/main
+2025-11-04T11:35:24.3137882Z [command]"C:\Program Files\Git\cmd\git.exe" checkout --detach
+2025-11-04T11:35:27.9657348Z HEAD is now at b65cd19 added principal fields in description page
+2025-11-04T11:35:28.2129918Z ##[endgroup]
+2025-11-04T11:35:28.2148374Z [command]"C:\Program Files\Git\cmd\git.exe" submodule status
+2025-11-04T11:35:30.1045705Z ##[error]fatal: no submodule mapping found in .gitmodules for path 'actions-runner/_work/risk_analysis_app/risk_analysis_app'
+2025-11-04T11:35:30.1298525Z Bad Submodules found, removing existing files
+2025-11-04T11:35:30.1300328Z ##[group]Cleaning the repository
+2025-11-04T11:35:30.1327423Z [command]"C:\Program Files\Git\cmd\git.exe" clean -ffdx
+2025-11-04T11:35:30.262
