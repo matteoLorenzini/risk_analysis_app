@@ -356,7 +356,7 @@
 </div>
 
 <semantic-query query='SELECT (<[[this]]> as ?iri)
-                                (GROUP_CONCAT(DISTINCT(?typeLabel); SEPARATOR = " - ") AS ?typeList)
+                                (GROUP_CONCAT(DISTINCT(?typeLabel); SEPARATOR = " &&&& ") AS ?typeList)
                                 (GROUP_CONCAT(DISTINCT(?instituteLabel); SEPARATOR = "; ") AS ?instituteList)
                         WHERE {
                             OPTIONAL {
