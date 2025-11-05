@@ -1,6 +1,6 @@
 [[#if (urlParam "details")]]
 <div class="details-content">
-
+<!--
     [[#block "detailsResourceHeader"]]
     <div class="details-header">
 
@@ -45,7 +45,7 @@
 
     </div>
     [[/block]]
-  
+  -->
     <bs-tabs class="details-tabs">
         <bs-tab title='Site Description' event-key='site-description' mount-on-enter=true class="rawdata-tab">
             <mp-field-visualization subject='[[this]]'
@@ -76,7 +76,13 @@
                                         <mp-draggable iri='[[this]]'>
                                             <div>
                                                 <i class="rs-icon {{getValueByKey typeToIcon allTypes 'rs-icon-entity'}}"></i>  
-                                                <span style="margin-left: 8px;">{{directTypesLabels}} -&nbsp;</span>
+                                                <semantic-query
+                                                    query='PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nSELECT (GROUP_CONCAT(DISTINCT(?lbl); SEPARATOR = ", ") AS ?typeLabels) WHERE {\n  <[[this]]> a ?type .\n  OPTIONAL { ?type rdfs:label ?rdfsLabel . FILTER(LANG(?rdfsLabel) = "" || LANGMATCHES(LANG(?rdfsLabel), "en")) }\n  OPTIONAL { ?type skos:prefLabel ?skosLabel . FILTER(LANG(?skosLabel) = "" || LANGMATCHES(LANG(?skosLabel), "en")) }\n  BIND(COALESCE(?rdfsLabel, ?skosLabel, STRAFTER(STR(?type), "/")) AS ?lbl)\n}'
+                                                    template='{{> typeLabelsTmpl }}'>
+                                                    <template id='typeLabelsTmpl'>
+                                                        <span style="margin-left: 8px;">{{#each bindings}}{{typeLabels.value}}{{/each}} -&nbsp;</span>
+                                                    </template>
+                                                </semantic-query>
                                                 <mp-label iri='[[this]]'></mp-label>
                                             </div>
                                         </mp-draggable>
