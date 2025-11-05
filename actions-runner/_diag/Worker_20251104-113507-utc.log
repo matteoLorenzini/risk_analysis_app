@@ -2800,3 +2800,1165 @@
 [2025-11-04 11:37:46Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
 [2025-11-04 11:37:46Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
 [2025-11-04 11:37:46Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:37:56Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:37:56Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:37:56Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:38:06Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:38:06Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:38:06Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:38:16Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:38:16Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:38:16Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:38:26Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:38:26Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:38:26Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:38:36Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:38:36Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:38:36Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:38:46Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:38:46Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:38:46Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:38:56Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:38:56Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:38:56Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:06Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:06Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:06Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:16Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:16Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:16Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:19Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:20Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:20Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:24Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:25Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:25Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:26Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:26Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:26Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:26Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:26Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:27Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:27Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:30Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:32Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:32Z INFO JobServerQueue] Try to append 1 batches web console lines for record '230e4372-e177-4b66-b860-8a73dec2e6a3', success rate: 1/1.
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper] Finished process 21068 with exit code 0, and elapsed time 00:04:15.4501980.
+[2025-11-04 11:39:32Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_03d197ef-1d27-4344-901f-3ab39b2f42c0) is empty; skipping attachment upload
+[2025-11-04 11:39:32Z INFO StepsRunner] Step result: 
+[2025-11-04 11:39:32Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "actions/checkout",
+  "ref": "v4",
+  "type": "node20",
+  "stage": "Main",
+  "stepId": "230e4372-e177-4b66-b860-8a73dec2e6a3",
+  "stepContextName": "__actions_checkout",
+  "hasPreStep": false,
+  "hasPostStep": true,
+  "result": "succeeded",
+  "errorMessages": [
+    "no submodule mapping found in .gitmodules for path 'actions-runner/_work/risk_analysis_app/risk_analysis_app'",
+    "Unable to clean or reset the repository. The repository will be recreated instead."
+  ],
+  "executionTimeInSeconds": 257,
+  "startTime": "2025-11-04T11:35:16.3039839Z",
+  "finishTime": "2025-11-04T11:39:32.5775397Z"
+}.
+[2025-11-04 11:39:32Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-04 11:39:32Z INFO StepsRunner] Current state: job state = ''
+[2025-11-04 11:39:32Z INFO StepsRunner] Processing step: DisplayName='Print context'
+[2025-11-04 11:39:32Z INFO StepsRunner] Evaluating: success()
+[2025-11-04 11:39:32Z INFO StepsRunner] Result: true
+[2025-11-04 11:39:32Z INFO StepsRunner] Starting the step.
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:32Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-04 11:39:32Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper] Process started with process id 25516, waiting for process exit.
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper] Finished process 25516 with exit code 0, and elapsed time 00:00:00.0303296.
+[2025-11-04 11:39:32Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:32Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:32Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-04 11:39:32Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-04 11:39:32Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-04 11:39:32Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-04 11:39:32Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:32Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:32Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-04 11:39:32Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\71658f67-700d-4e6e-9f5a-9d7ab72f4de6.ps1'"'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:39:32Z INFO ProcessInvokerWrapper] Process started with process id 2676, waiting for process exit.
+[2025-11-04 11:39:33Z INFO JobServerQueue] Try to append 1 batches web console lines for record '71a3f811-529c-4a7b-82a2-28c990baa444', success rate: 1/1.
+[2025-11-04 11:39:33Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-04 11:39:33Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\bc158a62-58d0-4b0c-8856-7dfdb73a90bd_230e4372-e177-4b66-b860-8a73dec2e6a3.1
+[2025-11-04 11:39:33Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-04 11:39:34Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-04 11:39:36Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:36Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:36Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:36Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:36Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper] Finished process 2676 with exit code 0, and elapsed time 00:00:04.3395129.
+[2025-11-04 11:39:37Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_82fdf8b2-7fd9-4be4-9741-cc6c0f2cb41e) is empty; skipping attachment upload
+[2025-11-04 11:39:37Z INFO StepsRunner] Step result: 
+[2025-11-04 11:39:37Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "71a3f811-529c-4a7b-82a2-28c990baa444",
+  "stepContextName": "__run",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 5,
+  "startTime": "2025-11-04T11:39:32.5826317Z",
+  "finishTime": "2025-11-04T11:39:37.0258457Z"
+}.
+[2025-11-04 11:39:37Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-04 11:39:37Z INFO StepsRunner] Current state: job state = ''
+[2025-11-04 11:39:37Z INFO StepsRunner] Processing step: DisplayName='Update runtime-data from origin/main'
+[2025-11-04 11:39:37Z INFO StepsRunner] Evaluating: success()
+[2025-11-04 11:39:37Z INFO StepsRunner] Result: true
+[2025-11-04 11:39:37Z INFO StepsRunner] Starting the step.
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:37Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-04 11:39:37Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper] Process started with process id 11812, waiting for process exit.
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper] Finished process 11812 with exit code 0, and elapsed time 00:00:00.0286332.
+[2025-11-04 11:39:37Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:37Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:37Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-04 11:39:37Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-04 11:39:37Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-04 11:39:37Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-04 11:39:37Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:37Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:37Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-04 11:39:37Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\3512cc3e-fd63-4925-8a85-8455e2e39283.ps1'"'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:39:37Z INFO JobServerQueue] Try to append 1 batches web console lines for record '71a3f811-529c-4a7b-82a2-28c990baa444', success rate: 1/1.
+[2025-11-04 11:39:37Z INFO JobServerQueue] Try to append 1 batches web console lines for record '871c5ad4-9502-4f55-8135-0d958cfdb8ae', success rate: 1/1.
+[2025-11-04 11:39:37Z INFO ProcessInvokerWrapper] Process started with process id 18844, waiting for process exit.
+[2025-11-04 11:39:37Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-04 11:39:37Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\bc158a62-58d0-4b0c-8856-7dfdb73a90bd_71a3f811-529c-4a7b-82a2-28c990baa444.1
+[2025-11-04 11:39:37Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-04 11:39:37Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-04 11:39:41Z INFO JobServerQueue] Try to append 1 batches web console lines for record '871c5ad4-9502-4f55-8135-0d958cfdb8ae', success rate: 1/1.
+[2025-11-04 11:39:41Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:41Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper] Finished process 18844 with exit code 0, and elapsed time 00:00:04.8885522.
+[2025-11-04 11:39:42Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_54f61577-e93d-4ad5-a2c6-3422c63c0b16) is empty; skipping attachment upload
+[2025-11-04 11:39:42Z INFO StepsRunner] Step result: 
+[2025-11-04 11:39:42Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "871c5ad4-9502-4f55-8135-0d958cfdb8ae",
+  "stepContextName": "__run_2",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 5,
+  "startTime": "2025-11-04T11:39:37.0319361Z",
+  "finishTime": "2025-11-04T11:39:42.0291918Z"
+}.
+[2025-11-04 11:39:42Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-04 11:39:42Z INFO StepsRunner] Current state: job state = ''
+[2025-11-04 11:39:42Z INFO StepsRunner] Processing step: DisplayName='Sync repo config/data/ldp into runtime-data'
+[2025-11-04 11:39:42Z INFO StepsRunner] Evaluating: success()
+[2025-11-04 11:39:42Z INFO StepsRunner] Result: true
+[2025-11-04 11:39:42Z INFO StepsRunner] Starting the step.
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:42Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-04 11:39:42Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper] Process started with process id 6440, waiting for process exit.
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper] Finished process 6440 with exit code 0, and elapsed time 00:00:00.0518559.
+[2025-11-04 11:39:42Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:42Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:42Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-04 11:39:42Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-04 11:39:42Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-04 11:39:42Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-04 11:39:42Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:42Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:42Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-04 11:39:42Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\9bcd3de3-0d83-45e6-a4b9-9f6b40506019.ps1'"'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:39:42Z INFO ProcessInvokerWrapper] Process started with process id 32052, waiting for process exit.
+[2025-11-04 11:39:42Z INFO JobServerQueue] Try to append 1 batches web console lines for record '871c5ad4-9502-4f55-8135-0d958cfdb8ae', success rate: 1/1.
+[2025-11-04 11:39:42Z INFO JobServerQueue] Try to append 1 batches web console lines for record '8daf7ac5-f8e2-46ea-9054-cf3293cea33f', success rate: 1/1.
+[2025-11-04 11:39:42Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-04 11:39:42Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-04 11:39:42Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\bc158a62-58d0-4b0c-8856-7dfdb73a90bd_871c5ad4-9502-4f55-8135-0d958cfdb8ae.1
+[2025-11-04 11:39:43Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-04 11:39:44Z INFO JobServerQueue] Try to append 1 batches web console lines for record '8daf7ac5-f8e2-46ea-9054-cf3293cea33f', success rate: 1/1.
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper] Finished process 32052 with exit code 0, and elapsed time 00:00:02.3000330.
+[2025-11-04 11:39:44Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_30d8bdba-5b2a-46bf-b718-0d80b3d90134) is empty; skipping attachment upload
+[2025-11-04 11:39:44Z INFO StepsRunner] Step result: 
+[2025-11-04 11:39:44Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "8daf7ac5-f8e2-46ea-9054-cf3293cea33f",
+  "stepContextName": "__run_3",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 3,
+  "startTime": "2025-11-04T11:39:42.0326998Z",
+  "finishTime": "2025-11-04T11:39:44.476528Z"
+}.
+[2025-11-04 11:39:44Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-04 11:39:44Z INFO StepsRunner] Current state: job state = ''
+[2025-11-04 11:39:44Z INFO StepsRunner] Processing step: DisplayName='Restart ResearchSpace service'
+[2025-11-04 11:39:44Z INFO StepsRunner] Evaluating: success()
+[2025-11-04 11:39:44Z INFO StepsRunner] Result: true
+[2025-11-04 11:39:44Z INFO StepsRunner] Starting the step.
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:44Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-04 11:39:44Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper] Process started with process id 8436, waiting for process exit.
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper] Finished process 8436 with exit code 0, and elapsed time 00:00:00.0249930.
+[2025-11-04 11:39:44Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:44Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:44Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-04 11:39:44Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-04 11:39:44Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-04 11:39:44Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-04 11:39:44Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:44Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:44Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-04 11:39:44Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\bbacc12f-7a61-47e4-ba57-a4760a5805d4.ps1'"'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:39:44Z INFO ProcessInvokerWrapper] Process started with process id 3508, waiting for process exit.
+[2025-11-04 11:39:44Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-04 11:39:44Z INFO JobServerQueue] Try to append 1 batches web console lines for record '8daf7ac5-f8e2-46ea-9054-cf3293cea33f', success rate: 1/1.
+[2025-11-04 11:39:44Z INFO JobServerQueue] Try to append 1 batches web console lines for record '2ac47933-f133-4a6e-b958-6240d9c1bab6', success rate: 1/1.
+[2025-11-04 11:39:45Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-04 11:39:45Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\bc158a62-58d0-4b0c-8856-7dfdb73a90bd_8daf7ac5-f8e2-46ea-9054-cf3293cea33f.1
+[2025-11-04 11:39:45Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-04 11:39:46Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:46Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:46Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:47Z INFO JobServerQueue] Try to append 1 batches web console lines for record '2ac47933-f133-4a6e-b958-6240d9c1bab6', success rate: 1/1.
+[2025-11-04 11:39:48Z INFO JobServerQueue] Try to append 1 batches web console lines for record '2ac47933-f133-4a6e-b958-6240d9c1bab6', success rate: 1/1.
+[2025-11-04 11:39:56Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:56Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:56Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper] Finished process 3508 with exit code 0, and elapsed time 00:00:12.4173118.
+[2025-11-04 11:39:56Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_846e7883-5c58-4738-b2ab-1ffeb190af5f) is empty; skipping attachment upload
+[2025-11-04 11:39:56Z INFO StepsRunner] Step result: 
+[2025-11-04 11:39:56Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "2ac47933-f133-4a6e-b958-6240d9c1bab6",
+  "stepContextName": "__run_4",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 13,
+  "startTime": "2025-11-04T11:39:44.4793344Z",
+  "finishTime": "2025-11-04T11:39:56.9692481Z"
+}.
+[2025-11-04 11:39:56Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-04 11:39:56Z INFO StepsRunner] Current state: job state = ''
+[2025-11-04 11:39:56Z INFO StepsRunner] Processing step: DisplayName='Show service status'
+[2025-11-04 11:39:56Z INFO StepsRunner] Evaluating: success()
+[2025-11-04 11:39:56Z INFO StepsRunner] Result: true
+[2025-11-04 11:39:56Z INFO StepsRunner] Starting the step.
+[2025-11-04 11:39:56Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:56Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:56Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:56Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-04 11:39:56Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:39:56Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper] Process started with process id 3336, waiting for process exit.
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper] Finished process 3336 with exit code 0, and elapsed time 00:00:00.0491045.
+[2025-11-04 11:39:57Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:57Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:57Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-04 11:39:57Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-04 11:39:57Z INFO JobServerQueue] Try to append 1 batches web console lines for record '2ac47933-f133-4a6e-b958-6240d9c1bab6', success rate: 1/1.
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-04 11:39:57Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-04 11:39:57Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-04 11:39:57Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:39:57Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:39:57Z INFO ScriptHandler] Which2: 'powershell'
+[2025-11-04 11:39:57Z INFO ScriptHandler] Location: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.EXE'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper]   Arguments: '-command ". 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\c5df92b5-82c2-4abc-ab70-72ced7b1dc46.ps1'"'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:39:57Z INFO ProcessInvokerWrapper] Process started with process id 19180, waiting for process exit.
+[2025-11-04 11:39:57Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'aaa4d373-6e0c-4b7c-8cb1-8a2402788c55', success rate: 1/1.
+[2025-11-04 11:39:57Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-04 11:39:57Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\bc158a62-58d0-4b0c-8856-7dfdb73a90bd_2ac47933-f133-4a6e-b958-6240d9c1bab6.1
+[2025-11-04 11:39:57Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-04 11:39:58Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:40:03Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'aaa4d373-6e0c-4b7c-8cb1-8a2402788c55', success rate: 1/1.
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper] Finished process 19180 with exit code 0, and elapsed time 00:00:06.1280314.
+[2025-11-04 11:40:03Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_2fc44663-2bdf-4d99-9bc3-424f8041656b) is empty; skipping attachment upload
+[2025-11-04 11:40:03Z INFO StepsRunner] Step result: 
+[2025-11-04 11:40:03Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "powershell",
+  "type": "run",
+  "stage": "Main",
+  "stepId": "aaa4d373-6e0c-4b7c-8cb1-8a2402788c55",
+  "stepContextName": "__run_5",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 7,
+  "startTime": "2025-11-04T11:39:56.9799731Z",
+  "finishTime": "2025-11-04T11:40:03.2506293Z"
+}.
+[2025-11-04 11:40:03Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-04 11:40:03Z INFO StepsRunner] Current state: job state = ''
+[2025-11-04 11:40:03Z INFO StepsRunner] Processing step: DisplayName='Post Checkout repository'
+[2025-11-04 11:40:03Z INFO StepsRunner] Evaluating: always()
+[2025-11-04 11:40:03Z INFO StepsRunner] Result: true
+[2025-11-04 11:40:03Z INFO StepsRunner] Starting the step.
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:40:03Z INFO StepsRunner] Which2: 'chcp'
+[2025-11-04 11:40:03Z INFO StepsRunner] Location: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   File name: 'C:\WINDOWS\system32\chcp.COM'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Arguments: '65001'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Encoding web name:  ; code page: ''
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper] Process started with process id 22000, waiting for process exit.
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper] Finished process 22000 with exit code 0, and elapsed time 00:00:00.0578892.
+[2025-11-04 11:40:03Z INFO StepsRunner] Successfully returned to code page 65001 (UTF8)
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-04 11:40:03Z INFO ActionManager] Load action that reference repository from 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions\actions\checkout\v4'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Actions': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions'
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Loaded action.yml file: {
+  "name": "Checkout",
+  "description": "Checkout a Git repository at a particular version",
+  "inputs": {
+    "type": 2,
+    "map": [
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 4,
+          "col": 3,
+          "lit": "repository"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 6,
+          "col": 14,
+          "expr": "github.repository"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 7,
+          "col": 3,
+          "lit": "ref"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 12,
+          "col": 3,
+          "lit": "token"
+        },
+        "value": {
+          "type": 3,
+          "file": 2,
+          "line": 24,
+          "col": 14,
+          "expr": "github.token"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 25,
+          "col": 3,
+          "lit": "ssh-key"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 37,
+          "col": 3,
+          "lit": "ssh-known-hosts"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 42,
+          "col": 3,
+          "lit": "ssh-strict"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 47,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 48,
+          "col": 3,
+          "lit": "ssh-user"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 51,
+          "col": 14,
+          "lit": "git"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 52,
+          "col": 3,
+          "lit": "persist-credentials"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 54,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 55,
+          "col": 3,
+          "lit": "path"
+        },
+        "value": ""
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 57,
+          "col": 3,
+          "lit": "clean"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 59,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 60,
+          "col": 3,
+          "lit": "filter"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 64,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 65,
+          "col": 3,
+          "lit": "sparse-checkout"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 69,
+          "col": 14,
+          "lit": ""
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 70,
+          "col": 3,
+          "lit": "sparse-checkout-cone-mode"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 73,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 74,
+          "col": 3,
+          "lit": "fetch-depth"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 76,
+          "col": 14,
+          "lit": "1"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 77,
+          "col": 3,
+          "lit": "fetch-tags"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 79,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 80,
+          "col": 3,
+          "lit": "show-progress"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 82,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 83,
+          "col": 3,
+          "lit": "lfs"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 85,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 86,
+          "col": 3,
+          "lit": "submodules"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 94,
+          "col": 14,
+          "lit": "false"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 95,
+          "col": 3,
+          "lit": "set-safe-directory"
+        },
+        "value": {
+          "type": 0,
+          "file": 2,
+          "line": 97,
+          "col": 14,
+          "lit": "true"
+        }
+      },
+      {
+        "key": {
+          "type": 0,
+          "file": 2,
+          "line": 98,
+          "col": 3,
+          "lit": "github-server-url"
+        },
+        "value": ""
+      }
+    ]
+  },
+  "execution": {
+    "executionType": "nodeJS",
+    "hasPre": false,
+    "hasPost": true,
+    "script": "dist/index.js",
+    "pre": null,
+    "post": "dist/index.js",
+    "nodeVersion": "node20",
+    "cleanupCondition": "always()",
+    "initCondition": "always()"
+  },
+  "deprecated": null
+}
+[2025-11-04 11:40:03Z INFO ActionManager] Action pre node.js file: N/A.
+[2025-11-04 11:40:03Z INFO ActionManager] Action node.js file: dist/index.js.
+[2025-11-04 11:40:03Z INFO ActionManager] Action post node.js file: dist/index.js.
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:40:03Z INFO ExecutionContext] Write event payload to C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_github_workflow\event.json
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Temp': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp'
+[2025-11-04 11:40:03Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IFileCommandExtension'
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'repository': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 6,
+  "col": 14,
+  "lit": "matteoLorenzini/risk_analysis_app"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'ref': default value evaluate result: ""
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'token': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 24,
+  "col": 14,
+  "lit": "***"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'ssh-key': default value evaluate result: ""
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'ssh-known-hosts': default value evaluate result: ""
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'ssh-strict': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 47,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'ssh-user': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 51,
+  "col": 14,
+  "lit": "git"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'persist-credentials': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 54,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'path': default value evaluate result: ""
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'clean': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 59,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'filter': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 64,
+  "col": 14,
+  "lit": ""
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'sparse-checkout': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 69,
+  "col": 14,
+  "lit": ""
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'sparse-checkout-cone-mode': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 73,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'fetch-depth': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 76,
+  "col": 14,
+  "lit": "1"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'fetch-tags': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 79,
+  "col": 14,
+  "lit": "false"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'show-progress': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 82,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'lfs': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 85,
+  "col": 14,
+  "lit": "false"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'submodules': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 94,
+  "col": 14,
+  "lit": "false"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'set-safe-directory': default value evaluate result: {
+  "type": 0,
+  "file": 2,
+  "line": 97,
+  "col": 14,
+  "lit": "true"
+}
+[2025-11-04 11:40:03Z INFO ActionManifestManager] Input 'github-server-url': default value evaluate result: ""
+[2025-11-04 11:40:03Z INFO ExtensionManager] Getting extensions for interface: 'GitHub.Runner.Worker.IActionCommandExtension'
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command internal-set-repo-path
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command set-env
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command set-output
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command save-state
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command add-path
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command add-mask
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command add-matcher
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command remove-matcher
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command warning
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command error
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command notice
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command debug
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command group
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command endgroup
+[2025-11-04 11:40:03Z INFO ActionCommandManager] Register action command extension for command echo
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:40:03Z INFO HostContext] Well known directory 'Externals': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\externals'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper] Starting process:
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   File name: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\externals\node20\bin\node.exe'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Arguments: '"C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_actions\actions\checkout\v4\dist/index.js"'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Working directory: 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\risk_analysis_app\risk_analysis_app'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Require exit code zero: 'False'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Encoding web name: utf-8 ; code page: '65001'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Force kill process on cancellation: 'False'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Redirected STDIN: 'False'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Persist current code page: 'True'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   Keep redirected STDIN open: 'False'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper]   High priority process: 'False'
+[2025-11-04 11:40:03Z INFO ProcessInvokerWrapper] Process started with process id 18928, waiting for process exit.
+[2025-11-04 11:40:03Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'c083ef21-58c8-4c8b-9d2f-8858c3faaf42', success rate: 1/1.
+[2025-11-04 11:40:03Z INFO JobServerQueue] Try to upload 1 log files or attachments, success rate: 1/1.
+[2025-11-04 11:40:04Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-04 11:40:04Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\bc158a62-58d0-4b0c-8856-7dfdb73a90bd_aaa4d373-6e0c-4b7c-8cb1-8a2402788c55.1
+[2025-11-04 11:40:04Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-04 11:40:04Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'c083ef21-58c8-4c8b-9d2f-8858c3faaf42', success rate: 1/1.
+[2025-11-04 11:40:04Z INFO AddMaskCommandExtension] Add new secret mask with length of 32
+[2025-11-04 11:40:05Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'c083ef21-58c8-4c8b-9d2f-8858c3faaf42', success rate: 1/1.
+[2025-11-04 11:40:06Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:40:06Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:40:06Z INFO HostContext] Well known directory 'Work': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work'
+[2025-11-04 11:40:07Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:40:07Z INFO ProcessInvokerWrapper] STDOUT/STDERR stream read finished.
+[2025-11-04 11:40:07Z INFO ProcessInvokerWrapper] Finished process 18928 with exit code 0, and elapsed time 00:00:03.8589184.
+[2025-11-04 11:40:07Z INFO CreateStepSummaryCommand] Step Summary file (C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp\_runner_file_commands\step_summary_bb5a5d99-4f37-4b15-9a14-d7f10687e3c3) is empty; skipping attachment upload
+[2025-11-04 11:40:07Z INFO StepsRunner] Step result: 
+[2025-11-04 11:40:07Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "actions/checkout",
+  "ref": "v4",
+  "type": "node20",
+  "stage": "Post",
+  "stepId": "c083ef21-58c8-4c8b-9d2f-8858c3faaf42",
+  "result": "succeeded",
+  "errorMessages": [
+    "The process 'C:\\Program Files\\Git\\cmd\\git.exe' failed with exit code 128"
+  ],
+  "executionTimeInSeconds": 5,
+  "startTime": "2025-11-04T11:40:03.2590257Z",
+  "finishTime": "2025-11-04T11:40:07.3161406Z"
+}.
+[2025-11-04 11:40:07Z INFO StepsRunner] No need for updating job result with current step result 'Succeeded'.
+[2025-11-04 11:40:07Z INFO StepsRunner] Current state: job state = ''
+[2025-11-04 11:40:07Z INFO JobRunner] Finalize job.
+[2025-11-04 11:40:07Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:40:07Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:40:07Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-04 11:40:07Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:40:07Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:40:07Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-04 11:40:07Z INFO JobExtension] Initialize Env context
+[2025-11-04 11:40:07Z INFO JobExtension] Initialize steps context
+[2025-11-04 11:40:07Z INFO JobExtension] Total accessible running process: 416.
+[2025-11-04 11:40:07Z INFO JobServerQueue] Try to append 1 batches web console lines for record 'c083ef21-58c8-4c8b-9d2f-8858c3faaf42', success rate: 1/1.
+[2025-11-04 11:40:07Z INFO JobServerQueue] Try to append 1 batches web console lines for record '3f959434-1245-46d0-96df-7e08b421d71c', success rate: 1/1.
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 33168 (chrome)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 4320 (chrome)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 34420 (chrome)
+[2025-11-04 11:40:07Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-04 11:40:07Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\bc158a62-58d0-4b0c-8856-7dfdb73a90bd_c083ef21-58c8-4c8b-9d2f-8858c3faaf42.1
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 8540 (chrome)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 20700 (chrome)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 28192 (chrome)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 20036 (chrome)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 12912 (chrome)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 13408 (chrome)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 29172 (chrome)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 24212 (SearchProtocolHost)
+[2025-11-04 11:40:07Z WARN JobExtension] Ignore exception during read process environment variables: Access is denied.
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 30444 (git)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 32472 (conhost)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 9532 (git)
+[2025-11-04 11:40:07Z INFO JobExtension] Inspecting process environment variables. PID: 16340 (git)
+[2025-11-04 11:40:07Z INFO ExecutionContext] Publish step telemetry for current step {
+  "action": "complete_job",
+  "type": "runner",
+  "stage": "Post",
+  "stepId": "3f959434-1245-46d0-96df-7e08b421d71c",
+  "result": "succeeded",
+  "errorMessages": [],
+  "executionTimeInSeconds": 1,
+  "startTime": "2025-11-04T11:40:07.3436662Z",
+  "finishTime": "2025-11-04T11:40:07.8129301Z"
+}.
+[2025-11-04 11:40:07Z INFO JobRunner] Job result after all job steps finish: Succeeded
+[2025-11-04 11:40:07Z INFO JobRunner] Completing the job execution context.
+[2025-11-04 11:40:07Z INFO JobRunner] Shutting down the job server queue.
+[2025-11-04 11:40:07Z INFO JobServerQueue] Fire signal to shutdown all queues.
+[2025-11-04 11:40:07Z INFO JobServerQueue] Tried to upload 1 file(s) to results, success rate: 1/1.
+[2025-11-04 11:40:08Z INFO JobServerQueue] All queue process task stopped.
+[2025-11-04 11:40:08Z INFO JobServerQueue] Web console line queue drained.
+[2025-11-04 11:40:08Z INFO JobServerQueue] Uploading 3 files in one shot.
+[2025-11-04 11:40:08Z INFO JobServerQueue] Try to upload 3 log files or attachments, success rate: 3/3.
+[2025-11-04 11:40:08Z INFO JobServerQueue] File upload queue drained.
+[2025-11-04 11:40:08Z INFO JobServerQueue] Starting results-based upload queue...
+[2025-11-04 11:40:08Z INFO JobServerQueue] Uploading 2 file(s) in one shot through results service.
+[2025-11-04 11:40:08Z INFO JobServerQueue] Got a step log file to send to results service.
+[2025-11-04 11:40:08Z INFO JobServerQueue] Starting upload of step log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\bc158a62-58d0-4b0c-8856-7dfdb73a90bd_3f959434-1245-46d0-96df-7e08b421d71c.1
+[2025-11-04 11:40:09Z INFO JobServerQueue] Got a job log file to send to results service.
+[2025-11-04 11:40:09Z INFO JobServerQueue] Starting upload of job log file to results service ResultsLog, C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\blocks\bc158a62-58d0-4b0c-8856-7dfdb73a90bd_5d468440-402e-5adb-8e94-4db6fa9b2477.1
+[2025-11-04 11:40:09Z INFO JobServerQueue] Tried to upload 2 file(s) to results, success rate: 2/2.
+[2025-11-04 11:40:09Z INFO JobServerQueue] Results upload queue drained.
+[2025-11-04 11:40:09Z INFO JobServerQueue] Timeline update queue drained.
+[2025-11-04 11:40:09Z INFO JobServerQueue] Disposing job server ...
+[2025-11-04 11:40:09Z INFO JobServerQueue] Disposing results server ...
+[2025-11-04 11:40:09Z INFO JobServerQueue] All queue process tasks have been stopped, and all queues are drained.
+[2025-11-04 11:40:09Z INFO TempDirectoryManager] Cleaning runner temp folder: C:\Users\matte\Repo\risk_analysis_app\actions-runner\_work\_temp
+[2025-11-04 11:40:09Z INFO HostContext] Well known directory 'Bin': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\bin'
+[2025-11-04 11:40:09Z INFO HostContext] Well known directory 'Root': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner'
+[2025-11-04 11:40:09Z INFO HostContext] Well known directory 'Diag': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag'
+[2025-11-04 11:40:09Z INFO HostContext] Well known config file 'Telemetry': 'C:\Users\matte\Repo\risk_analysis_app\actions-runner\_diag\.telemetry'
+[2025-11-04 11:40:09Z INFO JobRunner] Raising job completed against run service
+[2025-11-04 11:40:10Z INFO Worker] Job completed.

@@ -1,6 +1,6 @@
 [[#if (urlParam "details")]]
 <div class="details-content">
-<!--
+
     [[#block "detailsResourceHeader"]]
     <div class="details-header">
 
@@ -45,7 +45,7 @@
 
     </div>
     [[/block]]
-  -->
+  
     <bs-tabs class="details-tabs">
         <bs-tab title='Site Description' event-key='site-description' mount-on-enter=true class="rawdata-tab">
             <mp-field-visualization subject='[[this]]'
@@ -356,7 +356,7 @@
 </div>
 
 <semantic-query query='SELECT (<[[this]]> as ?iri)
-                                (GROUP_CONCAT(DISTINCT(?typeLabel); SEPARATOR = " &&&& ") AS ?typeList)
+                                (GROUP_CONCAT(DISTINCT(?typeLabel); SEPARATOR = " - ") AS ?typeList)
                                 (GROUP_CONCAT(DISTINCT(?instituteLabel); SEPARATOR = "; ") AS ?instituteList)
                         WHERE {
                             OPTIONAL {
