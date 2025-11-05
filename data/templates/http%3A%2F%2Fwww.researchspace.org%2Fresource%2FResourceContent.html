@@ -84,11 +84,11 @@
                                         </mp-draggable>
                                     </div>
                                 </mp-popover-trigger>
-                                <mp-popover-arrow></mp-popover-arrow>
+                                -->
                                 <mp-popover-content>
                                     <div>Drag and drop in the Clipboard</div>
                                 </mp-popover-content>
-                                -->
+
                             </mp-popover>
                         [[/block]]
 
@@ -375,7 +375,7 @@
                             }
 
                         } GROUP BY ?iri' template='{{> headerDefaultData}}'>
-    
+    <!--
     <template id="headerDefaultData">
         <div>
             {{#each bindings}}
@@ -400,9 +400,8 @@
             {{/each}}
         </div>
     </template>
-    
+    -->
 </semantic-query>
--->
 [[/block]]
 [[/inline]]
 <!-- noop: deploy trigger to ensure reverted header is deployed -->
