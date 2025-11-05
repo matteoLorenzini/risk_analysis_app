@@ -373,19 +373,19 @@
                             }
 
                         } GROUP BY ?iri' template='{{> headerDefaultData}}'>
-
+    <!--
     <template id="headerDefaultData">
         <div>
             {{#each bindings}}
-            <!-- RESOURCE DATA SOURCE -->
+            <!-- RESOURCE DATA SOURCE 
             {{#ifCond instituteList.value "!==" ""}}
             <div class="row pb-2-5">
                 <div class="[[#if image]]col-xs-4[[else]]col-xs-2[[/if]]">Data source</div>
                 <div class="[[#if image]]col-xs-8[[else]]col-xs-10[[/if]]">{{instituteList.value}}</div>
             </div>
             {{/ifCond}}
-
-            <!-- RESOURCE TYPE -->
+            
+            <!-- RESOURCE TYPE 
             {{#ifCond typeList.value "!==" ""}}
             <div class="row" style="margin-bottom:16px;">
                 <div class="[[#if image]]col-xs-4[[else]]col-xs-2[[/if]]">Type</div>
@@ -398,6 +398,7 @@
             {{/each}}
         </div>
     </template>
+    -->
 </semantic-query>
 [[/block]]
 [[/inline]]
