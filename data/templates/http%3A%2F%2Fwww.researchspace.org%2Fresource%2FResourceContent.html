@@ -70,26 +70,14 @@
                     [[!-- Header top with draggable link --]]
                     <div class="rs-resource-header-topContainer">
                         [[#block "resourceHeaderTop"]]
-                            <mp-popover class="rs-resource-header-popover">
-                                <mp-popover-trigger placement="right" trigger='["hover"]' root-close='true'>
-                                    <div class="h4 rs-resource-header-topContent">
-                                        <mp-draggable iri='[[this]]'>
-                                            <div>
-                                                <i class="rs-icon {{getValueByKey typeToIcon allTypes 'rs-icon-entity'}}"></i>  
-                                                <span style="margin-left: 8px;">{{directTypesLabels}} -&nbsp;</span>
-                                                <mp-label iri='[[this]]'></mp-label>
-                                            </div>
-                                        </mp-draggable>
-                                    </div>
-                                </mp-popover-trigger>
-
-                                <mp-popover-content>
-                                    <div>Drag and drop in the Clipboard</div>
-                                </mp-popover-content>
-
-                            </mp-popover>
+                            [[!-- Simplified header: keep only the entity icon; remove draggable, labels, and clipboard hint --]]
+                            <div class="h4 rs-resource-header-topContent">
+                                <i class="rs-icon {{getValueByKey typeToIcon allTypes 'rs-icon-entity'}}"></i>
+                            </div>
                         [[/block]]
 
+                        [[!-- Hide header top action buttons if only icon is desired. Comment out to remove. --]]
+                        <!--
                         <div class="rs-resource-header-topButtons">
 
                             <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]'
@@ -114,6 +102,7 @@
                             </semantic-link-container>
 
                         </div>
+                        -->
                     </div>
 
                     [[!-- Header content with image (if available) and resource primary informations --]]
@@ -241,9 +230,12 @@
                             [[/block]]
                         </div>
 
+                        [[!-- Hide header data (label, Copy IRI, Statements, Data source, Type) --]]
+                        <!--
                         <div style="padding: 1.8% 1.5% 1.5% 5%;">
                             [[> resourceHeaderData image=true]]
                         </div>
+                        -->
                     </div>
                 </div>
             [[/block]]
