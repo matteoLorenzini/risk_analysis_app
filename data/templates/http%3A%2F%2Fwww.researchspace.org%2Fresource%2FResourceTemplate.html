@@ -16,16 +16,16 @@
     </li>
 
    [[#block "activeBreadcrumb"]]
-   <with-types iri='[[this]]'
-        template='{{> template}}'
-        [[> rsp:TypeMappings]]
-    >
-        <template id='template'>
-            <li class="active">
-                {{directTypesLabels}}: <mp-label iri='[[this]]'></mp-label>
-            </li>
-        </template>
-   </with-types>
+   <semantic-query query='PREFIX rso: <http://www.researchspace.org/ontology/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nPREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>\nSELECT ?value_appellation ?value_type WHERE {\n  <[[this]]> a base:E18_Physical_Thing ;\n              base:P1_is_identified_by ?appellation ;\n              base:P2_has_type ?type .\n  ?type a crm:E55_Type ;\n        skos:prefLabel ?value_type .\n  ?appellation a crm:E41_Appellation ;\n               skos:prefLabel ?value_appellation .\n}'
+    template='{{> breadcrumbTmpl}}'>
+    <template id='breadcrumbTmpl'>
+      <li class="active">
+        {{#each bindings}}
+          {{value_type.value}}: {{value_appellation.value}}{{#if @last}}{{else}}; {{/if}}
+        {{/each}}
+      </li>
+    </template>
+   </semantic-query>
    [[/block]]
 </ol>
 
