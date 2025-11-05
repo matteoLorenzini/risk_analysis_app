@@ -102,7 +102,7 @@ categories='{
       <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>; 
       <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by>   ?name_identifier . 
       ?name_identifier a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation>.
-      ?name_identifier rdfs:label ?label.
+      ?name_identifier skos:prefLabel ?label.
       FILTER REGEX(STR(?label), ?__token__, "i") 
     } 
     ' default-query='
@@ -152,9 +152,9 @@ categories='{
                   base:P3_has_note ?note ;
                   base:P2_has_type ?type . 
                   ?appellation a base:E41_Appellation ;
-                  rdfs:label ?value .
+                  skos:prefLabel ?value .
                   ?type a base:E55_Type ;
-                  rdfs:label ?label_type .
+                  skos:prefLabel ?label_type .
                 }
                 
                 
@@ -187,7 +187,7 @@ categories='{
                   base:P1_is_identified_by ?appellation ;
                   base:P55_has_current_location ?coords .
                   ?appellation a base:E41_Appellation ;
-                  rdfs:label ?label .
+                  skos:prefLabel ?label .
                 }
                 
                 ' tuple-template='{{> template }}'>
