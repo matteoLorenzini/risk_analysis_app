@@ -361,7 +361,7 @@
                         WHERE {
                             OPTIONAL {
                                 <[[this]]> a ?type .
-                                ?type skos:prefLabel ?typeLabel .
+                                ?type rdfs:label ?typeLabel .
                                 BIND( LANG(?typeLabel) AS ?language).
                             }
 
@@ -369,7 +369,7 @@
 
                             OPTIONAL {
                                 <[[this]]> crm:P105_right_held_by ?institute .
-                                ?institute skos:prefLabel ?instituteLabel .
+                                ?institute rdfs:label ?instituteLabel .
                             }
 
                         } GROUP BY ?iri' template='{{> headerDefaultData}}'>
