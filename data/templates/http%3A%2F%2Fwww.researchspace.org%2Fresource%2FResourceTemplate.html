@@ -16,7 +16,20 @@
     </li>
 
    [[#block "activeBreadcrumb"]]
-   <semantic-query query='PREFIX rso: <http://www.researchspace.org/ontology/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>\nPREFIX skos: <http://www.w3.org/2004/02/skos/core#>\nPREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>\nSELECT ?value_appellation ?value_type WHERE {\n  <[[this]]> a base:E18_Physical_Thing ;\n              base:P1_is_identified_by ?appellation ;\n              base:P2_has_type ?type .\n  ?type a crm:E55_Type ;\n        skos:prefLabel ?value_type .\n  ?appellation a crm:E41_Appellation ;\n               skos:prefLabel ?value_appellation .\n}'
+  <semantic-query query='PREFIX rso: <http://www.researchspace.org/ontology/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+SELECT ?value_appellation ?value_type WHERE {
+  <[[this]]> a base:E18_Physical_Thing ;
+          base:P1_is_identified_by ?appellation ;
+          base:P2_has_type ?type .
+  ?type a crm:E55_Type ;
+      skos:prefLabel ?value_type .
+  ?appellation a crm:E41_Appellation ;
+          skos:prefLabel ?value_appellation .
+}'
     template='{{> breadcrumbTmpl}}'>
     <template id='breadcrumbTmpl'>
       <li class="active">
