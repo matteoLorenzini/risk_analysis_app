@@ -181,42 +181,19 @@ categories='{
                 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                 PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
                 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-
-                # Align with reference: provide ?wkt ?description ?link ?color (use BINDs instead of aliasing bare vars)
-                SELECT (CONCAT("Point(", STR(?coords), ")") AS ?wkt)
-                       ?description
-                       ?link
-                       (IF(CONTAINS(?agentLabels, "water"), "#1E90FF",
-                           IF(CONTAINS(?agentLabels, "fire"), "#FF4500",
-                               IF(CONTAINS(?agentLabels, "earth"), "#8B4513",
-                                   IF(CONTAINS(?agentLabels, "air"), "#87CEEB", "#666666")
-                               )
-                           )
-                       ) AS ?color)
-                WHERE {
-                  {
-                    SELECT ?subject ?coords ?label
-                           (COALESCE(GROUP_CONCAT(DISTINCT LCASE(STR(?agentLabel)); SEPARATOR="|"), "") AS ?agentLabels)
-                    WHERE {
-                      ?subject base:P1_is_identified_by ?appellation ;
-                               base:P55_has_current_location ?coords .
-                      ?appellation a base:E41_Appellation ; skos:prefLabel ?label .
-
-                      OPTIONAL {
-                        ?subject ^base:P31_has_modified ?event .
-                        ?event a base:E5_Event ; base:P11_had_participant ?agent .
-                        ?agent a base:E39_Actor ; skos:prefLabel ?agentLabel .
-                      }
-                    }
-                    GROUP BY ?subject ?coords ?label
-                  }
-                  BIND(?label AS ?description)
-                  BIND(?subject AS ?link)
+                
+                SELECT DISTINCT (CONCAT("Point(", STR(?coords), ")") AS ?wkt) ?label ?subject WHERE {
+                  ?subject 
+                  base:P1_is_identified_by ?appellation ;
+                  base:P55_has_current_location ?coords .
+                  ?appellation a base:E41_Appellation ;
+                  skos:prefLabel ?label .
                 }
+                
                 ' tuple-template='{{> template }}'>
                 <template id='template'>
-                  <b>{{description.value}}</b><br>
-                  <a href="{{link.value}}" target="_blank">Open</a>
+                  <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
+                  
                 </template>
               </semantic-map>
             </div>
