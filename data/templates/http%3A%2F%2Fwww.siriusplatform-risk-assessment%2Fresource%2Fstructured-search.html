@@ -182,18 +182,36 @@ categories='{
                 PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
                 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                 
-                SELECT DISTINCT (CONCAT("Point(", STR(?coords), ")") AS ?wkt) ?label ?subject WHERE {
+                # Return WKT point, site label, subject IRI and a color code based on linked Agent type (water/fire/etc.)
+                SELECT DISTINCT (CONCAT("Point(", STR(?coords), ")") AS ?wkt) ?label ?subject ?color WHERE {
                   ?subject 
-                  base:P1_is_identified_by ?appellation ;
-                  base:P55_has_current_location ?coords .
+                    base:P1_is_identified_by ?appellation ;
+                    base:P55_has_current_location ?coords .
                   ?appellation a base:E41_Appellation ;
-                  skos:prefLabel ?label .
+                    skos:prefLabel ?label .
+
+                  # Optional join to associated Agents via inverse relation path from events
+                  OPTIONAL {
+                    ?subject ^base:P31_has_modified ?event .
+                    ?event a base:E5_Event ; base:P11_had_participant ?agent .
+                    ?agent a base:E39_Actor ; skos:prefLabel ?agentLabel .
+                  }
+
+                  # Derive a color string. Adjust mappings (fire/water/etc.) as needed.
+                  BIND(LCASE(STR(?agentLabel)) AS ?agentLabelLower)
+                  BIND(
+                    IF(CONTAINS(?agentLabelLower, "water"), "#1E90FF", 
+                      IF(CONTAINS(?agentLabelLower, "fire"), "#FF4500", 
+                        IF(CONTAINS(?agentLabelLower, "earth"), "#8B4513",
+                          IF(CONTAINS(?agentLabelLower, "air"), "#87CEEB", "#666666")
+                        )
+                      )
+                    )
+                  AS ?color)
                 }
-                
                 ' tuple-template='{{> template }}'>
                 <template id='template'>
                   <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
-                  
                 </template>
               </semantic-map>
             </div>
