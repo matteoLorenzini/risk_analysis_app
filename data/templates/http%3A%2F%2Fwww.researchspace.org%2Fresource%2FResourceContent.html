@@ -358,51 +358,7 @@
 
 </div>
 
-<semantic-query query='SELECT (<[[this]]> as ?iri)
-                                (GROUP_CONCAT(DISTINCT(?typeLabel); SEPARATOR = " - ") AS ?typeList)
-                                (GROUP_CONCAT(DISTINCT(?instituteLabel); SEPARATOR = "; ") AS ?instituteList)
-                        WHERE {
-                            OPTIONAL {
-                                <[[this]]> a ?type .
-                                ?type rdfs:label ?typeLabel .
-                                BIND( LANG(?typeLabel) AS ?language).
-                            }
-
-                            FILTER (?language = "it" || ?language = "en" || ?language = "")
-
-                            OPTIONAL {
-                                <[[this]]> crm:P105_right_held_by ?institute .
-                                ?institute rdfs:label ?instituteLabel .
-                            }
-
-                        } GROUP BY ?iri' template='{{> headerDefaultData}}'>
-    <!--
-    <template id="headerDefaultData">
-        <div>
-            {{#each bindings}}
-            <!-- RESOURCE DATA SOURCE 
-            {{#ifCond instituteList.value "!==" ""}}
-            <div class="row pb-2-5">
-                <div class="[[#if image]]col-xs-4[[else]]col-xs-2[[/if]]">Data source</div>
-                <div class="[[#if image]]col-xs-8[[else]]col-xs-10[[/if]]">{{instituteList.value}}</div>
-            </div>
-            {{/ifCond}}
-            
-            <!-- RESOURCE TYPE 
-            {{#ifCond typeList.value "!==" ""}}
-            <div class="row" style="margin-bottom:16px;">
-                <div class="[[#if image]]col-xs-4[[else]]col-xs-2[[/if]]">Type</div>
-                <div class="[[#if image]]col-xs-8[[else]]col-xs-10[[/if]]" style="text-transform:capitalize;">
-                    {{typeList.value}}
-                </div>
-            </div>
-            {{/ifCond}}
-
-            {{/each}}
-        </div>
-    </template>
-    -->
-</semantic-query>
+<!-- Removed headerDefaultData block as requested -->
 [[/block]]
 [[/inline]]
 <!-- noop: deploy trigger to ensure reverted header is deployed -->
