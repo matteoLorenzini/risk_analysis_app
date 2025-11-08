@@ -182,10 +182,10 @@ categories='{
                 PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
                 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
-                # Align with reference: provide ?wkt ?description ?link ?color
+                # Align with reference: provide ?wkt ?description ?link ?color (use BINDs instead of aliasing bare vars)
                 SELECT (CONCAT("Point(", STR(?coords), ")") AS ?wkt)
-                       ?label AS ?description
-                       ?subject AS ?link
+                       ?description
+                       ?link
                        (IF(CONTAINS(?agentLabels, "water"), "#1E90FF",
                            IF(CONTAINS(?agentLabels, "fire"), "#FF4500",
                                IF(CONTAINS(?agentLabels, "earth"), "#8B4513",
@@ -210,6 +210,8 @@ categories='{
                     }
                     GROUP BY ?subject ?coords ?label
                   }
+                  BIND(?label AS ?description)
+                  BIND(?subject AS ?link)
                 }
                 ' tuple-template='{{> template }}'>
                 <template id='template'>
