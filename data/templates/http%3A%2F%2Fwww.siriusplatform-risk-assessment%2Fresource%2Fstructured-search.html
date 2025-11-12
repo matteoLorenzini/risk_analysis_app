@@ -68,8 +68,7 @@
     "kind": "numeric-range",
     "datatype": "http://www.w3.org/2001/XMLSchema#double",
   "queryPattern": "{\n  $subject ^<http://www.cidoc-crm.org/cidoc-crm/P31_has_modified> ?event .\n  ?event a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P39i_was_measured_by> ?magnitude .\n  ?magnitude a <http://www.ics.forth.gr/isl/CRMsci/S21_Measurement> ; <http://www.cidoc-crm.org/cidoc-crm/P40_observed_dimension> ?dimension .\n  ?dimension a <http://www.cidoc-crm.org/cidoc-crm/E54_Dimension> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?dimType ; <http://www.cidoc-crm.org/cidoc-crm/P90_has_value> ?literal .\n  FILTER(?dimType IN (<https://w3id.org/sirius/type/magnitude-score>, <https://w3id.org/sirius/type/magnitude-score-min>, <https://w3id.org/sirius/type/magnitude-score-max>)) .\n  FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .\n  FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) .\n}"
-  }] 
-  }'
+    FILTER(?literal >= ?__numericRangeBeginValue__ && ?literal <= ?__numericRangeEndValue__) .
   >
   <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>' query='
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -150,6 +149,26 @@
                   "displayName": "Description", 
                   "cellTemplate": "<div>{{note.value}}</div>" 
                 }]' options='{"showFilter":false, "resultsPerPage":10}  '>
+              </semantic-table>
+            </semantic-search-result>
+          </bs-tab>
+          <bs-tab event-key="4" title="Debug values">
+            <semantic-search-result>
+              <semantic-table id='debug-values' query="
+              SELECT DISTINCT ?subject ?value WHERE {
+                $subject ^<http://www.cidoc-crm.org/cidoc-crm/P31_has_modified> ?event .
+                ?event a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P39i_was_measured_by> ?magnitude .
+                ?magnitude a <http://www.ics.forth.gr/isl/CRMsci/S21_Measurement> ; <http://www.cidoc-crm.org/cidoc-crm/P40_observed_dimension> ?dimension .
+                ?dimension a <http://www.cidoc-crm.org/cidoc-crm/E54_Dimension> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?dimType ; <http://www.cidoc-crm.org/cidoc-crm/P90_has_value> ?value .
+                FILTER(?dimType IN (<https://w3id.org/sirius/type/magnitude-score>, <https://w3id.org/sirius/type/magnitude-score-min>, <https://w3id.org/sirius/type/magnitude-score-max>)) .
+              }
+              " column-configuration='[{
+                "displayName": "Site",
+                "cellTemplate": "<semantic-link iri={{subject.value}} />"
+              },{
+                "displayName": "Measured value",
+                "cellTemplate": "<div>{{value.value}}</div>"
+              }]' options='{"showFilter":false, "resultsPerPage":10}'>
               </semantic-table>
             </semantic-search-result>
           </bs-tab>
