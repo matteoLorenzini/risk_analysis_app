@@ -67,7 +67,7 @@
     "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
     "kind": "numeric-range",
     "datatype": "http://www.w3.org/2001/XMLSchema#double",
-    "queryPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>\nPREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n{\n  $subject ^base:P31_has_modified ?event .\n  ?event a base:E5_Event ; base:P39i_was_measured_by ?magnitude .\n  ?magnitude a crmsci:S21_Measurement ; base:P40_observed_dimension ?dimension .\n  ?dimension a base:E54_Dimension ; base:P2_has_type ?dimType ; base:P90_has_value ?literal .\n  FILTER(?dimType IN (<https://w3id.org/sirius/type/magnitude-score>, <https://w3id.org/sirius/type/magnitude-score-min>, <https://w3id.org/sirius/type/magnitude-score-max>)) .\n  FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .\n  FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) .\n}"
+  "queryPattern": "{\n  $subject ^base:P31_has_modified ?event .\n  ?event a base:E5_Event ; base:P39i_was_measured_by ?magnitude .\n  ?magnitude a crmsci:S21_Measurement ; base:P40_observed_dimension ?dimension .\n  ?dimension a base:E54_Dimension ; base:P2_has_type ?dimType ; base:P90_has_value ?literal .\n  FILTER(?dimType IN (<https://w3id.org/sirius/type/magnitude-score>, <https://w3id.org/sirius/type/magnitude-score-min>, <https://w3id.org/sirius/type/magnitude-score-max>)) .\n  FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .\n  FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) .\n}"
   }] 
   }'
   >
