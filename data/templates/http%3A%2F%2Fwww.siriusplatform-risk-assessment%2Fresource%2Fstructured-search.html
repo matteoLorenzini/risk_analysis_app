@@ -74,19 +74,17 @@ categories='{
     "kind": "numeric-range",
     "datatype": "http://www.w3.org/2001/XMLSchema#double",
     "queryPattern": "{
-       ?event a cidoc:E5_Event ;
-         rdfs:label ?event_name ;
-         cidoc:P31_has_modified $subject ;
-         cidoc:P39i_was_measured_by ?magnitude .
+      $subject  ^base:P31_has_modified ?event .
 
-  $subject a cidoc:E18_Physical_Thing .
+      ?event a base:E5_Event ;
+             rdfs:label ?event_name ;
+             base:P39i_was_measured_by ?magnitude .
 
-  ?magnitude a crmsci:S21_Measurement ;
-             cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-             cidoc:P40_observed_dimension ?dimension .
-
-  ?dimension a cidoc:E54_Dimension ;
-             cidoc:P90_has_value ?literal .
+      ?magnitude a crmsci:S21_Measurement ;
+                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                 base:P40_observed_dimension ?dimension.
+      ?dimension a base:E54_Dimension;
+                 base:P90_has_value ?literal.
       FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .
       FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) .
     }"
