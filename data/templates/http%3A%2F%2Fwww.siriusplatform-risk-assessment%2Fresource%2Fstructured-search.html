@@ -14,9 +14,9 @@ categories='{
                 cidoc:P40_observed_dimension ?dimension .
 
       ?dimension a cidoc:E54_Dimension ;
-                cidoc:P90_has_value ?literal .
-          FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .
-          FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) ."
+                cidoc:P90_has_value ?__value__ .
+          FILTER(xsd:double(?__value__) >= xsd:double(?__numericRangeBeginValue__)) .
+          FILTER(xsd:double(?__value__) <= xsd:double(?__numericRangeEndValue__)) ."
   }]}'
   search-profile='{                   
     "categories":  
