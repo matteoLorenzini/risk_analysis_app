@@ -146,3 +146,93 @@ relations='{
         }
       }'></semantic-search-facet>
     </div>
+      <semantic-search-result-holder>
+        <div data-flex-self="md-full">
+          <semantic-search-result>
+            <mp-sparql-result-counts id='query-count' query="SELECT DISTINCT * {}" template='{{#if hasLimit}} <bs-alert bs-style="warning">
+              Showing {{numberOfResults}} of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert>
+              {{else}}<span> found {{numberOfResults}} matches </span>{{/if}}'>
+            </mp-sparql-result-counts>
+          </semantic-search-result>
+          <bs-tabs unmount-on-exit=true id='search-results' animation=false>
+            <bs-tab event-key="2" title="Table">
+              <semantic-search-result>
+                <semantic-table id='table-result' query="
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                
+                SELECT DISTINCT ?subject ?label_type ?note WHERE { 
+                  ?subject 
+                  base:P1_is_identified_by ?appellation ;
+                  base:P3_has_note ?note ;
+                  base:P2_has_type ?type . 
+                  ?appellation a base:E41_Appellation ;
+                  skos:prefLabel ?value .
+                  ?type a base:E55_Type ;
+                  skos:prefLabel ?label_type .
+                }
+                
+                
+                " column-configuration='[{
+                  "displayName": "Site", 
+                  "cellTemplate": "<semantic-link iri={{subject.value}} />" 
+                },
+                {
+                  "displayName": "Typology", 
+                  "cellTemplate": "<div>{{label_type.value}}</div>" 
+                },
+                {
+                  "displayName": "Description", 
+                  "cellTemplate": "<div>{{note.value}}</div>" 
+                }]' options='{"showFilter":false, "resultsPerPage":10}  '>
+              </semantic-table>
+            </semantic-search-result>
+          </bs-tab>
+          <bs-tab event-key="3" title="Map">
+            <div style='height: 30vw;'>
+              <semantic-search-result>
+                <semantic-map id='map-result' query='
+                PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                
+                SELECT DISTINCT (CONCAT("Point(", STR(?coords), ")") AS ?wkt) ?label ?subject WHERE {
+                  ?subject 
+                  base:P1_is_identified_by ?appellation ;
+                  base:P55_has_current_location ?coords .
+                  ?appellation a base:E41_Appellation ;
+                  skos:prefLabel ?label .
+                }
+                
+                ' tuple-template='{{> template }}'>
+                <template id='template'>
+                  <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
+                  
+                </template>
+              </semantic-map>
+            </div>
+          </semantic-search-result>
+        </bs-tab>
+      </bs-tabs>
+      
+      <bs-panel>
+        <semantic-search-result>
+          <mp-sparql-download id='csv-download' query="SELECT * WHERE { }" header="text/csv"
+          filename="csv-result.csv">
+          <button class="btn btn-default">Download CSV</button>
+        </mp-sparql-download>
+      </semantic-search-result>
+      <semantic-search-result>
+        <mp-sparql-download id='json-download' query="SELECT * WHERE { }" header="application/sparql-results+json"
+        filename="json-result.json">
+        <button class="btn btn-default">Download JSON</button>
+      </mp-sparql-download>
+    </semantic-search-result>
+  </bs-panel>
+</div>
+</semantic-search-result-holder>
+</div>
+</semantic-search>
