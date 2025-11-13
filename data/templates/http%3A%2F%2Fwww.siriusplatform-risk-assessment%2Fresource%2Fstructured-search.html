@@ -1,5 +1,10 @@
 <semantic-search
-
+categories='{
+  "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
+    "kind": "numeric-range",
+    "datatype": "http://www.w3.org/2001/XMLSchema#double",
+    "queryPattern": "{\n     $subject ?__relation__ ?literal .\n      FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .\n      FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) .\n    }"
+  }]}'
   search-profile='{                   
     "categories":  
     [
