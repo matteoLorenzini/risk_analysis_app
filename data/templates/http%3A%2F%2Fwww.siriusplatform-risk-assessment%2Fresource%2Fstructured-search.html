@@ -3,23 +3,11 @@ categories='{
   "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
     "kind": "numeric-range",
     "datatype": "http://www.w3.org/2001/XMLSchema#double",
-    "queryPattern": "{ 
-      $subject ^base:P31_has_modified ?event .
-      ?event a base:E5_Event ;
-             base:P39i_was_measured_by ?magnitude .
-      ?magnitude a crmsci:S21_Measurement ;
-                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                 base:P40_observed_dimension ?dimension .
-      ?dimension a base:E54_Dimension ;
-                 base:P90_has_value ?literal .
-      BIND(xsd:double(?literal) AS ?val)
-      FILTER(?val >= xsd:double(?__numericRangeBeginValue__))
-      FILTER(?val <= xsd:double(?__numericRangeEndValue__))
-    }"
+    "queryPattern": "{\n     $subject ?__relation__ ?literal .\n      FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .\n      FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) .\n    }"
   }]}'
-
-search-profile='{                   
-  "categories": [
+  search-profile='{                   
+    "categories":  
+    [
     {
       "iri":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
       "label":"Concept",
@@ -30,29 +18,37 @@ search-profile='{
       "label":"Site",
       "thumbnail": "/assets/images/icons/rs-icons/places.svg"
     },
+    
     {
       "iri":"<http://www.cidoc-crm.org/cidoc-crm/E89_Propositional_Object>",
       "label":"Agent",
       "thumbnail": "/assets/images/icons/rs-icons/places.svg"
     },
+    
     {
       "iri":"<http://www.cidoc-crm.org/extensions/crmsci/S21_Measurement>",
       "label":"Magnitude Score",
       "thumbnail": "../images/fcs/things.svg"
     },
+    
     {
-      "iri":"<http://www.w3.org/2001/XMLSchema#Decimal>",
-      "label":"Height",
+      "iri": "<http://www.w3.org/2001/XMLSchema#Decimal>",
+      "label": "Height",
       "thumbnail": "/assets/images/icons/rs-icons/height.svg"
     },
+    
     {
       "iri":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
       "label":"Event",
       "thumbnail": "../images/fcs/things.svg"
     }
-  ],
-  
-  "relations": [
+    
+    
+    ],
+    
+    "relations":
+    [
+    
     {
       "iri":"<http://www.siriusplatform-risk-assessment/field/agent_inverse>",
       "label":"Agent",
@@ -65,87 +61,75 @@ search-profile='{
       "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
       "hasRange":"<http://www.w3.org/2001/XMLSchema#Decimal>"
     }
-  ]
-}'
-
-relations='{
-  "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": [{
-    "kind": "resource",
-    "queryPattern": "{ 
-      $subject ^base:P31_has_modified ?event .
-      ?event a base:E5_Event ;
-             base:P11_had_participant ?__value__ .
-      ?__value__ a base:E39_Actor .
-    }"
-  }],
+    
+    ]
+  }'
   
-  "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
+  relations='{
+    "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": [{
+      "kind": "resource",
+      "queryPattern": "{$subject ^base:P31_has_modified ?event .?event a base:E5_Event ; base:P11_had_participant ?__value__ .?__value__ a base:E39_Actor .}"
+    }],
+    "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
     "kind": "numeric-range",
     "datatype": "http://www.w3.org/2001/XMLSchema#double",
     "queryPattern": "{
-      $subject ^base:P31_has_modified ?event .
-      ?event a base:E5_Event ;
-             base:P39i_was_measured_by ?magnitude .
-      ?magnitude a crmsci:S21_Measurement ;
-                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                 base:P40_observed_dimension ?dimension .
-      ?dimension a base:E54_Dimension ;
-                 base:P90_has_value ?literal .
-      BIND(xsd:double(?literal) AS ?val)
-      FILTER(?val >= xsd:double(?__numericRangeBeginValue__))
-      FILTER(?val <= xsd:double(?__numericRangeEndValue__))
-    }"
-  }]
-}'>
-  
-  <semantic-search-query-keyword 
-    domain='<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>' 
-    query='
-      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-      PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
-      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-      SELECT ?subject 
-      WHERE {
-        ?subject a base:E18_Physical_Thing; 
-                 base:P1_is_identified_by ?name_identifier . 
-        ?name_identifier a base:E41_Appellation;
-                         skos:prefLabel ?label.
-        FILTER REGEX(STR(?label), ?__token__, "i") 
-      } 
-    ' 
-    default-query='
-      PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
-      SELECT DISTINCT ?subject ?label 
-      WHERE { 
-        ?subject a base:E18_Physical_Thing .
-      }
-    ' 
-    debounce=500>
-  </semantic-search-query-keyword>
+      $subject  ^cidoc:P31_has_modified ?event .
 
-  <div data-flex-layout="row stretch-stretch">
-    <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
-      <semantic-search-facet value-relations='{
-        "<http://www.siriusplatform-risk-assessment/field/min_score>": {
-          "kind": "numeric-range",
-          "valuesQuery": "
-            PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
-            PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-            SELECT (MIN(xsd:double(?val)) AS ?numericRangeBeginValue)
-                   (MAX(xsd:double(?val)) AS ?numericRangeEndValue)
-            WHERE {
-              $subject ^base:P31_has_modified ?event .
-              ?event base:P39i_was_measured_by ?magnitude .
-              ?magnitude a crmsci:S21_Measurement ;
-                         base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                         base:P40_observed_dimension ?dimension .
-              ?dimension base:P90_has_value ?val .
-            }"
-        }
-      }'></semantic-search-facet>
-    </div>
+      ?event a cidoc:E5_Event ;
+            rdfs:label ?event_name ;
+            cidoc:P39i_was_measured_by ?magnitude .
+          
+      ?magnitude a crmsci:S21_Measurement ;
+                cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                cidoc:P40_observed_dimension ?dimension .
+
+      ?dimension a cidoc:E54_Dimension ;
+                cidoc:P90_has_value ?literal .
+          FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .
+          FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) .
+    }"
+  }] 
+  }'
+  >
+  <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>' query='
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+    prefix skos: <http://www.w3.org/2004/02/skos/core#>
+    SELECT ?subject 
+    WHERE {
+      ?subject a 
+      <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>; 
+      <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by>   ?name_identifier . 
+      ?name_identifier a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation>.
+      ?name_identifier skos:prefLabel ?label.
+      FILTER REGEX(STR(?label), ?__token__, "i") 
+    } 
+    ' default-query='
+    prefix org:   <http://example.com/org/>
+    prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    prefix skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX wdt:  <http://www.wikidata.org/prop/direct/>
+    PREFIX wd:  <http://www.wikidata.org/entity/>
+    prefix crm: <http://www.cidoc-crm.org/cidoc-crm/>
+    
+    SELECT DISTINCT ?subject ?label 
+    WHERE { 
+      ?subject a 	crm:E18_Physical_Thing
+      
+      
+    }
+    ' debounce=500></semantic-search-query-keyword>
+    <div data-flex-layout="row stretch-stretch">
+      <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
+            <semantic-search-facet value-relations='{
+              "<http://www.siriusplatform-risk-assessment/field/min_score>": {
+                "kind": "numeric-range",
+                "valuesQuery": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>\nPREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?numericRangeBeginValue ?numericRangeEndValue WHERE {\n  $subject ^base:P31_has_modified ?event .\n  ?event base:P39i_was_measured_by ?magnitude .\n  ?magnitude a crmsci:S21_Measurement ;\n             base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;\n             base:P40_observed_dimension ?dimension .\n  ?dimension a base:E54_Dimension ;\n             base:P90_has_value ?val .\n  BIND(xsd:double(?val) AS ?numericRangeBeginValue)\n  BIND(xsd:double(?val) AS ?numericRangeEndValue)\n}"
+              }
+            }'></semantic-search-facet>
+      </div>
       <semantic-search-result-holder>
         <div data-flex-self="md-full">
           <semantic-search-result>
