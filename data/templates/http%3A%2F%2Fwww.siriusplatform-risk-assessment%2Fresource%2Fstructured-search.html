@@ -3,7 +3,20 @@ categories='{
   "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
     "kind": "numeric-range",
     "datatype": "http://www.w3.org/2001/XMLSchema#double",
-    "queryPattern": "{\n     $subject ?__relation__ ?literal .\n      FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .\n      FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) .\n    }"
+    "queryPattern": " $subject  ^cidoc:P31_has_modified ?event .
+
+      ?event a cidoc:E5_Event ;
+            rdfs:label ?event_name ;
+            cidoc:P39i_was_measured_by ?magnitude .
+          
+      ?magnitude a crmsci:S21_Measurement ;
+                cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                cidoc:P40_observed_dimension ?dimension .
+
+      ?dimension a cidoc:E54_Dimension ;
+                cidoc:P90_has_value ?literal .
+          FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .
+          FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) ."
   }]}'
   search-profile='{                   
     "categories":  
@@ -69,27 +82,7 @@ categories='{
     "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": [{
       "kind": "resource",
       "queryPattern": "{$subject ^base:P31_has_modified ?event .?event a base:E5_Event ; base:P11_had_participant ?__value__ .?__value__ a base:E39_Actor .}"
-    }],
-    "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
-    "kind": "numeric-range",
-    "datatype": "http://www.w3.org/2001/XMLSchema#double",
-    "queryPattern": "{
-      $subject  ^cidoc:P31_has_modified ?event .
-
-      ?event a cidoc:E5_Event ;
-            rdfs:label ?event_name ;
-            cidoc:P39i_was_measured_by ?magnitude .
-          
-      ?magnitude a crmsci:S21_Measurement ;
-                cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                cidoc:P40_observed_dimension ?dimension .
-
-      ?dimension a cidoc:E54_Dimension ;
-                cidoc:P90_has_value ?literal .
-          FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .
-          FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) .
-    }"
-  }] 
+    }] 
   }'
   >
   <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>' query='
