@@ -1,4 +1,23 @@
 <semantic-search
+categories='{
+  "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
+    "kind": "numeric-range",
+    "datatype": "http://www.w3.org/2001/XMLSchema#double",
+    "queryPattern": " $subject  ^cidoc:P31_has_modified ?event .
+
+      ?event a cidoc:E5_Event ;
+            rdfs:label ?event_name ;
+            cidoc:P39i_was_measured_by ?magnitude .
+          
+      ?magnitude a crmsci:S21_Measurement ;
+                cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                cidoc:P40_observed_dimension ?dimension .
+
+      ?dimension a cidoc:E54_Dimension ;
+                cidoc:P90_has_value ?literal .
+          FILTER(xsd:double(?literal) >= xsd:double(?__numericRangeBeginValue__)) .
+          FILTER(xsd:double(?literal) <= xsd:double(?__numericRangeEndValue__)) ."
+  }]}'
   search-profile='{                   
     "categories":  
     [
@@ -53,7 +72,7 @@
       "iri":"<http://www.siriusplatform-risk-assessment/field/min_score>",
       "label":"Magnitude Range",
       "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
-      "hasRange":"<http://www.w3.org/2001/XMLSchema#double>"
+      "hasRange":"<http://www.w3.org/2001/XMLSchema#Decimal>"
     }
     
     ]
@@ -62,13 +81,8 @@
   relations='{
     "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": [{
       "kind": "resource",
-      "queryPattern": "{$subject ^<http://www.cidoc-crm.org/cidoc-crm/P31_has_modified> ?event . ?event a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P11_had_participant> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E39_Actor> .}"
-    }],
-    "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
-      "kind": "numeric-range",
-      "datatype": "http://www.w3.org/2001/XMLSchema#double",
-      "queryPattern": "{\n  $subject ^<http://www.cidoc-crm.org/cidoc-crm/P31_has_modified> ?event .\n  ?event a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P39i_was_measured_by> ?magnitude .\n  ?magnitude a <http://www.ics.forth.gr/isl/CRMsci/S21_Measurement> ; <http://www.cidoc-crm.org/cidoc-crm/P40_observed_dimension> ?dimension .\n  ?dimension a <http://www.cidoc-crm.org/cidoc-crm/E54_Dimension> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?dimType ; <http://www.cidoc-crm.org/cidoc-crm/P90_has_value> ?literal .\n  FILTER(?dimType IN (<https://w3id.org/sirius/type/magnitude-score>, <https://w3id.org/sirius/type/magnitude-score-min>, <https://w3id.org/sirius/type/magnitude-score-max>)) .\n  FILTER(?literal >= ?__numericRangeBeginValue__ && ?literal <= ?__numericRangeEndValue__) .\n}"
-    }]
+      "queryPattern": "{$subject ^base:P31_has_modified ?event .?event a base:E5_Event ; base:P11_had_participant ?__value__ .?__value__ a base:E39_Actor .}"
+    }] 
   }'
   >
   <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>' query='
@@ -105,7 +119,7 @@
             <semantic-search-facet value-relations='{
               "<http://www.siriusplatform-risk-assessment/field/min_score>": {
                 "kind": "numeric-range",
-                "valuesQuery": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>\nPREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT (MIN(xsd:double(?val)) AS ?numericRangeBeginValue) (MAX(xsd:double(?val)) AS ?numericRangeEndValue) WHERE {\n  $subject ^base:P31_has_modified ?event .\n  ?event base:P39i_was_measured_by ?magnitude .\n  ?magnitude a crmsci:S21_Measurement ;\n             base:P40_observed_dimension ?dimension .\n  ?dimension a base:E54_Dimension ;\n             base:P2_has_type ?dimType ;\n             base:P90_has_value ?val .\n  FILTER(?dimType IN (<https://w3id.org/sirius/type/magnitude-score>, <https://w3id.org/sirius/type/magnitude-score-min>, <https://w3id.org/sirius/type/magnitude-score-max>))\n}"
+                "valuesQuery": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>\nPREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nSELECT ?numericRangeBeginValue ?numericRangeEndValue WHERE {\n  $subject ^base:P31_has_modified ?event .\n  ?event base:P39i_was_measured_by ?magnitude .\n  ?magnitude a crmsci:S21_Measurement ;\n             base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;\n             base:P40_observed_dimension ?dimension .\n  ?dimension a base:E54_Dimension ;\n             base:P90_has_value ?val .\n  BIND(xsd:double(?val) AS ?numericRangeBeginValue)\n  BIND(xsd:double(?val) AS ?numericRangeEndValue)\n}"
               }
             }'></semantic-search-facet>
       </div>
