@@ -4,14 +4,14 @@ categories='{
     "kind": "numeric-range",
     "datatype": "http://www.w3.org/2001/XMLSchema#double",
     "queryPattern": "{ 
-      $subject ^cidoc:P31_has_modified ?event .
-      ?event a cidoc:E5_Event ;
-             cidoc:P39i_was_measured_by ?magnitude .
+      $subject ^base:P31_has_modified ?event .
+      ?event a base:E5_Event ;
+             base:P39i_was_measured_by ?magnitude .
       ?magnitude a crmsci:S21_Measurement ;
-                 cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                 cidoc:P40_observed_dimension ?dimension .
-      ?dimension a cidoc:E54_Dimension ;
-                 cidoc:P90_has_value ?literal .
+                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                 base:P40_observed_dimension ?dimension .
+      ?dimension a base:E54_Dimension ;
+                 base:P90_has_value ?literal .
       BIND(xsd:double(?literal) AS ?val)
       FILTER(?val >= xsd:double(?__numericRangeBeginValue__))
       FILTER(?val <= xsd:double(?__numericRangeEndValue__))
@@ -72,10 +72,10 @@ relations='{
   "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": [{
     "kind": "resource",
     "queryPattern": "{ 
-      $subject ^cidoc:P31_has_modified ?event .
-      ?event a cidoc:E5_Event ;
-             cidoc:P11_had_participant ?__value__ .
-      ?__value__ a cidoc:E39_Actor .
+      $subject ^base:P31_has_modified ?event .
+      ?event a base:E5_Event ;
+             base:P11_had_participant ?__value__ .
+      ?__value__ a base:E39_Actor .
     }"
   }],
   
@@ -83,14 +83,14 @@ relations='{
     "kind": "numeric-range",
     "datatype": "http://www.w3.org/2001/XMLSchema#double",
     "queryPattern": "{
-      $subject ^cidoc:P31_has_modified ?event .
-      ?event a cidoc:E5_Event ;
-             cidoc:P39i_was_measured_by ?magnitude .
+      $subject ^base:P31_has_modified ?event .
+      ?event a base:E5_Event ;
+             base:P39i_was_measured_by ?magnitude .
       ?magnitude a crmsci:S21_Measurement ;
-                 cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                 cidoc:P40_observed_dimension ?dimension .
-      ?dimension a cidoc:E54_Dimension ;
-                 cidoc:P90_has_value ?literal .
+                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                 base:P40_observed_dimension ?dimension .
+      ?dimension a base:E54_Dimension ;
+                 base:P90_has_value ?literal .
       BIND(xsd:double(?literal) AS ?val)
       FILTER(?val >= xsd:double(?__numericRangeBeginValue__))
       FILTER(?val <= xsd:double(?__numericRangeEndValue__))
@@ -103,22 +103,22 @@ relations='{
     query='
       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-      PREFIX cidoc: <http://www.cidoc-crm.org/cidoc-crm/>
+      PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
       PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
       SELECT ?subject 
       WHERE {
-        ?subject a cidoc:E18_Physical_Thing; 
-                 cidoc:P1_is_identified_by ?name_identifier . 
-        ?name_identifier a cidoc:E41_Appellation;
+        ?subject a base:E18_Physical_Thing; 
+                 base:P1_is_identified_by ?name_identifier . 
+        ?name_identifier a base:E41_Appellation;
                          skos:prefLabel ?label.
         FILTER REGEX(STR(?label), ?__token__, "i") 
       } 
     ' 
     default-query='
-      PREFIX cidoc: <http://www.cidoc-crm.org/cidoc-crm/>
+      PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
       SELECT DISTINCT ?subject ?label 
       WHERE { 
-        ?subject a cidoc:E18_Physical_Thing .
+        ?subject a base:E18_Physical_Thing .
       }
     ' 
     debounce=500>
@@ -130,18 +130,18 @@ relations='{
         "<http://www.siriusplatform-risk-assessment/field/min_score>": {
           "kind": "numeric-range",
           "valuesQuery": "
-            PREFIX cidoc: <http://www.cidoc-crm.org/cidoc-crm/>
+            PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
             PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
             PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             SELECT (MIN(xsd:double(?val)) AS ?numericRangeBeginValue)
                    (MAX(xsd:double(?val)) AS ?numericRangeEndValue)
             WHERE {
-              $subject ^cidoc:P31_has_modified ?event .
-              ?event cidoc:P39i_was_measured_by ?magnitude .
+              $subject ^base:P31_has_modified ?event .
+              ?event base:P39i_was_measured_by ?magnitude .
               ?magnitude a crmsci:S21_Measurement ;
-                         cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                         cidoc:P40_observed_dimension ?dimension .
-              ?dimension cidoc:P90_has_value ?val .
+                         base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                         base:P40_observed_dimension ?dimension .
+              ?dimension base:P90_has_value ?val .
             }"
         }
       }'></semantic-search-facet>
