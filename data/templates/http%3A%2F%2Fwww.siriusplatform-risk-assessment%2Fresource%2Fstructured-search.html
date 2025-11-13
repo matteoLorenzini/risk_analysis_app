@@ -62,7 +62,7 @@
   relations='{
     "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": [{
       "kind": "resource",
-      "queryPattern": "{$subject ^base:P31_has_modified ?event .?event a base:E5_Event ; base:P11_had_participant ?__value__ .?__value__ a base:E39_Actor .}"
+      "queryPattern": "{$subject ^<http://www.cidoc-crm.org/cidoc-crm/P31_has_modified> ?event . ?event a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P11_had_participant> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E39_Actor> .}"
     }],
     "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
       "kind": "numeric-range",
