@@ -1,4 +1,4 @@
-<!-- Event + Magnitudo per [[this]], lowest=green, highest=red -->
+<!-- Event + Magnitude per [[this]], lowest=green, highest=red -->
 <semantic-table
   id="risk-table"
   query='
@@ -10,17 +10,18 @@ PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 SELECT
   ?subject
   ?event_name
-  (COALESCE( (?minNum + ?maxNum)/2, ?minNum, ?maxNum) AS ?magnitudo)
+  (COALESCE( (?minNum + ?maxNum)/2, ?minNum, ?maxNum ) AS ?magnitudo)
   ?bgColor
   ?bdColor
 WHERE {
   VALUES ?subject { <[[this]]> }
 
+  # === Event-level magnitude values ===
   {
     SELECT
       ?subject ?event ?event_name
-    (SAMPLE(xsd:decimal(?minVal)) AS ?minNum)
-    (SAMPLE(xsd:decimal(?maxVal)) AS ?maxNum)
+      (SAMPLE(xsd:decimal(?minVal)) AS ?minNum)
+      (SAMPLE(xsd:decimal(?maxVal)) AS ?maxNum)
     WHERE {
       ?subject a base:E18_Physical_Thing ;
                ^base:P31_has_modified ?event .
@@ -35,22 +36,21 @@ WHERE {
       OPTIONAL {
         ?magnitude base:P40_observed_dimension ?dimMin .
         ?dimMin a base:E54_Dimension ;
-                base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                base:P2_has_type <https://w3id.org/sirius/type/magnitude-score-min> ;
                 base:P90_has_value ?minVal .
-        FILTER(STRSTARTS(STR(?dimMin), "https://w3id.org/sirius/magnitude_score_min/"))
       }
 
       OPTIONAL {
         ?magnitude base:P40_observed_dimension ?dimMax .
         ?dimMax a base:E54_Dimension ;
-                base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                base:P2_has_type <https://w3id.org/sirius/type/magnitude-score-max> ;
                 base:P90_has_value ?maxVal .
-        FILTER(STRSTARTS(STR(?dimMax), "https://w3id.org/sirius/magnitude_score_max/"))
       }
     }
     GROUP BY ?subject ?event ?event_name
   }
 
+  # === Global range across all events ===
   {
     SELECT
       ?subject
@@ -69,25 +69,23 @@ WHERE {
       OPTIONAL {
         ?magnitude0 base:P40_observed_dimension ?dimMin0 .
         ?dimMin0 a base:E54_Dimension ;
-                 base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score-min> ;
                  base:P90_has_value ?minVal0 .
-        FILTER(STRSTARTS(STR(?dimMin0), "https://w3id.org/sirius/magnitude_score_min/"))
         BIND(xsd:decimal(?minVal0) AS ?minNum0)
       }
 
       OPTIONAL {
         ?magnitude0 base:P40_observed_dimension ?dimMax0 .
         ?dimMax0 a base:E54_Dimension ;
-                 base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score-max> ;
                  base:P90_has_value ?maxVal0 .
-        FILTER(STRSTARTS(STR(?dimMax0), "https://w3id.org/sirius/magnitude_score_max/"))
         BIND(xsd:decimal(?maxVal0) AS ?maxNum0)
       }
     }
     GROUP BY ?subject
   }
 
-  # Robust average value: prefer mean of min/max, else whichever exists, else 0
+  # === Compute average ===
   BIND(
     IF(BOUND(?minNum) && BOUND(?maxNum),
        ((?minNum + ?maxNum) / 2),
@@ -95,14 +93,24 @@ WHERE {
           IF(BOUND(?maxNum), ?maxNum, xsd:decimal(0))))
     AS ?avgNum)
 
-  # Robust range and percentage
-  BIND(IF(BOUND(?globalMax) && BOUND(?globalMin), xsd:decimal(?globalMax - ?globalMin), xsd:decimal(1)) AS ?range)
-  BIND(IF(?range > 0, (?avgNum - COALESCE(?globalMin, xsd:decimal(0))) / ?range, 0.5) AS ?pct)
+  # === Compute normalized percentage ===
+  BIND(
+    IF(BOUND(?globalMax) && BOUND(?globalMin),
+       xsd:decimal(?globalMax - ?globalMin),
+       xsd:decimal(1))
+    AS ?range)
 
-  # Clamp hue to [0,120] and compute HSL strings
+  BIND(
+    IF(?range > 0,
+       (?avgNum - COALESCE(?globalMin, xsd:decimal(0))) / ?range,
+       0.5)
+    AS ?pct)
+
+  # === Hue: 120 = green, 0 = red ===
   BIND(ROUND(120 * (1 - ?pct)) AS ?hueRaw)
   BIND(IF(?hueRaw < 0, 0, IF(?hueRaw > 120, 120, ?hueRaw)) AS ?hue)
 
+  # === Colors ===
   BIND(CONCAT("hsl(", STR(?hue), ",70%,85%)") AS ?bgColor)
   BIND(CONCAT("hsl(", STR(?hue), ",70%,40%)") AS ?bdColor)
 }
@@ -123,7 +131,7 @@ ORDER BY DESC(?magnitudo)
     {{/if}}
   </template>
 
-  <!-- Magnitude cell with inverted colors -->
+  <!-- Magnitude with color -->
   <template id="magnitudoCell">
     {{#if magnitudo.value}}
       <div class="pill magnitude-cell"
