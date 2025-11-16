@@ -10502,3 +10502,94 @@
 [2025-11-15 10:43:20Z INFO BrokerMessageListener] Get messages has been cancelled using local token source. Continue to get messages with new status.
 [2025-11-15 11:01:43Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
 [2025-11-15 11:01:44Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-15 11:51:52Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-15 11:51:52Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-15 12:42:00Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-15 12:42:00Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-15 13:32:08Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-15 13:32:09Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-15 14:22:17Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-15 14:22:17Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-15 15:06:12Z WARN GitHubActionsService] Attempt 1 of GET request to https://broker.actions.githubusercontent.com/message?sessionId=509dc76b-64cd-4854-8c49-c99ca1256a32&status=Online&runnerVersion=2.329.0&os=Windows&architecture=X64&disableUpdate=false failed (Socket Error: ConnectionReset). The operation will be retried in 10.921 seconds.
+[2025-11-15 15:12:19Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-15 15:12:19Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-15 16:02:28Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-15 16:02:29Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-15 16:52:37Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-15 16:52:38Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-15 21:57:34Z WARN GitHubActionsService] Attempt 1 of GET request to https://broker.actions.githubusercontent.com/message?sessionId=509dc76b-64cd-4854-8c49-c99ca1256a32&status=Online&runnerVersion=2.329.0&os=Windows&architecture=X64&disableUpdate=false failed (Socket Error: ConnectionReset). The operation will be retried in 11.051 seconds.
+[2025-11-15 21:57:45Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-15 21:57:47Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-16 13:25:37Z WARN GitHubActionsService] GET request to https://broker.actions.githubusercontent.com/message?sessionId=509dc76b-64cd-4854-8c49-c99ca1256a32&status=Online&runnerVersion=2.329.0&os=Windows&architecture=X64&disableUpdate=false timed out after 100 seconds.
+[2025-11-16 13:25:37Z ERR  BrokerServer] Catch exception during request
+[2025-11-16 13:25:37Z ERR  BrokerServer] System.TimeoutException: The HTTP request timed out after 00:01:40.
+ ---> System.Threading.Tasks.TaskCanceledException: The operation was canceled.
+ ---> System.IO.IOException: Unable to read data from the transport connection: The I/O operation has been aborted because of either a thread exit or an application request..
+ ---> System.Net.Sockets.SocketException (995): The I/O operation has been aborted because of either a thread exit or an application request.
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.AuthenticationHelper.SendWithNtAuthAsync(HttpRequestMessage request, Uri authUri, Boolean async, ICredentials credentials, Boolean isProxyAuth, HttpConnection connection, HttpConnectionPool connectionPool, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.AuthenticationHelper.SendWithAuthAsync(HttpRequestMessage request, Uri authUri, Boolean async, ICredentials credentials, Boolean preAuthenticate, Boolean isProxyAuth, Boolean doRequestAuth, HttpConnectionPool pool, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at GitHub.Services.Common.RawHttpMessageHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at GitHub.Services.Common.RawHttpMessageHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at GitHub.Services.Common.VssHttpRetryMessageHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at Sdk.WebApi.WebApi.RawHttpClientBase.SendAsync(HttpRequestMessage message, HttpCompletionOption completionOption, Object userState, CancellationToken cancellationToken)
+   at Sdk.WebApi.WebApi.RawHttpClientBase.SendAsync[T](HttpRequestMessage message, Boolean readErrorBody, Object userState, CancellationToken cancellationToken)
+   at Sdk.WebApi.WebApi.RawHttpClientBase.SendAsync[T](HttpMethod method, IEnumerable`1 additionalHeaders, Uri requestUri, HttpContent content, IEnumerable`1 queryParameters, Boolean readErrorBody, Object userState, CancellationToken cancellationToken)
+   at GitHub.Actions.RunService.WebApi.BrokerHttpClient.GetRunnerMessageAsync(Nullable`1 sessionId, String runnerVersion, Nullable`1 status, String os, String architecture, Nullable`1 disableUpdate, CancellationToken cancellationToken)
+   at GitHub.Runner.Common.BrokerServer.<>c__DisplayClass7_0.<<GetRunnerMessageAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at GitHub.Runner.Common.RunnerService.RetryRequest[T](Func`1 func, CancellationToken cancellationToken, Int32 maxAttempts, Func`2 shouldRetry)
+[2025-11-16 13:25:37Z ERR  BrokerServer] #####################################################
+[2025-11-16 13:25:37Z ERR  BrokerServer] System.Threading.Tasks.TaskCanceledException: The operation was canceled.
+ ---> System.IO.IOException: Unable to read data from the transport connection: The I/O operation has been aborted because of either a thread exit or an application request..
+ ---> System.Net.Sockets.SocketException (995): The I/O operation has been aborted because of either a thread exit or an application request.
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.AuthenticationHelper.SendWithNtAuthAsync(HttpRequestMessage request, Uri authUri, Boolean async, ICredentials credentials, Boolean isProxyAuth, HttpConnection connection, HttpConnectionPool connectionPool, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.AuthenticationHelper.SendWithAuthAsync(HttpRequestMessage request, Uri authUri, Boolean async, ICredentials credentials, Boolean preAuthenticate, Boolean isProxyAuth, Boolean doRequestAuth, HttpConnectionPool pool, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at GitHub.Services.Common.RawHttpMessageHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+[2025-11-16 13:25:37Z ERR  BrokerServer] #####################################################
+[2025-11-16 13:25:37Z ERR  BrokerServer] System.IO.IOException: Unable to read data from the transport connection: The I/O operation has been aborted because of either a thread exit or an application request..
+ ---> System.Net.Sockets.SocketException (995): The I/O operation has been aborted because of either a thread exit or an application request.
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.EnsureFullTlsFrameAsync[TIOAdapter](CancellationToken cancellationToken, Int32 estimatedSize)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Security.SslStream.ReadAsyncInternal[TIOAdapter](Memory`1 buffer, CancellationToken cancellationToken)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+[2025-11-16 13:25:37Z ERR  BrokerServer] #####################################################
+[2025-11-16 13:25:37Z ERR  BrokerServer] System.Net.Sockets.SocketException (995): The I/O operation has been aborted because of either a thread exit or an application request.
+[2025-11-16 13:25:37Z WARN BrokerServer] Back off 12.055 seconds before next retry. 4 attempt left.
+[2025-11-16 13:25:49Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-16 13:25:50Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-16 14:15:58Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-16 14:15:59Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-16 15:06:07Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-16 15:06:08Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown
+[2025-11-16 15:56:17Z INFO RSAEncryptedFileKeyManager] Loading RSA key parameters from file C:\Users\matte\Repo\risk_analysis_app\actions-runner\.credentials_rsaparams
+[2025-11-16 15:56:17Z INFO GitHubActionsService] AAD Correlation ID for this token request: Unknown

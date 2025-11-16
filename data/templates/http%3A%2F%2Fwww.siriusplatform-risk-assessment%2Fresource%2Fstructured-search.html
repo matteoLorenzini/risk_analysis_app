@@ -67,6 +67,12 @@ categories='{
       "label":"Magnitude Range",
       "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
       "hasRange":"<http://www.w3.org/2001/XMLSchema#Decimal>"
+    },
+    {
+      "iri":"<http://www.siriusplatform-risk-assessment/field/event>",
+      "label":"Event",
+      "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
+      "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>"
     }
     
     ]
@@ -95,7 +101,10 @@ categories='{
       FILTER(?score <= ?__numericRangeEndValue__) .
           FILTER(?score >= ?__numericRangeBeginValue__) .
     }"
-  }] 
+  }],
+    "<http://www.siriusplatform-risk-assessment/field/event>": [{
+      "kind": "resource",
+      "queryPattern": "{$subject ^base:P31_has_modified ?__value__ . ?__value__ a base:E5_Event .
   }'
   >
   <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>' query='
