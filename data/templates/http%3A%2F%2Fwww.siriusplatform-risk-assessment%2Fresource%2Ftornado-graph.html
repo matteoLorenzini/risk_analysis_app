@@ -1,128 +1,97 @@
-<!-- Event + Magnitude per [[this]], lowest=green, highest=red -->
 <semantic-table
   id="risk-table"
   query='
-PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX cidoc:  <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
-PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
 
 SELECT
   ?subject
   ?event_name
-  (COALESCE( (?minNum + ?maxNum)/2, ?minNum, ?maxNum ) AS ?magnitudo)
+  ?magnitudo
   ?bgColor
   ?bdColor
 WHERE {
   VALUES ?subject { <[[this]]> }
 
-  # === Event-level magnitude values ===
+  ############### EVENT + MIN/MAX VALUES ###############
   {
     SELECT
       ?subject ?event ?event_name
-      (SAMPLE(xsd:decimal(?minVal)) AS ?minNum)
-      (SAMPLE(xsd:decimal(?maxVal)) AS ?maxNum)
+      (SAMPLE(?minValNum) AS ?minNum)
+      (SAMPLE(?maxValNum) AS ?maxNum)
     WHERE {
-      ?subject a base:E18_Physical_Thing ;
-               ^base:P31_has_modified ?event .
-
-      ?event a base:E5_Event ;
+      ?subject ^cidoc:P31_has_modified ?event .
+      ?event a cidoc:E5_Event ;
              rdfs:label ?event_name ;
-             base:P39i_was_measured_by ?magnitude .
+             cidoc:P39i_was_measured_by ?measurement .
 
-      ?magnitude a crmsci:S21_Measurement ;
-                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+      ?measurement a crmsci:S21_Measurement ;
+                   cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
 
-      OPTIONAL {
-        ?magnitude base:P40_observed_dimension ?dimMin .
-        ?dimMin a base:E54_Dimension ;
-                base:P2_has_type <https://w3id.org/sirius/type/magnitude-score-min> ;
-                base:P90_has_value ?minVal .
-      }
+      ?measurement cidoc:P40_observed_dimension ?dim .
 
-      OPTIONAL {
-        ?magnitude base:P40_observed_dimension ?dimMax .
-        ?dimMax a base:E54_Dimension ;
-                base:P2_has_type <https://w3id.org/sirius/type/magnitude-score-max> ;
-                base:P90_has_value ?maxVal .
-      }
+      ?dim cidoc:P90_has_value ?valRaw .
+
+      BIND(xsd:decimal(?valRaw) AS ?val)
+
+      # Detect MIN dimensions by URI
+      BIND(IF(CONTAINS(STR(?dim), "magnitude_score_min"), ?val, UNDEF) AS ?minValNum)
+
+      # Detect MAX dimensions by URI
+      BIND(IF(CONTAINS(STR(?dim), "magnitude_score_max"), ?val, UNDEF) AS ?maxValNum)
     }
     GROUP BY ?subject ?event ?event_name
   }
 
-  # === Global range across all events ===
+  ############### GLOBAL RANGE FOR COLOR SCALE ###############
   {
     SELECT
       ?subject
-      (MIN(?minNum0) AS ?globalMin)
-      (MAX(?maxNum0) AS ?globalMax)
+      (MIN(?allMin) AS ?globalMin)
+      (MAX(?allMax) AS ?globalMax)
     WHERE {
-      ?subject a base:E18_Physical_Thing ;
-               ^base:P31_has_modified ?event0 .
+      ?subject ^cidoc:P31_has_modified ?ev .
+      ?ev cidoc:P39i_was_measured_by ?meas .
+      ?meas cidoc:P40_observed_dimension ?d .
+      ?d cidoc:P90_has_value ?vRaw .
 
-      ?event0 a base:E5_Event ;
-              base:P39i_was_measured_by ?magnitude0 .
+      BIND(xsd:decimal(?vRaw) AS ?v)
 
-      ?magnitude0 a crmsci:S21_Measurement ;
-                  base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
-
-      OPTIONAL {
-        ?magnitude0 base:P40_observed_dimension ?dimMin0 .
-        ?dimMin0 a base:E54_Dimension ;
-                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score-min> ;
-                 base:P90_has_value ?minVal0 .
-        BIND(xsd:decimal(?minVal0) AS ?minNum0)
-      }
-
-      OPTIONAL {
-        ?magnitude0 base:P40_observed_dimension ?dimMax0 .
-        ?dimMax0 a base:E54_Dimension ;
-                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score-max> ;
-                 base:P90_has_value ?maxVal0 .
-        BIND(xsd:decimal(?maxVal0) AS ?maxNum0)
-      }
+      # same min/max detection
+      BIND(IF(CONTAINS(STR(?d), "magnitude_score_min"), ?v, UNDEF) AS ?allMin)
+      BIND(IF(CONTAINS(STR(?d), "magnitude_score_max"), ?v, UNDEF) AS ?allMax)
     }
     GROUP BY ?subject
   }
 
-  # === Compute average ===
+  ############### MAGNITUDE + COLOR LOGIC ###############
   BIND(
     IF(BOUND(?minNum) && BOUND(?maxNum),
-       ((?minNum + ?maxNum) / 2),
-       IF(BOUND(?minNum), ?minNum,
-          IF(BOUND(?maxNum), ?maxNum, xsd:decimal(0))))
-    AS ?avgNum)
+      (?minNum + ?maxNum)/2,
+      IF(BOUND(?minNum), ?minNum,
+         IF(BOUND(?maxNum), ?maxNum, xsd:decimal(0))))
+    AS ?magnitudo
+  )
 
-  # === Compute normalized percentage ===
-  BIND(
-    IF(BOUND(?globalMax) && BOUND(?globalMin),
-       xsd:decimal(?globalMax - ?globalMin),
-       xsd:decimal(1))
-    AS ?range)
+  BIND(xsd:decimal(?globalMax - ?globalMin) AS ?range)
+  BIND(IF(?range > 0, (?magnitudo - ?globalMin)/?range, 0.5) AS ?pct)
 
-  BIND(
-    IF(?range > 0,
-       (?avgNum - COALESCE(?globalMin, xsd:decimal(0))) / ?range,
-       0.5)
-    AS ?pct)
+  # green(120) → yellow(60) → red(0)
+  BIND(ROUND(120 * (1 - ?pct)) AS ?hue)
 
-  # === Hue: 120 = green, 0 = red ===
-  BIND(ROUND(120 * (1 - ?pct)) AS ?hueRaw)
-  BIND(IF(?hueRaw < 0, 0, IF(?hueRaw > 120, 120, ?hueRaw)) AS ?hue)
-
-  # === Colors ===
-  BIND(CONCAT("hsl(", STR(?hue), ",70%,85%)") AS ?bgColor)
-  BIND(CONCAT("hsl(", STR(?hue), ",70%,40%)") AS ?bdColor)
+  BIND(CONCAT("hsl(", STR(?hue), ", 70%, 85%)") AS ?bgColor)
+  BIND(CONCAT("hsl(", STR(?hue), ", 70%, 40%)") AS ?bdColor)
 }
 ORDER BY DESC(?magnitudo)
 '
   column-configuration='[
-    { "displayName": "Event",              "cellTemplate": "{{> eventCell}}" },
-    { "displayName": "Magnitude (avg)",    "cellTemplate": "{{> magnitudoCell}}" }
+    { "displayName": "Event",           "cellTemplate": "{{> eventCell}}" },
+    { "displayName": "Magnitude (avg)", "cellTemplate": "{{> magnitudoCell}}" }
   ]'
   options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
 
-  <!-- Event name -->
   <template id="eventCell">
     {{#if event_name.value}}
       <div class="pill">{{event_name.value}}</div>
@@ -131,7 +100,6 @@ ORDER BY DESC(?magnitudo)
     {{/if}}
   </template>
 
-  <!-- Magnitude with color -->
   <template id="magnitudoCell">
     {{#if magnitudo.value}}
       <div class="pill magnitude-cell"
@@ -146,7 +114,12 @@ ORDER BY DESC(?magnitudo)
 </semantic-table>
 
 <style>
-  #risk-table .pill { display:inline-block; padding:.2rem .5rem; border:1px solid #e5e7eb; border-radius:999px; }
-  #risk-table .empty{ text-align:center; opacity:.5; }
-  #risk-table .magnitude-cell { font-weight: 600; }
+  #risk-table .pill {
+    display:inline-block;
+    padding:.2rem .5rem;
+    border:1px solid #ccc;
+    border-radius:999px;
+  }
+  #risk-table .empty { text-align:center; opacity:.5; }
+  #risk-table .magnitude-cell { font-weight:600; }
 </style>
