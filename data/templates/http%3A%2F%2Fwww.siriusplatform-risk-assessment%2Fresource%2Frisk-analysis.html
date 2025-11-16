@@ -224,11 +224,11 @@ WHERE {
   <!-- Generic min / max value cell (e.g., Magnitude / Uncertainty) -->
   <template id="valueRangeCell">
     {{#if min.value}}
-      <div class="val"><span class="dim-label">min</span> {{min.value}}</div>
-      {{#if max.value}}<div class="val"><span class="dim-label">max</span> {{max.value}}</div>{{/if}}
+      <div class="val"><span class="dim-label">Val.</span> {{min.value}}</div>
+      {{#if max.value}}<div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>{{/if}}
     {{else}}
       {{#if max.value}}
-        <div class="val"><span class="dim-label">max</span> {{max.value}}</div>
+        <div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>
       {{else}}
         <div class="empty">—</div>
       {{/if}}
@@ -238,11 +238,11 @@ WHERE {
   <!-- Scale score: min / max + optional note -->
   <template id="scaleRangeCell">
     {{#if min.value}}
-      <div class="val"><strong><span class="dim-label">min</span> {{min.value}}</strong></div>
-      {{#if max.value}}<div class="val"><strong><span class="dim-label">max</span> {{max.value}}</strong></div>{{/if}}
+      <div class="val"><strong><span class="dim-label">Val.</span> {{min.value}}</strong></div>
+      {{#if max.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{max.value}}</strong></div>{{/if}}
     {{else}}
       {{#if max.value}}
-        <div class="val"><strong><span class="dim-label">max</span> {{max.value}}</strong></div>
+        <div class="val"><strong><span class="dim-label">Val.</span> {{max.value}}</strong></div>
       {{else}}
         <div class="empty">—</div>
       {{/if}}
@@ -255,13 +255,13 @@ WHERE {
   <!-- Scale score: Val. 1 / Val. 2 / Val. 3 + Description -->
   <template id="scaleTripleCell">
     {{#if v1.value}}
-      <div class="val"><strong><span class="dim-label">Val. 1</span> {{v1.value}}</strong></div>
+      <div class="val"><strong><span class="dim-label">Val.</span> {{v1.value}}</strong></div>
     {{/if}}
     {{#if v2.value}}
-      <div class="val"><strong><span class="dim-label">Val. 2</span> {{v2.value}}</strong></div>
+      <div class="val"><strong><span class="dim-label">Val.</span> {{v2.value}}</strong></div>
     {{/if}}
     {{#if v3.value}}
-      <div class="val"><strong><span class="dim-label">Val. 3</span> {{v3.value}}</strong></div>
+      <div class="val"><strong><span class="dim-label">Val.</span> {{v3.value}}</strong></div>
     {{/if}}
     {{#unless v1.value}}
       {{#unless v2.value}}
