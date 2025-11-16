@@ -1,13 +1,13 @@
 <semantic-search
 categories='{
-  "<http://www.cidoc-crm.org/cidoc-crm/E54_Dimension>": [{
+  "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
     "kind": "numeric-range",
     "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
     "queryPattern": "
       {
-        $subject ?__relation__ ?literal .
-        FILTER(xsd:decimal(?literal) >= xsd:decimal(?__numericRangeBeginValue__)) .
-        FILTER(xsd:decimal(?literal) <= xsd:decimal(?__numericRangeEndValue__)) .
+        $subject ?__relation__ ?score .
+        FILTER(?score <= ?__numericRangeEndValue__) .
+          FILTER(?score >= ?__numericRangeBeginValue__) .
       }
     "
   }]}'
@@ -33,7 +33,7 @@ categories='{
     },
     
     {
-      "iri":"<http://www.cidoc-crm.org/cidoc-crm/E54_Dimension>",
+      "iri":"<http://www.cidoc-crm.org/extensions/crmsci/S21_Measurement>",
       "label":"Magnitude Score",
       "thumbnail": "../images/fcs/things.svg"
     },
@@ -66,7 +66,7 @@ categories='{
       "iri":"<http://www.siriusplatform-risk-assessment/field/min_score>",
       "label":"Magnitude Range",
       "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
-      "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E54_Dimension>"
+      "hasRange":"<http://www.w3.org/2001/XMLSchema#Decimal>"
     }
     
     ]
@@ -76,7 +76,26 @@ categories='{
     "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": [{
       "kind": "resource",
       "queryPattern": "{$subject ^base:P31_has_modified ?event .?event a base:E5_Event ; base:P11_had_participant ?__value__ .?__value__ a base:E39_Actor .}"
-    }] 
+    }],
+    "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
+    "kind": "numeric-range",
+    "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+    "queryPattern": "{
+      $subject  ^base:P31_has_modified ?event .
+
+      ?event a base:E5_Event ;
+             rdfs:label ?event_name ;
+             base:P39i_was_measured_by ?magnitude .
+
+      ?magnitude a <http://www.ics.forth.gr/isl/CRMsci/S21_Measurement> ;
+                 base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                 base:P40_observed_dimension ?dimension.
+      ?dimension a base:E54_Dimension;
+                 base:P90_has_value ?score.
+      FILTER(?score <= ?__numericRangeEndValue__) .
+          FILTER(?score >= ?__numericRangeBeginValue__) .
+    }"
+  }] 
   }'
   >
   <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>' query='
@@ -110,28 +129,21 @@ categories='{
     ' debounce=500></semantic-search-query-keyword>
     <div data-flex-layout="row stretch-stretch">
       <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
-           <semantic-search-facet
+<semantic-search-facet
   value-relations='{
     "<http://www.siriusplatform-risk-assessment/field/min_score>": {
       "kind": "numeric-range",
       "valuesQuery": "
-        PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
-        PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
-        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
+        PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+        
         SELECT ?numericRangeBeginValue ?numericRangeEndValue WHERE {
-          $subject ^base:P31_has_modified ?event .
-          ?event base:P39i_was_measured_by ?magnitude .
-
-          ?magnitude a crmsci:S21_Measurement ;
-                     base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                     base:P40_observed_dimension ?dimension .
-
-          ?dimension a base:E54_Dimension ;
-                     base:P90_has_value ?val .
-
-          BIND(xsd:decimal(?val) AS ?numericRangeBeginValue)
-          BIND(xsd:decimal(?val) AS ?numericRangeEndValue)
+          ?subject ^crm:P31_has_modified ?event .
+          ?event crm:P39i_was_measured_by ?magnitude .
+          ?magnitude crm:P40_observed_dimension ?dimension .
+          ?dimension crm:P90_has_value ?score .
+          
+          BIND(?score AS ?numericRangeBeginValue)
+          BIND(?score AS ?numericRangeEndValue)
         }
       "
     }
@@ -228,3 +240,4 @@ categories='{
 </div>
 </semantic-search-result-holder>
 </div>
+}
