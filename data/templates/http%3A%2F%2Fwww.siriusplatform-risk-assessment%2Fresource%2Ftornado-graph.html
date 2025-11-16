@@ -47,26 +47,26 @@ WHERE {
 
   ################ GLOBAL RANGE ################
   {
-    SELECT
-      ?subject
-      (MIN(?allMin) AS ?globalMin)
-      (MAX(?allMax) AS ?globalMax)
-    WHERE {
-      ?subject ^cidoc:P31_has_modified ?ev .
-      ?ev cidoc:P39i_was_measured_by ?meas .
-      ?meas cidoc:P40_observed_dimension ?d .
-      ?d cidoc:P90_has_value ?raw .
+  SELECT
+    ?subject
+    (MIN(?vReal) AS ?globalMin)
+    (MAX(?vReal) AS ?globalMax)
+  WHERE {
+    ?subject ^cidoc:P31_has_modified ?ev .
+    ?ev cidoc:P39i_was_measured_by ?meas .
+    ?meas cidoc:P40_observed_dimension ?d .
 
-      BIND(xsd:decimal(?raw) AS ?v)
+    # Only keep TRUE min/max dimensions
+    FILTER(
+      CONTAINS(STR(?d), "magnitude_score_min") ||
+      CONTAINS(STR(?d), "magnitude_score_max")
+    )
 
-      BIND(CONTAINS(STR(?d), "magnitude_score_min") AS ?isMin0)
-      BIND(CONTAINS(STR(?d), "magnitude_score_max") AS ?isMax0)
-
-      BIND(IF(?isMin0, ?v, xsd:decimal(0)) AS ?allMin)
-      BIND(IF(?isMax0, ?v, xsd:decimal(0)) AS ?allMax)
-    }
-    GROUP BY ?subject
+    ?d cidoc:P90_has_value ?raw .
+    BIND(xsd:decimal(?raw) AS ?vReal)
   }
+  GROUP BY ?subject
+}
 
   ############ MAGNITUDE AVG ############
   BIND(
