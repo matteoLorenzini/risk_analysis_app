@@ -15,12 +15,12 @@ SELECT
 WHERE {
   VALUES ?subject { <[[this]]> }
 
-  ############### EVENT + MIN/MAX VALUES ###############
+  ################ EVENT + MIN/MAX VALUES ################
   {
     SELECT
       ?subject ?event ?event_name
-      (SAMPLE(?minValNum) AS ?minNum)
-      (SAMPLE(?maxValNum) AS ?maxNum)
+      (SAMPLE(?minExtracted) AS ?minNum)
+      (SAMPLE(?maxExtracted) AS ?maxNum)
     WHERE {
       ?subject ^cidoc:P31_has_modified ?event .
       ?event a cidoc:E5_Event ;
@@ -31,21 +31,21 @@ WHERE {
                    cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
 
       ?measurement cidoc:P40_observed_dimension ?dim .
-
       ?dim cidoc:P90_has_value ?valRaw .
-
       BIND(xsd:decimal(?valRaw) AS ?val)
 
-      # Detect MIN dimensions by URI
-      BIND(IF(CONTAINS(STR(?dim), "magnitude_score_min"), ?val, UNDEF) AS ?minValNum)
+      # Flags
+      BIND(CONTAINS(STR(?dim), "magnitude_score_min") AS ?isMin)
+      BIND(CONTAINS(STR(?dim), "magnitude_score_max") AS ?isMax)
 
-      # Detect MAX dimensions by URI
-      BIND(IF(CONTAINS(STR(?dim), "magnitude_score_max"), ?val, UNDEF) AS ?maxValNum)
+      # Only assign numbers when the flag is true
+      BIND(IF(?isMin, ?val, xsd:decimal(0)) AS ?minExtracted)
+      BIND(IF(?isMax, ?val, xsd:decimal(0)) AS ?maxExtracted)
     }
     GROUP BY ?subject ?event ?event_name
   }
 
-  ############### GLOBAL RANGE FOR COLOR SCALE ###############
+  ################ GLOBAL RANGE ################
   {
     SELECT
       ?subject
@@ -55,34 +55,37 @@ WHERE {
       ?subject ^cidoc:P31_has_modified ?ev .
       ?ev cidoc:P39i_was_measured_by ?meas .
       ?meas cidoc:P40_observed_dimension ?d .
-      ?d cidoc:P90_has_value ?vRaw .
+      ?d cidoc:P90_has_value ?raw .
 
-      BIND(xsd:decimal(?vRaw) AS ?v)
+      BIND(xsd:decimal(?raw) AS ?v)
 
-      # same min/max detection
-      BIND(IF(CONTAINS(STR(?d), "magnitude_score_min"), ?v, UNDEF) AS ?allMin)
-      BIND(IF(CONTAINS(STR(?d), "magnitude_score_max"), ?v, UNDEF) AS ?allMax)
+      BIND(CONTAINS(STR(?d), "magnitude_score_min") AS ?isMin0)
+      BIND(CONTAINS(STR(?d), "magnitude_score_max") AS ?isMax0)
+
+      BIND(IF(?isMin0, ?v, xsd:decimal(0)) AS ?allMin)
+      BIND(IF(?isMax0, ?v, xsd:decimal(0)) AS ?allMax)
     }
     GROUP BY ?subject
   }
 
-  ############### MAGNITUDE + COLOR LOGIC ###############
+  ############ MAGNITUDE AVG ############
   BIND(
-    IF(BOUND(?minNum) && BOUND(?maxNum),
-      (?minNum + ?maxNum)/2,
-      IF(BOUND(?minNum), ?minNum,
-         IF(BOUND(?maxNum), ?maxNum, xsd:decimal(0))))
+    IF(?minNum > 0 && ?maxNum > 0,
+        (?minNum + ?maxNum)/2,
+        IF(?minNum > 0, ?minNum,
+           IF(?maxNum > 0, ?maxNum, xsd:decimal(0))))
     AS ?magnitudo
   )
 
+  ############ COLOR LOGIC ############
   BIND(xsd:decimal(?globalMax - ?globalMin) AS ?range)
   BIND(IF(?range > 0, (?magnitudo - ?globalMin)/?range, 0.5) AS ?pct)
 
-  # green(120) → yellow(60) → red(0)
+  # flip scale: green→yellow→red
   BIND(ROUND(120 * (1 - ?pct)) AS ?hue)
 
-  BIND(CONCAT("hsl(", STR(?hue), ", 70%, 85%)") AS ?bgColor)
-  BIND(CONCAT("hsl(", STR(?hue), ", 70%, 40%)") AS ?bdColor)
+  BIND(CONCAT("hsl(", STR(?hue), ",70%,85%)") AS ?bgColor)
+  BIND(CONCAT("hsl(", STR(?hue), ",70%,40%)") AS ?bdColor)
 }
 ORDER BY DESC(?magnitudo)
 '
@@ -114,12 +117,8 @@ ORDER BY DESC(?magnitudo)
 </semantic-table>
 
 <style>
-  #risk-table .pill {
-    display:inline-block;
-    padding:.2rem .5rem;
-    border:1px solid #ccc;
-    border-radius:999px;
-  }
-  #risk-table .empty { text-align:center; opacity:.5; }
-  #risk-table .magnitude-cell { font-weight:600; }
+  #risk-table .pill { display:inline-block; padding:.2rem .5rem;
+    border:1px solid #e5e7eb; border-radius:999px; }
+  #risk-table .empty{ text-align:center; opacity:.5; }
+  #risk-table .magnitude-cell { font-weight: 600; }
 </style>
