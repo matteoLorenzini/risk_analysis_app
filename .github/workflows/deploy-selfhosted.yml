@@ -18,10 +18,29 @@ jobs:
         run: |
           Write-Host "Actor: $env:RUNNER_NAME on $env:RUNNER_OS"
 
+      - name: Ensure runtime-data clone exists (self-healing)
+        shell: powershell
+        env:
+          TARGET: C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main\researchspace\runtime-data
+          REPO: ${{ github.repository }}
+          TOKEN: ${{ github.token }}
+        run: |
+          if (-not (Test-Path $env:TARGET)) {
+            New-Item -ItemType Directory -Force -Path $env:TARGET | Out-Null
+          }
+          if (-not (Test-Path (Join-Path $env:TARGET '.git'))) {
+            Write-Host "Cloning $env:REPO into $env:TARGET"
+            Remove-Item -Path (Join-Path $env:TARGET '*') -Recurse -Force -ErrorAction SilentlyContinue
+            git clone "https://x-access-token:$($env:TOKEN)@github.com/$($env:REPO).git" $env:TARGET
+          }
+
       - name: Update runtime-data from origin/main
         shell: powershell
         run: |
           $target = 'C:\\Users\\matte\\researchspace-docker-desktop-main\\researchspace-docker-desktop-main\\researchspace\\runtime-data'
+          $repo = '${{ github.repository }}'
+          $token = '${{ github.token }}'
+          git -C $target remote set-url origin "https://x-access-token:$token@github.com/$repo.git"
           git -C $target fetch origin
           git -C $target reset --hard origin/main
 
@@ -55,8 +74,13 @@ jobs:
         run: |
           $root = 'C:\\Users\\matte\\researchspace-docker-desktop-main\\researchspace-docker-desktop-main'
           Set-Location $root
+          # Pull latest image(s) so container uses updated image on restart
+          docker compose pull researchspace
+          # Optionally rebuild if a local Dockerfile/context is defined for the service (non-fatal if not)
+          try { docker compose build researchspace } catch { Write-Host "No build context for 'researchspace' or build failed; continuing with latest pulled image." }
           docker compose ps researchspace
-          docker compose restart researchspace
+          # Recreate container to ensure new image is used
+          docker compose up -d --no-deps --force-recreate researchspace
 
       - name: Show service status
         shell: powershell
