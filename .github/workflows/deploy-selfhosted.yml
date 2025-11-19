@@ -3,7 +3,6 @@ name: Deploy to Local ResearchSpace (self-hosted)
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch:
 
 jobs:
   deploy:
@@ -69,15 +68,15 @@ jobs:
           $tpl = "$target\data\templates\http%3A%2F%2Fwww.researchspace.org%2Fresource%2FResourceContent.html"
           if (Test-Path $tpl) { Write-Host "Template synced: $tpl" } else { Write-Error "Template missing after sync: $tpl"; exit 1 }
 
+      
+
       - name: Restart ResearchSpace service
         shell: powershell
         run: |
           $root = 'C:\\Users\\matte\\researchspace-docker-desktop-main\\researchspace-docker-desktop-main'
           Set-Location $root
-          # Pull latest image(s) so container uses updated image on restart
+          # Pull latest image(s); we intentionally do not build locally to always use the existing image
           docker compose pull researchspace
-          # Optionally rebuild if a local Dockerfile/context is defined for the service (non-fatal if not)
-          try { docker compose build researchspace } catch { Write-Host "No build context for 'researchspace' or build failed; continuing with latest pulled image." }
           docker compose ps researchspace
           # Recreate container to ensure new image is used
           docker compose up -d --no-deps --force-recreate researchspace
@@ -88,3 +87,17 @@ jobs:
           $root = 'C:\\Users\\matte\\researchspace-docker-desktop-main\\researchspace-docker-desktop-main'
           Set-Location $root
           docker compose ps researchspace
+          # Print the running image reference and digest for verification
+          $cid = docker compose ps -q researchspace
+          if ($cid) {
+            $imgName = docker inspect -f "{{.Config.Image}}" $cid
+            Write-Host "Running image: $imgName"
+            try {
+              $repoDigests = docker image inspect $imgName --format "{{json .RepoDigests}}"
+              Write-Host "RepoDigests: $repoDigests"
+            } catch {
+              Write-Host "Could not retrieve image digests for $imgName"
+            }
+          } else {
+            Write-Host "No container ID found for 'researchspace'"
+          }
