@@ -246,6 +246,29 @@
 
                         <div style="padding: 1.8% 1.5% 1.5% 5%;">
                             [[> resourceHeaderData image=true]]
+                                                        <!-- Inline map next to the image -->
+                                                        <div style="margin-top: 8px;">
+                                                            <semantic-map id='map-result' style='height: 220px;' query='
+                                                                PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                                                                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                                                                PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+                                                                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                                
+                                                                SELECT DISTINCT (CONCAT("Point(", STR(?coords), ")") AS ?wkt) ?label ?subject WHERE {
+                                                                    BIND(<[[this]]> AS ?subject)
+                                                                    ?subject 
+                                                                        base:P1_is_identified_by ?appellation ;
+                                                                        base:P55_has_current_location ?coords .
+                                                                    ?appellation a base:E41_Appellation ;
+                                                                                            skos:prefLabel ?label .
+                                                                }
+                                
+                                                                ' tuple-template='{{> mapTupleTemplate }}'>
+                                                                <template id='mapTupleTemplate'>
+                                                                    <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
+                                                                </template>
+                                                            </semantic-map>
+                                                        </div>
                         </div>
                     </div>
                 </div>
