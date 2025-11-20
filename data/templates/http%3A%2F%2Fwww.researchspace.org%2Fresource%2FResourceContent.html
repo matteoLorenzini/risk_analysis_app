@@ -249,7 +249,7 @@
                                                         <!-- Inline map next to the image -->
                                                                                     <div style="margin-top: 8px;">
                                                                                         <!-- Conditional map: only render if the resource has a current location -->
-                                                                                        <semantic-if query='ASK { <[[this]]> <http://www.cidoc-crm.org/cidoc-crm/P55_has_current_location> ?c }' then='{{> mapBlock}}'></semantic-if>
+                                                                                        <semantic-if query='ASK { <[[this]]> <http://www.cidoc-crm.org/cidoc-crm/P55_has_current_location> ?c }' then='{{> mapBlock}}'>
                                                                                         <template id='mapBlock'>
                                                                                             <div style="height: 220px;">
                                                                                                 <semantic-search-result>
@@ -275,6 +275,7 @@
                                                                                                 </semantic-search-result>
                                                                                             </div>
                                                                                         </template>
+                                                                                        </semantic-if>
                                                                                     </div>
                         </div>
                     </div>
