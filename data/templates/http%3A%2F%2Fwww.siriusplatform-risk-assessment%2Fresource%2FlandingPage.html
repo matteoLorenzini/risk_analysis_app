@@ -1,68 +1,126 @@
-[[> sirius:structured-search]]
-<!--
-              <bs-tabs id="tabs">
-                <bs-tab event-key="1" title="Table">
-                  
-<semantic-table query="
-   PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
-prefix skos: <http://www.w3.org/2004/02/skos/core#>
+[[> partial:pageHeader]]
+<div class="landing-wrapper">
+  <header class="landing-hero">
+    <h1 class="landing-title">Sirius Research Portal</h1>
+    <p class="landing-subtitle">Explore sites, agents, typologies and places across the Sirius risk knowledge graph.</p>
+    <div class="landing-search-banner">
+      <div class="search-inner">
+        <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>'
+          debounce='400'
+          query='
+            PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+            PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT ?subject WHERE {
+              ?subject a crm:E18_Physical_Thing ;
+                       crm:P1_is_identified_by ?appellation .
+              ?appellation a crm:E41_Appellation ; skos:prefLabel ?label .
+              FILTER REGEX(STR(?label), ?__token__, "i")
+            }
+          '
+          default-query='
+            PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+            SELECT DISTINCT ?subject WHERE { ?subject a crm:E18_Physical_Thing }
+          '
+        ></semantic-search-query-keyword>
+        <div class="advanced-toggle">
+          <button type="button" class="btn btn-sm btn-primary" onclick="document.querySelector('.advanced-search-panel').classList.toggle('open')">Advanced search ▾</button>
+        </div>
+        <div class="advanced-search-panel">
+          [[> sirius:structured-search]]
+        </div>
+      </div>
+    </div>
+  </header>
 
-SELECT ?subject ?label ?label_type ?note WHERE {
-  ?subject a base:E18_Physical_Thing ;
-       base:P1_is_identified_by ?appellation ;
-       base:P3_has_note ?note;
-       base:P2_has_type ?type.
-  ?appellation a base:E41_Appellation ;
-               skos:prefLabel ?value .
-  ?type a base:E55_Type;
-        skos:prefLabel ?label_type .
-}"
-                column-configuration='[{
-                    "displayName": "Site", 
-                    "cellTemplate": "<semantic-link iri={{subject.value}} />" 
-                  },
-                                      {
-                    "displayName": "Typology", 
-                    "cellTemplate": "<div>{{label_type.value}}</div>" 
-                  },
-                                      {
-                    "displayName": "Description", 
-                    "cellTemplate": "<div>{{note.value}}</div>" 
-                  }]'>
-</semantic-table>
-        
-                </bs-tab>
-                <bs-tab event-key="2" title="Map">
-                  
+  <section class="landing-section">
+    <div class="section-header">
+      <h3>Site</h3>
+      [[> resourceSummary type='crm:E18_Physical_Thing' label='Site']]
+    </div>
+    <div class="card-track horizontal-scroll" data-flex-layout="row nowrap">
+      [[#> cards type='crm:E18_Physical_Thing' ]] [[/ cards]]
+    </div>
+  </section>
 
+  <section class="landing-section">
+    <div class="section-header">
+      <h3>Agent</h3>
+      [[> resourceSummary type='crm:E39_Actor' label='Agent']]
+    </div>
+    <div class="card-track horizontal-scroll" data-flex-layout="row nowrap">
+      [[#> cards type='crm:E39_Actor' ]] [[/ cards]]
+    </div>
+  </section>
 
-<div style='height: 30vw;'>
- <semantic-map
-query='
-PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+  <section class="landing-section">
+    <div class="section-header">
+      <h3>Typology</h3>
+      [[> resourceSummary type='crm:E55_Type' label='Typology']]
+    </div>
+    <div class="card-track horizontal-scroll" data-flex-layout="row nowrap">
+      [[#> cards type='crm:E55_Type' ]] [[/ cards]]
+    </div>
+  </section>
 
-SELECT (CONCAT("Point(", STR(?coords), ")") AS ?wkt) ?label ?subject WHERE {
-  ?subject a base:E18_Physical_Thing ;
-           base:P1_is_identified_by ?appellation ;
-           base:P55_has_current_location ?coords .
-  ?appellation a base:E41_Appellation ;
-               skos:prefLabel ?label .
-}
-'
-tuple-template='{{> template }}'
->
-  <template id='template'>
-    <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
-
-  </template>
-</semantic-map>
+  <section class="landing-section">
+    <div class="section-header">
+      <h3>Place</h3>
+      [[> resourceSummary type='crm:E53_Place' label='Place']]
+    </div>
+    <div class="card-track horizontal-scroll" data-flex-layout="row nowrap">
+      [[#> cards type='crm:E53_Place' ]] [[/ cards]]
+    </div>
+  </section>
 </div>
-                         
-                </bs-tab>
-              </bs-tabs>
+
+[[#*inline "cards"]]
+  <semantic-query
+    query="SELECT DISTINCT ?subject WHERE {\n      PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>\n      ?subject a [[type]] .\n      BIND(DAY(NOW()) AS ?day)\n      BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?random)\n      [[> @partial-block ]]\n    } ORDER BY ?random LIMIT 12"
+    template="{{> template-cards}}"
+  >
+    <template id="template-cards">
+      <div class="cards-row" data-flex-layout="row nowrap">
+        {{#each bindings}}
+          <div class="card" style="min-width:180px;margin:0 8px 12px;">
+            <div class="card-body">
+              <semantic-link iri="{{subject.value}}">{{subject.value}}</semantic-link>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    </template>
+  </semantic-query>
+[[/inline]]
+
+[[#*inline "resourceSummary"]]
+  <semantic-query
+    query="SELECT (COUNT(?subject) AS ?num) WHERE {\n      PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>\n      ?subject a [[type]] .\n    }"
+    template="{{#each bindings}}<span class='count-pill'>{{num.value}} total</span>{{/each}}"
+  ></semantic-query>
+[[/inline]]
+
+[[> partial:pageFooter]]
+
+<style>
+  .landing-wrapper { padding: 0 2rem 4rem; }
+  .landing-hero { text-align: center; padding: 3rem 1rem 2rem; background: linear-gradient(135deg,#0b2b40,#164d6b); color:#fff; border-radius:8px; margin-bottom:2rem; }
+  .landing-title { font-size: 3rem; margin:0 0 .5rem; font-weight:600; letter-spacing:.5px; }
+  .landing-subtitle { font-size:1.1rem; opacity:.85; margin:0 0 1.5rem; }
+  .landing-search-banner { max-width:1000px; margin:0 auto; }
+  .search-inner { background:#fff; padding:1rem 1.25rem 1.5rem; border-radius:6px; box-shadow:0 4px 12px rgba(0,0,0,.15); position:relative; }
+  .advanced-toggle { text-align:right; margin-top:.5rem; }
+  .advanced-search-panel { display:none; margin-top:1rem; border-top:1px solid #e1e5ea; padding-top:1rem; }
+  .advanced-search-panel.open { display:block; }
+  .landing-section { margin-bottom:2.5rem; }
+  .section-header { display:flex; align-items:center; gap:1rem; margin-bottom:1rem; }
+  .section-header h3 { margin:0; font-size:1.4rem; font-weight:600; }
+  .count-pill { background:#164d6b; color:#fff; padding:.25rem .6rem; border-radius:999px; font-size:.75rem; letter-spacing:.5px; }
+  .horizontal-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:.5rem; }
+  .card-track { display:flex; }
+  .card { background:#fff; border:1px solid #e1e5ea; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,.06); transition:box-shadow .2s, transform .2s; }
+  .card:hover { box-shadow:0 6px 14px rgba(0,0,0,.15); transform:translateY(-2px); }
+  .card-body { padding:.75rem .85rem; font-size:.8rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  @media (max-width: 900px){ .landing-title{font-size:2.3rem;} }
+</style>
                 		-->
