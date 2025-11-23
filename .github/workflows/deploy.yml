@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Sync runtime-data
-        shell: pwsh
+        shell: powershell
         run: |
           $composeRoot = 'C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main'
           $target = Join-Path $composeRoot 'runtime-data'
@@ -24,13 +24,13 @@ jobs:
           if (Test-Path "$PWD\images") { robocopy "$PWD\images" (Join-Path $target 'images') /MIR | Out-Null }
 
       - name: Restart service
-        shell: pwsh
+        shell: powershell
         working-directory: C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main
         run: |
           docker compose up -d researchspace
           docker compose ps researchspace
 
       - name: Summary
-        shell: pwsh
+        shell: powershell
         run: |
           docker compose ps researchspace | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
