@@ -17,3 +17,5 @@
 # Backup/OS files
 .DS_Store
 Thumbs.db
+\n# Local self-hosted runner artifacts (should never be committed)
+actions-runner/
