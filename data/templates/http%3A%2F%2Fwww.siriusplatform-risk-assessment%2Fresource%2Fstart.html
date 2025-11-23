@@ -1,6 +1,59 @@
-
-              <bs-panel header="Content" collapsible="true">
-                <mp-resource-link-container uri="http://help.researchspace.org/resource/SemanticTable"><bs-menu-item>Table</bs-menu-item></mp-resource-link-container>
-              </bs-panel>
-                
-             
+<semantic-search-query-keyword 
+  domain='<http://www.cidoc-crm.org/cidoc-crm/E1_CRM_Entity>' 
+  query='
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    
+    SELECT DISTINCT ?subject ?label ?typeLabel 
+    WHERE {
+      ?subject crm:P1_is_identified_by ?name_identifier .
+      ?name_identifier a crm:E41_Appellation ;
+                       skos:prefLabel ?label .
+      
+      # Get entity type
+      ?subject a ?type .
+      OPTIONAL { ?type skos:prefLabel ?typeLabel }
+      
+      # Filter by search token
+      FILTER REGEX(STR(?label), ?__token__, "i")
+      
+      # Constrain to relevant entity types (Site, Agent, Event, Place)
+      FILTER (
+        ?type = crm:E18_Physical_Thing ||
+        ?type = crm:E39_Actor ||
+        ?type = crm:E5_Event ||
+        ?type = crm:E53_Place ||
+        ?type = crm:E55_Type
+      )
+    } 
+    LIMIT 20
+  ' 
+  default-query='
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+    
+    SELECT DISTINCT ?subject ?label ?typeLabel 
+    WHERE { 
+      ?subject a ?type ;
+               crm:P1_is_identified_by ?name_identifier .
+      ?name_identifier skos:prefLabel ?label .
+      OPTIONAL { ?type skos:prefLabel ?typeLabel }
+      
+      FILTER (
+        ?type = crm:E18_Physical_Thing ||
+        ?type = crm:E39_Actor ||
+        ?type = crm:E5_Event ||
+        ?type = crm:E53_Place ||
+        ?type = crm:E55_Type
+      )
+    }
+    LIMIT 100
+  ' 
+  debounce=500
+  template='<span style="color: blue;" title="{{subject.value}}">{{label.value}} <em>({{typeLabel.value}})</em></span>'
+  input-placeholder='Search for sites, agents, events, places...'
+>
+</semantic-search-query-keyword>
