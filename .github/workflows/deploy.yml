@@ -4,11 +4,6 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
-    inputs:
-      pull_image:
-        description: 'Run docker compose pull before restart'
-        required: true
-        default: 'false'
 
 jobs:
   deploy:
@@ -16,14 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set variables
+      - name: Set vars
         shell: powershell
         run: |
           echo "COMPOSE_ROOT=C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main" >> $Env:GITHUB_ENV
+          # Correct runtime-data path (includes 'researchspace' subfolder)
+          echo "RUNTIME_TARGET=C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main\researchspace\runtime-data" >> $Env:GITHUB_ENV
           echo "SERVICE_NAME=researchspace" >> $Env:GITHUB_ENV
-          echo "PULL_IMAGE=${{ github.event.inputs.pull_image }}" >> $Env:GITHUB_ENV
-          # Adjust if your compose expects researchspace\runtime-data instead of runtime-data:
-          echo "RUNTIME_TARGET=C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main\runtime-data" >> $Env:GITHUB_ENV
 
       - name: Sync runtime-data
         shell: powershell
@@ -41,11 +35,10 @@ jobs:
           SyncDir "$PWD\ldp"    (Join-Path $rt 'ldp')
           if (Test-Path "$PWD\file")   { SyncDir "$PWD\file"   (Join-Path $rt 'file') }
           if (Test-Path "$PWD\images") { SyncDir "$PWD\images" (Join-Path $rt 'images') }
-          Write-Host "Runtime-data sync complete."
+          Write-Host "Synced to $rt"
           Get-ChildItem $rt | Select-Object Name
 
-      - name: Optional pull
-        if: env.PULL_IMAGE == 'true'
+      - name: Pull image
         shell: powershell
         working-directory: ${{ env.COMPOSE_ROOT }}
         run: docker compose pull $Env:SERVICE_NAME || Write-Warning "Pull failed."
@@ -56,13 +49,15 @@ jobs:
         run: |
           docker compose up -d --no-deps --force-recreate $Env:SERVICE_NAME
           docker compose ps $Env:SERVICE_NAME
-          docker inspect $Env:SERVICE_NAME --format "Image={{.Config.Image}}" | Write-Host
-
-      - name: Verify mounts
-        shell: powershell
-        run: |
-          docker inspect $Env:SERVICE_NAME --format "{{json .Mounts}}" | Write-Host
+          $cid = docker compose ps -q $Env:SERVICE_NAME
+          Write-Host "Container ID: $cid"
+          docker inspect $cid --format "Image={{.Config.Image}}"
+          docker logs --tail 60 $cid
 
       - name: Summary
         shell: powershell
-        run: docker compose ps $Env:SERVICE_NAME | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
+        run: |
+          $cid = docker compose ps -q $Env:SERVICE_NAME
+          docker compose ps $Env:SERVICE_NAME | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
+          docker inspect $cid --format "Mounts={{json .Mounts}}" | Add-Content $Env:GITHUB_STEP_SUMMARY
+          docker logs --tail 30 $cid | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
