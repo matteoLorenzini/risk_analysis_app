@@ -9,28 +9,38 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v4
+      - name: Print context
+        shell: powershell
+        run: |
+          Write-Host "Runner OS: $Env:RUNNER_OS"
+          Write-Host "Repository: $Env:GITHUB_REPOSITORY"
+          where.exe docker 2>$null
+          docker version 2>$null
 
-      - name: Sync runtime-data
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Update runtime-data from origin/main
         shell: powershell
         run: |
           $composeRoot = 'C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main'
-          $target = Join-Path $composeRoot 'runtime-data'
-          if (!(Test-Path $target)) { New-Item -ItemType Directory -Path $target | Out-Null }
-          robocopy "$PWD\data"   (Join-Path $target 'data')   /MIR | Out-Null
-          robocopy "$PWD\config" (Join-Path $target 'config') /MIR | Out-Null
-          robocopy "$PWD\ldp"    (Join-Path $target 'ldp')    /MIR | Out-Null
-          if (Test-Path "$PWD\file")   { robocopy "$PWD\file"   (Join-Path $target 'file')   /MIR | Out-Null }
-          if (Test-Path "$PWD\images") { robocopy "$PWD\images" (Join-Path $target 'images') /MIR | Out-Null }
+          $runtime = Join-Path $composeRoot 'researchspace\runtime-data'
+          if (!(Test-Path $runtime)) { New-Item -ItemType Directory -Path $runtime | Out-Null }
+          robocopy "$PWD\data"   (Join-Path $runtime 'data')   /MIR | Out-Null
+          robocopy "$PWD\config" (Join-Path $runtime 'config') /MIR | Out-Null
+          robocopy "$PWD\ldp"    (Join-Path $runtime 'ldp')    /MIR | Out-Null
+          if (Test-Path "$PWD\file")   { robocopy "$PWD\file"   (Join-Path $runtime 'file')   /MIR | Out-Null }
+          if (Test-Path "$PWD\images") { robocopy "$PWD\images" (Join-Path $runtime 'images') /MIR | Out-Null }
+          Write-Host "Runtime-data sync complete."
 
-      - name: Restart service
+      - name: Restart ResearchSpace service
         shell: powershell
         working-directory: C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main
         run: |
           docker compose up -d researchspace
           docker compose ps researchspace
 
-      - name: Summary
+      - name: Show service status
         shell: powershell
         run: |
           docker compose ps researchspace | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
