@@ -4,106 +4,65 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      pull_image:
+        description: 'Run docker compose pull before restart'
+        required: true
+        default: 'false'
 
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Start diagnostic log
-        shell: powershell
-        run: |
-          New-Item -ItemType File -Path workflow.log -Force | Out-Null
-          Add-Content workflow.log "=== START DEPLOY === $(Get-Date)"
-
-      - name: Env check
-        shell: powershell
-        continue-on-error: true
-        run: |
-          Add-Content workflow.log "Runner OS: $Env:RUNNER_OS"
-          Add-Content workflow.log "Repo: $Env:GITHUB_REPOSITORY"
-          Add-Content workflow.log "where docker: $(where.exe docker 2>$null)"
-          Add-Content workflow.log "where docker-compose: $(where.exe docker-compose 2>$null)"
-          docker version 2>&1 | Out-String | Add-Content workflow.log
-          docker compose version 2>&1 | Out-String | Add-Content workflow.log
-          docker-compose version 2>&1 | Out-String | Add-Content workflow.log
-
       - uses: actions/checkout@v4
 
-      - name: Show compose root
+      - name: Set variables
         shell: powershell
-        continue-on-error: true
         run: |
-          $composeRoot = 'C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main'
-          Add-Content workflow.log "Compose root: $composeRoot"
-          Get-ChildItem $composeRoot 2>&1 | Out-String | Add-Content workflow.log
-          if (Test-Path "$composeRoot\docker-compose.yml") {
-            Add-Content workflow.log "docker-compose.yml (first 60 lines):"
-            (Get-Content "$composeRoot\docker-compose.yml" | Select-Object -First 60) -join "`n" | Add-Content workflow.log
-          } else {
-            Add-Content workflow.log "WARNING: docker-compose.yml missing"
-          }
+          echo "COMPOSE_ROOT=C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main" >> $Env:GITHUB_ENV
+          echo "SERVICE_NAME=researchspace" >> $Env:GITHUB_ENV
+          echo "PULL_IMAGE=${{ github.event.inputs.pull_image }}" >> $Env:GITHUB_ENV
+          # Adjust if your compose expects researchspace\runtime-data instead of runtime-data:
+          echo "RUNTIME_TARGET=C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main\runtime-data" >> $Env:GITHUB_ENV
 
       - name: Sync runtime-data
         shell: powershell
-        continue-on-error: true
         run: |
-          $composeRoot = 'C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main'
-          $runtime = Join-Path $composeRoot 'runtime-data'
-          Add-Content workflow.log "Runtime target: $runtime"
-          if (!(Test-Path $runtime)) { New-Item -ItemType Directory -Path $runtime | Out-Null }
+          $rt = $Env:RUNTIME_TARGET
+          if (!(Test-Path $rt)) { New-Item -ItemType Directory -Path $rt | Out-Null }
           function SyncDir($src,$dst){
             if (Test-Path $src){
-              Add-Content workflow.log "Sync $src -> $dst"
               robocopy $src $dst /MIR /NFL /NDL /NJH /NJS /NP | Out-Null
-              $code = $LASTEXITCODE
-              Add-Content workflow.log "Robocopy exit code: $code"
-              if ($code -ge 8){ Add-Content workflow.log "ERROR robocopy failed $src code $code" }
-              $global:LASTEXITCODE = 0
-            } else {
-              Add-Content workflow.log "Missing source: $src"
+              $LASTEXITCODE = 0
             }
           }
-          SyncDir "$PWD\data"   (Join-Path $runtime 'data')
-            SyncDir "$PWD\config" (Join-Path $runtime 'config')
-          SyncDir "$PWD\ldp"    (Join-Path $runtime 'ldp')
-          SyncDir "$PWD\file"   (Join-Path $runtime 'file')
-          SyncDir "$PWD\images" (Join-Path $runtime 'images')
-          Get-ChildItem $runtime -Recurse | Select-Object -First 30 2>&1 | Out-String | Add-Content workflow.log
+          SyncDir "$PWD\data"   (Join-Path $rt 'data')
+          SyncDir "$PWD\config" (Join-Path $rt 'config')
+          SyncDir "$PWD\ldp"    (Join-Path $rt 'ldp')
+          if (Test-Path "$PWD\file")   { SyncDir "$PWD\file"   (Join-Path $rt 'file') }
+          if (Test-Path "$PWD\images") { SyncDir "$PWD\images" (Join-Path $rt 'images') }
+          Write-Host "Runtime-data sync complete."
+          Get-ChildItem $rt | Select-Object Name
 
-      - name: List containers
+      - name: Optional pull
+        if: env.PULL_IMAGE == 'true'
         shell: powershell
-        continue-on-error: true
-        run: |
-          docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Image}}" 2>&1 | Out-String | Add-Content workflow.log
+        working-directory: ${{ env.COMPOSE_ROOT }}
+        run: docker compose pull $Env:SERVICE_NAME || Write-Warning "Pull failed."
 
       - name: Restart service
         shell: powershell
-        working-directory: C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main
-        continue-on-error: true
+        working-directory: ${{ env.COMPOSE_ROOT }}
         run: |
-          $svc = 'researchspace'
-          Add-Content ..\workflow.log "Attempt restart service: $svc"
-          if (docker compose version 2>$null) {
-            docker compose up -d $svc 2>&1 | Out-String | Add-Content ..\workflow.log
-            docker compose ps $svc 2>&1 | Out-String | Add-Content ..\workflow.log
-          } elseif (docker-compose version 2>$null) {
-            docker-compose up -d $svc 2>&1 | Out-String | Add-Content ..\workflow.log
-            docker-compose ps $svc 2>&1 | Out-String | Add-Content ..\workflow.log
-          } else {
-            Add-Content ..\workflow.log "ERROR: No compose command available."
-          }
-          docker logs --tail 80 $svc 2>&1 | Out-String | Add-Content ..\workflow.log
+          docker compose up -d --no-deps --force-recreate $Env:SERVICE_NAME
+          docker compose ps $Env:SERVICE_NAME
+          docker inspect $Env:SERVICE_NAME --format "Image={{.Config.Image}}" | Write-Host
 
-      - name: Final status
+      - name: Verify mounts
         shell: powershell
-        continue-on-error: true
         run: |
-          docker ps --filter "name=researchspace" 2>&1 | Out-String | Add-Content workflow.log
-          docker compose ps researchspace 2>&1 | Out-String | Add-Content workflow.log
-          docker logs --tail 40 researchspace 2>&1 | Out-String | Add-Content workflow.log
+          docker inspect $Env:SERVICE_NAME --format "{{json .Mounts}}" | Write-Host
 
-      - name: Upload log
-        uses: actions/upload-artifact@v4
-        with:
-          name: deploy-log
-          path: workflow.log
+      - name: Summary
+        shell: powershell
+        run: docker compose ps $Env:SERVICE_NAME | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
