@@ -9,38 +9,94 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Print context
+      - name: Check environment
         shell: powershell
         run: |
           Write-Host "Runner OS: $Env:RUNNER_OS"
-          Write-Host "Repository: $Env:GITHUB_REPOSITORY"
+          Write-Host "Repo: $Env:GITHUB_REPOSITORY"
           where.exe docker 2>$null
+          where.exe docker-compose 2>$null
           docker version 2>$null
+          docker compose version 2>$null
+          docker-compose version 2>$null
 
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Update runtime-data from origin/main
+      - name: Show compose root contents
         shell: powershell
         run: |
           $composeRoot = 'C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main'
-          $runtime = Join-Path $composeRoot 'researchspace\runtime-data'
-          if (!(Test-Path $runtime)) { New-Item -ItemType Directory -Path $runtime | Out-Null }
-          robocopy "$PWD\data"   (Join-Path $runtime 'data')   /MIR | Out-Null
-          robocopy "$PWD\config" (Join-Path $runtime 'config') /MIR | Out-Null
-          robocopy "$PWD\ldp"    (Join-Path $runtime 'ldp')    /MIR | Out-Null
-          if (Test-Path "$PWD\file")   { robocopy "$PWD\file"   (Join-Path $runtime 'file')   /MIR | Out-Null }
-          if (Test-Path "$PWD\images") { robocopy "$PWD\images" (Join-Path $runtime 'images') /MIR | Out-Null }
-          Write-Host "Runtime-data sync complete."
+          Write-Host "Listing compose root:"
+          Get-ChildItem $composeRoot
+          if (Test-Path "$composeRoot\docker-compose.yml") {
+            Write-Host "First 40 lines of docker-compose.yml:"
+            Get-Content "$composeRoot\docker-compose.yml" | Select-Object -First 40
+          } else {
+            Write-Warning "docker-compose.yml NOT found at $composeRoot"
+          }
 
-      - name: Restart ResearchSpace service
+      - name: Sync runtime-data (debug)
+        shell: powershell
+        run: |
+          $composeRoot = 'C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main'
+          # If your runtime-data is directly under compose root (NOT under researchspace\), adjust here:
+          $runtime = Join-Path $composeRoot 'runtime-data'
+          Write-Host "Target runtime path: $runtime"
+          if (!(Test-Path $runtime)) { New-Item -ItemType Directory -Path $runtime | Out-Null }
+          function SyncDir($src,$dst){
+            if (Test-Path $src){
+              Write-Host "Sync $src -> $dst"
+              robocopy $src $dst /MIR /NFL /NDL /NJH /NJS /NP | Out-Null
+              $code = $LASTEXITCODE
+              Write-Host "Robocopy exit code: $code"
+              if ($code -ge 8){ Write-Warning "Robocopy reported failure for $src (code $code)" }
+            } else {
+              Write-Warning "Source missing: $src"
+            }
+          }
+          SyncDir "$PWD\data"   (Join-Path $runtime 'data')
+          SyncDir "$PWD\config" (Join-Path $runtime 'config')
+          SyncDir "$PWD\ldp"    (Join-Path $runtime 'ldp')
+          SyncDir "$PWD\file"   (Join-Path $runtime 'file')
+          SyncDir "$PWD\images" (Join-Path $runtime 'images')
+          Write-Host "Runtime-data sync done."
+          Write-Host "Runtime-data tree:"
+          Get-ChildItem $runtime -Recurse | Select-Object -First 25
+
+      - name: List existing containers
+        shell: powershell
+        run: |
+          docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Image}}"
+
+      - name: Restart ResearchSpace service (debug)
         shell: powershell
         working-directory: C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main
+        continue-on-error: true
         run: |
+          Write-Host "Using docker compose up -d researchspace"
           docker compose up -d researchspace
+          $ec = $LASTEXITCODE
+          Write-Host "docker compose up exit code: $ec"
           docker compose ps researchspace
+          Write-Host "Recent logs (if container exists):"
+          docker logs --tail 80 researchspace 2>$null
 
-      - name: Show service status
+      - name: Fallback legacy docker-compose (if needed)
+        shell: powershell
+        working-directory: C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main
+        if: failure()
+        run: |
+          Write-Host "Trying legacy docker-compose..."
+          docker-compose up -d researchspace
+          docker-compose ps researchspace
+          docker logs --tail 80 researchspace 2>$null
+
+      - name: Final status
         shell: powershell
         run: |
-          docker compose ps researchspace | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
+          Write-Host "Final docker ps:"
+          docker ps --filter "name=researchspace"
+          Write-Host "Compose ps:"
+          docker compose ps researchspace 2>$null
+          docker logs --tail 40 researchspace 2>$null
