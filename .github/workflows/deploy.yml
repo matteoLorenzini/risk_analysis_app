@@ -99,6 +99,31 @@ jobs:
             Pop-Location
           }
 
+      - name: Deploy custom WAR file
+        shell: powershell
+        run: |
+          Push-Location $env:COMPOSE_ROOT
+          try {
+            $warPath = "C:\Users\matte\researchspace\build\libs\ROOT-4.0-SNAPSHOT.war"
+            $cid = docker compose ps -q $env:SERVICE_NAME
+            
+            if (Test-Path $warPath) {
+              Write-Host "Deploying custom WAR file..."
+              docker cp $warPath ${cid}:/var/lib/jetty/webapps/ROOT.war
+              
+              Write-Host "Restarting container to deploy WAR..."
+              docker compose restart $env:SERVICE_NAME
+              
+              Start-Sleep -Seconds 15
+              Write-Host "WAR deployed successfully"
+            } else {
+              Write-Warning "Custom WAR not found at: $warPath"
+              Write-Warning "Using default image WAR"
+            }
+          } finally {
+            Pop-Location
+          }
+
       - name: Wait for service startup
         shell: powershell
         run: |
