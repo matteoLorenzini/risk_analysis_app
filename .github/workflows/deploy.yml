@@ -166,17 +166,26 @@ jobs:
             "" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
             "### Recent Logs" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
             '```' | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
-            docker logs --tail 50 $env:SERVICE_NAME 2>&1 | Out-String | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            # Get container ID first
+            $cid = docker compose ps -q $env:SERVICE_NAME
+            if ($cid) {
+              docker logs --tail 50 $cid 2>&1 | Out-String | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            } else {
+              "No container found" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            }
             '```' | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
             
             "" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
             $url = "http://localhost:10214/"
             try {
-              $response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 3
+              $response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 3 -ErrorAction Stop
               "### Health Status: Healthy" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
             } catch {
               "### Health Status: Not responding" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
             }
+          } catch {
+            Write-Warning "Failed to generate summary: $_"
+            exit 0
           } finally {
             Pop-Location
           }
