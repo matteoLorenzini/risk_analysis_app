@@ -50,20 +50,30 @@ jobs:
           }
           $global:LASTEXITCODE = 0
           
-          Write-Host "✓ Sync complete"
+          Write-Host "Sync complete"
+
+      - name: Verify compose file
+        shell: powershell
+        run: |
+          $composePath = Join-Path $Env:COMPOSE_ROOT "docker-compose.yml"
+          if (!(Test-Path $composePath)) {
+            Write-Error "docker-compose.yml not found at: $composePath"
+            exit 1
+          }
+          Write-Host "Found docker-compose.yml at: $composePath"
 
       - name: Pull latest image
         shell: powershell
-        working-directory: ${{ env.COMPOSE_ROOT }}
         run: |
+          Set-Location $Env:COMPOSE_ROOT
           Write-Host "Pulling latest image..."
           docker compose pull $Env:SERVICE_NAME
-          Write-Host "✓ Image pulled"
+          Write-Host "Image pulled"
 
       - name: Restart container
         shell: powershell
-        working-directory: ${{ env.COMPOSE_ROOT }}
         run: |
+          Set-Location $Env:COMPOSE_ROOT
           Write-Host "Restarting $Env:SERVICE_NAME..."
           docker compose up -d --force-recreate --no-deps $Env:SERVICE_NAME
           
@@ -88,7 +98,7 @@ jobs:
             try {
               $response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
               if ($response.StatusCode -eq 200) {
-                Write-Host " Service is healthy (attempt $i)"
+                Write-Host "Service is healthy (attempt $i)"
                 $healthy = $true
                 break
               }
@@ -100,6 +110,7 @@ jobs:
           
           if (-not $healthy) {
             Write-Warning "Health check failed after $maxAttempts attempts"
+            Set-Location $Env:COMPOSE_ROOT
             docker logs $Env:SERVICE_NAME
             exit 1
           }
@@ -108,11 +119,12 @@ jobs:
         if: always()
         shell: powershell
         run: |
+          Set-Location $Env:COMPOSE_ROOT
           "## Deployment Summary" | Add-Content $Env:GITHUB_STEP_SUMMARY
           "" | Add-Content $Env:GITHUB_STEP_SUMMARY
           
           "### Container Status" | Add-Content $Env:GITHUB_STEP_SUMMARY
-          docker compose ps $Env:SERVICE_NAME | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
+          docker compose ps $Env:SERVICE_NAME 2>&1 | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
           
           "" | Add-Content $Env:GITHUB_STEP_SUMMARY
           "### Recent Logs" | Add-Content $Env:GITHUB_STEP_SUMMARY
