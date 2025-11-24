@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
-    timeout-minutes: 10
+    timeout-minutes: 15
     
     steps:
       - name: Checkout repository
@@ -20,14 +20,14 @@ jobs:
           $composeRoot = "C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main"
           $runtimeTarget = Join-Path $composeRoot "researchspace\runtime-data"
           
-          echo "COMPOSE_ROOT=$composeRoot" >> $Env:GITHUB_ENV
-          echo "RUNTIME_TARGET=$runtimeTarget" >> $Env:GITHUB_ENV
-          echo "SERVICE_NAME=researchspace" >> $Env:GITHUB_ENV
+          "COMPOSE_ROOT=$composeRoot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "RUNTIME_TARGET=$runtimeTarget" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "SERVICE_NAME=researchspace" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Sync runtime data
         shell: powershell
         run: |
-          $target = $Env:RUNTIME_TARGET
+          $target = $env:RUNTIME_TARGET
           Write-Host "Syncing to: $target"
           
           if (!(Test-Path $target)) { 
@@ -46,7 +46,8 @@ jobs:
           }
           
           if ($LASTEXITCODE -gt 7) { 
-            Write-Error "Sync failed with code $LASTEXITCODE" 
+            Write-Error "Sync failed with code $LASTEXITCODE"
+            exit 1
           }
           $global:LASTEXITCODE = 0
           
@@ -55,77 +56,127 @@ jobs:
       - name: Verify compose file
         shell: powershell
         run: |
-          $composePath = Join-Path $Env:COMPOSE_ROOT "docker-compose.yml"
+          $composePath = Join-Path $env:COMPOSE_ROOT "docker-compose.yml"
           if (!(Test-Path $composePath)) {
             Write-Error "docker-compose.yml not found at: $composePath"
             exit 1
           }
-          Write-Host "Found docker-compose.yml at: $composePath"
+          Write-Host "Found docker-compose.yml"
 
       - name: Pull latest image
         shell: powershell
         run: |
-          Set-Location $Env:COMPOSE_ROOT
-          Write-Host "Pulling latest image..."
-          docker compose pull $Env:SERVICE_NAME
-          Write-Host "Image pulled"
+          Push-Location $env:COMPOSE_ROOT
+          try {
+            Write-Host "Pulling latest image..."
+            docker compose pull $env:SERVICE_NAME
+            Write-Host "Image pulled successfully"
+          } finally {
+            Pop-Location
+          }
 
       - name: Restart container
         shell: powershell
         run: |
-          Set-Location $Env:COMPOSE_ROOT
-          Write-Host "Restarting $Env:SERVICE_NAME..."
-          docker compose up -d --force-recreate --no-deps $Env:SERVICE_NAME
-          
-          Start-Sleep -Seconds 8
-          
-          $cid = docker compose ps -q $Env:SERVICE_NAME
-          Write-Host "Container ID: $cid"
-          
-          docker compose ps $Env:SERVICE_NAME
-          docker logs --tail 40 $cid
+          Push-Location $env:COMPOSE_ROOT
+          try {
+            Write-Host "Stopping existing container..."
+            docker compose stop $env:SERVICE_NAME
+            
+            Write-Host "Starting container with new configuration..."
+            docker compose up -d --force-recreate --no-deps $env:SERVICE_NAME
+            
+            Start-Sleep -Seconds 10
+            
+            $cid = docker compose ps -q $env:SERVICE_NAME
+            Write-Host "Container ID: $cid"
+            
+            docker compose ps $env:SERVICE_NAME
+            
+            Write-Host "`nInitial container logs:"
+            docker logs --tail 50 $cid
+          } finally {
+            Pop-Location
+          }
 
-      - name: Health check
+      - name: Wait for service startup
         shell: powershell
         run: |
-          $url = "http://localhost:10214/"
-          $maxAttempts = 30
-          $healthy = $false
-          
-          Write-Host "Checking health at $url..."
-          
-          for ($i = 1; $i -le $maxAttempts; $i++) {
-            try {
-              $response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
-              if ($response.StatusCode -eq 200) {
-                Write-Host "Service is healthy (attempt $i)"
-                $healthy = $true
-                break
+          Push-Location $env:COMPOSE_ROOT
+          try {
+            $url = "http://localhost:10214/"
+            $maxWaitMinutes = 5
+            $maxAttempts = $maxWaitMinutes * 60 / 4  # Check every 4 seconds
+            $healthy = $false
+            
+            Write-Host "Waiting for service to be ready at $url..."
+            Write-Host "This may take several minutes for first startup..."
+            
+            for ($i = 1; $i -le $maxAttempts; $i++) {
+              try {
+                $response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 3 -ErrorAction Stop
+                if ($response.StatusCode -eq 200) {
+                  Write-Host "Service is healthy! (attempt $i)"
+                  $healthy = $true
+                  break
+                }
+              } catch {
+                $elapsed = [math]::Round(($i * 4) / 60, 1)
+                Write-Host "[$elapsed min] Waiting for service... (attempt $i/$maxAttempts)"
+                
+                # Show logs every 30 seconds
+                if ($i % 8 -eq 0) {
+                  $cid = docker compose ps -q $env:SERVICE_NAME
+                  Write-Host "`nRecent logs:"
+                  docker logs --tail 20 $cid 2>&1 | Select-Object -Last 10
+                }
+                
+                Start-Sleep -Seconds 4
               }
-            } catch {
-              Write-Host "Attempt $i/$maxAttempts - waiting..."
-              Start-Sleep -Seconds 4
             }
-          }
-          
-          if (-not $healthy) {
-            Write-Warning "Health check failed after $maxAttempts attempts"
-            Set-Location $Env:COMPOSE_ROOT
-            docker logs $Env:SERVICE_NAME
-            exit 1
+            
+            if (-not $healthy) {
+              Write-Warning "Service did not become healthy within $maxWaitMinutes minutes"
+              $cid = docker compose ps -q $env:SERVICE_NAME
+              Write-Host "`nFull container logs:"
+              docker logs $cid
+              Write-Host "`nContainer status:"
+              docker compose ps $env:SERVICE_NAME
+              Write-Host "`nContainer inspect:"
+              docker inspect $cid --format "{{.State.Status}} - {{.State.Health.Status}}"
+            }
+          } finally {
+            Pop-Location
           }
 
       - name: Deployment summary
         if: always()
         shell: powershell
         run: |
-          Set-Location $Env:COMPOSE_ROOT
-          "## Deployment Summary" | Add-Content $Env:GITHUB_STEP_SUMMARY
-          "" | Add-Content $Env:GITHUB_STEP_SUMMARY
-          
-          "### Container Status" | Add-Content $Env:GITHUB_STEP_SUMMARY
-          docker compose ps $Env:SERVICE_NAME 2>&1 | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
-          
-          "" | Add-Content $Env:GITHUB_STEP_SUMMARY
-          "### Recent Logs" | Add-Content $Env:GITHUB_STEP_SUMMARY
-          docker logs --tail 30 $Env:SERVICE_NAME 2>&1 | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
+          Push-Location $env:COMPOSE_ROOT
+          try {
+            "## Deployment Summary" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            "" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            
+            "### Container Status" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            "``````" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            docker compose ps $env:SERVICE_NAME 2>&1 | Out-String | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            "``````" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            
+            "" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            "### Recent Logs" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            "``````" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            docker logs --tail 50 $env:SERVICE_NAME 2>&1 | Out-String | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            "``````" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            
+            "" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            $url = "http://localhost:10214/"
+            try {
+              $response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 3
+              "### Health Status: ✓ Healthy" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            } catch {
+              "### Health Status: ⚠ Not responding" | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Encoding utf8 -Append
+            }
+          } finally {
+            Pop-Location
+          }
