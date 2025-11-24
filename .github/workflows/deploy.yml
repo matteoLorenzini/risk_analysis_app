@@ -34,17 +34,15 @@ jobs:
             New-Item -ItemType Directory -Path $target -Force | Out-Null 
           }
           
-          # Use /E (copy subdirs) instead of /MIR (mirror/delete)
-          # Use /XO (exclude older) to not overwrite newer files
-          robocopy "$PWD\data" "$target\data" /E /XO /NFL /NDL /NJH /NJS /NP
-          robocopy "$PWD\config" "$target\config" /E /XO /NFL /NDL /NJH /NJS /NP
-          robocopy "$PWD\ldp" "$target\ldp" /E /XO /NFL /NDL /NJH /NJS /NP
+          # Only sync data and LDP content - NEVER touch config folder
+          robocopy "$PWD\data" "$target\data" /E /NFL /NDL /NJH /NJS /NP
+          robocopy "$PWD\ldp" "$target\ldp" /E /NFL /NDL /NJH /NJS /NP
           
           if (Test-Path "$PWD\file") { 
-            robocopy "$PWD\file" "$target\file" /E /XO /NFL /NDL /NJH /NJS /NP 
+            robocopy "$PWD\file" "$target\file" /E /NFL /NDL /NJH /NJS /NP 
           }
           if (Test-Path "$PWD\images") { 
-            robocopy "$PWD\images" "$target\images" /E /XO /NFL /NDL /NJH /NJS /NP 
+            robocopy "$PWD\images" "$target\images" /E /NFL /NDL /NJH /NJS /NP 
           }
           
           if ($LASTEXITCODE -gt 7) { 
@@ -53,7 +51,7 @@ jobs:
           }
           $global:LASTEXITCODE = 0
           
-          Write-Host "Sync complete (incremental update)"
+          Write-Host "Sync complete - config folder untouched"
 
       - name: Verify compose file
         shell: powershell
