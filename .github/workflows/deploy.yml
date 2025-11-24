@@ -1,4 +1,4 @@
-name: Deploy Local (Self-hosted)
+﻿name: Deploy ResearchSpace
 
 on:
   push:
@@ -8,78 +8,112 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
+    timeout-minutes: 10
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Set variables
+      - name: Set paths
         shell: powershell
         run: |
-          echo "COMPOSE_ROOT=C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main" >> $Env:GITHUB_ENV
-          # Correct path (includes researchspace subfolder per compose config)
-          echo "RUNTIME_TARGET=C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main\researchspace\runtime-data" >> $Env:GITHUB_ENV
+          $composeRoot = "C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main"
+          $runtimeTarget = Join-Path $composeRoot "researchspace\runtime-data"
+          
+          echo "COMPOSE_ROOT=$composeRoot" >> $Env:GITHUB_ENV
+          echo "RUNTIME_TARGET=$runtimeTarget" >> $Env:GITHUB_ENV
           echo "SERVICE_NAME=researchspace" >> $Env:GITHUB_ENV
 
-      - name: Sync runtime-data
+      - name: Sync runtime data
         shell: powershell
         run: |
-          $rt = $Env:RUNTIME_TARGET
-          if (!(Test-Path $rt)) { New-Item -ItemType Directory -Path $rt -Force | Out-Null }
-          function SyncDir($src,$dst){
-            if (Test-Path $src){
-              Write-Host "Sync $src -> $dst"
-              robocopy $src $dst /MIR /NFL /NDL /NJH /NJS /NP | Out-Null
-              $LASTEXITCODE = 0
-            }
+          $target = $Env:RUNTIME_TARGET
+          Write-Host "Syncing to: $target"
+          
+          if (!(Test-Path $target)) { 
+            New-Item -ItemType Directory -Path $target -Force | Out-Null 
           }
-          SyncDir "$PWD\data"   (Join-Path $rt 'data')
-          SyncDir "$PWD\config" (Join-Path $rt 'config')
-          SyncDir "$PWD\ldp"    (Join-Path $rt 'ldp')
-          if (Test-Path "$PWD\file")   { SyncDir "$PWD\file"   (Join-Path $rt 'file') }
-          if (Test-Path "$PWD\images") { SyncDir "$PWD\images" (Join-Path $rt 'images') }
-          Write-Host "Runtime-data synced to $rt"
+          
+          robocopy "$PWD\data" "$target\data" /MIR /NFL /NDL /NJH /NJS /NP
+          robocopy "$PWD\config" "$target\config" /MIR /NFL /NDL /NJH /NJS /NP
+          robocopy "$PWD\ldp" "$target\ldp" /MIR /NFL /NDL /NJH /NJS /NP
+          
+          if (Test-Path "$PWD\file") { 
+            robocopy "$PWD\file" "$target\file" /MIR /NFL /NDL /NJH /NJS /NP 
+          }
+          if (Test-Path "$PWD\images") { 
+            robocopy "$PWD\images" "$target\images" /MIR /NFL /NDL /NJH /NJS /NP 
+          }
+          
+          if ($LASTEXITCODE -gt 7) { 
+            Write-Error "Sync failed with code $LASTEXITCODE" 
+          }
+          $global:LASTEXITCODE = 0
+          
+          Write-Host "✓ Sync complete"
 
       - name: Pull latest image
         shell: powershell
         working-directory: ${{ env.COMPOSE_ROOT }}
         run: |
+          Write-Host "Pulling latest image..."
           docker compose pull $Env:SERVICE_NAME
-          Write-Host "Image pull complete"
+          Write-Host "✓ Image pulled"
 
-      - name: Restart service (force recreate)
+      - name: Restart container
         shell: powershell
         working-directory: ${{ env.COMPOSE_ROOT }}
         run: |
+          Write-Host "Restarting $Env:SERVICE_NAME..."
           docker compose up -d --force-recreate --no-deps $Env:SERVICE_NAME
-          Start-Sleep -Seconds 5
-          docker compose ps $Env:SERVICE_NAME
+          
+          Start-Sleep -Seconds 8
+          
           $cid = docker compose ps -q $Env:SERVICE_NAME
-          Write-Host "Container recreated: $cid"
-          docker logs --tail 60 $cid
+          Write-Host "Container ID: $cid"
+          
+          docker compose ps $Env:SERVICE_NAME
+          docker logs --tail 40 $cid
 
       - name: Health check
         shell: powershell
         run: |
           $url = "http://localhost:10214/"
-          $ok = $false
-          for ($i=0; $i -lt 30; $i++) {
+          $maxAttempts = 30
+          $healthy = $false
+          
+          Write-Host "Checking health at $url..."
+          
+          for ($i = 1; $i -le $maxAttempts; $i++) {
             try {
-              $r = Invoke-WebRequest -UseBasicParsing -TimeoutSec 5 -Uri $url
-              if ($r.StatusCode -eq 200) { 
-                Write-Host "Service healthy"
-                $ok = $true
-                break 
+              $response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
+              if ($response.StatusCode -eq 200) {
+                Write-Host " Service is healthy (attempt $i)"
+                $healthy = $true
+                break
               }
             } catch {
+              Write-Host "Attempt $i/$maxAttempts - waiting..."
               Start-Sleep -Seconds 4
             }
           }
-          if (-not $ok) {
-            Write-Warning "Health check failed"
+          
+          if (-not $healthy) {
+            Write-Warning "Health check failed after $maxAttempts attempts"
             docker logs $Env:SERVICE_NAME
+            exit 1
           }
 
-      - name: Summary
+      - name: Deployment summary
+        if: always()
         shell: powershell
         run: |
+          "## Deployment Summary" | Add-Content $Env:GITHUB_STEP_SUMMARY
+          "" | Add-Content $Env:GITHUB_STEP_SUMMARY
+          
+          "### Container Status" | Add-Content $Env:GITHUB_STEP_SUMMARY
           docker compose ps $Env:SERVICE_NAME | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
-          docker logs --tail 30 $Env:SERVICE_NAME | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
+          
+          "" | Add-Content $Env:GITHUB_STEP_SUMMARY
+          "### Recent Logs" | Add-Content $Env:GITHUB_STEP_SUMMARY
+          docker logs --tail 30 $Env:SERVICE_NAME 2>&1 | Out-String | Add-Content $Env:GITHUB_STEP_SUMMARY
