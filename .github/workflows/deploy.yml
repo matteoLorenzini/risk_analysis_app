@@ -62,8 +62,8 @@ jobs:
           $url = "http://localhost:10214/"
           try {
             $response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
-            Write-Host "✓ Service is responding (HTTP $($response.StatusCode))"
-            Write-Host "✓ Deployment successful - files updated without restart"
+            Write-Host "Service is responding (HTTP $($response.StatusCode))"
+            Write-Host "Deployment successful - files updated without restart"
           } catch {
             Write-Error "Service is not responding at $url"
             exit 1
