@@ -1,168 +1,200 @@
-<div class="page">
-  <div class="page__header">
-    <div class="page__header-body">
-      <h1>
-        <mp-label iri='[[this]]'></mp-label>
-      </h1>
-      <p class="page__header-description">
-        Place Information
-      </p>
-    </div>
-  </div>
-
-  <div class="page__body">
-    <bs-tabs id="place-tabs" unmount-on-exit=true default-active-key="1">
-      
-      <!-- Place Description Tab -->
-      <bs-tab event-key="1" title="Place Description">
-        <div style="margin-top: 20px;">
-          
-          <!-- Place Appellation -->
-          <semantic-table
-            query='
-              PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-              PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
-              PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-              
-              SELECT ?label WHERE {
-                <[[this]]> crmgeo:P1_is_identified_by ?appellation .
-                ?appellation a crmgeo:E44_Place_Appellation ;
-                             skos:prefLabel ?label .
-              }
-            '
-            column-configuration='[
-              { "displayName": "Place Name", "variableName": "label" }
-            ]'
-            no-result-template='<div>No place name available</div>'>
-          </semantic-table>
-
-          <!-- Spatial Coordinates -->
-          <h3>Location</h3>
-          <semantic-table
-            query='
-              PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-              PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
-              PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-              
-              SELECT ?lat ?long WHERE {
-                <[[this]]> wgs84:lat ?lat ;
-                           wgs84:long ?long .
-              }
-            '
-            column-configuration='[
-              { "displayName": "Latitude", "variableName": "lat" },
-              { "displayName": "Longitude", "variableName": "long" }
-            ]'
-            no-result-template='<div>No coordinates available</div>'>
-          </semantic-table>
-
-          <!-- Related Sites -->
-          <h3>Related Archaeological Sites</h3>
-          <semantic-table
-            query='
-              PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-              
-              SELECT ?site ?siteName WHERE {
-                ?site a crm:E18_Physical_Thing ;
-                      crm:P55_has_current_location <[[this]]> ;
-                      crm:P1_is_identified_by ?nameId .
-                ?nameId crm:P190_has_symbolic_content ?siteName .
-              }
-            '
-            column-configuration='[
-              { "displayName": "Archaeological Site", "cellTemplate": "{{> siteCell}}" }
-            ]'
-            no-result-template='<div>No sites at this location</div>'>
-            
-            <template id="siteCell">
-              <semantic-link iri="{{site.value}}">
-                {{siteName.value}}
-              </semantic-link>
-            </template>
-          </semantic-table>
-
+[[#*inline "resource"]]
+<with-types fixed-key='resource-[[this]]' iri='[[this]]' template='{{> page}}' 
+  place='http://www.cidoc-crm.org/cidoc-crm/E53_Place'>
+  <template id='page'>
+    <div class="page">
+      <div class="page__header" style="background-color: {{getValueByKey entityBgColor allTypes}}">
+        <div class="page__header-thumbnail">
+          <i class="{{getValueByKey typeToImage allTypes}}" style="color: {{getValueByKey entityIconColor allTypes}}"></i>
         </div>
-      </bs-tab>
-
-      <!-- Map Tab -->
-      <bs-tab event-key="2" title="Map">
-        <div style="margin-top: 20px;">
-          <semantic-map
-            query='
-              PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-              PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-              PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
-              PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-              
-              SELECT ?place ?label ?lat ?long WHERE {
-                BIND(<[[this]]> AS ?place)
-                ?place wgs84:lat ?lat ;
-                       wgs84:long ?long .
-                OPTIONAL {
-                  ?place crmgeo:P1_is_identified_by ?appellation .
+        <div class="page__header-body">
+          <div class="page__header-categories">
+            {{#each allTypes}}
+              <mp-label iri="{{this}}" class="page__header-category"></mp-label>
+            {{/each}}
+          </div>
+          <h1 class="page__header-headline">
+            <mp-label iri='[[this]]'></mp-label>
+          </h1>
+          <p class="page__header-description">
+            <semantic-query 
+              query='
+                PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
+                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                SELECT ?label WHERE {
+                  <[[this]]> crmgeo:P1_is_identified_by ?appellation .
                   ?appellation skos:prefLabel ?label .
                 }
-              }
-            '
-            tuple-template='{{> mapMarker}}'
-            height='600px'>
-            
-            <template id='mapMarker'>
-              <div>
-                <h4>{{label.value}}</h4>
-                <p>Coordinates: {{lat.value}}, {{long.value}}</p>
-                <semantic-link iri="{{place.value}}">View Details</semantic-link>
-              </div>
-            </template>
-          </semantic-map>
+                LIMIT 1
+              '
+              template='{{#each bindings}}{{label.value}}{{/each}}'>
+            </semantic-query>
+          </p>
         </div>
-      </bs-tab>
+      </div>
 
-      <!-- Events at this Place Tab -->
-      <bs-tab event-key="3" title="Events">
-        <div style="margin-top: 20px;">
-          <h3>Events that Occurred at this Place</h3>
-          <semantic-table
-            query='
-              PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-              PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      <div class="page__body">
+        <bs-tabs id="place-tabs" unmount-on-exit=true default-active-key="1">
+          
+          <!-- Place Description Tab -->
+          <bs-tab event-key="1" title="Place Description">
+            <div style="margin-top: 20px;">
               
-              SELECT ?event ?eventLabel ?eventType WHERE {
-                ?event a crm:E5_Event ;
-                       crm:P7_took_place_at <[[this]]> ;
-                       rdfs:label ?eventLabel .
-                OPTIONAL {
-                  ?event crm:P2_has_type ?type .
-                  ?type rdfs:label ?eventType .
-                }
-              }
-              ORDER BY ?eventLabel
-            '
-            column-configuration='[
-              { "displayName": "Event", "cellTemplate": "{{> eventCell}}" },
-              { "displayName": "Type", "variableName": "eventType" }
-            ]'
-            options='{"showFilter": true, "resultsPerPage": 10}'
-            no-result-template='<div>No events recorded at this place</div>'>
-            
-            <template id="eventCell">
-              <semantic-link iri="{{event.value}}">
-                {{eventLabel.value}}
-              </semantic-link>
-            </template>
-          </semantic-table>
-        </div>
-      </bs-tab>
+              <!-- Place Appellation -->
+              <h3>Place Name</h3>
+              <semantic-table
+                query='
+                  PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                  PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
+                  PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                  
+                  SELECT ?label WHERE {
+                    <[[this]]> crmgeo:P1_is_identified_by ?appellation .
+                    ?appellation a crmgeo:E44_Place_Appellation ;
+                                 skos:prefLabel ?label .
+                  }
+                '
+                column-configuration='[
+                  { "displayName": "Place Name", "variableName": "label" }
+                ]'
+                no-result-template='<div>No place name available</div>'>
+              </semantic-table>
 
-    </bs-tabs>
-  </div>
-</div>
+              <!-- Spatial Coordinates -->
+              <h3>Location</h3>
+              <semantic-table
+                query='
+                  PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                  PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
+                  PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+                  
+                  SELECT ?lat ?long WHERE {
+                    <[[this]]> wgs84:lat ?lat ;
+                               wgs84:long ?long .
+                  }
+                '
+                column-configuration='[
+                  { "displayName": "Latitude", "variableName": "lat" },
+                  { "displayName": "Longitude", "variableName": "long" }
+                ]'
+                no-result-template='<div>No coordinates available</div>'>
+              </semantic-table>
+
+              <!-- Related Sites -->
+              <h3>Related Archaeological Sites</h3>
+              <semantic-table
+                query='
+                  PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                  
+                  SELECT ?site ?siteName WHERE {
+                    ?site a crm:E18_Physical_Thing ;
+                          crm:P55_has_current_location <[[this]]> ;
+                          crm:P1_is_identified_by ?nameId .
+                    ?nameId crm:P190_has_symbolic_content ?siteName .
+                  }
+                '
+                column-configuration='[
+                  { "displayName": "Archaeological Site", "cellTemplate": "{{> siteCell}}" }
+                ]'
+                no-result-template='<div>No sites at this location</div>'>
+                
+                <template id="siteCell">
+                  <semantic-link iri="{{site.value}}">
+                    {{siteName.value}}
+                  </semantic-link>
+                </template>
+              </semantic-table>
+
+            </div>
+          </bs-tab>
+
+          <!-- Map Tab -->
+          <bs-tab event-key="2" title="Map">
+            <div style="margin-top: 20px;">
+              <semantic-map
+                query='
+                  PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                  PREFIX wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+                  PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
+                  PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                  
+                  SELECT ?place ?label ?lat ?long WHERE {
+                    BIND(<[[this]]> AS ?place)
+                    ?place wgs84:lat ?lat ;
+                           wgs84:long ?long .
+                    OPTIONAL {
+                      ?place crmgeo:P1_is_identified_by ?appellation .
+                      ?appellation skos:prefLabel ?label .
+                    }
+                  }
+                '
+                tuple-template='{{> mapMarker}}'
+                height='600px'>
+                
+                <template id='mapMarker'>
+                  <div>
+                    <h4>{{label.value}}</h4>
+                    <p>Coordinates: {{lat.value}}, {{long.value}}</p>
+                    <semantic-link iri="{{place.value}}">View Details</semantic-link>
+                  </div>
+                </template>
+              </semantic-map>
+            </div>
+          </bs-tab>
+
+          <!-- Events at this Place Tab -->
+          <bs-tab event-key="3" title="Events">
+            <div style="margin-top: 20px;">
+              <h3>Events that Occurred at this Place</h3>
+              <semantic-table
+                query='
+                  PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                  
+                  SELECT ?event ?eventLabel ?eventType WHERE {
+                    ?event a crm:E5_Event ;
+                           crm:P7_took_place_at <[[this]]> ;
+                           rdfs:label ?eventLabel .
+                    OPTIONAL {
+                      ?event crm:P2_has_type ?type .
+                      ?type rdfs:label ?eventType .
+                    }
+                  }
+                  ORDER BY ?eventLabel
+                '
+                column-configuration='[
+                  { "displayName": "Event", "cellTemplate": "{{> eventCell}}" },
+                  { "displayName": "Type", "variableName": "eventType" }
+                ]'
+                options='{"showFilter": true, "resultsPerPage": 10}'
+                no-result-template='<div>No events recorded at this place</div>'>
+                
+                <template id="eventCell">
+                  <semantic-link iri="{{event.value}}">
+                    {{eventLabel.value}}
+                  </semantic-link>
+                </template>
+              </semantic-table>
+            </div>
+          </bs-tab>
+
+        </bs-tabs>
+      </div>
+    </div>
+  </template>
+</with-types>
+[[/inline]]
+[[> resource]]
 
 <style>
-  .page { max-width: 1200px; margin: 0 auto; padding: 20px; }
-  .page__header { margin-bottom: 30px; border-bottom: 2px solid #e5e7eb; padding-bottom: 20px; }
-  .page__header h1 { font-size: 2rem; font-weight: 600; margin: 0; }
-  .page__header-description { color: #6b7280; margin-top: 8px; }
+  .page { max-width: 1200px; margin: 0 auto; }
+  .page__header { padding: 2rem; margin-bottom: 2rem; border-radius: 8px; display: flex; gap: 1.5rem; }
+  .page__header-thumbnail { font-size: 3rem; display: flex; align-items: center; }
+  .page__header-body { flex: 1; }
+  .page__header-categories { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.875rem; }
+  .page__header-category { background: rgba(255,255,255,0.9); padding: 0.25rem 0.75rem; border-radius: 4px; }
+  .page__header-headline { font-size: 2rem; font-weight: 600; margin: 0.5rem 0; }
+  .page__header-description { color: #374151; margin-top: 0.5rem; font-size: 1rem; }
   .page__body h3 { font-size: 1.25rem; font-weight: 600; margin: 20px 0 10px 0; }
   #place-tabs { margin-top: 20px; }
 </style>
