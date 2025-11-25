@@ -3,30 +3,42 @@
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
     
-    SELECT ?resource ?label ?typelabel WHERE {
-      ?resource crm:P1_is_identified_by ?name_identifier ;
-                a ?type .
-      ?name_identifier a crm:E41_Appellation .
-      
-      # Try both skos:prefLabel and rdfs:label
-      OPTIONAL { ?name_identifier skos:prefLabel ?label_skos }
-      OPTIONAL { ?name_identifier rdfs:label ?label_rdfs }
-      BIND(COALESCE(?label_skos, ?label_rdfs) AS ?label)
-      
-      # Try both for type label
-      OPTIONAL { ?type skos:prefLabel ?typelabel_skos }
-      OPTIONAL { ?type rdfs:label ?typelabel_rdfs }
-      BIND(COALESCE(?typelabel_skos, ?typelabel_rdfs) AS ?typelabel)
+    SELECT DISTINCT ?resource ?label ?typelabel WHERE {
+      {
+        # E18_Physical_Thing - uses P1_is_identified_by
+        ?resource a crm:E18_Physical_Thing ;
+                  crm:P1_is_identified_by ?name_identifier .
+        ?name_identifier a crm:E41_Appellation ;
+                         ?labelProp ?label .
+        FILTER(?labelProp = skos:prefLabel || ?labelProp = rdfs:label)
+        BIND("Physical Thing" AS ?typelabel)
+      } UNION {
+        # E53_Place - uses crmgeo properties
+        ?resource a crm:E53_Place ;
+                  crmgeo:P1_is_identified_by ?appellation .
+        ?appellation a crmgeo:E44_Place_Appellation ;
+                     skos:prefLabel ?label .
+        BIND("Place" AS ?typelabel)
+      } UNION {
+        # E5_Event - uses direct rdfs:label
+        ?resource a crm:E5_Event ;
+                  rdfs:label ?label .
+        BIND("Event" AS ?typelabel)
+      } UNION {
+        # E39_Actor - uses direct rdfs:label
+        ?resource a crm:E39_Actor ;
+                  rdfs:label ?label .
+        BIND("Actor" AS ?typelabel)
+      } UNION {
+        # E55_Type - uses skos:prefLabel
+        ?resource a crm:E55_Type ;
+                  skos:prefLabel ?label .
+        BIND("Type" AS ?typelabel)
+      }
       
       FILTER REGEX(?label, ?__token__, "i")
-      FILTER (
-        ?type = crm:E18_Physical_Thing ||
-        ?type = crm:E39_Actor ||
-        ?type = crm:E5_Event ||
-        ?type = crm:E53_Place ||
-        ?type = crm:E55_Type
-      )
     } 
     LIMIT 10'
   template='<span style="color: blue;" title="{{resource.value}}">{{label.value}} ({{typelabel.value}})</span>'
