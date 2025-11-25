@@ -1,5 +1,39 @@
 [[#if (urlParam "details")]]
 <div class="details-content">
+  <!--
+    [[#block "detailsResourceHeader"]]
+    <div class="details-header">
+      <mp-resource-thumbnail iri='[[this]]' class='detail-img'>
+        <mp-resource-thumbnail-fallback>
+          <with-types iri='[[this]]' template='{{> noImage}}' [[> rsp:TypeMappings]]>
+            <template id="noImage">
+              <span class="rs-icon {{getValueByKey typeToImage allTypes 'rs-icon-no-image'}} detail-icon-noimg" alt="{{directTypesLabels}}" title='{{directTypesLabels}}'></span>
+            </template>
+          </with-types>
+        </mp-resource-thumbnail-fallback>
+      </mp-resource-thumbnail>
+      <div style="max-width: 70%;">
+        <mp-draggable iri='[[this]]'>
+          <div class="draggable-container">
+            <semantic-query
+              query='SELECT ?type ?typeLabel WHERE { <[[this]]> a ?type . ?type rdfs:label ?typeLabel . FILTER (lang(?typeLabel) = "en") }'
+              template='{{> resourceType }}'>
+              <template id='resourceType'>
+                <div class="detail-type">
+                  {{#each bindings}}{{typeLabel.value}}{{#if @last}}{{else}}, {{/if}}{{/each}}
+                </div>
+              </template>
+            </semantic-query>
+            <mp-label iri='[[this]]' class="detail-label"></mp-label>
+          </div>
+        </mp-draggable>
+        <mp-copy-to-clipboard text='[[this]]'>
+          <div class="rs-copy-IRI">Copy IRI</div>
+        </mp-copy-to-clipboard>
+      </div>
+    </div>
+    [[/block]]
+  -->
   <bs-tabs class="details-tabs">
     <bs-tab title='Site Description' event-key='site-description' mount-on-enter=true class="rawdata-tab">
       <mp-field-visualization
@@ -14,81 +48,14 @@
 [[else]]
 <with-types fixed-key='resource-[[this]]' iri='[[this]]' template='{{> resource}}' [[> rsp:TypeMappings]]>
   <template id='resource'>
-    {{#if (hasKey allTypes "http://www.cidoc-crm.org/cidoc-crm/E53_Place")}}
-      {{> placeTemplate}}
-    {{else}}
-      {{> e18Template}}
-    {{/if}}
-  </template>
-
-  <!-- E53 Place Template -->
-  <template id='placeTemplate'>
     <div class="rs-resource-container">
       [[#block "resourceHeader"]]
+      <!-- Resource Header -->
       <div class="rs-resource-header {{getValueByKey entityBgColor allTypes 'rs-entity-bg-thing'}}">
+        <!-- Header top with draggable link -->
         <div class="rs-resource-header-topContainer">
           [[#block "resourceHeaderTop"]]
-          [[/block]]
-          <div class="rs-resource-header-topButtons">
-            <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]' urlqueryparam-view='knowledge-map' urlqueryparam-resource='[[this]]'>
-              <button type="button" title="Author Resource in Knowledge Map">
-                <rs-icon icon-type="round" icon-name="account_tree"></rs-icon>
-              </button>
-            </semantic-link-container>
-            <mp-event-trigger id='details-view-trigger' type='Component.TemplateUpdate' data='{"iri": "{{iri}}"}' targets='["details-view", "open-details-sidebar"]'>
-              <button type="button" title="Resource Details">
-                <rs-icon icon-type="rounded" icon-name="info" symbol="true"></rs-icon>
-              </button>
-            </mp-event-trigger>
-          </div>
-        </div>
-        <div class="rs-resource-header-content-container">
-          <div class="rs-resource-header--image-container">
-            <div class="object-representations__image--focused">
-              <span class="rs-icon {{getValueByKey typeToImage allTypes 'rs-icon-entity_no-image'}} {{getValueByKey entityIconColor allTypes 'rs-icon-entity_no-image'}}"></span>
-            </div>
-          </div>
-          <div style="padding: 1.8% 1.5% 1.5% 5%;">
-            [[> resourceHeaderData image=false]]
-          </div>
-        </div>
-      </div>
-      [[/block]]
-      <bs-tab-container id="tab-container" class="rs-resource-tabs" default-active-key="place-description">
-        <div>
-          <bs-nav bs-style="tabs">
-            <bs-nav-item event-key="place-description">Place Description</bs-nav-item>
-          </bs-nav>
-          <bs-tab-content animation="true">
-            <bs-tab-pane event-key="place-description">
-              <div class="rs-resource-tab-container">
-                <div>
-                  <hr class="rs-resource-section--headerLine">
-                  <span class="h1 rs-resource-section--header">Place Information</span>
-                </div>
-                <div class="rs-resource-data-table">
-                  <mp-field-visualization
-                    subject='[[this]]'
-                    fields='[[fieldDefinitions place="http://www.siriusplatform-risk-assessment/field/place" ]]'
-                    template='{{> template}}'>
-                    <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
-                  </mp-field-visualization>
-                </div>
-              </div>
-            </bs-tab-pane>
-          </bs-tab-content>
-        </div>
-      </bs-tab-container>
-    </div>
-  </template>
-
-  <!-- E18 Template (existing, unchanged) -->
-  <template id='e18Template'>
-    <div class="rs-resource-container">
-      [[#block "resourceHeader"]]
-      <div class="rs-resource-header {{getValueByKey entityBgColor allTypes 'rs-entity-bg-thing'}}">
-        <div class="rs-resource-header-topContainer">
-          [[#block "resourceHeaderTop"]]
+          <!-- (Popover code removed) -->
           [[/block]]
           <div class="rs-resource-header-topButtons">
             <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]' urlqueryparam-view='knowledge-map' urlqueryparam-resource='[[this]]'>
@@ -108,6 +75,7 @@
             </semantic-link-container>
           </div>
         </div>
+        <!-- Header content with image (if available) and resource primary information -->
         <div class="rs-resource-header-content-container">
           <div class="rs-resource-header--image-container">
             <semantic-if
@@ -116,6 +84,7 @@
               <template id="then">
                 <div class="rs-resource-img__btngroup">
                   {{#if (hasKey allTypes "http://www.researchspace.org/ontology/EX_Digital_Image_Region")}}
+                    <!-- no media icon for image regions -->
                   {{else}}
                     <mp-overlay-dialog title="Resource Media" type="modal" class="modal-xlSize">
                       <mp-overlay-dialog-trigger>
@@ -136,6 +105,7 @@
                   [[#if (hasPermission "forms:ldp:*")]]
                     {{#if (hasKey allTypes "http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing")}}
                       {{#if (hasKey allTypes "http://www.researchspace.org/ontology/EX_Digital_Image_Region")}}
+                        <!-- no annotation icon for image regions -->
                       {{else}}
                         <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]' urlqueryparam-view='image-annotation' urlqueryparam-resource='[[this]]'>
                           <button type="button" class="btn btn-icon" title="Annotate Images">
@@ -179,6 +149,7 @@
           </div>
           <div style="padding: 1.8% 1.5% 1.5% 5%;">
             [[> resourceHeaderData image=true]]
+            <!-- Inline map next to the image -->
             <div style="margin-top: 8px;">
               <semantic-if
                 query='ASK { <[[this]]> <http://www.cidoc-crm.org/cidoc-crm/P55_has_current_location> ?c }'
@@ -214,6 +185,7 @@
         </div>
       </div>
       [[/block]]
+      <!-- Tabs: Site Description, Related Places, Nara Grid -->
       <bs-tab-container id="tab-container" class="rs-resource-tabs" default-active-key="site-description">
         <div>
           <bs-nav bs-style="tabs">
@@ -264,12 +236,12 @@
       </bs-tab-container>
     </div>
   </template>
-
 </with-types>
 [[/if]]
 
 [[#*inline "resourceHeaderData"]]
   [[#block "headerData"]]
+  <!-- RESOURCE LABEL -->
   <div class="rs-resource-header--singletitle">
     <div class="rs-resource-header--title" style="text-transform: capitalize;">
       <mp-label iri='[[this]]'></mp-label>
@@ -281,6 +253,7 @@
       <div class="statements">Statements</div>
     </div>
   </div>
+  <!-- Removed headerDefaultData block as requested -->
   [[/block]]
 [[/inline]]
 <!-- noop: deploy trigger to ensure reverted header is deployed -->
