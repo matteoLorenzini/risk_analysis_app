@@ -167,32 +167,36 @@ categories='{
           <bs-tabs unmount-on-exit=true id='search-results' animation=false>
             <bs-tab event-key="2" title="Grid">
               <semantic-search-result id='grid-result'>
-                <semantic-query
-                  query="
-                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                    PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
-                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                    
-                    SELECT DISTINCT ?subject ?label_type ?note ?value WHERE { 
-                      ?subject 
-                      base:P1_is_identified_by ?appellation ;
-                      base:P3_has_note ?note ;
-                      base:P2_has_type ?type . 
-                      ?appellation a base:E41_Appellation ;
-                      skos:prefLabel ?value .
-                      ?type a base:E55_Type ;
-                      skos:prefLabel ?label_type .
-                    }
-                  "
-                  template="{{> gridTemplate}}">
-                  
-                  <template id="gridTemplate">
-                    {{#each bindings}}
-                      {{#if @first}}
-                        <bs-row>
-                      {{/if}}
+                <div class="card-container">
+                  <semantic-table
+                    id="grid-table"
+                    prefetch-labels="false"
+                    query="
+                      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                      PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+                      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                       
+                      SELECT DISTINCT ?subject ?label_type ?note ?value WHERE { 
+                        ?subject 
+                        base:P1_is_identified_by ?appellation ;
+                        base:P3_has_note ?note ;
+                        base:P2_has_type ?type . 
+                        ?appellation a base:E41_Appellation ;
+                        skos:prefLabel ?value .
+                        ?type a base:E55_Type ;
+                        skos:prefLabel ?label_type .
+                      }
+                      ORDER BY ?value
+                    "
+                    tuple-template="{{> cardTemplate}}"
+                    number-of-displayed-rows="12"
+                    no-result-template='<bs-panel class="info">No matches found</bs-panel>'
+                    options='{
+                      "showFilter": false,
+                      "pageSizeSelection": [6, 12, 24, 48]
+                    }'>
+                    <template id="cardTemplate">
                       <bs-col sm="4" style="margin-bottom: 20px;">
                         <div class="panel panel-default" style="height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                           <div class="panel-body">
@@ -205,7 +209,7 @@ categories='{
                               <strong>Typology:</strong> 
                               <span class="label label-info">{{label_type.value}}</span>
                             </p>
-                            <p style="margin: 10px 0; color: #666;">
+                            <p style="margin: 10px 0; color: #666; max-height: 100px; overflow: hidden;">
                               <strong>Description:</strong><br/>
                               {{#if note.value}}
                                 {{note.value}}
@@ -219,16 +223,9 @@ categories='{
                           </div>
                         </div>
                       </bs-col>
-                      
-                      {{#if (or (eq (mod (add @index 1) 3) 0) @last)}}
-                        </bs-row>
-                        {{#unless @last}}
-                          <bs-row>
-                        {{/unless}}
-                      {{/if}}
-                    {{/each}}
-                  </template>
-                </semantic-query>
+                    </template>
+                  </semantic-table>
+                </div>
               </semantic-search-result>
             </bs-tab>
             <bs-tab event-key="3" title="Table">
