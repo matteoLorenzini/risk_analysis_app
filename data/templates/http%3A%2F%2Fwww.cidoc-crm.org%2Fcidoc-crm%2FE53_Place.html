@@ -19,9 +19,42 @@
         </div>
         <div class="rs-resource-header-content-container">
           <div class="rs-resource-header--image-container">
-            <div class="object-representations__image--focused">
-              <span class="rs-icon {{getValueByKey typeToImage allTypes 'rs-icon-entity_no-image'}} {{getValueByKey entityIconColor allTypes 'rs-icon-entity_no-image'}}"></span>
-            </div>
+            <semantic-if
+              query='ASK { <[[this]]> <http://www.cidoc-crm.org/cidoc-crm/P168_place_is_defined_by> ?coords }'
+              then='{{> mapBlock}}' else='{{> noMapBlock}}'>
+              <template id='mapBlock'>
+                <div style="height:100%; width:100%;">
+                  <semantic-map
+                    id='map-result'
+                    query='
+                      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                      PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
+                      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                      PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                      
+                      SELECT (CONCAT("Point(", STR(?label), ")") AS ?wkt) ?label ?subject WHERE {
+                        BIND(<[[this]]> AS ?subject)
+                        ?subject a crm:E53_Place;
+                                 crm:P168_place_is_defined_by ?coordinates.
+                        ?coordinates rdfs:label ?label
+                      }
+                    '
+                    tuple-template='{{> mapTupleTemplate}}'>
+                    <template id='mapTupleTemplate'>
+                      <semantic-link iri="{{subject.value}}">
+                        <mp-label iri="{{subject.value}}"></mp-label>
+                      </semantic-link>
+                    </template>
+                  </semantic-map>
+                </div>
+              </template>
+              <template id='noMapBlock'>
+                <div class="object-representations__image--focused">
+                  <span class="rs-icon {{getValueByKey typeToImage allTypes 'rs-icon-entity_no-image'}} {{getValueByKey entityIconColor allTypes 'rs-icon-entity_no-image'}}"></span>
+                </div>
+              </template>
+            </semantic-if>
           </div>
           <div style="padding: 1.8% 1.5% 1.5% 5%;">
             <div class="rs-resource-header--singletitle">
