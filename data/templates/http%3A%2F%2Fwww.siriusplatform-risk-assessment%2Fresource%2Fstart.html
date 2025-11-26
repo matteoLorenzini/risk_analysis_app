@@ -6,25 +6,41 @@
                 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
                 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
                 
-                SELECT ?resource ?label ?typelabel WHERE {
-                  ?resource crm:P1_is_identified_by ?name_identifier ;
-                            a ?type .
-                  ?name_identifier a crm:E41_Appellation ;
-                                   skos:prefLabel ?label .
-                  OPTIONAL { ?type skos:prefLabel ?typelabel }
+                SELECT DISTINCT ?resource ?label ?typelabel WHERE {
+                  {
+                    # Sites (E18_Physical_Thing)
+                    ?resource a crm:E18_Physical_Thing ;
+                              crm:P1_is_identified_by ?name_identifier .
+                    ?name_identifier a crm:E41_Appellation ;
+                                     skos:prefLabel ?label .
+                    BIND("Site" AS ?typelabel)
+                  } UNION {
+                    # Places (E53_Place)
+                    ?resource a crm:E53_Place ;
+                              crmgeo:P1_is_identified_by ?appellation .
+                    ?appellation a crmgeo:E44_Place_Appellation ;
+                                 skos:prefLabel ?label .
+                    BIND("Place" AS ?typelabel)
+                  } UNION {
+                    # Agents (E39_Actor)
+                    ?resource a crm:E39_Actor ;
+                              crm:P1_is_identified_by ?name_identifier .
+                    ?name_identifier a crm:E41_Appellation ;
+                                     skos:prefLabel ?label .
+                    BIND("Agent" AS ?typelabel)
+                  } UNION {
+                    # Events (E5_Event)
+                    ?resource a crm:E5_Event ;
+                              rdfs:label ?label .
+                    BIND("Event" AS ?typelabel)
+                  }
                   
                   FILTER REGEX(?label, ?__token__, "i")
-                  FILTER (
-                    ?type = crm:E18_Physical_Thing ||
-                    ?type = crm:E39_Actor ||
-                    ?type = crm:E5_Event ||
-                    ?type = crm:E53_Place ||
-                    ?type = crm:E55_Type
-                  )
                 } 
                 LIMIT 10'
-              template='<span style="color: blue;" title="{{resource.value}}">{{label.value}} ({{typelabel.value}})</span>'
+              template='<span style="color: blue;" title="{{resource.value}}">{{label.value}} <em style="color: #999;">({{typelabel.value}})</em></span>'
               input-placeholder='Search for sites, agents, events, places...'
             >
             </semantic-simple-search>
