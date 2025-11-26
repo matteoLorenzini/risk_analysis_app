@@ -188,36 +188,45 @@ categories='{
                   template="{{> gridTemplate}}">
                   
                   <template id="gridTemplate">
-                    <div class="row" style="margin: 20px 0;">
-                      {{#each bindings}}
-                        <div class="col-md-4 col-sm-6" style="margin-bottom: 20px;">
-                          <div class="panel panel-default" style="height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                            <div class="panel-body">
-                              <h4 style="margin-top: 0; color: #337ab7;">
-                                <semantic-link iri="{{subject.value}}">
-                                  {{value.value}}
-                                </semantic-link>
-                              </h4>
-                              <p style="margin: 10px 0;">
-                                <strong>Typology:</strong> 
-                                <span class="label label-info">{{label_type.value}}</span>
-                              </p>
-                              <p style="margin: 10px 0; color: #666;">
-                                <strong>Description:</strong><br/>
-                                {{#if note.value}}
-                                  {{note.value}}
-                                {{else}}
-                                  <em>No description available</em>
-                                {{/if}}
-                              </p>
-                              <semantic-link iri="{{subject.value}}" class="btn btn-primary btn-sm">
-                                View Details
+                    {{#each bindings}}
+                      {{#if @first}}
+                        <bs-row>
+                      {{/if}}
+                      
+                      <bs-col sm="4" style="margin-bottom: 20px;">
+                        <div class="panel panel-default" style="height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                          <div class="panel-body">
+                            <h4 style="margin-top: 0; color: #337ab7;">
+                              <semantic-link iri="{{subject.value}}">
+                                {{value.value}}
                               </semantic-link>
-                            </div>
+                            </h4>
+                            <p style="margin: 10px 0;">
+                              <strong>Typology:</strong> 
+                              <span class="label label-info">{{label_type.value}}</span>
+                            </p>
+                            <p style="margin: 10px 0; color: #666;">
+                              <strong>Description:</strong><br/>
+                              {{#if note.value}}
+                                {{note.value}}
+                              {{else}}
+                                <em>No description available</em>
+                              {{/if}}
+                            </p>
+                            <semantic-link iri="{{subject.value}}" class="btn btn-primary btn-sm">
+                              View Details
+                            </semantic-link>
                           </div>
                         </div>
-                      {{/each}}
-                    </div>
+                      </bs-col>
+                      
+                      {{#if (or (eq (mod (add @index 1) 3) 0) @last)}}
+                        </bs-row>
+                        {{#unless @last}}
+                          <bs-row>
+                        {{/unless}}
+                      {{/if}}
+                    {{/each}}
                   </template>
                 </semantic-query>
               </semantic-search-result>
@@ -258,8 +267,8 @@ categories='{
               </semantic-search-result>
             </bs-tab>
             <bs-tab event-key="4" title="Map">
-              <div style='height: 30vw;'>
-                <semantic-search-result id='map-result-wrapper'>
+              <semantic-search-result id='map-result-wrapper'>
+                <div style='height: 30vw;'>
                   <semantic-map id='map-result' query='
                   PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -277,7 +286,6 @@ categories='{
                   ' tuple-template='{{> template }}'>
                   <template id='template'>
                     <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
-
                   </template>
                 </semantic-map>
               </div>
