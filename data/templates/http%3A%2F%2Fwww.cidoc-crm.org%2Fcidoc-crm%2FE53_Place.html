@@ -43,7 +43,6 @@
         <div>
           <bs-nav bs-style="tabs">
             <bs-nav-item event-key="place-description">Place Description</bs-nav-item>
-            <bs-nav-item event-key="debug">Debug</bs-nav-item>
           </bs-nav>
           <bs-tab-content animation="true">
             <bs-tab-pane event-key="place-description">
@@ -62,25 +61,6 @@
                 </div>
               </div>
             </bs-tab-pane>
-            <bs-tab-pane event-key="debug">
-              <div class="rs-resource-tab-container">
-                <h3>Debug: All Properties for this Place</h3>
-                <semantic-table
-                  query='
-                    SELECT ?property ?value WHERE {
-                      <[[this]]> ?property ?value .
-                    }
-                    ORDER BY ?property
-                  '
-                  column-configuration='[
-                    {"displayName": "Property", "variableName": "property"},
-                    {"displayName": "Value", "variableName": "value"}
-                  ]'
-                  options='{"showFilter": true}'
-                  no-result-template='<div>No data found for this place</div>'>
-                </semantic-table>
-              </div>
-            </bs-tab-pane>
           </bs-tab-content>
         </div>
       </bs-tab-container>
@@ -88,4 +68,4 @@
   </template>
 </with-types>
 [[/inline]]
-[[> resource]]  
+[[> resource]]
