@@ -1,47 +1,154 @@
-<semantic-simple-search
-  query='
-    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-    PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
-    
-    SELECT DISTINCT ?resource ?label ?typelabel WHERE {
-      {
-        # E18_Physical_Thing - uses P1_is_identified_by
-        ?resource a crm:E18_Physical_Thing ;
-                  crm:P1_is_identified_by ?name_identifier .
-        ?name_identifier a crm:E41_Appellation ;
-                         ?labelProp ?label .
-        FILTER(?labelProp = skos:prefLabel || ?labelProp = rdfs:label)
-        BIND("Physical Thing" AS ?typelabel)
-      } UNION {
-        # E53_Place - uses crmgeo properties
-        ?resource a crm:E53_Place ;
-                  crmgeo:P1_is_identified_by ?appellation .
-        ?appellation a crmgeo:E44_Place_Appellation ;
-                     skos:prefLabel ?label .
-        BIND("Place" AS ?typelabel)
-      } UNION {
-        # E5_Event - uses direct rdfs:label
-        ?resource a crm:E5_Event ;
-                  rdfs:label ?label .
-        BIND("Event" AS ?typelabel)
-      } UNION {
-        # E39_Actor - uses direct rdfs:label
-        ?resource a crm:E39_Actor ;
-                  rdfs:label ?label .
-        BIND("Actor" AS ?typelabel)
-      } UNION {
-        # E55_Type - uses skos:prefLabel
-        ?resource a crm:E55_Type ;
-                  skos:prefLabel ?label .
-        BIND("Type" AS ?typelabel)
-      }
-      
-      FILTER REGEX(?label, ?__token__, "i")
-    } 
-    LIMIT 10'
-  template='<span style="color: blue;" title="{{resource.value}}">{{label.value}} ({{typelabel.value}})</span>'
-  input-placeholder='Search for sites, agents, events, places...'
->
-</semantic-simple-search>
+[[> partial:pageHeader]]
+
+<div class="bso-component home-search">
+    <bs-col md="10" md-offset="1">
+        <div class="bso-component simple-search">
+            <semantic-simple-search
+              query='
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
+                
+                SELECT DISTINCT ?resource ?label ?typelabel WHERE {
+                  {
+                    # E18_Physical_Thing - uses P1_is_identified_by
+                    ?resource a crm:E18_Physical_Thing ;
+                              crm:P1_is_identified_by ?name_identifier .
+                    ?name_identifier a crm:E41_Appellation ;
+                                     ?labelProp ?label .
+                    FILTER(?labelProp = skos:prefLabel || ?labelProp = rdfs:label)
+                    BIND("Site" AS ?typelabel)
+                  } UNION {
+                    # E53_Place - uses crmgeo properties
+                    ?resource a crm:E53_Place ;
+                              crmgeo:P1_is_identified_by ?appellation .
+                    ?appellation a crmgeo:E44_Place_Appellation ;
+                                 skos:prefLabel ?label .
+                    BIND("Place" AS ?typelabel)
+                  }
+                  
+                  FILTER REGEX(?label, ?__token__, "i")
+                } 
+                LIMIT 10'
+              template='<span style="color: blue;" title="{{resource.value}}">{{label.value}} <em style="color: #999;">({{typelabel.value}})</em></span>'
+              input-placeholder='Search for sites and places...'
+            >
+            </semantic-simple-search>
+        </div>
+    </bs-col>
+</div>
+
+<div class="bso-component separator panel">
+    <bs-row>
+        <bs-col md="2">
+            <h3>Sites</h3>
+            [[> resourceSummary type='crm:E18_Physical_Thing' label='sites' browse='E18_Physical_Thing']]
+        </bs-col>
+        <bs-col md="10" class="bso-component card-container horizontal-scroll">
+            [[#> cards type='crm:E18_Physical_Thing' ]]
+            [[/ cards]]
+        </bs-col>
+    </bs-row>
+</div>
+
+<div class="bso-component separator panel">
+    <bs-row>
+        <bs-col md="2">
+            <h3>Places</h3>
+            [[> resourceSummary type='crm:E53_Place' label='places' browse='E53_Place']]
+        </bs-col>
+        <bs-col md="10" class="bso-component card-container horizontal-scroll">
+            [[#> cards type='crm:E53_Place' ]]
+            [[/ cards]]
+        </bs-col>
+    </bs-row>
+</div>
+
+<div class="bso-component separator panel">
+    <bs-row>
+        <bs-col md="2">
+            <h3>Events</h3>
+            [[> resourceSummary type='crm:E5_Event' label='events' browse='E5_Event']]
+        </bs-col>
+        <bs-col md="10" class="bso-component card-container horizontal-scroll">
+            [[#> cards type='crm:E5_Event' ]]
+            [[/ cards]]
+        </bs-col>
+    </bs-row>
+</div>
+
+<div class="bso-component separator panel">
+    <bs-row>
+        <bs-col md="2">
+            <h3>Actors</h3>
+            [[> resourceSummary type='crm:E39_Actor' label='actors' browse='E39_Actor']]
+        </bs-col>
+        <bs-col md="10" class="bso-component card-container horizontal-scroll">
+            [[#> cards type='crm:E39_Actor' ]]
+            [[/ cards]]
+        </bs-col>
+    </bs-row>
+</div>
+
+<div class="bso-component separator panel">
+    <bs-row>
+        <bs-col md="2">
+            <h3>Types</h3>
+            [[> resourceSummary type='crm:E55_Type' label='types' browse='E55_Type']]
+        </bs-col>
+        <bs-col md="10" class="bso-component card-container horizontal-scroll">
+            [[#> cards type='crm:E55_Type' ]]
+            [[/ cards]]
+        </bs-col>
+    </bs-row>
+</div>
+
+[[#*inline "cards"]]
+    <semantic-query
+        query="SELECT DISTINCT ?subject WHERE {
+            ?subject a [[type]] .
+            BIND(DAY(NOW()) as ?day)
+            BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?random)
+            [[> @partial-block ]]
+        } ORDER BY ?random LIMIT 10"
+        template="{{> template-image-summary}}"
+        >
+        <template id="template-image-summary">
+            {{#each bindings}}
+                {{> partial:cardObject}}
+            {{/each}}
+        </template>
+    </semantic-query>
+[[/inline]]
+
+[[#*inline "resourceSummary"]]
+    <semantic-query
+        query="SELECT (COUNT(?subject) as ?num) WHERE {
+            ?subject a [[type]] .
+            [[#if condition]]
+                ?subject [[condition]] .
+            [[/if]]
+        }"
+        template="{{#each bindings}}Found {{num.value}} [[label]]{{/each}}"
+    ></semantic-query>
+    [[#if browse]]
+        <div class="bottom">
+            <semantic-link 
+                iri="page:search"
+                urlqueryparam-browse="[[browse]]"
+            >
+                See all</semantic-link>
+        </div>
+    [[/if]]
+    [[#if link]]
+        <div class="bottom">
+            <semantic-link 
+                iri="[[link]]"
+            >
+                See all</semantic-link>
+        </div>
+    [[/if]]
+[[/inline]]
+
+[[> partial:pageFooter]]
