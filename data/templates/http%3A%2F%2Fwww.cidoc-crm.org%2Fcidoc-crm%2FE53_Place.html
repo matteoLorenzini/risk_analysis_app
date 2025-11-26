@@ -43,6 +43,7 @@
         <div>
           <bs-nav bs-style="tabs">
             <bs-nav-item event-key="place-description">Place Description</bs-nav-item>
+            <bs-nav-item event-key="debug">Debug</bs-nav-item>
           </bs-nav>
           <bs-tab-content animation="true">
             <bs-tab-pane event-key="place-description">
@@ -54,11 +55,30 @@
                 <div class="rs-resource-data-table">
                   <mp-field-visualization
                     subject='[[this]]'
-                    fields='[[fieldDefinitions place="http://www.siriusplatform-risk-assessment/field/place"  ]]'
+                    fields='[[fieldDefinitions place="http://www.siriusplatform-risk-assessment/field/place" ]]'
                     template='{{> template}}'>
                     <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
                   </mp-field-visualization>
                 </div>
+              </div>
+            </bs-tab-pane>
+            <bs-tab-pane event-key="debug">
+              <div class="rs-resource-tab-container">
+                <h3>Debug: All Properties for this Place</h3>
+                <semantic-table
+                  query='
+                    SELECT ?property ?value WHERE {
+                      <[[this]]> ?property ?value .
+                    }
+                    ORDER BY ?property
+                  '
+                  column-configuration='[
+                    {"displayName": "Property", "variableName": "property"},
+                    {"displayName": "Value", "variableName": "value"}
+                  ]'
+                  options='{"showFilter": true}'
+                  no-result-template='<div>No data found for this place</div>'>
+                </semantic-table>
               </div>
             </bs-tab-pane>
           </bs-tab-content>
@@ -68,4 +88,4 @@
   </template>
 </with-types>
 [[/inline]]
-[[> resource]]
+[[> resource]]  
