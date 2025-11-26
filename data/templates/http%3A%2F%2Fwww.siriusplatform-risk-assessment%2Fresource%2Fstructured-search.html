@@ -158,7 +158,7 @@ categories='{
       </div>
       <semantic-search-result-holder>
         <div data-flex-self="md-full">
-          <semantic-search-result>
+          <semantic-search-result id='result-count'>
             <mp-sparql-result-counts id='query-count' query="SELECT DISTINCT * {}" template='{{#if hasLimit}} <bs-alert bs-style="warning">
               Showing {{numberOfResults}} of {{totalNumberOfResults}} matches. <strong>Please, refine your search.</strong> </bs-alert>
               {{else}}<span> found {{numberOfResults}} matches </span>{{/if}}'>
@@ -166,7 +166,7 @@ categories='{
           </semantic-search-result>
           <bs-tabs unmount-on-exit=true id='search-results' animation=false>
             <bs-tab event-key="2" title="Grid">
-              <semantic-search-result>
+              <semantic-search-result id='grid-result'>
                 <semantic-query
                   query="
                     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -205,7 +205,7 @@ categories='{
                               <p style="margin: 10px 0; color: #666;">
                                 <strong>Description:</strong><br/>
                                 {{#if note.value}}
-                                  {{truncate note.value 150}}
+                                  {{note.value}}
                                 {{else}}
                                   <em>No description available</em>
                                 {{/if}}
@@ -223,7 +223,7 @@ categories='{
               </semantic-search-result>
             </bs-tab>
             <bs-tab event-key="3" title="Table">
-              <semantic-search-result>
+              <semantic-search-result id='table-result-wrapper'>
                 <semantic-table id='table-result' query="
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -259,7 +259,7 @@ categories='{
             </bs-tab>
             <bs-tab event-key="4" title="Map">
               <div style='height: 30vw;'>
-                <semantic-search-result>
+                <semantic-search-result id='map-result-wrapper'>
                   <semantic-map id='map-result' query='
                   PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -286,13 +286,13 @@ categories='{
         </bs-tabs>
 
         <bs-panel>
-          <semantic-search-result>
+          <semantic-search-result id='csv-download-wrapper'>
             <mp-sparql-download id='csv-download' query="SELECT * WHERE { }" header="text/csv"
             filename="csv-result.csv">
             <button class="btn btn-default">Download CSV</button>
           </mp-sparql-download>
         </semantic-search-result>
-        <semantic-search-result>
+        <semantic-search-result id='json-download-wrapper'>
           <mp-sparql-download id='json-download' query="SELECT * WHERE { }" header="application/sparql-results+json"
           filename="json-result.json">
           <button class="btn btn-default">Download JSON</button>
@@ -302,3 +302,4 @@ categories='{
   </div>
 </semantic-search-result-holder>
 </div>
+</semantic-search>
