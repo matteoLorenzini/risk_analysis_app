@@ -17,13 +17,11 @@
             </mp-event-trigger>
           </div>
         </div>
-
         <div class="rs-resource-header-content-container">
           <div class="rs-resource-header--image-container" style="min-height: 350px; flex: 1.5;">
             <semantic-if
               query='ASK { <[[this]]> <http://www.cidoc-crm.org/cidoc-crm/P168_place_is_defined_by> ?coords }'
               then='{{> mapBlock}}' else='{{> noMapBlock}}'>
-
               <template id='mapBlock'>
                 <div style="height: 350px; width: 100%;">
                   <semantic-map
@@ -51,7 +49,6 @@
                   </semantic-map>
                 </div>
               </template>
-
               <template id='noMapBlock'>
                 <div class="object-representations__image--focused">
                   <span class="rs-icon {{getValueByKey typeToImage allTypes 'rs-icon-entity_no-image'}} {{getValueByKey entityIconColor allTypes 'rs-icon-entity_no-image'}}"></span>
@@ -59,7 +56,6 @@
               </template>
             </semantic-if>
           </div>
-
           <div style="padding: 1.8% 1.5% 1.5% 5%; flex: 1;">
             <div class="rs-resource-header--singletitle">
               <div class="rs-resource-header--title" style="text-transform: capitalize;">
@@ -80,12 +76,8 @@
         <div>
           <bs-nav bs-style="tabs">
             <bs-nav-item event-key="place-description">Place Description</bs-nav-item>
-            <bs-nav-item event-key="events">Events & Actors</bs-nav-item>
           </bs-nav>
-
           <bs-tab-content animation="true">
-
-            <!-- ---------- PLACE DESCRIPTION (ORIGINAL) ---------- -->
             <bs-tab-pane event-key="place-description">
               <div class="rs-resource-tab-container">
                 <div>
@@ -102,77 +94,6 @@
                 </div>
               </div>
             </bs-tab-pane>
-
-            <!-- ---------- EVENTS & ACTORS TAB (NEW) ---------- -->
-            <bs-tab-pane event-key="events">
-              <div class="rs-resource-tab-container">
-
-                <div>
-                  <hr class="rs-resource-section--headerLine">
-                  <span class="h1 rs-resource-section--header">Events Affecting This Place</span>
-                </div>
-
-                <semantic-query
-                  query='
-                    PREFIX cidoc: <http://www.cidoc-crm.org/cidoc-crm/>
-                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-                    SELECT DISTINCT
-                      ?event ?eventLabel
-                      ?actor ?actorLabel
-                    WHERE {
-                      BIND(<[[this]]> AS ?place)
-
-                      ?site a cidoc:E18_Physical_Thing ;
-                            cidoc:P53_has_former_or_current_location ?place .
-
-                      ?event a cidoc:E5_Event ;
-                             cidoc:P31_has_modified ?site ;
-                             rdfs:label ?eventLabel .
-
-                      OPTIONAL {
-                        ?event cidoc:P11_had_participant ?actor .
-                        OPTIONAL { ?actor rdfs:label ?actorLabel . }
-                      }
-                    }
-                    ORDER BY ?eventLabel ?actorLabel
-                  '
-                  template='{{> eventActorTable}}'>
-                </semantic-query>
-
-                <template id='eventActorTable'>
-                  <semantic-table>
-                    <thead>
-                      <tr>
-                        <th>Event</th>
-                        <th>Actor</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <semantic-link iri="{{row.event.value}}">
-                            <mp-label iri="{{row.event.value}}"></mp-label>
-                          </semantic-link>
-                        </td>
-
-                        <td>
-                          {{#if row.actor}}
-                            <semantic-link iri="{{row.actor.value}}">
-                              <mp-label iri="{{row.actor.value}}"></mp-label>
-                            </semantic-link>
-                          {{else}}
-                            <span>No Actor</span>
-                          {{/if}}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </semantic-table>
-                </template>
-
-              </div>
-            </bs-tab-pane>
-
           </bs-tab-content>
         </div>
       </bs-tab-container>
