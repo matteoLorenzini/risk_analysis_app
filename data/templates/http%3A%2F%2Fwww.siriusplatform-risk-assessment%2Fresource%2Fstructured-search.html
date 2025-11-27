@@ -198,9 +198,9 @@ categories='{
                     }'>
                     <template id="cardTemplate">
                       <bs-col sm="4" style="margin-bottom: 20px;">
-                        <div class="panel panel-default" style="height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                          <div class="panel-body">
-                            <h4 style="margin-top: 0; color: #337ab7;">
+                        <div class="panel panel-default" style="height: 280px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; flex-direction: column;">
+                          <div class="panel-body" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                            <h4 style="margin-top: 0; color: #337ab7; min-height: 48px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
                               <semantic-link iri="{{subject.value}}">
                                 {{value.value}}
                               </semantic-link>
@@ -209,7 +209,7 @@ categories='{
                               <strong>Typology:</strong> 
                               <span class="label label-info">{{label_type.value}}</span>
                             </p>
-                            <p style="margin: 10px 0; color: #666; max-height: 100px; overflow: hidden;">
+                            <p style="margin: 10px 0; color: #666; flex: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;">
                               <strong>Description:</strong><br/>
                               {{#if note.value}}
                                 {{note.value}}
@@ -217,9 +217,11 @@ categories='{
                                 <em>No description available</em>
                               {{/if}}
                             </p>
-                            <semantic-link iri="{{subject.value}}" class="btn btn-primary btn-sm">
-                              View Details
-                            </semantic-link>
+                            <div style="margin-top: auto;">
+                              <semantic-link iri="{{subject.value}}" class="btn btn-primary btn-sm">
+                                View Details
+                              </semantic-link>
+                            </div>
                           </div>
                         </div>
                       </bs-col>
