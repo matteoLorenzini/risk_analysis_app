@@ -169,10 +169,7 @@
                     PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
                     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                     
-                    SELECT DISTINCT ?subject ?value ?label_type ?note 
-                           (GROUP_CONCAT(DISTINCT ?eventLabel; separator=', ') AS ?events)
-                           (GROUP_CONCAT(DISTINCT ?agentLabel; separator=', ') AS ?agents)
-                           (MAX(?score) AS ?maxScore)
+                    SELECT DISTINCT ?subject ?value ?label_type ?note
                     WHERE { 
                       ?subject a crm:E18_Physical_Thing ;
                                crm:P1_is_identified_by ?appellation .
@@ -188,26 +185,7 @@
                         ?type a crm:E55_Type ;
                               skos:prefLabel ?label_type .
                       }
-                      
-                      OPTIONAL {
-                        ?event a crm:E5_Event ;
-                               crm:P31_has_modified ?subject ;
-                               rdfs:label ?eventLabel .
-                        
-                        OPTIONAL {
-                          ?event crm:P39i_was_measured_by ?magnitude .
-                          ?magnitude crm:P40_observed_dimension ?dimension .
-                          ?dimension crm:P90_has_value ?score .
-                        }
-                        
-                        OPTIONAL {
-                          ?event crm:P11_had_participant ?agent .
-                          ?agent a crm:E39_Actor ;
-                                 rdfs:label ?agentLabel .
-                        }
-                      }
                     }
-                    GROUP BY ?subject ?value ?label_type ?note
                     ORDER BY ?value
                   "
                   tuple-template="{{> cardTemplate}}"
@@ -234,26 +212,7 @@
                           </p>
                           {{/if}}
                           
-                          {{#if maxScore.value}}
-                          <p style="margin: 5px 0; font-size: 12px;">
-                            <strong>Max Score:</strong> 
-                            <span class="label label-warning">{{maxScore.value}}</span>
-                          </p>
-                          {{/if}}
-                          
-                          {{#if events.value}}
-                          <p style="margin: 5px 0; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                            <strong>Events:</strong> {{events.value}}
-                          </p>
-                          {{/if}}
-                          
-                          {{#if agents.value}}
-                          <p style="margin: 5px 0; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                            <strong>Agents:</strong> {{agents.value}}
-                          </p>
-                          {{/if}}
-                          
-                          <p style="margin: 5px 0; color: #666; flex: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; font-size: 12px; line-height: 1.4;">
+                          <p style="margin: 5px 0; color: #666; flex: 1; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; font-size: 12px; line-height: 1.4;">
                             <strong>Description:</strong><br/>
                             {{#if note.value}}
                               {{note.value}}
@@ -284,10 +243,7 @@
               PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
               PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
               
-              SELECT DISTINCT ?subject ?value ?label_type ?note 
-                     (GROUP_CONCAT(DISTINCT ?eventLabel; separator=', ') AS ?events)
-                     (GROUP_CONCAT(DISTINCT ?agentLabel; separator=', ') AS ?agents)
-                     (MAX(?score) AS ?maxScore)
+              SELECT DISTINCT ?subject ?value ?label_type ?note
               WHERE { 
                 ?subject a crm:E18_Physical_Thing ;
                          crm:P1_is_identified_by ?appellation .
@@ -303,26 +259,7 @@
                   ?type a crm:E55_Type ;
                         skos:prefLabel ?label_type .
                 }
-                
-                OPTIONAL {
-                  ?event a crm:E5_Event ;
-                         crm:P31_has_modified ?subject ;
-                         rdfs:label ?eventLabel .
-                  
-                  OPTIONAL {
-                    ?event crm:P39i_was_measured_by ?magnitude .
-                    ?magnitude crm:P40_observed_dimension ?dimension .
-                    ?dimension crm:P90_has_value ?score .
-                  }
-                  
-                  OPTIONAL {
-                    ?event crm:P11_had_participant ?agent .
-                    ?agent a crm:E39_Actor ;
-                           rdfs:label ?agentLabel .
-                  }
-                }
               }
-              GROUP BY ?subject ?value ?label_type ?note
               ORDER BY ?value
               " column-configuration='[
               {
@@ -332,18 +269,6 @@
               {
                 "displayName": "Type", 
                 "cellTemplate": "<div>{{label_type.value}}</div>" 
-              },
-              {
-                "displayName": "Max Score", 
-                "cellTemplate": "<div>{{maxScore.value}}</div>" 
-              },
-              {
-                "displayName": "Events", 
-                "cellTemplate": "<div style=\"font-size: 12px;\">{{events.value}}</div>" 
-              },
-              {
-                "displayName": "Agents", 
-                "cellTemplate": "<div style=\"font-size: 12px;\">{{agents.value}}</div>" 
               },
               {
                 "displayName": "Description", 
