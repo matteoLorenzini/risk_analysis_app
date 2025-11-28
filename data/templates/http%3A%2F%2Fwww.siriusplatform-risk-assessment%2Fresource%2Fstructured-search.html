@@ -26,6 +26,11 @@
         "thumbnail": "../assets/images/icons/rs-icons/place.svg"
       },
       {
+        "iri":"<http://www.cidoc-crm.org/cidoc-crm/E55_Type>",
+        "label":"Site Type",
+        "thumbnail": "../assets/images/icons/rs-icons/concept.svg"
+      },
+      {
         "iri":"<http://www.cidoc-crm.org/cidoc-crm/E89_Propositional_Object>",
         "label":"Agent",
         "thumbnail": "../assets/images/icons/rs-icons/actor.svg"
@@ -49,6 +54,12 @@
     
     "relations": [
       {
+        "iri":"<http://www.siriusplatform-risk-assessment/field/site_type>",
+        "label":"Site Type",
+        "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
+        "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E55_Type>"
+      },
+      {
         "iri":"<http://www.siriusplatform-risk-assessment/field/agent_inverse>",
         "label":"Agent",
         "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
@@ -70,6 +81,10 @@
   }'
 
   relations='{
+    "<http://www.siriusplatform-risk-assessment/field/site_type>": [{
+      "kind": "resource",
+      "queryPattern": "{$subject a base:E18_Physical_Thing ; base:P2_has_type ?__value__ . ?__value__ a base:E55_Type .}"
+    }],
     "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": [{
       "kind": "resource",
       "queryPattern": "{$subject ^base:P31_has_modified ?event . ?event a base:E5_Event ; base:P11_had_participant ?__value__ . ?__value__ a base:E39_Actor .}"
@@ -125,26 +140,7 @@
   
   <div data-flex-layout="row stretch-stretch">
     <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
-      <semantic-search-facet
-        value-relations='{
-          "<http://www.siriusplatform-risk-assessment/field/min_score>": {
-            "kind": "numeric-range",
-            "valuesQuery": "
-              PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-              
-              SELECT ?numericRangeBeginValue ?numericRangeEndValue WHERE {
-                $subject ^crm:P31_has_modified ?event .
-                ?event crm:P39i_was_measured_by ?magnitude .
-                ?magnitude crm:P40_observed_dimension ?dimension .
-                ?dimension crm:P90_has_value ?score .
-                
-                BIND(?score AS ?numericRangeBeginValue)
-                BIND(?score AS ?numericRangeEndValue)
-              }
-            "
-          }
-        }'>
-      </semantic-search-facet>
+      <semantic-search-facet></semantic-search-facet>
     </div>
     
     <semantic-search-result-holder>
