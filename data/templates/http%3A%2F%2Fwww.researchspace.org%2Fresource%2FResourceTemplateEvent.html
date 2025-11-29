@@ -21,14 +21,14 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-SELECT ?value_appellation ?value_type WHERE {
+SELECT ?value_appellation  WHERE {
   <[[this]]> a base:E5_Event; rdfs:label ?value_appellation .
 }'
     template='{{> breadcrumbTmpl}}'>
     <template id='breadcrumbTmpl'>
       <li class="active">
         {{#each bindings}}
-          {{value_type.value}}: {{value_appellation.value}}{{#if @last}}{{else}}; {{/if}}
+          {{value_appellation.value}}: {{value_appellation.value}}{{#if @last}}{{else}}; {{/if}}
         {{/each}}
       </li>
     </template>
