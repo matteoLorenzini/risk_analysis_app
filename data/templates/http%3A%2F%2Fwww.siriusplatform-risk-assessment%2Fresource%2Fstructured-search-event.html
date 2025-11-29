@@ -1,18 +1,34 @@
 <semantic-search
   categories='{
+    "<http://www.siriusplatform-risk-assessment/field/site_type>": [{
+      "kind": "resource",
+      "queryPattern": "{ $subject a base:E18_Physical_Thing ; base:P2_has_type ?__value__ . ?__value__ a base:E55_Type . }"
+    }],
+    "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": [{
+      "kind": "resource",
+      "queryPattern": "{ $subject ^base:P31_has_modified ?event . ?event a base:E5_Event ; base:P11_had_participant ?__value__ . ?__value__ a base:E39_Actor . }"
+    }],
+    "<http://www.siriusplatform-risk-assessment/field/event_type>": [{
+      "kind": "resource",
+      "queryPattern": "{ $subject a base:E5_Event ; base:P2_has_type ?__value__ . ?__value__ a base:E55_Type . }"
+    }],
     "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
       "kind": "numeric-range",
       "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
-      "queryPattern": "
-        {
-          $subject ?__relation__ ?score .
-          FILTER(?score <= ?__numericRangeEndValue__) .
-          FILTER(?score >= ?__numericRangeBeginValue__) .
-        }
-      "
+      "queryPattern": "{
+        $subject ^base:P31_has_modified ?event .
+        ?event a base:E5_Event ;
+               base:P39i_was_measured_by ?magnitude .
+        ?magnitude a <http://www.ics.forth.gr/isl/CRMsci/S21_Measurement> ;
+                   base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                   base:P40_observed_dimension ?dimension .
+        ?dimension base:P90_has_value ?score .
+        FILTER(?score <= ?__numericRangeEndValue__) .
+        FILTER(?score >= ?__numericRangeBeginValue__) .
+      }"
     }]
   }'
-
+  
   search-profile='{                   
     "categories": [
       {
@@ -87,7 +103,11 @@
     }],
     "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": [{
       "kind": "resource",
-      "queryPattern": "{$subject ^base:P31_has_modified ?event . ?event a base:E5_Event ; base:P11_had_participant ?__value__ . ?__value__ a base:E39_Actor .}"
+      "queryPattern": "{$subject ^base:P31_has_modified ?event . ?event a base:E5_Event ; base:P11_had_participant ?__value__ . ?__value__ a base:E39_Actor . }"
+    }],
+    "<http://www.siriusplatform-risk-assessment/field/event_type>": [{
+      "kind": "resource",
+      "queryPattern": "{$subject a base:E5_Event ; base:P2_has_type ?__value__ . ?__value__ a base:E55_Type . }"
     }],
     "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
       "kind": "numeric-range",
@@ -105,10 +125,6 @@
         FILTER(?score <= ?__numericRangeEndValue__) .
         FILTER(?score >= ?__numericRangeBeginValue__) .
       }"
-    }],
-    "<http://www.siriusplatform-risk-assessment/field/event>": [{
-      "kind": "resource",
-      "queryPattern": "{$subject ^base:P31_has_modified ?__value__ . ?__value__ a base:E5_Event .}"
     }]
   }'
   >
