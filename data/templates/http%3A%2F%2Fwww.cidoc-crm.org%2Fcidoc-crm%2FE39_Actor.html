@@ -56,6 +56,87 @@
                     <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
                   </mp-field-visualization>
                 </div>
+
+                <!-- ADDED: Sites & Magnitude per Site for Events where this Actor participates -->
+                <div style="margin-top:24px;">
+                  <hr class="rs-resource-section--headerLine">
+                  <span class="h2 rs-resource-section--header">Sites & Magnitude</span>
+
+                  <semantic-table
+                    id="actor-sites-magnitude"
+                    prefetch-labels="false"
+                    query="
+                      PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+                      SELECT DISTINCT ?site ?siteLabel ?event ?eventLabel ?magnitude WHERE {
+                        VALUES ?actor { <[[this]]> }
+
+                        # Event(s) where actor participated and the site modified by the event
+                        ?event a crm:E5_Event ;
+                               crm:P11_had_participant ?actor ;
+                               crm:P31_has_modified ?site .
+                        ?site a crm:E18_Physical_Thing .
+
+                        # Try measurement attached to the Event
+                        {
+                          ?event crm:P39i_was_measured_by ?m .
+                          ?m crm:P40_observed_dimension ?d .
+                          ?d crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                             crm:P90_has_value ?magnitude .
+                        }
+                        UNION
+                        {
+                          # Or measurement attached to the Site
+                          ?site crm:P39i_was_measured_by ?m2 .
+                          ?m2 crm:P40_observed_dimension ?d2 .
+                          ?d2 crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                              crm:P90_has_value ?magnitude .
+                        }
+
+                        OPTIONAL { ?site rdfs:label ?siteLabel }
+                        OPTIONAL { ?event rdfs:label ?eventLabel }
+                      }
+                      ORDER BY DESC(?magnitude)
+                    "
+                    tuple-template='{{> templateSiteMagnitude}}'
+                    number-of-displayed-rows="12"
+                    no-result-template='<bs-panel class=\"info\">No sites or magnitude scores found for this actor</bs-panel>'
+                    options='{"showFilter": true, "pageSizeSelection": [6,12,24]}'>
+                    <template id='templateSiteMagnitude'>
+                      <bs-table class='table table-striped'>
+                        <thead>
+                          <tr>
+                            <th>Site</th>
+                            <th>Event</th>
+                            <th>Magnitude</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {{#results}}
+                            <tr>
+                              <td>
+                                {{#if siteLabel.value}}
+                                  <semantic-link iri='{{site.value}}'>{{siteLabel.value}}</semantic-link>
+                                {{else}}
+                                  <semantic-link iri='{{site.value}}'>{{site.value}}</semantic-link>
+                                {{/if}}
+                              </td>
+                              <td>
+                                {{#if eventLabel.value}}
+                                  <semantic-link iri='{{event.value}}'>{{eventLabel.value}}</semantic-link>
+                                {{else}}
+                                  <semantic-link iri='{{event.value}}'>{{event.value}}</semantic-link>
+                                {{/if}}
+                              </td>
+                              <td>{{magnitude.value}}</td>
+                            </tr>
+                          {{/results}}
+                        </tbody>
+                      </bs-table>
+                    </template>
+                  </semantic-table>
+                </div>
               </div>
             </bs-tab-pane>
           </bs-tab-content>
