@@ -10,11 +10,11 @@
                 <rs-icon icon-type="round" icon-name="account_tree"></rs-icon>
               </button>
             </semantic-link-container>
-            <mp-agent-trigger id='details-view-trigger' type='Component.TemplateUpdate' data='{"iri": "{{iri}}"}' targets='["details-view", "open-details-sidebar"]'>
+            <mp-event-trigger id='details-view-trigger' type='Component.TemplateUpdate' data='{"iri": "{{iri}}"}' targets='["details-view", "open-details-sidebar"]'>
               <button type="button" title="Resource Details">
                 <rs-icon icon-type="rounded" icon-name="info" symbol="true"></rs-icon>
               </button>
-            </mp-agent-trigger>
+            </mp-event-trigger>
           </div>
         </div>
 
@@ -39,10 +39,10 @@
       <bs-tab-container id="tab-container" class="rs-resource-tabs" default-active-key="agent-details">
         <div>
           <bs-nav bs-style="tabs">
-            <bs-nav-item agent-key="agent-details">Agent</bs-nav-item>
+            <bs-nav-item event-key="agent-details">Agent</bs-nav-item>
           </bs-nav>
           <bs-tab-content animation="true">
-            <bs-tab-pane agent-key="agent-details">
+            <bs-tab-pane event-key="agent-details">
               <div class="rs-resource-tab-container">
                 <div>
                   <hr class="rs-resource-section--headerLine">
