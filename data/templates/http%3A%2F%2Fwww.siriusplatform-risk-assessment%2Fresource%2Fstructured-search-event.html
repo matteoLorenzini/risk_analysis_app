@@ -19,8 +19,7 @@
     "categories":[
       { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", "label":"Event", "thumbnail":"../images/fcs/things.svg" },
       { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>", "label":"Site", "thumbnail":"../images/fcs/places.svg" },
-      { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>", "label":"Agent", "thumbnail":"../images/fcs/actors.svg" },
-      { "iri":"<http://www.cidoc-crm.org/extensions/crmsci/S21_Measurement>", "label":"Magnitude", "thumbnail":"../images/fcs/things.svg" }
+      { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>", "label":"Agent", "thumbnail":"../images/fcs/actors.svg" }
     ],
     "relations":[
       { "iri":"<http://www.siriusplatform-risk-assessment/field/agent_inverse>", "label":"Agent", "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>" },
@@ -53,9 +52,7 @@
 >
   <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E5_Event>' query='
     PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
     SELECT ?subject WHERE {
       ?subject a crm:E5_Event .
       OPTIONAL { ?subject rdfs:label ?label . FILTER REGEX(STR(?label), ?__token__, "i") }
@@ -65,9 +62,18 @@
     <div data-flex-self="size-1of3" style="flex:0 0 20px;">
       <semantic-search-facet
         value-relations='{
-          "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": { "kind":"resource", "valuesQuery": "PREFIX crm:<http://www.cidoc-crm.org/cidoc-crm/> SELECT ?iri ?label WHERE { $subject base:P11_had_participant ?iri . ?iri a crm:E39_Actor . OPTIONAL { ?iri rdfs:label ?label } }" },
-          "<http://www.siriusplatform-risk-assessment/field/site>": { "kind":"resource", "valuesQuery": "PREFIX crm:<http://www.cidoc-crm.org/cidoc-crm/> SELECT ?iri ?label WHERE { $subject base:P31_has_modified ?iri . ?iri a crm:E18_Physical_Thing . OPTIONAL { ?iri rdfs:label ?label } }" },
-          "<http://www.siriusplatform-risk-assessment/field/min_score>": { "kind":"numeric-range", "valuesQuery": "PREFIX crm:<http://www.cidoc-crm.org/cidoc-crm/> PREFIX crmsci:<http://www.ics.forth.gr/isl/CRMsci/> PREFIX xsd:<http://www.w3.org/2001/XMLSchema#> SELECT ?numericRangeBeginValue ?numericRangeEndValue WHERE { $subject base:P39i_was_measured_by ?magnitude . ?magnitude crmsci:S21_Measurement ; base:P40_observed_dimension ?dimension . ?dimension base:P90_has_value ?val . BIND(xsd:double(?val) AS ?numericRangeBeginValue) BIND(xsd:double(?val) AS ?numericRangeEndValue) }" }
+          "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": {
+            "kind":"resource",
+            "valuesQuery": "PREFIX crm:<http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> SELECT ?iri ?label WHERE { $subject base:P11_had_participant ?iri . ?iri a crm:E39_Actor . OPTIONAL { ?iri rdfs:label ?label } }"
+          },
+          "<http://www.siriusplatform-risk-assessment/field/site>": {
+            "kind":"resource",
+            "valuesQuery": "PREFIX crm:<http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> SELECT ?iri ?label WHERE { $subject base:P31_has_modified ?iri . ?iri a crm:E18_Physical_Thing . OPTIONAL { ?iri rdfs:label ?label } }"
+          },
+          "<http://www.siriusplatform-risk-assessment/field/min_score>": {
+            "kind":"numeric-range",
+            "valuesQuery": "PREFIX crm:<http://www.cidoc-crm.org/cidoc-crm/> PREFIX crmsci:<http://www.ics.forth.gr/isl/CRMsci/> PREFIX xsd:<http://www.w3.org/2001/XMLSchema#> SELECT ?numericRangeBeginValue ?numericRangeEndValue WHERE { $subject base:P39i_was_measured_by ?magnitude . ?magnitude crmsci:S21_Measurement ; base:P40_observed_dimension ?dimension . ?dimension base:P90_has_value ?val . BIND(xsd:double(?val) AS ?numericRangeBeginValue) BIND(xsd:double(?val) AS ?numericRangeEndValue) }"
+          }
         }'>
       </semantic-search-facet>
     </div>
@@ -79,9 +85,7 @@
             <semantic-search-result>
               <semantic-table id='events-grid' prefetch-labels="false" number-of-displayed-rows="12" query='
                 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
                 SELECT DISTINCT ?subject ?label ?date ?note ?siteLabel ?agentLabel WHERE {
                   ?subject a crm:E5_Event .
                   OPTIONAL { ?subject rdfs:label ?label }
@@ -114,7 +118,6 @@
               <semantic-table id='events-table' query='
                 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
                 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
                 SELECT DISTINCT ?subject ?label ?siteLabel ?agentLabel ?date ?note WHERE {
                   ?subject a crm:E5_Event .
                   OPTIONAL { ?subject rdfs:label ?label }
