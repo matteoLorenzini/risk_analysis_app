@@ -49,12 +49,7 @@
                   <span class="h1 rs-resource-section--header">Agent</span>
                 </div>
                 <div class="rs-resource-data-table">
-                  <mp-field-visualization
-                    subject='[[this]]'
-                    fields='[[fieldDefinitions siti="http://www.siriusplatform-risk-assessment/field/agent_site_inverse"]]'
-                    template='{{> template}}'>
-                    <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
-                  </mp-field-visualization>
+                  {{> rsp:ResourceFieldBasedVisualization subject="[[this]]" fields='[[fieldDefinitions siti="http://www.siriusplatform-risk-assessment/field/agent_site_inverse"]]'}}
                 </div>
               </div>
             </bs-tab-pane>
