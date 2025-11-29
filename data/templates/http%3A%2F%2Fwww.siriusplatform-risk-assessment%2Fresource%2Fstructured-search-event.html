@@ -1,70 +1,54 @@
 <semantic-search
   categories='{
-    "http://www.siriusplatform-risk-assessment/field/event_type": [{
+    "<http://www.siriusplatform-risk-assessment/field/event_type>": [{
       "kind": "resource",
       "queryPattern": "{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> . }"
     }],
-    "http://www.siriusplatform-risk-assessment/field/site_inverse": [{
+    "<http://www.siriusplatform-risk-assessment/field/site_inverse>": [{
       "kind": "resource",
       "queryPattern": "{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P31_has_modified> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> . }"
     }],
-    "http://www.siriusplatform-risk-assessment/field/participant_actor": [{
+    "<http://www.siriusplatform-risk-assessment/field/participant_actor>": [{
       "kind": "resource",
       "queryPattern": "{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P11_had_participant> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E39_Actor> . }"
     }],
-    "http://www.siriusplatform-risk-assessment/field/min_score": [{
+    "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
       "kind": "numeric-range",
       "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
-      "queryPattern": "{
-        $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> .
-        $subject <http://www.cidoc-crm.org/cidoc-crm/P39i_was_measured_by> ?m .
-        ?m <http://www.cidoc-crm.org/cidoc-crm/P40_observed_dimension> ?d .
-        ?d <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/type/magnitude-score> ;
-           <http://www.cidoc-crm.org/cidoc-crm/P90_has_value> ?score .
-        FILTER(?score <= ?__numericRangeEndValue__) .
-        FILTER(?score >= ?__numericRangeBeginValue__) .
-      }"
+      "queryPattern": "{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> . $subject <http://www.cidoc-crm.org/cidoc-crm/P39i_was_measured_by> ?m . ?m <http://www.cidoc-crm.org/cidoc-crm/P40_observed_dimension> ?d . ?d <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/type/magnitude-score> ; <http://www.cidoc-crm.org/cidoc-crm/P90_has_value> ?score . FILTER(?score <= ?__numericRangeEndValue__) . FILTER(?score >= ?__numericRangeBeginValue__) . }"
     }]
   }'
   search-profile='{
-    "categories": [
-      { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>","label":"Event","thumbnail":"../assets/images/icons/rs-icons/event.svg" },
-      { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>","label":"Site","thumbnail":"../assets/images/icons/rs-icons/place.svg" },
-      { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>","label":"Actor","thumbnail":"../assets/images/icons/rs-icons/actor.svg" },
-      { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E55_Type>","label":"Type","thumbnail":"../assets/images/icons/rs-icons/concept.svg" }
+    "categories":[
+      {"iri":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>","label":"Event"},
+      {"iri":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>","label":"Site"},
+      {"iri":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>","label":"Actor"},
+      {"iri":"<http://www.cidoc-crm.org/cidoc-crm/E55_Type>","label":"Type"}
     ],
-    "relations": [
-      { "iri":"<http://www.siriusplatform-risk-assessment/field/event_type>", "label":"Event Type", "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E55_Type>" },
-      { "iri":"<http://www.siriusplatform-risk-assessment/field/site_inverse>", "label":"Site", "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>" },
-      { "iri":"<http://www.siriusplatform-risk-assessment/field/participant_actor>", "label":"Participant", "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>" },
-      { "iri":"<http://www.siriusplatform-risk-assessment/field/min_score>", "label":"Magnitude Range", "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", "hasRange":"<http://www.w3.org/2001/XMLSchema#decimal>" }
+    "relations":[
+      {"iri":"<http://www.siriusplatform-risk-assessment/field/event_type>","label":"Event Type","hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>","hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E55_Type>"},
+      {"iri":"<http://www.siriusplatform-risk-assessment/field/site_inverse>","label":"Site","hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>","hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>"},
+      {"iri":"<http://www.siriusplatform-risk-assessment/field/participant_actor>","label":"Participant","hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>","hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>"},
+      {"iri":"<http://www.siriusplatform-risk-assessment/field/min_score>","label":"Magnitude Range","hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>","hasRange":"<http://www.w3.org/2001/XMLSchema#decimal>"}
     ]
   }'
   relations='{
-    "http://www.siriusplatform-risk-assessment/field/event_type": [{
-      "kind": "resource",
-      "queryPattern": "{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> . }"
+    "<http://www.siriusplatform-risk-assessment/field/event_type>": [{
+      "kind":"resource",
+      "queryPattern":"{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> . }"
     }],
-    "http://www.siriusplatform-risk-assessment/field/site_inverse": [{
-      "kind": "resource",
-      "queryPattern": "{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P31_has_modified> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> . }"
+    "<http://www.siriusplatform-risk-assessment/field/site_inverse>": [{
+      "kind":"resource",
+      "queryPattern":"{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P31_has_modified> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> . }"
     }],
-    "http://www.siriusplatform-risk-assessment/field/participant_actor": [{
-      "kind": "resource",
-      "queryPattern": "{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P11_had_participant> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E39_Actor> . }"
+    "<http://www.siriusplatform-risk-assessment/field/participant_actor>": [{
+      "kind":"resource",
+      "queryPattern":"{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> ; <http://www.cidoc-crm.org/cidoc-crm/P11_had_participant> ?__value__ . ?__value__ a <http://www.cidoc-crm.org/cidoc-crm/E39_Actor> . }"
     }],
-    "http://www.siriusplatform-risk-assessment/field/min_score": [{
-      "kind": "numeric-range",
-      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
-      "queryPattern": "{
-        $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> .
-        $subject <http://www.cidoc-crm.org/cidoc-crm/P39i_was_measured_by> ?m .
-        ?m <http://www.cidoc-crm.org/cidoc-crm/P40_observed_dimension> ?d .
-        ?d <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/type/magnitude-score> ;
-           <http://www.cidoc-crm.org/cidoc-crm/P90_has_value> ?score .
-        FILTER(?score <= ?__numericRangeEndValue__) .
-        FILTER(?score >= ?__numericRangeBeginValue__) .
-      }"
+    "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
+      "kind":"numeric-range",
+      "datatype":"http://www.w3.org/2001/XMLSchema#decimal",
+      "queryPattern":"{ $subject a <http://www.cidoc-crm.org/cidoc-crm/E5_Event> . $subject <http://www.cidoc-crm.org/cidoc-crm/P39i_was_measured_by> ?m . ?m <http://www.cidoc-crm.org/cidoc-crm/P40_observed_dimension> ?d . ?d <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/type/magnitude-score> ; <http://www.cidoc-crm.org/cidoc-crm/P90_has_value> ?score . FILTER(?score <= ?__numericRangeEndValue__) . FILTER(?score >= ?__numericRangeBeginValue__) . }"
     }]
   }'
   >
