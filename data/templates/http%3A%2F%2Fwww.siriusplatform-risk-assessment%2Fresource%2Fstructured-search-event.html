@@ -1,0 +1,135 @@
+<semantic-search
+  categories='{
+    "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
+      "kind": "numeric-range",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "queryPattern": "
+        {
+          $subject base:P39i_was_measured_by ?magnitude .
+          ?magnitude base:P40_observed_dimension ?dimension .
+          ?dimension base:P90_has_value ?score .
+          FILTER(xsd:double(?score) >= xsd:double(?__numericRangeBeginValue__)) .
+          FILTER(xsd:double(?score) <= xsd:double(?__numericRangeEndValue__)) .
+        }
+      "
+    }]
+  }'
+
+  search-profile='{
+    "categories":[
+      { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", "label":"Event", "thumbnail":"../images/fcs/things.svg" },
+      { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>", "label":"Site", "thumbnail":"../images/fcs/places.svg" },
+      { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>", "label":"Agent", "thumbnail":"../images/fcs/actors.svg" },
+      { "iri":"<http://www.cidoc-crm.org/extensions/crmsci/S21_Measurement>", "label":"Magnitude", "thumbnail":"../images/fcs/things.svg" }
+    ],
+    "relations":[
+      { "iri":"<http://www.siriusplatform-risk-assessment/field/agent_inverse>", "label":"Agent", "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>" },
+      { "iri":"<http://www.siriusplatform-risk-assessment/field/site>", "label":"Site", "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>" },
+      { "iri":"<http://www.siriusplatform-risk-assessment/field/min_score>", "label":"Magnitude Range", "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", "hasRange":"<http://www.w3.org/2001/XMLSchema#Decimal>" }
+    ]
+  }'
+
+  relations='{
+    "<http://www.siriusplatform-risk-assessment/field/agent_inverse>":[
+      {
+        "kind":"resource",
+        "queryPattern":"{ $subject base:P11_had_participant ?__value__ . ?__value__ a base:E39_Actor . }"
+      }
+    ],
+    "<http://www.siriusplatform-risk-assessment/field/site>":[
+      {
+        "kind":"resource",
+        "queryPattern":"{ $subject base:P31_has_modified ?__value__ . ?__value__ a base:E18_Physical_Thing . }"
+      }
+    ],
+    "<http://www.siriusplatform-risk-assessment/field/min_score>":[
+      {
+        "kind":"numeric-range",
+        "datatype":"http://www.w3.org/2001/XMLSchema#decimal",
+        "queryPattern":"{ $subject base:P39i_was_measured_by ?magnitude . ?magnitude a <http://www.ics.forth.gr/isl/CRMsci/S21_Measurement> ; base:P40_observed_dimension ?dimension . ?dimension base:P90_has_value ?score . FILTER(xsd:double(?score) >= xsd:double(?__numericRangeBeginValue__)) . FILTER(xsd:double(?score) <= xsd:double(?__numericRangeEndValue__)) . }"
+      }
+    ]
+  }'
+>
+  <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E5_Event>' query='
+    PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+    SELECT ?subject WHERE {
+      ?subject a crm:E5_Event .
+      OPTIONAL { ?subject rdfs:label ?label . FILTER REGEX(STR(?label), ?__token__, "i") }
+    }' debounce=400></semantic-search-query-keyword>
+
+  <div data-flex-layout="row stretch-stretch">
+    <div data-flex-self="size-1of3" style="flex:0 0 20px;">
+      <semantic-search-facet
+        value-relations='{
+          "<http://www.siriusplatform-risk-assessment/field/agent_inverse>": { "kind":"resource", "valuesQuery": "PREFIX crm:<http://www.cidoc-crm.org/cidoc-crm/> SELECT ?iri ?label WHERE { $subject base:P11_had_participant ?iri . ?iri a crm:E39_Actor . OPTIONAL { ?iri rdfs:label ?label } }" },
+          "<http://www.siriusplatform-risk-assessment/field/site>": { "kind":"resource", "valuesQuery": "PREFIX crm:<http://www.cidoc-crm.org/cidoc-crm/> SELECT ?iri ?label WHERE { $subject base:P31_has_modified ?iri . ?iri a crm:E18_Physical_Thing . OPTIONAL { ?iri rdfs:label ?label } }" },
+          "<http://www.siriusplatform-risk-assessment/field/min_score>": { "kind":"numeric-range", "valuesQuery": "PREFIX crm:<http://www.cidoc-crm.org/cidoc-crm/> PREFIX crmsci:<http://www.ics.forth.gr/isl/CRMsci/> PREFIX xsd:<http://www.w3.org/2001/XMLSchema#> SELECT ?numericRangeBeginValue ?numericRangeEndValue WHERE { $subject base:P39i_was_measured_by ?magnitude . ?magnitude crmsci:S21_Measurement ; base:P40_observed_dimension ?dimension . ?dimension base:P90_has_value ?val . BIND(xsd:double(?val) AS ?numericRangeBeginValue) BIND(xsd:double(?val) AS ?numericRangeEndValue) }" }
+        }'>
+      </semantic-search-facet>
+    </div>
+
+    <semantic-search-result-holder>
+      <div data-flex-self="md-full">
+        <bs-tabs unmount-on-exit=true id='search-results' animation=false>
+          <bs-tab event-key="1" title="Grid">
+            <semantic-search-result>
+              <semantic-table id='events-grid' prefetch-labels="false" number-of-displayed-rows="12" query='
+                PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+                SELECT DISTINCT ?subject ?label ?date ?note ?siteLabel ?agentLabel WHERE {
+                  ?subject a crm:E5_Event .
+                  OPTIONAL { ?subject rdfs:label ?label }
+                  OPTIONAL { ?subject crm:P4_has_time-span ?ts . ?ts rdfs:label ?date }
+                  OPTIONAL { ?subject crm:P3_has_note ?note }
+                  OPTIONAL { ?subject crm:P31_has_modified ?site . ?site a crm:E18_Physical_Thing . OPTIONAL { ?site rdfs:label ?siteLabel } }
+                  OPTIONAL { ?subject crm:P11_had_participant ?agent . ?agent a crm:E39_Actor . OPTIONAL { ?agent rdfs:label ?agentLabel } }
+                }
+                ORDER BY ?label
+              ' tuple-template='{{> eventCard}}'>
+                <template id='eventCard'>
+                  <bs-col sm="4" style="margin-bottom:20px;">
+                    <div class="panel panel-default" style="height: 280px;">
+                      <div class="panel-body">
+                        <h4><semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link></h4>
+                        {{#if siteLabel.value}}<div><strong>Site:</strong> {{siteLabel.value}}</div>{{/if}}
+                        {{#if agentLabel.value}}<div><strong>Agent:</strong> {{agentLabel.value}}</div>{{/if}}
+                        {{#if date.value}}<div><strong>Date:</strong> {{date.value}}</div>{{/if}}
+                        <div style="margin-top:10px;">{{#if note.value}}{{note.value}}{{else}}<em>No description</em>{{/if}}</div>
+                      </div>
+                    </div>
+                  </bs-col>
+                </template>
+              </semantic-table>
+            </semantic-search-result>
+          </bs-tab>
+
+          <bs-tab event-key="2" title="Table">
+            <semantic-search-result>
+              <semantic-table id='events-table' query='
+                PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+                SELECT DISTINCT ?subject ?label ?siteLabel ?agentLabel ?date ?note WHERE {
+                  ?subject a crm:E5_Event .
+                  OPTIONAL { ?subject rdfs:label ?label }
+                  OPTIONAL { ?subject crm:P31_has_modified ?site . ?site a crm:E18_Physical_Thing . OPTIONAL { ?site rdfs:label ?siteLabel } }
+                  OPTIONAL { ?subject crm:P11_had_participant ?agent . ?agent a crm:E39_Actor . OPTIONAL { ?agent rdfs:label ?agentLabel } }
+                  OPTIONAL { ?subject crm:P4_has_time-span ?ts . ?ts rdfs:label ?date }
+                  OPTIONAL { ?subject crm:P3_has_note ?note }
+                }
+                ORDER BY ?label
+              ' column-configuration='[{"displayName":"Event","cellTemplate":"<semantic-link iri=\"{{subject.value}}\">{{label.value}}</semantic-link>"},{"displayName":"Site","cellTemplate":"{{siteLabel.value}}"},{"displayName":"Agent","cellTemplate":"{{agentLabel.value}}"},{"displayName":"Date","cellTemplate":"{{date.value}}"}]' options='{"showFilter":true,"resultsPerPage":10}'>
+              </semantic-table>
+            </semantic-search-result>
+          </bs-tab>
+        </bs-tabs>
+      </div>
+    </semantic-search-result-holder>
+  </div>
+</semantic-search>
