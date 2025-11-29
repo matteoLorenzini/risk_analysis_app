@@ -5,7 +5,7 @@
   }
 </style>
 <div class="page page-local-overwrite">
-    [[> crm:E53_Place]]
+    [[> crm:E5_Event]]
 </div>
 
 [[else]]
@@ -22,8 +22,7 @@ PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
 SELECT ?value_appellation ?value_type WHERE {
-  <[[this]]> a crm:E5_Event;
-          rdfs:label ?value_appellation .
+  <[[this]]> a base:E5_Event; rdfs:label ?value_appellation .
 }'
     template='{{> breadcrumbTmpl}}'>
     <template id='breadcrumbTmpl'>
@@ -39,6 +38,6 @@ SELECT ?value_appellation ?value_type WHERE {
 
 [[!-- Resource Page --]]
 <div class="page">
-  [[> crm:E53_Place]]
+  [[> crm:E5_Event]]
 </div>
 [[/if]]
