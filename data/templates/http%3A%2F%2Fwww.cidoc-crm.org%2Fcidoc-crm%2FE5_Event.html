@@ -51,7 +51,29 @@
                 <div class="rs-resource-data-table">
                   <mp-field-visualization
                     subject='[[this]]'
-                    fields='[[fieldDefinitions siti="http://www.siriusplatform-risk-assessment/field/event_site_inverse" magnitudo="http://www.siriusplatform-risk-assessment/field/event_site_magnitudo_inverse"]]'
+                    fields='[[fieldDefinitions
+                      siti="http://www.siriusplatform-risk-assessment/field/event_site_inverse"
+                      magnitudo="http://www.siriusplatform-risk-assessment/field/event_site_magnitudo_inverse"
+                      event_name="http://www.siriusplatform-risk-assessment/field/event_event_name"
+                      agent="http://www.siriusplatform-risk-assessment/field/event_agent"
+                      risk_desc="http://www.siriusplatform-risk-assessment/field/event_risk_desc"
+                      a_val1="http://www.siriusplatform-risk-assessment/field/event_a_val1"
+                      a_val2="http://www.siriusplatform-risk-assessment/field/event_a_val2"
+                      a_val3="http://www.siriusplatform-risk-assessment/field/event_a_val3"
+                      a_desc="http://www.siriusplatform-risk-assessment/field/event_a_desc"
+                      b_val1="http://www.siriusplatform-risk-assessment/field/event_b_val1"
+                      b_val2="http://www.siriusplatform-risk-assessment/field/event_b_val2"
+                      b_val3="http://www.siriusplatform-risk-assessment/field/event_b_val3"
+                      b_desc="http://www.siriusplatform-risk-assessment/field/event_b_desc"
+                      c_val1="http://www.siriusplatform-risk-assessment/field/event_c_val1"
+                      c_val2="http://www.siriusplatform-risk-assessment/field/event_c_val2"
+                      c_val3="http://www.siriusplatform-risk-assessment/field/event_c_val3"
+                      c_desc="http://www.siriusplatform-risk-assessment/field/event_c_desc"
+                      magnitude_min_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_min_score"
+                      magnitude_max_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_max_score"
+                      uncertainty_min_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_min_score"
+                      uncertainty_max_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_max_score"
+                    ]]'
                     template='{{> template}}'>
                     <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
                   </mp-field-visualization>
