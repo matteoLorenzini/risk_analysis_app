@@ -9,7 +9,7 @@
         <div class="rs-resource-header-topContainer">
           <div class="rs-resource-header-topButtons">
 
-            <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]]' urlqueryparam-view='knowledge-map' urlqueryparam-resource='[[this]]'>
+            <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]' urlqueryparam-view='knowledge-map' urlqueryparam-resource='[[this]]'>
               <button type="button" title="Author Resource in Knowledge Map">
                 <rs-icon icon-type="round" icon-name="account_tree"></rs-icon>
               </button>
@@ -105,117 +105,116 @@
   <!-- NEW: compact "one line per event" field visualization -->
                   <!-- Compact one-line-per-site table implemented with a direct SPARQL query -->
                   <semantic-query
-                    query="
-PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-SELECT ?site (SAMPLE(?siteLabel) AS ?site_label)
-       (SAMPLE(?a1) AS ?a_val1) (SAMPLE(?a2) AS ?a_val2) (SAMPLE(?a3) AS ?a_val3)
-       (SAMPLE(?b1) AS ?b_val1) (SAMPLE(?b2) AS ?b_val2) (SAMPLE(?b3) AS ?b_val3)
-       (SAMPLE(?c1) AS ?c_val1) (SAMPLE(?c2) AS ?c_val2) (SAMPLE(?c_val3) AS ?c_val3)
-       (SAMPLE(?minMag) AS ?magnitude_min) (SAMPLE(?maxMag) AS ?magnitude_max)
-       (SAMPLE(?minU) AS ?uncertainty_min) (SAMPLE(?maxU) AS ?uncertainty_max)
-WHERE {
-  VALUES ?event { <[[this]]> }
-  ?event a crm:E5_Event .
-  ?event crm:P31_has_modified ?site .
-  OPTIONAL { ?site rdfs:label ?siteLabel }
-
-  # Scale A dims (attached to event)
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?measA .
-    ?measA a crmsci:S21_Measurement ;
-           crm:P2_has_type <https://w3id.org/sirius/type/scale-a-score> ;
-           crm:P40_observed_dimension ?dimA .
-    ?dimA crm:P2_has_type ?dimAType ;
-          rdfs:label ?dimALabel .
-    FILTER(?dimAType IN (<https://w3id.org/sirius/type/scale_a_val_1>, <https://w3id.org/sirius/type/scale_a_val_2>, <https://w3id.org/sirius/type/scale_a_val_3>))
-    BIND(STRAFTER(STR(?dimAType), \"scale_a_val_\") AS ?aIndex)
-    BIND(?dimALabel AS ?aVal) 
-    # map into separate variables - simplified via SAMPLE in outer SELECT
-    BIND(IF(?aIndex = \"1\", ?aVal, UNDEF) AS ?a1)
-    BIND(IF(?aIndex = \"2\", ?aVal, UNDEF) AS ?a2)
-    BIND(IF(?aIndex = \"3\", ?aVal, UNDEF) AS ?a3)
-  }
-
-  # Scale B dims
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?measB .
-    ?measB a crmsci:S21_Measurement ;
-           crm:P2_has_type <https://w3id.org/sirius/type/scale-b-score> ;
-           crm:P40_observed_dimension ?dimB .
-    ?dimB crm:P2_has_type ?dimBType ;
-          rdfs:label ?dimBLabel .
-    FILTER(?dimBType IN (<https://w3id.org/sirius/type/scale_b_val_1>, <https://w3id.org/sirius/type/scale_b_val_2>, <https://w3id.org/sirius/type/scale_b_val_3>))
-    BIND(STRAFTER(STR(?dimBType), \"scale_b_val_\") AS ?bIndex)
-    BIND(IF(?bIndex = \"1\", ?dimBLabel, UNDEF) AS ?b1)
-    BIND(IF(?bIndex = \"2\", ?dimBLabel, UNDEF) AS ?b2)
-    BIND(IF(?bIndex = \"3\", ?dimBLabel, UNDEF) AS ?b3)
-  }
-
-  # Scale C dims
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?measC .
-    ?measC a crmsci:S21_Measurement ;
-           crm:P2_has_type <https://w3id.org/sirius/type/scale-c-score> ;
-           crm:P40_observed_dimension ?dimC .
-    ?dimC crm:P2_has_type ?dimCType ;
-          rdfs:label ?dimCLabel .
-    FILTER(?dimCType IN (<https://w3id.org/sirius/type/scale_c_val_1>, <https://w3id.org/sirius/type/scale_c_val_2>, <https://w3id.org/sirius/type/scale_c_val_3>))
-    BIND(STRAFTER(STR(?dimCType), \"scale_c_val_\") AS ?cIndex)
-    BIND(IF(?cIndex = \"1\", ?dimCLabel, UNDEF) AS ?c1)
-    BIND(IF(?cIndex = \"2\", ?dimCLabel, UNDEF) AS ?c2)
-    BIND(IF(?cIndex = \"3\", ?dimCLabel, UNDEF) AS ?c3)
-  }
-
-  # Magnitude min / max (attached to event)
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?mag .
-    ?mag a crmsci:S21_Measurement ;
-         crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-         crm:P40_observed_dimension ?magDim .
-    ?magDim crm:P2_has_type ?magDimType ;
-            crm:P90_has_value ?magVal .
-    FILTER(STRSTARTS(STR(?magDimType), \"https://w3id.org/sirius/magnitude_score_min\") || STRSTARTS(STR(?magDimType), \"https://w3id.org/sirius/magnitude_score_max\"))
-    BIND(IF(STRSTARTS(STR(?magDimType), \"https://w3id.org/sirius/magnitude_score_min\"), ?magVal, UNDEF) AS ?minMag)
-    BIND(IF(STRSTARTS(STR(?magDimType), \"https://w3id.org/sirius/magnitude_score_max\"), ?magVal, UNDEF) AS ?maxMag)
-  }
-
-  # Uncertainty min / max
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?unc .
-    ?unc a crmsci:S21_Measurement ;
-         crm:P2_has_type <https://w3id.org/sirius/type/uncertainty> ;
-         crm:P40_observed_dimension ?uncDim .
-    ?uncDim crm:P2_has_type ?uncDimType ;
-            crm:P90_has_value ?uncVal .
-    FILTER(STRSTARTS(STR(?uncDimType), \"https://w3id.org/sirius/uncertainty_min\") || STRSTARTS(STR(?uncDimType), \"https://w3id.org/sirius/uncertainty_max\"))
-    BIND(IF(STRSTARTS(STR(?uncDimType), \"https://w3id.org/sirius/uncertainty_min\"), ?uncVal, UNDEF) AS ?minU)
-    BIND(IF(STRSTARTS(STR(?uncDimType), \"https://w3id.org/sirius/uncertainty_max\"), ?uncVal, UNDEF) AS ?maxU)
-  }
-}
-GROUP BY ?site
-ORDER BY ?site_label
-"
-                    template='
-                      <table class="one-line-table" style="width:100%;border-collapse:collapse;margin-top:8px;">
-                        <thead><tr><th>Site</th><th>Scale A</th><th>Scale B</th><th>Scale C</th><th>Magnitude</th><th>Uncertainty</th></tr></thead>
-                        <tbody>
-                          {{#each bindings}}
-                            <tr>
-                              <td>{{#if site_label.value}}<semantic-link iri="{{site.value}}">{{site_label.value}}</semantic-link>{{else}}<semantic-link iri="{{site.value}}">{{site.value}}</semantic-link>{{/if}}</td>
-                              <td>{{#if a_val1.value}}{{a_val1.value}}{{/if}}{{#if a_val2.value}} / {{a_val2.value}}{{/if}}{{#if a_val3.value}} / {{a_val3.value}}{{/if}}</td>
-                              <td>{{#if b_val1.value}}{{b_val1.value}}{{/if}}{{#if b_val2.value}} / {{b_val2.value}}{{/if}}{{#if b_val3.value}} / {{b_val3.value}}{{/if}}</td>
-                              <td>{{#if c_val1.value}}{{c_val1.value}}{{/if}}{{#if c_val2.value}} / {{c_val2.value}}{{/if}}{{#if c_val3.value}} / {{c_val3.value}}{{/if}}</td>
-                              <td>{{#if magnitude_min.value}}{{magnitude_min.value}}{{/if}}{{#if magnitude_max.value}} – {{magnitude_max.value}}{{/if}}</td>
-                              <td>{{#if uncertainty_min.value}}{{uncertainty_min.value}}{{/if}}{{#if uncertainty_max.value}} – {{uncertainty_max.value}}{{/if}}</td>
-                            </tr>
-                          {{/each}}
-                        </tbody>
-                      </table>
-                    '>
-                  </semantic-query>
+                    query='
+ PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
+ PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
+ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+ 
+ SELECT ?site (SAMPLE(?siteLabel) AS ?site_label)
+        (SAMPLE(?a1) AS ?a_val1) (SAMPLE(?a2) AS ?a_val2) (SAMPLE(?a3) AS ?a_val3)
+        (SAMPLE(?b1) AS ?b_val1) (SAMPLE(?b2) AS ?b_val2) (SAMPLE(?b3) AS ?b_val3)
+        (SAMPLE(?c1) AS ?c_val1) (SAMPLE(?c2) AS ?c_val2) (SAMPLE(?c_val3) AS ?c_val3)
+        (SAMPLE(?minMag) AS ?magnitude_min) (SAMPLE(?maxMag) AS ?magnitude_max)
+        (SAMPLE(?minU) AS ?uncertainty_min) (SAMPLE(?maxU) AS ?uncertainty_max)
+ WHERE {
+   VALUES ?event { <[[this]]> }
+   ?event a crm:E5_Event .
+   ?event crm:P31_has_modified ?site .
+   OPTIONAL { ?site rdfs:label ?siteLabel }
+ 
+   # Scale A dims (attached to event)
+   OPTIONAL {
+     ?event crm:P39i_was_measured_by ?measA .
+     ?measA a crmsci:S21_Measurement ;
+            crm:P2_has_type <https://w3id.org/sirius/type/scale-a-score> ;
+            crm:P40_observed_dimension ?dimA .
+     ?dimA crm:P2_has_type ?dimAType ;
+           rdfs:label ?dimALabel .
+     FILTER(?dimAType IN (<https://w3id.org/sirius/type/scale_a_val_1>, <https://w3id.org/sirius/type/scale_a_val_2>, <https://w3id.org/sirius/type/scale_a_val_3>))
+     BIND(STRAFTER(STR(?dimAType), "scale_a_val_") AS ?aIndex)
+     BIND(?dimALabel AS ?aVal)
+     BIND(IF(?aIndex = "1", ?aVal, UNDEF) AS ?a1)
+     BIND(IF(?aIndex = "2", ?aVal, UNDEF) AS ?a2)
+     BIND(IF(?aIndex = "3", ?aVal, UNDEF) AS ?a3)
+   }
+ 
+   # Scale B dims
+   OPTIONAL {
+     ?event crm:P39i_was_measured_by ?measB .
+     ?measB a crmsci:S21_Measurement ;
+            crm:P2_has_type <https://w3id.org/sirius/type/scale-b-score> ;
+            crm:P40_observed_dimension ?dimB .
+     ?dimB crm:P2_has_type ?dimBType ;
+           rdfs:label ?dimBLabel .
+     FILTER(?dimBType IN (<https://w3id.org/sirius/type/scale_b_val_1>, <https://w3id.org/sirius/type/scale_b_val_2>, <https://w3id.org/sirius/type/scale_b_val_3>))
+     BIND(STRAFTER(STR(?dimBType), "scale_b_val_") AS ?bIndex)
+     BIND(IF(?bIndex = "1", ?dimBLabel, UNDEF) AS ?b1)
+     BIND(IF(?bIndex = "2", ?dimBLabel, UNDEF) AS ?b2)
+     BIND(IF(?bIndex = "3", ?dimBLabel, UNDEF) AS ?b3)
+   }
+ 
+   # Scale C dims
+   OPTIONAL {
+     ?event crm:P39i_was_measured_by ?measC .
+     ?measC a crmsci:S21_Measurement ;
+            crm:P2_has_type <https://w3id.org/sirius/type/scale-c-score> ;
+            crm:P40_observed_dimension ?dimC .
+     ?dimC crm:P2_has_type ?dimCType ;
+           rdfs:label ?dimCLabel .
+     FILTER(?dimCType IN (<https://w3id.org/sirius/type/scale_c_val_1>, <https://w3id.org/sirius/type/scale_c_val_2>, <https://w3id.org/sirius/type/scale_c_val_3>))
+     BIND(STRAFTER(STR(?dimCType), "scale_c_val_") AS ?cIndex)
+     BIND(IF(?cIndex = "1", ?dimCLabel, UNDEF) AS ?c1)
+     BIND(IF(?cIndex = "2", ?dimCLabel, UNDEF) AS ?c2)
+     BIND(IF(?cIndex = "3", ?dimCLabel, UNDEF) AS ?c3)
+   }
+ 
+   # Magnitude min / max (attached to event)
+   OPTIONAL {
+     ?event crm:P39i_was_measured_by ?mag .
+     ?mag a crmsci:S21_Measurement ;
+          crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+          crm:P40_observed_dimension ?magDim .
+     ?magDim crm:P2_has_type ?magDimType ;
+             crm:P90_has_value ?magVal .
+     FILTER(STRSTARTS(STR(?magDimType), "https://w3id.org/sirius/magnitude_score_min") || STRSTARTS(STR(?magDimType), "https://w3id.org/sirius/magnitude_score_max"))
+     BIND(IF(STRSTARTS(STR(?magDimType), "https://w3id.org/sirius/magnitude_score_min"), ?magVal, UNDEF) AS ?minMag)
+     BIND(IF(STRSTARTS(STR(?magDimType), "https://w3id.org/sirius/magnitude_score_max"), ?magVal, UNDEF) AS ?maxMag)
+   }
+ 
+   # Uncertainty min / max
+   OPTIONAL {
+     ?event crm:P39i_was_measured_by ?unc .
+     ?unc a crmsci:S21_Measurement ;
+          crm:P2_has_type <https://w3id.org/sirius/type/uncertainty> ;
+          crm:P40_observed_dimension ?uncDim .
+     ?uncDim crm:P2_has_type ?uncDimType ;
+             crm:P90_has_value ?uncVal .
+     FILTER(STRSTARTS(STR(?uncDimType), "https://w3id.org/sirius/uncertainty_min") || STRSTARTS(STR(?uncDimType), "https://w3id.org/sirius/uncertainty_max"))
+     BIND(IF(STRSTARTS(STR(?uncDimType), "https://w3id.org/sirius/uncertainty_min"), ?uncVal, UNDEF) AS ?minU)
+     BIND(IF(STRSTARTS(STR(?uncDimType), "https://w3id.org/sirius/uncertainty_max"), ?uncVal, UNDEF) AS ?maxU)
+   }
+ }
+ GROUP BY ?site
+ ORDER BY ?site_label
+ '
+                     template='
+                       <table class="one-line-table" style="width:100%;border-collapse:collapse;margin-top:8px;">
+                         <thead><tr><th>Site</th><th>Scale A</th><th>Scale B</th><th>Scale C</th><th>Magnitude</th><th>Uncertainty</th></tr></thead>
+                         <tbody>
+                           {{#each bindings}}
+                             <tr>
+                               <td>{{#if site_label.value}}<semantic-link iri="{{site.value}}">{{site_label.value}}</semantic-link>{{else}}<semantic-link iri="{{site.value}}">{{site.value}}</semantic-link>{{/if}}</td>
+                               <td>{{#if a_val1.value}}{{a_val1.value}}{{/if}}{{#if a_val2.value}} / {{a_val2.value}}{{/if}}{{#if a_val3.value}} / {{a_val3.value}}{{/if}}</td>
+                               <td>{{#if b_val1.value}}{{b_val1.value}}{{/if}}{{#if b_val2.value}} / {{b_val2.value}}{{/if}}{{#if b_val3.value}} / {{b_val3.value}}{{/if}}</td>
+                               <td>{{#if c_val1.value}}{{c_val1.value}}{{/if}}{{#if c_val2.value}} / {{c_val2.value}}{{/if}}{{#if c_val3.value}} / {{c_val3.value}}{{/if}}</td>
+                               <td>{{#if magnitude_min.value}}{{magnitude_min.value}}{{/if}}{{#if magnitude_max.value}} – {{magnitude_max.value}}{{/if}}</td>
+                               <td>{{#if uncertainty_min.value}}{{uncertainty_min.value}}{{/if}}{{#if uncertainty_max.value}} – {{uncertainty_max.value}}{{/if}}</td>
+                             </tr>
+                           {{/each}}
+                         </tbody>
+                       </table>
+                     '>
+                   </semantic-query>
 
                 </div>
 
