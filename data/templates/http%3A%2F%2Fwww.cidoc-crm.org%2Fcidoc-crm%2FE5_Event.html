@@ -79,121 +79,91 @@ PREFIX crm:   <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX crmsci:<http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT DISTINCT
-  ?site ?site_label
-  ?a_val1 ?a_val2 ?a_val3 ?a_desc
-  ?b_val1 ?b_val2 ?b_val3 ?b_desc
-  ?c_val1 ?c_val2 ?c_val3 ?c_desc
-  ?magnitude_min ?magnitude_max
-  ?uncertainty_min ?uncertainty_max
+SELECT ?site ?site_label
+       (SAMPLE(?a1) AS ?a_val1) (SAMPLE(?a2) AS ?a_val2) (SAMPLE(?a3) AS ?a_val3) (SAMPLE(?a_desc) AS ?a_desc)
+       (SAMPLE(?b1) AS ?b_val1) (SAMPLE(?b2) AS ?b_val2) (SAMPLE(?b3) AS ?b_val3) (SAMPLE(?b_desc) AS ?b_desc)
+       (SAMPLE(?c1) AS ?c_val1) (SAMPLE(?c2) AS ?c_val2) (SAMPLE(?c3) AS ?c_val3) (SAMPLE(?c_desc) AS ?c_desc)
+       (SAMPLE(?minM) AS ?magnitude_min) (SAMPLE(?maxM) AS ?magnitude_max)
+       (SAMPLE(?minU) AS ?uncertainty_min) (SAMPLE(?maxU) AS ?uncertainty_max)
 WHERE {
-  VALUES ?event { <[[this]]> }
+  BIND(<[[this]]> AS ?event)
   ?event a crm:E5_Event .
   ?event crm:P31_has_modified ?site .
   OPTIONAL { ?site rdfs:label ?site_label }
 
-  # Scale A aggregated per site
+  # Scale A (measurements attached to event)
   OPTIONAL {
-    {
-      SELECT ?site (SAMPLE(?v1) AS ?a_val1) (SAMPLE(?v2) AS ?a_val2) (SAMPLE(?v3) AS ?a_val3) (SAMPLE(?d) AS ?a_desc)
-      WHERE {
-        VALUES (?site ?event) { (?site ?event) }
-        ?event crm:P39i_was_measured_by ?measA .
-        ?measA a crmsci:S21_Measurement ;
-               crm:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
-        OPTIONAL { ?measA crm:P40_observed_dimension ?d1 . ?d1 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?v1. }
-        OPTIONAL { ?measA crm:P40_observed_dimension ?d2 . ?d2 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?v2. }
-        OPTIONAL { ?measA crm:P40_observed_dimension ?d3 . ?d3 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?v3. }
-        OPTIONAL { ?measA crm:P3_has_note ?d. }
-      } GROUP BY ?site
+    ?event crm:P39i_was_measured_by ?measA .
+    ?measA a crmsci:S21_Measurement ;
+           crm:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+    OPTIONAL { ?measA crm:P40_observed_dimension ?dA1 . ?dA1 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?a1. }
+    OPTIONAL { ?measA crm:P40_observed_dimension ?dA2 . ?dA2 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?a2. }
+    OPTIONAL { ?measA crm:P40_observed_dimension ?dA3 . ?dA3 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?a3. }
+    OPTIONAL { ?measA crm:P3_has_note ?a_desc. }
+  }
+
+  # Scale B
+  OPTIONAL {
+    ?event crm:P39i_was_measured_by ?measB .
+    ?measB a crmsci:S21_Measurement ;
+           crm:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
+    OPTIONAL { ?measB crm:P40_observed_dimension ?dB1 . ?dB1 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?b1. }
+    OPTIONAL { ?measB crm:P40_observed_dimension ?dB2 . ?dB2 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?b2. }
+    OPTIONAL { ?measB crm:P40_observed_dimension ?dB3 . ?dB3 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?b3. }
+    OPTIONAL { ?measB crm:P3_has_note ?b_desc. }
+  }
+
+  # Scale C
+  OPTIONAL {
+    ?event crm:P39i_was_measured_by ?measC .
+    ?measC a crmsci:S21_Measurement ;
+           crm:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
+    OPTIONAL { ?measC crm:P40_observed_dimension ?dC1 . ?dC1 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?c1. }
+    OPTIONAL { ?measC crm:P40_observed_dimension ?dC2 . ?dC2 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?c2. }
+    OPTIONAL { ?measC crm:P40_observed_dimension ?dC3 . ?dC3 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?c3. }
+    OPTIONAL { ?measC crm:P3_has_note ?c_desc. }
+  }
+
+  # Magnitude
+  OPTIONAL {
+    ?event crm:P39i_was_measured_by ?mag .
+    ?mag a crmsci:S21_Measurement ;
+         crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+    OPTIONAL {
+      ?mag crm:P40_observed_dimension ?magDim .
+      ?magDim crm:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+              crm:P90_has_value ?minM .
+      FILTER(STRSTARTS(STR(?magDim), "https://w3id.org/sirius/magnitude_score_min"))
+    }
+    OPTIONAL {
+      ?mag crm:P40_observed_dimension ?magDim2 .
+      ?magDim2 crm:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+               crm:P90_has_value ?maxM .
+      FILTER(STRSTARTS(STR(?magDim2), "https://w3id.org/sirius/magnitude_score_max"))
     }
   }
 
-  # Scale B aggregated per site
+  # Uncertainty
   OPTIONAL {
-    {
-      SELECT ?site (SAMPLE(?v1) AS ?b_val1) (SAMPLE(?v2) AS ?b_val2) (SAMPLE(?v3) AS ?b_val3) (SAMPLE(?d) AS ?b_desc)
-      WHERE {
-        VALUES (?site ?event) { (?site ?event) }
-        ?event crm:P39i_was_measured_by ?measB .
-        ?measB a crmsci:S21_Measurement ;
-               crm:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
-        OPTIONAL { ?measB crm:P40_observed_dimension ?d1 . ?d1 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?v1. }
-        OPTIONAL { ?measB crm:P40_observed_dimension ?d2 . ?d2 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?v2. }
-        OPTIONAL { ?measB crm:P40_observed_dimension ?d3 . ?d3 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?v3. }
-        OPTIONAL { ?measB crm:P3_has_note ?d. }
-      } GROUP BY ?site
+    ?event crm:P39i_was_measured_by ?unc .
+    ?unc a crmsci:S21_Measurement ;
+         crm:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+    OPTIONAL {
+      ?unc crm:P40_observed_dimension ?uncDim .
+      ?uncDim crm:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
+              rdfs:label ?minU .
+      FILTER(STRSTARTS(STR(?uncDim), "https://w3id.org/sirius/uncertainty_min"))
     }
-  }
-
-  # Scale C aggregated per site
-  OPTIONAL {
-    {
-      SELECT ?site (SAMPLE(?v1) AS ?c_val1) (SAMPLE(?v2) AS ?c_val2) (SAMPLE(?v3) AS ?c_val3) (SAMPLE(?d) AS ?c_desc)
-      WHERE {
-        VALUES (?site ?event) { (?site ?event) }
-        ?event crm:P39i_was_measured_by ?measC .
-        ?measC a crmsci:S21_Measurement ;
-               crm:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
-        OPTIONAL { ?measC crm:P40_observed_dimension ?d1 . ?d1 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?v1. }
-        OPTIONAL { ?measC crm:P40_observed_dimension ?d2 . ?d2 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?v2. }
-        OPTIONAL { ?measC crm:P40_observed_dimension ?d3 . ?d3 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?v3. }
-        OPTIONAL { ?measC crm:P3_has_note ?d. }
-      } GROUP BY ?site
-    }
-  }
-
-  # Magnitude min / max aggregated per site
-  OPTIONAL {
-    {
-      SELECT ?site (SAMPLE(?minM) AS ?magnitude_min) (SAMPLE(?maxM) AS ?magnitude_max)
-      WHERE {
-        VALUES (?site ?event) { (?site ?event) }
-        ?event crm:P39i_was_measured_by ?mag .
-        ?mag a crmsci:S21_Measurement ;
-             crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
-        OPTIONAL {
-          ?mag crm:P40_observed_dimension ?magDim .
-          ?magDim crm:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
-                  crm:P90_has_value ?minM .
-          FILTER(STRSTARTS(STR(?magDim), "https://w3id.org/sirius/magnitude_score_min"))
-        }
-        OPTIONAL {
-          ?mag crm:P40_observed_dimension ?magDim2 .
-          ?magDim2 crm:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
-                   crm:P90_has_value ?maxM .
-          FILTER(STRSTARTS(STR(?magDim2), "https://w3id.org/sirius/magnitude_score_max"))
-        }
-      } GROUP BY ?site
-    }
-  }
-
-  # Uncertainty min / max aggregated per site
-  OPTIONAL {
-    {
-      SELECT ?site (SAMPLE(?minU) AS ?uncertainty_min) (SAMPLE(?maxU) AS ?uncertainty_max)
-      WHERE {
-        VALUES (?site ?event) { (?site ?event) }
-        ?event crm:P39i_was_measured_by ?unc .
-        ?unc a crmsci:S21_Measurement ;
-             crm:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
-        OPTIONAL {
-          ?unc crm:P40_observed_dimension ?uncDim .
-          ?uncDim crm:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
-                  rdfs:label ?minU .
-          FILTER(STRSTARTS(STR(?uncDim), "https://w3id.org/sirius/uncertainty_min"))
-        }
-        OPTIONAL {
-          ?unc crm:P40_observed_dimension ?uncDim2 .
-          ?uncDim2 crm:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
-                   rdfs:label ?maxU .
-          FILTER(STRSTARTS(STR(?uncDim2), "https://w3id.org/sirius/uncertainty_max"))
-        }
-      } GROUP BY ?site
+    OPTIONAL {
+      ?unc crm:P40_observed_dimension ?uncDim2 .
+      ?uncDim2 crm:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
+               rdfs:label ?maxU .
+      FILTER(STRSTARTS(STR(?uncDim2), "https://w3id.org/sirius/uncertainty_max"))
     }
   }
 
 }
+GROUP BY ?site ?site_label
 ORDER BY ?site_label
 '
                     column-configuration='[
@@ -204,7 +174,7 @@ ORDER BY ?site_label
                       { "displayName": "Magnitude", "cellTemplate": "{{> valueRangeCell min=magnitude_min max=magnitude_max}}" },
                       { "displayName": "Uncertainty", "cellTemplate": "{{> valueRangeCell min=uncertainty_min max=uncertainty_max}}" }
                     ]'
-                    options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
+                    options='{\"showFilter\": true, \"resultsPerPage\": 10, \"stickyHeader\": true}'>
                   </semantic-table>
 
   <!-- Missing partials required by the table (scaleTripleCell, valueRangeCell, agentCell, eventNameCell, descCell) -->
