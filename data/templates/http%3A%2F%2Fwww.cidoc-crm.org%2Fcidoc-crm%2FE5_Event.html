@@ -207,19 +207,48 @@ ORDER BY ?site_label
                     options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
                   </semantic-table>
 
-                </div>
-
-              </div>
-            </bs-tab-pane>
-
-          </bs-tab-content>
-
-        </div>
-      </bs-tab-container>
-
-    </div>
+  <!-- Missing partials required by the table (scaleTripleCell, valueRangeCell, agentCell, eventNameCell, descCell) -->
+  <template id="agentCell">
+    {{#if agent.value}}
+      <div class="pill">{{agent.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
   </template>
 
-</with-types>
-[[/inline]]
-[[> resource]]
+  <template id="eventNameCell">
+    {{#if event_name.value}}
+      <div class="pill">{{event_name.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+  <template id="descCell">
+    {{#if risk_desc.value}}
+      <div class="note">{{risk_desc.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+  <template id="valueRangeCell">
+    {{#if min.value}}
+      <div class="val"><span class="dim-label">Val.</span> {{min.value}}</div>
+      {{#if max.value}}<div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>{{/if}}
+    {{else}}
+      {{#if max.value}}
+        <div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>
+      {{else}}
+        <div class="empty">—</div>
+      {{/if}}
+    {{/if}}
+  </template>
+
+  <template id="scaleTripleCell">
+    {{#if v1.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v1.value}}</strong></div>{{/if}}
+    {{#if v2.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v2.value}}</strong></div>{{/if}}
+    {{#if v3.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v3.value}}</strong></div>{{/if}}
+    {{#unless v1.value}}{{#unless v2.value}}{{#unless v3.value}}<div class="empty">—</div>{{/unless}}{{/unless}}{{/unless}}
+    <div class="note"><span class="dim-label">Description</span> {{#if desc.value}}{{desc.value}}{{else}}—{{/if}}</div>
+  </template>
