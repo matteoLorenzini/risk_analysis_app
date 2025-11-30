@@ -177,12 +177,12 @@ WHERE {
 ORDER BY ?site_label
 '
   column-configuration='[
-    { "displayName": "Site",         "cellTemplate": "{{> siteLinkCell}}" },
-    { "displayName": "Scale A",      "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_desc}}" },
-    { "displayName": "Scale B",      "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_desc}}" },
-    { "displayName": "Scale C",      "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_desc}}" },
-    { "displayName": "Magnitude",    "cellTemplate": "{{> valueRangeCell min=magnitude_min max=magnitude_max}}" },
-    { "displayName": "Uncertainty",  "cellTemplate": "{{> valueRangeCell min=uncertainty_min max=uncertainty_max}}" }
+    { "displayName": "Site","cellTemplate": "{{> siteLinkCell}}" },
+    { "displayName": "Scale A","cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_desc}}" },
+    { "displayName": "Scale B","cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_desc}}" },
+    { "displayName": "Scale C","cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_desc}}" },
+    { "displayName": "Magnitude","cellTemplate": "{{> valueRangeCell min=magnitude_min max=magnitude_max}}" },
+    { "displayName": "Uncertainty","cellTemplate": "{{> valueRangeCell min=uncertainty_min max=uncertainty_max}}" }
   ]'
   options='{"showFilter": true, "resultsPerPage": 50, "stickyHeader": true}'>
 
