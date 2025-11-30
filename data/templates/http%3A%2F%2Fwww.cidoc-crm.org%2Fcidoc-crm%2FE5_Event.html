@@ -102,6 +102,83 @@
                     </template>
                   </mp-field-visualization>
 
+  <!-- NEW: compact "one line per event" field visualization -->
+                  <mp-field-visualization
+                    subject='[[this]]'
+                    fields='[[fieldDefinitions
+                      site="http://www.siriusplatform-risk-assessment/field/event_site_inverse"
+                      site_label="http://www.siriusplatform-risk-assessment/field/event_site_label" 
+                      a_val1="http://www.siriusplatform-risk-assessment/field/event_a_val1"
+                      a_val2="http://www.siriusplatform-risk-assessment/field/event_a_val2"
+                      a_val3="http://www.siriusplatform-risk-assessment/field/event_a_val3"
+                      b_val1="http://www.siriusplatform-risk-assessment/field/event_b_val1"
+                      b_val2="http://www.siriusplatform-risk-assessment/field/event_b_val2"
+                      b_val3="http://www.siriusplatform-risk-assessment/field/event_b_val3"
+                      c_val1="http://www.siriusplatform-risk-assessment/field/event_c_val1"
+                      c_val2="http://www.siriusplatform-risk-assessment/field/event_c_val2"
+                      c_val3="http://www.siriusplatform-risk-assessment/field/event_c_val3"
+                      magnitude_min_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_min_score"
+                      magnitude_max_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_max_score"
+                      uncertainty_min_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_min_score"
+                      uncertainty_max_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_max_score"
+                    ]]'
+                    template='{{> oneLinePerEvent}}'>
+                    <template id="oneLinePerEvent">
+                      <style>
+                        .one-line-table { width:100%; border-collapse:collapse; margin-top:8px; }
+                        .one-line-table th, .one-line-table td { padding:6px 8px; border-bottom:1px solid #eee; text-align:left; font-size:0.95rem; }
+                        .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size:0.9rem; }
+                        .small-note { color:#666; font-size:0.85rem; }
+                      </style>
+
+                      <table class="one-line-table">
+                        <thead>
+                          <tr>
+                            <th>Site</th>
+                            <th>Scale A</th>
+                            <th>Scale B</th>
+                            <th>Scale C</th>
+                            <th>Magnitude</th>
+                            <th>Uncertainty</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {{#each bindings}}
+                            <tr>
+                              <td>
+                                {{#if site_label.value}}
+                                  <semantic-link iri="{{site.value}}">{{site_label.value}}</semantic-link>
+                                {{else}}
+                                  <semantic-link iri="{{site.value}}"><span class="mono">{{site.value}}</span></semantic-link>
+                                {{/if}}
+                              </td>
+
+                              <td>
+                                {{#if a_val1.value}}{{a_val1.value}}{{/if}}{{#if a_val2.value}} / {{a_val2.value}}{{/if}}{{#if a_val3.value}} / {{a_val3.value}}{{/if}}
+                              </td>
+                              <td>
+                                {{#if b_val1.value}}{{b_val1.value}}{{/if}}{{#if b_val2.value}} / {{b_val2.value}}{{/if}}{{#if b_val3.value}} / {{b_val3.value}}{{/if}}
+                              </td>
+                              <td>
+                                {{#if c_val1.value}}{{c_val1.value}}{{/if}}{{#if c_val2.value}} / {{c_val2.value}}{{/if}}{{#if c_val3.value}} / {{c_val3.value}}{{/if}}
+                              </td>
+
+                              <td>
+                                {{#if magnitude_min_score.value}}{{magnitude_min_score.value}}{{/if}}{{#if magnitude_max_score.value}} – {{magnitude_max_score.value}}{{/if}}
+                                {{#unless magnitude_min_score.value}}{{#unless magnitude_max_score.value}}<span class="small-note">—</span>{{/unless}}{{/unless}}
+                              </td>
+
+                              <td>
+                                {{#if uncertainty_min_score.value}}{{uncertainty_min_score.value}}{{/if}}{{#if uncertainty_max_score.value}} – {{uncertainty_max_score.value}}{{/if}}
+                                {{#unless uncertainty_min_score.value}}{{#unless uncertainty_max_score.value}}<span class="small-note">—</span>{{/unless}}{{/unless}}
+                              </td>
+                            </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                    </template>
+                  </mp-field-visualization>
+
                 </div>
 
                 <!-- ========================================================= -->
