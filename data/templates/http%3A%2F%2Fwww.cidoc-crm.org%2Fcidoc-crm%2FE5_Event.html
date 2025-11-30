@@ -23,91 +23,110 @@
   id="event-sites-table"
 
   query='
-PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
-PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX base:<http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX crmsci:<http://www.ics.forth.gr/isl/CRMsci/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT
-  ?subject
-  ?site_label
-  ?risk_desc
-  ?a_val1 
-  ?magnitude_min ?uncertainty_min # Select only the core event-global scores
+  ?subject
+  ?site_label
+  ?risk_desc
+  ?a_val1
+  ?magnitude_min
+  ?uncertainty_min
 WHERE {
-  # 1. EVENT BINDING: Use [[this]] (the current page URI)
-  VALUES ?event { <[[this]]> } 
-  ?event a base:E5_Event .
+  VALUES ?event { <[[this]]> } 
+  ?event a base:E5_Event .
 
-  # 2. MAIN PATTERN: Find all E18 Sites modified by this Event.
-  ?event base:P31_has_modified ?subject .
-  ?subject a base:E18_Physical_Thing .
-  OPTIONAL { ?subject rdfs:label ?site_label }
+  # sites affected
+  ?event base:P31_has_modified ?subject .
+  ?subject a base:E18_Physical_Thing .
+  OPTIONAL { ?subject rdfs:label ?site_label }
 
-  # **Site-Specific Risk Analysis (Varying Data)**
-  OPTIONAL {
-    ?ra a base:E89_Propositional_Object ;
-      base:P129_is_about ?subject ;
-      base:P129_is_about ?event .
-    OPTIONAL { ?ra base:P3_has_note ?risk_desc }
-  }
-  
-  # --- Aggregated Measurement Subqueries (Grouped only by ?event) ---
+  # site-specific risk note
+  OPTIONAL {
+    ?ra a base:E89_Propositional_Object ;
+        base:P129_is_about ?subject ;
+        base:P129_is_about ?event .
+    OPTIONAL { ?ra base:P3_has_note ?risk_desc }
+  }
 
-  # 3. Scale A (Only need V1 as an example global score)
-  OPTIONAL {
-    { SELECT ?event (SAMPLE(?v1) AS ?a_val1)
-      WHERE {
-        ?event base:P39i_was_measured_by ?measA .
-        ?measA a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
-        OPTIONAL { ?measA base:P40_observed_dimension ?dimension_a_1 . ?dimension_a_1 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?v1 . }
-      }
-      GROUP BY ?event
-    }
-  }
+  # Scale A -> aggregate per event+subject (V1 example)
+  OPTIONAL {
+    {
+      SELECT ?event ?subject (SAMPLE(?v1) AS ?a_val1)
+      WHERE {
+        ?event base:P31_has_modified ?subject .
+        ?event base:P39i_was_measured_by ?measA .
+        ?measA a crmsci:S21_Measurement ;
+               base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+        OPTIONAL { ?measA base:P129_is_about ?subject }          # prefer measurements about the site
+        OPTIONAL {
+          ?measA base:P40_observed_dimension ?dimension_a_1 .
+          ?dimension_a_1 a base:E54_Dimension ;
+                         base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ;
+                         rdfs:label ?v1 .
+        }
+      }
+      GROUP BY ?event ?subject
+    }
+  }
 
-  # 4. Magnitude score
-  OPTIONAL {
-    { SELECT ?event (SAMPLE(?minM) AS ?magnitude_min)
-      WHERE {
-        ?event base:P39i_was_measured_by ?magnitude .
-        ?magnitude a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
-        OPTIONAL {
-          ?magnitude base:P40_observed_dimension ?magnitude_dim_min .
-          ?magnitude_dim_min a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?minM .
-          FILTER(STRSTARTS(STR(?magnitude_dim_min), "https://w3id.org/sirius/magnitude_score_min/"))
-        }
-      }
-      GROUP BY ?event
-    }
-  }
+  # Magnitude min (per event+subject)
+  OPTIONAL {
+    {
+      SELECT ?event ?subject (SAMPLE(?minM) AS ?magnitude_min)
+      WHERE {
+        ?event base:P31_has_modified ?subject .
+        ?event base:P39i_was_measured_by ?mag .
+        ?mag a crmsci:S21_Measurement ;
+             base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+        OPTIONAL { ?mag base:P129_is_about ?subject }
+        OPTIONAL {
+          ?mag base:P40_observed_dimension ?magDim .
+          ?magDim a base:E54_Dimension ;
+                  base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                  base:P90_has_value ?minM .
+          FILTER(STRSTARTS(STR(?magDim), "https://w3id.org/sirius/magnitude_score_min/"))
+        }
+      }
+      GROUP BY ?event ?subject
+    }
+  }
 
-  # 5. Uncertainty score
-  OPTIONAL {
-    { SELECT ?event (SAMPLE(?minU) AS ?uncertainty_min)
-      WHERE {
-        ?event base:P39i_was_measured_by ?uncertainty .
-        ?uncertainty a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
-        OPTIONAL {
-          ?uncertainty base:P40_observed_dimension ?uncertainty_dim_min .
-          ?uncertainty_dim_min a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?minU .
-          FILTER(STRSTARTS(STR(?uncertainty_dim_min), "https://w3id.org/sirius/uncertainty_min/"))
-        }
-      }
-      GROUP BY ?event
-    }
-  }
+  # Uncertainty min (per event+subject)
+  OPTIONAL {
+    {
+      SELECT ?event ?subject (SAMPLE(?minU) AS ?uncertainty_min)
+      WHERE {
+        ?event base:P31_has_modified ?subject .
+        ?event base:P39i_was_measured_by ?unc .
+        ?unc a crmsci:S21_Measurement ;
+             base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+        OPTIONAL { ?unc base:P129_is_about ?subject }
+        OPTIONAL {
+          ?unc base:P40_observed_dimension ?uncDim .
+          ?uncDim a base:E54_Dimension ;
+                  base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
+                  rdfs:label ?minU .
+          FILTER(STRSTARTS(STR(?uncDim), "https://w3id.org/sirius/uncertainty_min/"))
+        }
+      }
+      GROUP BY ?event ?subject
+    }
+  }
+
 }
 ORDER BY ?site_label
 '
   column-configuration='[
-    { "displayName": "Affected Site (E18)",   "cellTemplate": "{{> siteLinkCell}}" },
-    { "displayName": "Risk Description (E89)",  "cellTemplate": "{{> riskDescCell}}" },
-    { "displayName": "Global Score (A-V1)",     "cellTemplate": "{{a_val1.value}}"},
-    { "displayName": "Global Magnitude (Min)",  "cellTemplate": "{{magnitude_min.value}}"},
-    { "displayName": "Global Uncertainty (Min)",  "cellTemplate": "{{uncertainty_min.value}}"}
+    { "displayName": "Affected Site (E18)", "cellTemplate": "{{> siteLinkCell}}" },
+    { "displayName": "Risk Description (E89)",  "cellTemplate": "{{> riskDescCell}}" },
+    { "displayName": "Global Score (A-V1)",     "cellTemplate": "{{a_val1.value}}"},
+    { "displayName": "Global Magnitude (Min)",  "cellTemplate": "{{magnitude_min.value}}"},
+    { "displayName": "Global Uncertainty (Min)",  "cellTemplate": "{{uncertainty_min.value}}"}
   ]'
   options='{"showFilter": true, "resultsPerPage": 50, "stickyHeader": true}'>
-
   <template id="siteLinkCell">
     {{#if subject.value}}
       <semantic-link iri="{{subject.value}}">
