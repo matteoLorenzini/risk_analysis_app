@@ -115,57 +115,65 @@ WHERE {
 
   # --- Aggregated Measurement Subqueries (Logic preserved for data cleanup) ---
 
-  # 3. Scale A (Aggregated per event in subquery)
+  # 3. Scale A (Aggregated per event+subject in subquery)
   OPTIONAL {
-    { SELECT ?event (SAMPLE(?v1) AS ?a_val1) (SAMPLE(?v2) AS ?a_val2) (SAMPLE(?v3) AS ?a_val3) (SAMPLE(?d) AS ?a_desc)
+    { SELECT ?event ?subject (SAMPLE(?v1) AS ?a_val1) (SAMPLE(?v2) AS ?a_val2) (SAMPLE(?v3) AS ?a_val3) (SAMPLE(?d) AS ?a_desc)
       WHERE {
+        ?event base:P31_has_modified ?subject .
         ?event base:P39i_was_measured_by ?measA .
         ?measA a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+        OPTIONAL { ?measA base:P129_is_about ?subject . }            # prefer measurements that reference the subject
         OPTIONAL { ?measA base:P40_observed_dimension ?dimension_a_1 . ?dimension_a_1 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?v1 . }
         OPTIONAL { ?measA base:P40_observed_dimension ?dimension_a_2 . ?dimension_a_2 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?v2 . }
         OPTIONAL { ?measA base:P40_observed_dimension ?dimension_a_3 . ?dimension_a_3 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?v3 . }
         OPTIONAL { ?measA base:P3_has_note ?d }
       }
-      GROUP BY ?event
+      GROUP BY ?event ?subject
     }
   }
 
-  # 4. Scale B
+  # 4. Scale B (per event+subject)
   OPTIONAL {
-    { SELECT ?event (SAMPLE(?v1) AS ?b_val1) (SAMPLE(?v2) AS ?b_val2) (SAMPLE(?v3) AS ?b_val3) (SAMPLE(?d) AS ?b_desc)
+    { SELECT ?event ?subject (SAMPLE(?v1) AS ?b_val1) (SAMPLE(?v2) AS ?b_val2) (SAMPLE(?v3) AS ?b_val3) (SAMPLE(?d) AS ?b_desc)
       WHERE {
+        ?event base:P31_has_modified ?subject .
         ?event base:P39i_was_measured_by ?measB .
         ?measB a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
+        OPTIONAL { ?measB base:P129_is_about ?subject . }
         OPTIONAL { ?measB base:P40_observed_dimension ?dimension_b_1 . ?dimension_b_1 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?v1 . }
         OPTIONAL { ?measB base:P40_observed_dimension ?dimension_b_2 . ?dimension_b_2 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?v2 . }
         OPTIONAL { ?measB base:P40_observed_dimension ?dimension_b_3 . ?dimension_b_3 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?v3 . }
         OPTIONAL { ?measB base:P3_has_note ?d }
       }
-      GROUP BY ?event
+      GROUP BY ?event ?subject
     }
   }
 
-  # 5. Scale C
+  # 5. Scale C (per event+subject)
   OPTIONAL {
-    { SELECT ?event (SAMPLE(?v1) AS ?c_val1) (SAMPLE(?v2) AS ?c_val2) (SAMPLE(?v3) AS ?c_val3) (SAMPLE(?d) AS ?c_desc)
+    { SELECT ?event ?subject (SAMPLE(?v1) AS ?c_val1) (SAMPLE(?v2) AS ?c_val2) (SAMPLE(?v3) AS ?c_val3) (SAMPLE(?d) AS ?c_desc)
       WHERE {
+        ?event base:P31_has_modified ?subject .
         ?event base:P39i_was_measured_by ?measC .
         ?measC a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
+        OPTIONAL { ?measC base:P129_is_about ?subject . }
         OPTIONAL { ?measC base:P40_observed_dimension ?dimension_c_1 . ?dimension_c_1 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?v1 . }
         OPTIONAL { ?measC base:P40_observed_dimension ?dimension_c_2 . ?dimension_c_2 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?v2 . }
         OPTIONAL { ?measC base:P40_observed_dimension ?dimension_c_3 . ?dimension_c_3 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?v3 . }
         OPTIONAL { ?measC base:P3_has_note ?d }
       }
-      GROUP BY ?event
+      GROUP BY ?event ?subject
     }
   }
 
-  # 6. Magnitude score
+  # 6. Magnitude score (per event+subject)
   OPTIONAL {
-    { SELECT ?event (SAMPLE(?minMag) AS ?magnitude_min_score) (SAMPLE(?maxMag) AS ?magnitude_max_score)
+    { SELECT ?event ?subject (SAMPLE(?minMag) AS ?magnitude_min_score) (SAMPLE(?maxMag) AS ?magnitude_max_score)
       WHERE {
+        ?event base:P31_has_modified ?subject .
         ?event base:P39i_was_measured_by ?magnitude .
         ?magnitude a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+        OPTIONAL { ?magnitude base:P129_is_about ?subject . }
         OPTIONAL {
           ?magnitude base:P40_observed_dimension ?magnitude_dim_min .
           ?magnitude_dim_min a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?minMag .
@@ -177,16 +185,18 @@ WHERE {
           FILTER(STRSTARTS(STR(?magnitude_dim_max), "https://w3id.org/sirius/magnitude_score_max/"))
         }
       }
-      GROUP BY ?event
+      GROUP BY ?event ?subject
     }
   }
 
-  # 7. Uncertainty score
+  # 7. Uncertainty score (per event+subject)
   OPTIONAL {
-    { SELECT ?event (SAMPLE(?minU) AS ?uncertainty_min_score) (SAMPLE(?maxU) AS ?uncertainty_max_score)
+    { SELECT ?event ?subject (SAMPLE(?minU) AS ?uncertainty_min_score) (SAMPLE(?maxU) AS ?uncertainty_max_score)
       WHERE {
+        ?event base:P31_has_modified ?subject .
         ?event base:P39i_was_measured_by ?uncertainty .
         ?uncertainty a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+        OPTIONAL { ?uncertainty base:P129_is_about ?subject . }
         OPTIONAL {
           ?uncertainty base:P40_observed_dimension ?uncertainty_dim_min .
           ?uncertainty_dim_min a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?minU .
@@ -198,7 +208,7 @@ WHERE {
           FILTER(STRSTARTS(STR(?uncertainty_dim_max), "https://w3id.org/sirius/uncertainty_max/"))
         }
       }
-      GROUP BY ?event
+      GROUP BY ?event ?subject
     }
   }
 }
