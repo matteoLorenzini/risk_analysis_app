@@ -7,7 +7,7 @@ PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT
-  ?subject
+  ?event            # <-- return one row per event
   ?agent
   ?event_name
   ?a_val1 ?a_val2 ?a_val3 ?a_desc
@@ -20,14 +20,12 @@ WHERE {
   VALUES ?subject { <[[this]]> }
   ?subject a base:E18_Physical_Thing .
 
-  # inverse: Thing <-P31_has_modified- Event
+  # events that modified this site (one row per ?event)
   ?subject ^base:P31_has_modified ?event .
   ?event a base:E5_Event .
 
   # Event name
-  OPTIONAL {
-    ?event rdfs:label ?event_name .
-  }
+  OPTIONAL { ?event rdfs:label ?event_name . }
 
   # Risk Analysis description tied to this event and subject
   OPTIONAL {
@@ -36,6 +34,7 @@ WHERE {
         base:P129_is_about ?event .
     OPTIONAL { ?ra base:P3_has_note ?risk_desc }
   }
+
   # Actor (e.g., "Water")
   OPTIONAL {
     ?event base:P11_had_participant ?actor .
@@ -43,7 +42,7 @@ WHERE {
            rdfs:label ?agent .
   }
 
-  # Scale A (aggregate to one row per event; Val.1/2/3 + Description)
+  # Scale A (aggregate per event; Val.1/2/3 + Description)
   OPTIONAL {
     { SELECT ?event (SAMPLE(?v1) AS ?a_val1) (SAMPLE(?v2) AS ?a_val2) (SAMPLE(?v3) AS ?a_val3) (SAMPLE(?d) AS ?a_desc)
       WHERE {
@@ -74,7 +73,7 @@ WHERE {
     }
   }
 
-  # Scale B (aggregate to one row per event; Val.1/2/3 + Description)
+  # Scale B (aggregate per event; Val.1/2/3 + Description)
   OPTIONAL {
     { SELECT ?event (SAMPLE(?v1) AS ?b_val1) (SAMPLE(?v2) AS ?b_val2) (SAMPLE(?v3) AS ?b_val3) (SAMPLE(?d) AS ?b_desc)
       WHERE {
@@ -105,7 +104,7 @@ WHERE {
     }
   }
 
-  # Scale C (aggregate to one row per event; Val.1/2/3 + Description)
+  # Scale C (aggregate per event; Val.1/2/3 + Description)
   OPTIONAL {
     { SELECT ?event (SAMPLE(?v1) AS ?c_val1) (SAMPLE(?v2) AS ?c_val2) (SAMPLE(?v3) AS ?c_val3) (SAMPLE(?d) AS ?c_desc)
       WHERE {
@@ -136,7 +135,7 @@ WHERE {
     }
   }
 
-  # Magnitude score (aggregate to one row per event)
+  # Magnitude score (per event)
   OPTIONAL {
     { SELECT ?event (SAMPLE(?minMag) AS ?magnitude_min_score) (SAMPLE(?maxMag) AS ?magnitude_max_score)
       WHERE {
@@ -162,7 +161,7 @@ WHERE {
     }
   }
 
-  # Uncertainty score (aggregate to one row per event)
+  # Uncertainty score (per event)
   OPTIONAL {
     { SELECT ?event (SAMPLE(?minU) AS ?uncertainty_min_score) (SAMPLE(?maxU) AS ?uncertainty_max_score)
       WHERE {
@@ -187,7 +186,10 @@ WHERE {
       GROUP BY ?event
     }
   }
+
 }
+GROUP BY ?event ?agent ?event_name ?risk_desc
+ORDER BY ?event_name
 '
    column-configuration='[
   
