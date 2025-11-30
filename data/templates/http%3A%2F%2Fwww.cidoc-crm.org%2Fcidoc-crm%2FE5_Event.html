@@ -80,9 +80,9 @@ PREFIX crmsci:<http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?site ?site_label
-       (SAMPLE(?a1) AS ?a_val1) (SAMPLE(?a2) AS ?a_val2) (SAMPLE(?a3) AS ?a_val3) (SAMPLE(?a_desc) AS ?a_desc)
-       (SAMPLE(?b1) AS ?b_val1) (SAMPLE(?b2) AS ?b_val2) (SAMPLE(?b3) AS ?b_val3) (SAMPLE(?b_desc) AS ?b_desc)
-       (SAMPLE(?c1) AS ?c_val1) (SAMPLE(?c2) AS ?c_val2) (SAMPLE(?c3) AS ?c_val3) (SAMPLE(?c_desc) AS ?c_desc)
+       (SAMPLE(?a1) AS ?a_val1) (SAMPLE(?a2) AS ?a_val2) (SAMPLE(?a3) AS ?a_val3) (SAMPLE(?a_desc_raw) AS ?a_desc)
+       (SAMPLE(?b1) AS ?b_val1) (SAMPLE(?b2) AS ?b_val2) (SAMPLE(?b3) AS ?b_val3) (SAMPLE(?b_desc_raw) AS ?b_desc)
+       (SAMPLE(?c1) AS ?c_val1) (SAMPLE(?c2) AS ?c_val2) (SAMPLE(?c3) AS ?c_val3) (SAMPLE(?c_desc_raw) AS ?c_desc)
        (SAMPLE(?minM) AS ?magnitude_min) (SAMPLE(?maxM) AS ?magnitude_max)
        (SAMPLE(?minU) AS ?uncertainty_min) (SAMPLE(?maxU) AS ?uncertainty_max)
 WHERE {
@@ -99,7 +99,7 @@ WHERE {
     OPTIONAL { ?measA crm:P40_observed_dimension ?dA1 . ?dA1 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?a1. }
     OPTIONAL { ?measA crm:P40_observed_dimension ?dA2 . ?dA2 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?a2. }
     OPTIONAL { ?measA crm:P40_observed_dimension ?dA3 . ?dA3 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?a3. }
-    OPTIONAL { ?measA crm:P3_has_note ?a_desc. }
+    OPTIONAL { ?measA crm:P3_has_note ?a_desc_raw. }
   }
 
   # Scale B
@@ -110,7 +110,7 @@ WHERE {
     OPTIONAL { ?measB crm:P40_observed_dimension ?dB1 . ?dB1 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?b1. }
     OPTIONAL { ?measB crm:P40_observed_dimension ?dB2 . ?dB2 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?b2. }
     OPTIONAL { ?measB crm:P40_observed_dimension ?dB3 . ?dB3 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?b3. }
-    OPTIONAL { ?measB crm:P3_has_note ?b_desc. }
+    OPTIONAL { ?measB crm:P3_has_note ?b_desc_raw. }
   }
 
   # Scale C
@@ -121,7 +121,7 @@ WHERE {
     OPTIONAL { ?measC crm:P40_observed_dimension ?dC1 . ?dC1 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?c1. }
     OPTIONAL { ?measC crm:P40_observed_dimension ?dC2 . ?dC2 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?c2. }
     OPTIONAL { ?measC crm:P40_observed_dimension ?dC3 . ?dC3 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?c3. }
-    OPTIONAL { ?measC crm:P3_has_note ?c_desc. }
+    OPTIONAL { ?measC crm:P3_has_note ?c_desc_raw. }
   }
 
   # Magnitude
