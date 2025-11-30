@@ -1,192 +1,143 @@
 [[#*inline "resource"]]
 <with-types fixed-key='resource-[[this]]' iri='[[this]]' template='{{> page}}' [[> rsp:TypeMappings]]>
   <template id='page'>
+
     <div class="rs-resource-container">
-      <div class="rs-resource-header {{getValueByKey entityBgColor allTypes 'rs-entity-bg-thing'}}" style="min-height: 400px;">
+
+      <!-- HEADER -->
+      <div class="rs-resource-header {{getValueByKey entityBgColor allTypes 'rs-entity-bg-thing'}}"
+           style="min-height: 400px;">
+        
         <div class="rs-resource-header-topContainer">
           <div class="rs-resource-header-topButtons">
-            <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]' urlqueryparam-view='knowledge-map' urlqueryparam-resource='[[this]]'>
+
+            <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]' 
+                                     urlqueryparam-view='knowledge-map'
+                                     urlqueryparam-resource='[[this]]'>
               <button type="button" title="Author Resource in Knowledge Map">
                 <rs-icon icon-type="round" icon-name="account_tree"></rs-icon>
               </button>
             </semantic-link-container>
-            <mp-event-trigger id='details-view-trigger' type='Component.TemplateUpdate' data='{"iri": "{{iri}}"}' targets='["details-view", "open-details-sidebar"]'>
+
+            <mp-event-trigger id="details-view-trigger"
+              type="Component.TemplateUpdate"
+              data='{"iri": "{{iri}}"}'
+              targets='["details-view", "open-details-sidebar"]'>
               <button type="button" title="Resource Details">
                 <rs-icon icon-type="rounded" icon-name="info" symbol="true"></rs-icon>
               </button>
             </mp-event-trigger>
+
           </div>
         </div>
 
         <div class="rs-resource-header-content-container">
-          <!-- map removed for Event resource; keep title / actions -->
           <div style="padding: 1.8% 1.5% 1.5% 5%; flex: 1;">
             <div class="rs-resource-header--singletitle">
+
               <div class="rs-resource-header--title" style="text-transform: capitalize;">
-                <mp-label iri='[[this]]'></mp-label>
+                <mp-label iri="[[this]]"></mp-label>
               </div>
+
               <div style="display: flex; gap: 12px; align-items:center;">
-                <mp-copy-to-clipboard text='[[this]]'>
+                <mp-copy-to-clipboard text="[[this]]">
                   <div class="rs-copy-IRI">Copy IRI</div>
                 </mp-copy-to-clipboard>
                 <div class="statements">Statements</div>
               </div>
+
             </div>
           </div>
         </div>
-      </div>
-      
+
+      </div><!-- END HEADER -->
+
+
+      <!-- TABS -->
       <bs-tab-container id="tab-container" class="rs-resource-tabs" default-active-key="event-details">
+
         <div>
           <bs-nav bs-style="tabs">
             <bs-nav-item event-key="event-details">Event</bs-nav-item>
           </bs-nav>
+
           <bs-tab-content animation="true">
             <bs-tab-pane event-key="event-details">
+
               <div class="rs-resource-tab-container">
+
                 <div>
                   <hr class="rs-resource-section--headerLine">
                   <span class="h1 rs-resource-section--header">Event</span>
                 </div>
 
-                <!-- CLEAN PER-SITE BLOCK VISUALIZATION -->
-                <div class="rs-resource-data-table" style="margin-top: 25px;">
 
-                 <mp-sparql subject="[[this]]" template="{{> siteBlock}}">
+                <!-- ========================================================= -->
+                <!--                PER-SITE EVENT METRICS TABLE               -->
+                <!-- ========================================================= -->
 
-PREFIX crm:   <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
-PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+                <div class="rs-resource-data-table" style="margin-top:25px;">
 
-SELECT DISTINCT
-  ?site
-  ?site_label
-  ?a_val1 ?a_val2 ?a_val3 ?a_desc
-  ?b_val1 ?b_val2 ?b_val3 ?b_desc
-  ?c_val1 ?c_val2 ?c_val3 ?c_desc
-  ?magnitude_min ?magnitude_max
-  ?uncertainty_min ?uncertainty_max
-WHERE {
-  BIND($subject AS ?event)
+<semantic-table
+  id="event-site-table"
+  query='PREFIX crm:<http://www.cidoc-crm.org/cidoc-crm/> PREFIX crmsci:<http://www.ics.forth.gr/isl/CRMsci/> PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> SELECT DISTINCT ?site ?site_label ?a_val1 ?a_val2 ?a_val3 ?a_desc ?b_val1 ?b_val2 ?b_val3 ?b_desc ?c_val1 ?c_val2 ?c_val3 ?c_desc ?magnitude_min ?magnitude_max ?uncertainty_min ?uncertainty_max WHERE { BIND($subject AS ?event) ?event a crm:E5_Event ; crm:P31_has_modified ?site . ?site a crm:E18_Physical_Thing ; rdfs:label ?site_label . OPTIONAL { ?event crm:P39i_was_measured_by ?measA . ?measA a crmsci:S21_Measurement ; crm:P2_has_type <https://w3id.org/sirius/type/scale-a-score> ; crm:P40_observed_dimension ?dA . OPTIONAL { ?dA crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?a_val1 . } OPTIONAL { ?dA crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?a_val2 . } OPTIONAL { ?dA crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?a_val3 . } OPTIONAL { ?measA crm:P3_has_note ?a_desc . } } OPTIONAL { ?event crm:P39i_was_measured_by ?measB . ?measB a crmsci:S21_Measurement ; crm:P2_has_type <https://w3id.org/sirius/type/scale-b-score> ; crm:P40_observed_dimension ?dB . OPTIONAL { ?dB crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?b_val1 . } OPTIONAL { ?dB crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?b_val2 . } OPTIONAL { ?dB crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?b_val3 . } OPTIONAL { ?measB crm:P3_has_note ?b_desc . } } OPTIONAL { ?event crm:P39i_was_measured_by ?measC . ?measC a crmsci:S21_Measurement ; crm:P2_has_type <https://w3id.org/sirius/type/scale-c-score> ; crm:P40_observed_dimension ?dC . OPTIONAL { ?dC crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?c_val1 . } OPTIONAL { ?dC crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?c_val2 . } OPTIONAL { ?dC crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?c_val3 . } OPTIONAL { ?measC crm:P3_has_note ?c_desc . } } OPTIONAL { ?event crm:P39i_was_measured_by ?mag . ?mag a crmsci:S21_Measurement ; crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ; crm:P40_observed_dimension ?magDim . OPTIONAL { ?magDim crm:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; crm:P90_has_value ?magnitude_min . FILTER(STRSTARTS(STR(?magDim),''https://w3id.org/sirius/magnitude_score_min'')) } OPTIONAL { ?magDim crm:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; crm:P90_has_value ?magnitude_max . FILTER(STRSTARTS(STR(?magDim),''https://w3id.org/sirius/magnitude_score_max'')) } } OPTIONAL { ?event crm:P39i_was_measured_by ?uncer . ?uncer a crmsci:S21_Measurement ; crm:P2_has_type <https://w3id.org/sirius/type/uncertainty> ; crm:P40_observed_dimension ?uncDim . OPTIONAL { ?uncDim crm:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?uncertainty_min . FILTER(STRSTARTS(STR(?uncDim),''https://w3id.org/sirius/uncertainty_min'')) } OPTIONAL { ?uncDim crm:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?uncertainty_max . FILTER(STRSTARTS(STR(?uncDim),''https://w3id.org/sirius/uncertainty_max'')) } } } ORDER BY ?site_label'
 
-  ?event a crm:E5_Event ;
-         crm:P31_has_modified ?site .
+  column-configuration='[
+    { "displayName": "Site", "cellTemplate": "{{> siteCell}}" },
+    { "displayName": "Scale A", "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_desc}}" },
+    { "displayName": "Scale B", "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_desc}}" },
+    { "displayName": "Scale C", "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_desc}}" },
+    { "displayName": "Magnitude", "cellTemplate": "{{> valueRangeCell min=magnitude_min max=magnitude_max}}" },
+    { "displayName": "Uncertainty", "cellTemplate": "{{> valueRangeCell min=uncertainty_min max=uncertainty_max}}" }
+  ]'
 
-  ?site a crm:E18_Physical_Thing ;
-        rdfs:label ?site_label .
+  options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
 
-  # SCALE A
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?measA .
-    ?measA a crmsci:S21_Measurement ;
-           crm:P2_has_type <https://w3id.org/sirius/type/scale-a-score> ;
-           crm:P40_observed_dimension ?dA .
+  <!-- SITE LABEL -->
+  <template id="siteCell">
+    {{#if site_label.value}}
+      <div class="pill">{{site_label.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
 
-    OPTIONAL { ?dA crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?a_val1 . }
-    OPTIONAL { ?dA crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?a_val2 . }
-    OPTIONAL { ?dA crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?a_val3 . }
-    OPTIONAL { ?measA crm:P3_has_note ?a_desc }
-  }
+  <!-- VALUE RANGE -->
+  <template id="valueRangeCell">
+    {{#if min.value}}<div>Min: {{min.value}}</div>{{/if}}
+    {{#if max.value}}<div>Max: {{max.value}}</div>{{/if}}
+    {{#unless min.value}}{{#unless max.value}}
+      <div class="empty">—</div>
+    {{/unless}}{{/unless}}
+  </template>
 
-  # SCALE B
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?measB .
-    ?measB a crmsci:S21_Measurement ;
-           crm:P2_has_type <https://w3id.org/sirius/type/scale-b-score> ;
-           crm:P40_observed_dimension ?dB .
+  <!-- SCALE TRIPLE -->
+  <template id="scaleTripleCell">
+    {{#if v1.value}}<div>Val1: {{v1.value}}</div>{{/if}}
+    {{#if v2.value}}<div>Val2: {{v2.value}}</div>{{/if}}
+    {{#if v3.value}}<div>Val3: {{v3.value}}</div>{{/if}}
+    {{#unless v1.value}}{{#unless v2.value}}{{#unless v3.value}}
+      <div class="empty">—</div>
+    {{/unless}}{{/unless}}{{/unless}}
+    {{#if desc.value}}<div class="note">{{desc.value}}</div>{{/if}}
+  </template>
 
-    OPTIONAL { ?dB crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?b_val1 . }
-    OPTIONAL { ?dB crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?b_val2 . }
-    OPTIONAL { ?dB crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?b_val3 . }
-    OPTIONAL { ?measB crm:P3_has_note ?b_desc }
-  }
+</semantic-table>
 
-  # SCALE C
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?measC .
-    ?measC a crmsci:S21_Measurement ;
-           crm:P2_has_type <https://w3id.org/sirius/type/scale-c-score> ;
-           crm:P40_observed_dimension ?dC .
+                </div><!-- END TABLE WRAPPER -->
 
-    OPTIONAL { ?dC crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?c_val1 . }
-    OPTIONAL { ?dC crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?c_val2 . }
-    OPTIONAL { ?dC crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?c_val3 . }
-    OPTIONAL { ?measC crm:P3_has_note ?c_desc }
-  }
-
-  # MAGNITUDE
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?mag .
-    ?mag a crmsci:S21_Measurement ;
-         crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-         crm:P40_observed_dimension ?magDim .
-
-    OPTIONAL {
-      ?magDim crm:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
-              crm:P90_has_value ?magnitude_min .
-      FILTER(STRSTARTS(STR(?magDim), "https://w3id.org/sirius/magnitude_score_min"))
-    }
-
-    OPTIONAL {
-      ?magDim crm:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
-              crm:P90_has_value ?magnitude_max .
-      FILTER(STRSTARTS(STR(?magDim), "https://w3id.org/sirius/magnitude_score_max"))
-    }
-  }
-
-  # UNCERTAINTY
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?uncer .
-    ?uncer a crmsci:S21_Measurement ;
-           crm:P2_has_type <https://w3id.org/sirius/type/uncertainty> ;
-           crm:P40_observed_dimension ?uncDim .
-
-    OPTIONAL {
-      ?uncDim crm:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
-              rdfs:label ?uncertainty_min .
-      FILTER(STRSTARTS(STR(?uncDim), "https://w3id.org/sirius/uncertainty_min"))
-    }
-
-    OPTIONAL {
-      ?uncDim crm:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
-              rdfs:label ?uncertainty_max .
-      FILTER(STRSTARTS(STR(?uncDim), "https://w3id.org/sirius/uncertainty_max"))
-    }
-  }
-}
-ORDER BY ?site_label
-
-</mp-sparql>
-
-<!-- TEMPLATE FOR SITE BLOCK -->
-<template id="siteBlock">
-  <div class="site-block" style="border:1px solid #ccc; padding:15px; border-radius:8px; background:#fafafa; margin-bottom:20px;">
-    <h3>{{site_label}}</h3>
-
-    <p><strong>Scale A:</strong> {{a_val1}} / {{a_val2}} / {{a_val3}}</p>
-    {{#a_desc}}<p>{{a_desc}}</p>{{/a_desc}}
-
-    <p><strong>Scale B:</strong> {{b_val1}} / {{b_val2}} / {{b_val3}}</p>
-    {{#b_desc}}<p>{{b_desc}}</p>{{/b_desc}}
-
-    <p><strong>Scale C:</strong> {{c_val1}} / {{c_val2}} / {{c_val3}}</p>
-    {{#c_desc}}<p>{{c_desc}}</p>{{/c_desc}}
-
-    <p><strong>Magnitude:</strong> {{magnitude_min}} – {{magnitude_max}}</p>
-    <p><strong>Uncertainty:</strong> {{uncertainty_min}} – {{uncertainty_max}}</p>
-  </div>
-</template>
-
-                  </mp-sparql>
-
-                </div> <!-- END CLEAN SITE BLOCK WRAPPER -->
-              </div>
+              </div><!-- END TAB -->
             </bs-tab-pane>
           </bs-tab-content>
-        </div>
+
+        </div><!-- END TAB-CONTAINER -->
+
       </bs-tab-container>
-    </div>
+
+    </div><!-- END PAGE -->
+
   </template>
 </with-types>
 [[/inline]]
+
 [[> resource]]
