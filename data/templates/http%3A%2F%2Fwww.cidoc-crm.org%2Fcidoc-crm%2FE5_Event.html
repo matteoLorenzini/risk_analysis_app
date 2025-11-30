@@ -70,24 +70,52 @@
 
   query='
 PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX crmsci: <http://www.ics.forth.org/isl/CRMsci/>
+PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT
-  ?site ?site_label
+  ?subject 
+  ?site_label
+  ?event 
+  ?event_name
+  ?agent
   ?a_val1 ?a_val2 ?a_val3 ?a_desc
   ?b_val1 ?b_val2 ?b_val3 ?b_desc
   ?c_val1 ?c_val2 ?c_val3 ?c_desc
-  ?magnitude_min ?magnitude_max
-  ?uncertainty_min ?uncertainty_max
+  ?risk_desc
+  ?magnitude_min_score ?magnitude_max_score
+  ?uncertainty_min_score ?uncertainty_max_score
 WHERE {
-  # 1. CORE PATTERN: Start with the current Event URI and find all Sites (E18) it modified.
-  VALUES ?event { <[[this]]> } # The current resource is the Event
-  ?event base:P31_has_modified ?site .
-  ?site a base:E18_Physical_Thing .
-  OPTIONAL { ?site rdfs:label ?site_label }
+  # 1. EVENT BINDING: Start with the Event URI you are interested in.
+  VALUES ?event { <[[this]]> } # <-- INSERT YOUR EVENT URI HERE (e.g., the Earthquake)
+  ?event a base:E5_Event .
 
-  # 2. Scale A (Aggregate measurement data per event using subquery for clean data)
+  # 2. MAIN PATTERN: Find all E18 Sites modified by this Event.
+  ?event base:P31_has_modified ?subject .
+  ?subject a base:E18_Physical_Thing .
+  OPTIONAL { ?subject rdfs:label ?site_label }
+
+  # Event name (will be the same for all rows, but good for context)
+  OPTIONAL { ?event rdfs:label ?event_name . }
+
+  # Risk Analysis description tied to this event and subject (site)
+  OPTIONAL {
+    ?ra a base:E89_Propositional_Object ;
+      base:P129_is_about ?subject ;
+      base:P129_is_about ?event .
+    OPTIONAL { ?ra base:P3_has_note ?risk_desc }
+  }
+  
+  # Actor
+  OPTIONAL {
+    ?event base:P11_had_participant ?actor .
+    ?actor a base:E39_Actor ;
+      rdfs:label ?agent .
+  }
+
+  # --- Aggregated Measurement Subqueries (Logic preserved for data cleanup) ---
+
+  # 3. Scale A (Aggregated per event in subquery)
   OPTIONAL {
     { SELECT ?event (SAMPLE(?v1) AS ?a_val1) (SAMPLE(?v2) AS ?a_val2) (SAMPLE(?v3) AS ?a_val3) (SAMPLE(?d) AS ?a_desc)
       WHERE {
@@ -102,7 +130,7 @@ WHERE {
     }
   }
 
-  # 3. Scale B
+  # 4. Scale B
   OPTIONAL {
     { SELECT ?event (SAMPLE(?v1) AS ?b_val1) (SAMPLE(?v2) AS ?b_val2) (SAMPLE(?v3) AS ?b_val3) (SAMPLE(?d) AS ?b_desc)
       WHERE {
@@ -117,7 +145,7 @@ WHERE {
     }
   }
 
-  # 4. Scale C
+  # 5. Scale C
   OPTIONAL {
     { SELECT ?event (SAMPLE(?v1) AS ?c_val1) (SAMPLE(?v2) AS ?c_val2) (SAMPLE(?v3) AS ?c_val3) (SAMPLE(?d) AS ?c_desc)
       WHERE {
@@ -132,9 +160,9 @@ WHERE {
     }
   }
 
-  # 5. Magnitude score
+  # 6. Magnitude score
   OPTIONAL {
-    { SELECT ?event (SAMPLE(?minMag) AS ?magnitude_min) (SAMPLE(?maxMag) AS ?magnitude_max)
+    { SELECT ?event (SAMPLE(?minMag) AS ?magnitude_min_score) (SAMPLE(?maxMag) AS ?magnitude_max_score)
       WHERE {
         ?event base:P39i_was_measured_by ?magnitude .
         ?magnitude a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
@@ -153,9 +181,9 @@ WHERE {
     }
   }
 
-  # 6. Uncertainty score
+  # 7. Uncertainty score
   OPTIONAL {
-    { SELECT ?event (SAMPLE(?minU) AS ?uncertainty_min) (SAMPLE(?maxU) AS ?uncertainty_max)
+    { SELECT ?event (SAMPLE(?minU) AS ?uncertainty_min_score) (SAMPLE(?maxU) AS ?uncertainty_max_score)
       WHERE {
         ?event base:P39i_was_measured_by ?uncertainty .
         ?uncertainty a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
