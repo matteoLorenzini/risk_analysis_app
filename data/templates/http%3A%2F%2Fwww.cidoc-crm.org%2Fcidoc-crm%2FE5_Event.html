@@ -133,9 +133,9 @@
      FILTER(?dimAType IN (<https://w3id.org/sirius/type/scale_a_val_1>, <https://w3id.org/sirius/type/scale_a_val_2>, <https://w3id.org/sirius/type/scale_a_val_3>))
      BIND(STRAFTER(STR(?dimAType), "scale_a_val_") AS ?aIndex)
      BIND(?dimALabel AS ?aVal)
-     BIND(IF(?aIndex = "1", ?aVal, UNDEF) AS ?a1)
-     BIND(IF(?aIndex = "2", ?aVal, UNDEF) AS ?a2)
-     BIND(IF(?aIndex = "3", ?aVal, UNDEF) AS ?a3)
+     BIND(IF(?aIndex = "1", ?aVal, "") AS ?a1)
+     BIND(IF(?aIndex = "2", ?aVal, "") AS ?a2)
+     BIND(IF(?aIndex = "3", ?aVal, "") AS ?a3)
    }
  
    # Scale B dims
@@ -148,9 +148,9 @@
            rdfs:label ?dimBLabel .
      FILTER(?dimBType IN (<https://w3id.org/sirius/type/scale_b_val_1>, <https://w3id.org/sirius/type/scale_b_val_2>, <https://w3id.org/sirius/type/scale_b_val_3>))
      BIND(STRAFTER(STR(?dimBType), "scale_b_val_") AS ?bIndex)
-     BIND(IF(?bIndex = "1", ?dimBLabel, UNDEF) AS ?b1)
-     BIND(IF(?bIndex = "2", ?dimBLabel, UNDEF) AS ?b2)
-     BIND(IF(?bIndex = "3", ?dimBLabel, UNDEF) AS ?b3)
+     BIND(IF(?bIndex = "1", ?dimBLabel, "") AS ?b1)
+     BIND(IF(?bIndex = "2", ?dimBLabel, "") AS ?b2)
+     BIND(IF(?bIndex = "3", ?dimBLabel, "") AS ?b3)
    }
  
    # Scale C dims
@@ -163,9 +163,9 @@
            rdfs:label ?dimCLabel .
      FILTER(?dimCType IN (<https://w3id.org/sirius/type/scale_c_val_1>, <https://w3id.org/sirius/type/scale_c_val_2>, <https://w3id.org/sirius/type/scale_c_val_3>))
      BIND(STRAFTER(STR(?dimCType), "scale_c_val_") AS ?cIndex)
-     BIND(IF(?cIndex = "1", ?dimCLabel, UNDEF) AS ?c1)
-     BIND(IF(?cIndex = "2", ?dimCLabel, UNDEF) AS ?c2)
-     BIND(IF(?cIndex = "3", ?dimCLabel, UNDEF) AS ?c3)
+     BIND(IF(?cIndex = "1", ?dimCLabel, "") AS ?c1)
+     BIND(IF(?cIndex = "2", ?dimCLabel, "") AS ?c2)
+     BIND(IF(?cIndex = "3", ?dimCLabel, "") AS ?c3)
    }
  
    # Magnitude min / max (attached to event)
@@ -177,8 +177,8 @@
      ?magDim crm:P2_has_type ?magDimType ;
              crm:P90_has_value ?magVal .
      FILTER(STRSTARTS(STR(?magDimType), "https://w3id.org/sirius/magnitude_score_min") || STRSTARTS(STR(?magDimType), "https://w3id.org/sirius/magnitude_score_max"))
-     BIND(IF(STRSTARTS(STR(?magDimType), "https://w3id.org/sirius/magnitude_score_min"), ?magVal, UNDEF) AS ?minMag)
-     BIND(IF(STRSTARTS(STR(?magDimType), "https://w3id.org/sirius/magnitude_score_max"), ?magVal, UNDEF) AS ?maxMag)
+     BIND(IF(STRSTARTS(STR(?magDimType), "https://w3id.org/sirius/magnitude_score_min"), ?magVal, "") AS ?minMag)
+     BIND(IF(STRSTARTS(STR(?magDimType), "https://w3id.org/sirius/magnitude_score_max"), ?magVal, "") AS ?maxMag)
    }
  
    # Uncertainty min / max
@@ -190,8 +190,8 @@
      ?uncDim crm:P2_has_type ?uncDimType ;
              crm:P90_has_value ?uncVal .
      FILTER(STRSTARTS(STR(?uncDimType), "https://w3id.org/sirius/uncertainty_min") || STRSTARTS(STR(?uncDimType), "https://w3id.org/sirius/uncertainty_max"))
-     BIND(IF(STRSTARTS(STR(?uncDimType), "https://w3id.org/sirius/uncertainty_min"), ?uncVal, UNDEF) AS ?minU)
-     BIND(IF(STRSTARTS(STR(?uncDimType), "https://w3id.org/sirius/uncertainty_max"), ?uncVal, UNDEF) AS ?maxU)
+     BIND(IF(STRSTARTS(STR(?uncDimType), "https://w3id.org/sirius/uncertainty_min"), ?uncVal, "") AS ?minU)
+     BIND(IF(STRSTARTS(STR(?uncDimType), "https://w3id.org/sirius/uncertainty_max"), ?uncVal, "") AS ?maxU)
    }
  }
  GROUP BY ?site
