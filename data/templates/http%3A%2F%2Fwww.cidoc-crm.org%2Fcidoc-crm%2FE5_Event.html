@@ -20,102 +20,103 @@
                   <h2 class="h2" style="margin-bottom:15px;">Sites Affected by this Event</h2>
 
 <semantic-table
-  id="event-sites-table"
-
+  id="event-risk-table"
   query='
 PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?site ?site_label
-       (SAMPLE(?a_v1)      AS ?a_val1)
-       (SAMPLE(?a_v2)      AS ?a_val2)
-       (SAMPLE(?a_v3)      AS ?a_val3)
-       (SAMPLE(?a_note)    AS ?a_desc)
-       (SAMPLE(?b_v1)      AS ?b_val1)
-       (SAMPLE(?b_v2)      AS ?b_val2)
-       (SAMPLE(?b_v3)      AS ?b_val3)
-       (SAMPLE(?b_note)    AS ?b_desc)
-       (SAMPLE(?c_v1)      AS ?c_val1)
-       (SAMPLE(?c_v2)      AS ?c_val2)
-       (SAMPLE(?c_v3)      AS ?c_val3)
-       (SAMPLE(?c_note)    AS ?c_desc)
-       (SAMPLE(?mag_min)   AS ?magnitude_min_score)
-       (SAMPLE(?mag_max)   AS ?magnitude_max_score)
-       (SAMPLE(?unc_min)   AS ?uncertainty_min_score)
-       (SAMPLE(?unc_max)   AS ?uncertainty_max_score)
+SELECT DISTINCT
+  ?subject
+  ?agent
+  ?event_name
+  ?a_val1 ?a_val2 ?a_val3 ?a_desc
+  ?b_val1 ?b_val2 ?b_val3 ?b_desc
+  ?c_val1 ?c_val2 ?c_val3 ?c_desc
+  ?risk_desc
+  ?magnitude_min_score ?magnitude_max_score
+  ?uncertainty_min_score ?uncertainty_max_score
 WHERE {
-  # bind current Event
+  # current event as input
   BIND(<[[this]]> AS ?event)
   ?event a base:E5_Event .
 
-  # sites affected by the event
+  # sites impacted by event -> one row per E18
   ?event base:P31_has_modified ?site .
   ?site a base:E18_Physical_Thing .
+  BIND(?site AS ?subject)
   OPTIONAL { ?site rdfs:label ?site_label }
+  OPTIONAL { ?event rdfs:label ?event_name }
 
-  # --- Scale A aggregated per event+site ---
+  # Actor
   OPTIONAL {
-    { SELECT ?event ?site
-        (SAMPLE(?v1) AS ?a_v1) (SAMPLE(?v2) AS ?a_v2) (SAMPLE(?v3) AS ?a_v3) (SAMPLE(?noteA) AS ?a_note)
+    ?event base:P11_had_participant ?actor .
+    ?actor a base:E39_Actor ;
+           rdfs:label ?agent .
+  }
+
+  # Risk Analysis description about site+event
+  OPTIONAL {
+    ?ra a base:E89_Propositional_Object ;
+        base:P129_is_about ?subject ;
+        base:P129_is_about ?event .
+    OPTIONAL { ?ra base:P3_has_note ?risk_desc }
+  }
+
+  # --- Scale A per event+site ---
+  OPTIONAL {
+    { SELECT ?event ?site (SAMPLE(?v1) AS ?a_val1) (SAMPLE(?v2) AS ?a_val2) (SAMPLE(?v3) AS ?a_val3) (SAMPLE(?noteA) AS ?a_desc)
       WHERE {
         ?event base:P39i_was_measured_by ?measA .
-        ?measA a crmsci:S21_Measurement ;
-               base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
-        OPTIONAL { ?measA base:P129_is_about ?site }                # prefer measurements about the site
-        OPTIONAL { ?measA base:P40_observed_dimension ?dA1 . ?dA1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?v1 . }
-        OPTIONAL { ?measA base:P40_observed_dimension ?dA2 . ?dA2 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?v2 . }
-        OPTIONAL { ?measA base:P40_observed_dimension ?dA3 . ?dA3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?v3 . }
+        ?measA a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+        OPTIONAL { ?measA base:P129_is_about ?site }
+        OPTIONAL { ?measA base:P40_observed_dimension ?dA1 . ?dA1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?v1. }
+        OPTIONAL { ?measA base:P40_observed_dimension ?dA2 . ?dA2 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?v2. }
+        OPTIONAL { ?measA base:P40_observed_dimension ?dA3 . ?dA3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?v3. }
         OPTIONAL { ?measA base:P3_has_note ?noteA }
-        # ensure association to site rows
         ?event base:P31_has_modified ?site .
       } GROUP BY ?event ?site
     }
   }
 
-  # --- Scale B aggregated per event+site ---
+  # --- Scale B per event+site ---
   OPTIONAL {
-    { SELECT ?event ?site
-        (SAMPLE(?v1) AS ?b_v1) (SAMPLE(?v2) AS ?b_v2) (SAMPLE(?v3) AS ?b_val3) (SAMPLE(?noteB) AS ?b_note)
+    { SELECT ?event ?site (SAMPLE(?v1) AS ?b_val1) (SAMPLE(?v2) AS ?b_val2) (SAMPLE(?v3) AS ?b_val3) (SAMPLE(?noteB) AS ?b_desc)
       WHERE {
         ?event base:P39i_was_measured_by ?measB .
-        ?measB a crmsci:S21_Measurement ;
-               base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
+        ?measB a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
         OPTIONAL { ?measB base:P129_is_about ?site }
-        OPTIONAL { ?measB base:P40_observed_dimension ?dB1 . ?dB1 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?v1 . }
-        OPTIONAL { ?measB base:P40_observed_dimension ?dB2 . ?dB2 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?v2 . }
-        OPTIONAL { ?measB base:P40_observed_dimension ?dB3 . ?dB3 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?v3 . }
+        OPTIONAL { ?measB base:P40_observed_dimension ?dB1 . ?dB1 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?v1. }
+        OPTIONAL { ?measB base:P40_observed_dimension ?dB2 . ?dB2 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?v2. }
+        OPTIONAL { ?measB base:P40_observed_dimension ?dB3 . ?dB3 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?v3. }
         OPTIONAL { ?measB base:P3_has_note ?noteB }
         ?event base:P31_has_modified ?site .
       } GROUP BY ?event ?site
     }
   }
 
-  # --- Scale C aggregated per event+site ---
+  # --- Scale C per event+site ---
   OPTIONAL {
-    { SELECT ?event ?site
-        (SAMPLE(?v1) AS ?c_v1) (SAMPLE(?v2) AS ?c_v2) (SAMPLE(?v3) AS ?c_val3) (SAMPLE(?noteC) AS ?c_note)
+    { SELECT ?event ?site (SAMPLE(?v1) AS ?c_val1) (SAMPLE(?v2) AS ?c_val2) (SAMPLE(?v3) AS ?c_val3) (SAMPLE(?noteC) AS ?c_desc)
       WHERE {
         ?event base:P39i_was_measured_by ?measC .
-        ?measC a crmsci:S21_Measurement ;
-               base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
+        ?measC a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
         OPTIONAL { ?measC base:P129_is_about ?site }
-        OPTIONAL { ?measC base:P40_observed_dimension ?dC1 . ?dC1 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?v1 . }
-        OPTIONAL { ?measC base:P40_observed_dimension ?dC2 . ?dC2 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?v2 . }
-        OPTIONAL { ?measC base:P40_observed_dimension ?dC3 . ?dC3 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?v3 . }
+        OPTIONAL { ?measC base:P40_observed_dimension ?dC1 . ?dC1 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?v1. }
+        OPTIONAL { ?measC base:P40_observed_dimension ?dC2 . ?dC2 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?v2. }
+        OPTIONAL { ?measC base:P40_observed_dimension ?dC3 . ?dC3 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?v3. }
         OPTIONAL { ?measC base:P3_has_note ?noteC }
         ?event base:P31_has_modified ?site .
       } GROUP BY ?event ?site
     }
   }
 
-  # --- Magnitude min/max per event+site (P90_has_value used) ---
+  # --- Magnitude min/max per event+site ---
   OPTIONAL {
-    { SELECT ?event ?site (SAMPLE(?minM) AS ?mag_min) (SAMPLE(?maxM) AS ?mag_max)
+    { SELECT ?event ?site (SAMPLE(?minM) AS ?magnitude_min_score) (SAMPLE(?maxM) AS ?magnitude_max_score)
       WHERE {
         ?event base:P39i_was_measured_by ?mag .
-        ?mag a crmsci:S21_Measurement ;
-             base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+        ?mag a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
         OPTIONAL { ?mag base:P129_is_about ?site }
         OPTIONAL { ?mag base:P40_observed_dimension ?md1 . ?md1 base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?minM . FILTER(STRSTARTS(STR(?md1), "https://w3id.org/sirius/magnitude_score_min")) }
         OPTIONAL { ?mag base:P40_observed_dimension ?md2 . ?md2 base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?maxM . FILTER(STRSTARTS(STR(?md2), "https://w3id.org/sirius/magnitude_score_max")) }
@@ -124,13 +125,12 @@ WHERE {
     }
   }
 
-  # --- Uncertainty min/max per event+site (try P90_has_value first, fallback to rdfs:label if used) ---
+  # --- Uncertainty min/max per event+site (P90 or rdfs:label fallback) ---
   OPTIONAL {
-    { SELECT ?event ?site (SAMPLE(?umin) AS ?unc_min) (SAMPLE(?umax) AS ?unc_max)
+    { SELECT ?event ?site (SAMPLE(?umin) AS ?uncertainty_min_score) (SAMPLE(?umax) AS ?uncertainty_max_score)
       WHERE {
         ?event base:P39i_was_measured_by ?unc .
-        ?unc a crmsci:S21_Measurement ;
-             base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+        ?unc a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
         OPTIONAL { ?unc base:P129_is_about ?site }
         OPTIONAL { ?unc base:P40_observed_dimension ?ud1 . ?ud1 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; base:P90_has_value ?umin . FILTER(STRSTARTS(STR(?ud1), "https://w3id.org/sirius/uncertainty_min")) }
         OPTIONAL { ?unc base:P40_observed_dimension ?ud2 . ?ud2 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; base:P90_has_value ?umax . FILTER(STRSTARTS(STR(?ud2), "https://w3id.org/sirius/uncertainty_max")) }
@@ -144,17 +144,23 @@ WHERE {
   }
 
 }
-GROUP BY ?site ?site_label
+GROUP BY ?subject ?agent ?event_name ?risk_desc
 ORDER BY ?site_label
 '
   column-configuration='[
-    { "displayName": "Affected Site (E18)", "cellTemplate": "{{> siteLinkCell}}" },
-    { "displayName": "Risk Description (E89)",  "cellTemplate": "{{> riskDescCell}}" },
-    { "displayName": "Global Score (A-V1)",     "cellTemplate": "{{a_val1.value}}"},
-    { "displayName": "Global Magnitude (Min)",  "cellTemplate": "{{magnitude_min.value}}"},
-    { "displayName": "Global Uncertainty (Min)",  "cellTemplate": "{{uncertainty_min.value}}"}
+    { "displayName": "Agent",       "cellTemplate": "{{> agentCell}}" },
+    { "displayName": "Event",       "cellTemplate": "{{> eventNameCell}}" },
+    { "displayName": "Scale A",     "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_desc}}" },
+    { "displayName": "Scale B",     "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_desc}}" },
+    { "displayName": "Scale C",     "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_desc}}" },
+    { "displayName": "Description","cellTemplate": "{{> descCell}}" },
+    { "displayName": "Magnitude",   "cellTemplate": "{{> valueRangeCell min=magnitude_min_score max=magnitude_max_score}}" },
+    { "displayName": "Uncertainty", "cellTemplate": "{{> valueRangeCell min=uncertainty_min_score max=uncertainty_max_score}}" }
   ]'
-  options='{"showFilter": true, "resultsPerPage": 50, "stickyHeader": true}'>
+  options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
+
+
+  <!-- Site link cell (subject = site) -->
   <template id="siteLinkCell">
     {{#if subject.value}}
       <semantic-link iri="{{subject.value}}">
@@ -164,30 +170,61 @@ ORDER BY ?site_label
       <span class="pill">Unknown Site</span>
     {{/if}}
   </template>
-  
-  <template id="riskDescCell">
-    {{#if risk_desc.value}}
-      <span class="risk-note">{{risk_desc.value}}</span>
+
+  <!-- Agent label -->
+  <template id="agentCell">
+    {{#if agent.value}}
+      <div class="pill">{{agent.value}}</div>
     {{else}}
       <div class="empty">—</div>
     {{/if}}
   </template>
-  </semantic-table>
+
+  <!-- Event name label -->
+  <template id="eventNameCell">
+    {{#if event_name.value}}
+      <div class="pill">{{event_name.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+  <!-- Generic min / max value cell -->
+  <template id="valueRangeCell">
+    {{#if min.value}}
+      <div class="val"><span class="dim-label">Val.</span> {{min.value}}</div>
+      {{#if max.value}}<div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>{{/if}}
+    {{else}}
+      {{#if max.value}}
+        <div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>
+      {{else}}
+        <div class="empty">—</div>
+      {{/if}}
+    {{/if}}
+  </template>
+
+  <!-- Scale triple cell -->
+  <template id="scaleTripleCell">
+    {{#if v1.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v1.value}}</strong></div>{{/if}}
+    {{#if v2.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v2.value}}</strong></div>{{/if}}
+    {{#if v3.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v3.value}}</strong></div>{{/if}}
+    {{#unless v1.value}}{{#unless v2.value}}{{#unless v3.value}}<div class="empty">—</div>{{/unless}}{{/unless}}{{/unless}}
+    <div class="note"><span class="dim-label">Description</span> {{#if desc.value}}{{desc.value}}{{else}}—{{/if}}</div>
+  </template>
+
+  <!-- Risk Analysis description -->
+  <template id="descCell">
+    {{#if risk_desc.value}}<div class="note">{{risk_desc.value}}</div>{{else}}<div class="empty">—</div>{{/if}}
+  </template>
+
+</semantic-table>
 
 <style>
-  #event-sites-table .pill {
-    display:inline-block;
-    padding:4px 10px;
-    border-radius:999px;
-    border:1px solid #ccc;
-    background:#f9f9f9;
-  }
-  #event-sites-table .risk-note {
-    font-size:0.95em;
-    font-style: italic;
-    color: #333;
-  }
-  #event-sites-table .empty{ text-align:center; opacity:.5; }
+  #event-risk-table .pill { display:inline-block; padding:.2rem .5rem; border:1px solid #e5e7eb; border-radius:999px; }
+  #event-risk-table .val  { line-height: 1.25; }
+  #event-risk-table .note { white-space: pre-wrap; opacity:.9; line-height:1.25; margin-top:.15rem; }
+  #event-risk-table .empty{ text-align:center; opacity:.5; }
+  #event-risk-table .dim-label { font-size:.825em; text-transform:uppercase; letter-spacing:.02em; opacity:.7; margin-right:.35rem; }
 </style>
 
                 </div>
