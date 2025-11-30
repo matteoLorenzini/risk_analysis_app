@@ -4,12 +4,11 @@
   <template id='page'>
     <div class="rs-resource-container">
 
-      <!-- ======================= HEADER ======================= -->
       <div class="rs-resource-header {{getValueByKey entityBgColor allTypes 'rs-entity-bg-thing'}}" style="min-height: 400px;">
         <div class="rs-resource-header-topContainer">
           <div class="rs-resource-header-topButtons">
 
-            <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]' urlqueryparam-view='knowledge-map' urlqueryparam-resource='[[this]]'>
+            <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]]' urlqueryparam-view='knowledge-map' urlqueryparam-resource='[[this]]'>
               <button type="button" title="Author Resource in Knowledge Map">
                 <rs-icon icon-type="round" icon-name="account_tree"></rs-icon>
               </button>
@@ -46,183 +45,219 @@
         </div>
 
       </div>
-      <!-- ===================== END HEADER ===================== -->
-
-      <bs-tab-container id="tab-container" class="rs-resource-tabs" default-active-key="event-details">
+      <bs-tab-container id="tab-container" class="rs-resource-tabs" default-active-key="sites-modified">
         <div>
 
           <bs-nav bs-style="tabs">
-            <bs-nav-item event-key="event-details">Event</bs-nav-item>
+            <bs-nav-item event-key="sites-modified">Sites Affected</bs-nav-item>
           </bs-nav>
 
           <bs-tab-content animation="true">
-            <bs-tab-pane event-key="event-details">
+            <bs-tab-pane event-key="sites-modified">
 
               <div class="rs-resource-tab-container">
 
-                <!-- Section header -->
                 <div>
                   <hr class="rs-resource-section--headerLine">
-                  <span class="h1 rs-resource-section--header">Event</span>
+                  <span class="h1 rs-resource-section--header">Sites Modified and Associated Scores</span>
                 </div>
+                
+                <div style="margin-top:40px;">
+                  <h2 class="h2" style="margin-bottom:15px;">Sites Affected by this Event</h2>
 
-                <!-- ========================================================= -->
-                <!--  1. KEEP EXISTING FIELD VISUALIZATION (YOUR ORIGINAL)    -->
-                <!-- ========================================================= -->
-                <div class="rs-resource-data-table">
+<semantic-table
+  id="event-sites-table"
 
-                  <!-- Risk analysis: one row per Site impacted by the current Event -->
-                  <semantic-table
-                    id="event-risk-table"
-                    query='
-PREFIX crm:   <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX crmsci:<http://www.ics.forth.gr/isl/CRMsci/>
-PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+  query='
+PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX crmsci: <http://www.ics.forth.org/isl/CRMsci/>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?site ?site_label
-       (SAMPLE(?a1) AS ?a_val1) (SAMPLE(?a2) AS ?a_val2) (SAMPLE(?a3) AS ?a_val3) (SAMPLE(?a_desc_raw) AS ?a_desc)
-       (SAMPLE(?b1) AS ?b_val1) (SAMPLE(?b2) AS ?b_val2) (SAMPLE(?b3) AS ?b_val3) (SAMPLE(?b_desc_raw) AS ?b_desc)
-       (SAMPLE(?c1) AS ?c_val1) (SAMPLE(?c2) AS ?c_val2) (SAMPLE(?c3) AS ?c_val3) (SAMPLE(?c_desc_raw) AS ?c_desc)
-       (SAMPLE(?minM) AS ?magnitude_min) (SAMPLE(?maxM) AS ?magnitude_max)
-       (SAMPLE(?minU) AS ?uncertainty_min) (SAMPLE(?maxU) AS ?uncertainty_max)
+SELECT DISTINCT
+  ?site ?site_label
+  ?a_val1 ?a_val2 ?a_val3 ?a_desc
+  ?b_val1 ?b_val2 ?b_val3 ?b_desc
+  ?c_val1 ?c_val2 ?c_val3 ?c_desc
+  ?magnitude_min ?magnitude_max
+  ?uncertainty_min ?uncertainty_max
 WHERE {
-  BIND(<[[this]]> AS ?event)
-  ?event a crm:E5_Event .
-  ?event crm:P31_has_modified ?site .
+  # 1. CORE PATTERN: Start with the current Event URI and find all Sites (E18) it modified.
+  VALUES ?event { <[[this]]> } # The current resource is the Event
+  ?event base:P31_has_modified ?site .
+  ?site a base:E18_Physical_Thing .
   OPTIONAL { ?site rdfs:label ?site_label }
 
-  # Scale A (measurements attached to event)
+  # 2. Scale A (Aggregate measurement data per event using subquery for clean data)
   OPTIONAL {
-    ?event crm:P39i_was_measured_by ?measA .
-    ?measA a crmsci:S21_Measurement ;
-           crm:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
-    OPTIONAL { ?measA crm:P40_observed_dimension ?dA1 . ?dA1 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?a1. }
-    OPTIONAL { ?measA crm:P40_observed_dimension ?dA2 . ?dA2 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?a2. }
-    OPTIONAL { ?measA crm:P40_observed_dimension ?dA3 . ?dA3 crm:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?a3. }
-    OPTIONAL { ?measA crm:P3_has_note ?a_desc_raw. }
-  }
-
-  # Scale B
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?measB .
-    ?measB a crmsci:S21_Measurement ;
-           crm:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
-    OPTIONAL { ?measB crm:P40_observed_dimension ?dB1 . ?dB1 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?b1. }
-    OPTIONAL { ?measB crm:P40_observed_dimension ?dB2 . ?dB2 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?b2. }
-    OPTIONAL { ?measB crm:P40_observed_dimension ?dB3 . ?dB3 crm:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?b3. }
-    OPTIONAL { ?measB crm:P3_has_note ?b_desc_raw. }
-  }
-
-  # Scale C
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?measC .
-    ?measC a crmsci:S21_Measurement ;
-           crm:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
-    OPTIONAL { ?measC crm:P40_observed_dimension ?dC1 . ?dC1 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?c1. }
-    OPTIONAL { ?measC crm:P40_observed_dimension ?dC2 . ?dC2 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?c2. }
-    OPTIONAL { ?measC crm:P40_observed_dimension ?dC3 . ?dC3 crm:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?c3. }
-    OPTIONAL { ?measC crm:P3_has_note ?c_desc_raw. }
-  }
-
-  # Magnitude
-  OPTIONAL {
-    ?event crm:P39i_was_measured_by ?mag .
-    ?mag a crmsci:S21_Measurement ;
-         crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
-    OPTIONAL {
-      ?mag crm:P40_observed_dimension ?magDim .
-      ?magDim crm:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
-              crm:P90_has_value ?minM .
-      FILTER(STRSTARTS(STR(?magDim), "https://w3id.org/sirius/magnitude_score_min"))
-    }
-    OPTIONAL {
-      ?mag crm:P40_observed_dimension ?magDim2 .
-      ?magDim2 crm:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
-               crm:P90_has_value ?maxM .
-      FILTER(STRSTARTS(STR(?magDim2), "https://w3id.org/sirius/magnitude_score_max"))
+    { SELECT ?event (SAMPLE(?v1) AS ?a_val1) (SAMPLE(?v2) AS ?a_val2) (SAMPLE(?v3) AS ?a_val3) (SAMPLE(?d) AS ?a_desc)
+      WHERE {
+        ?event base:P39i_was_measured_by ?measA .
+        ?measA a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+        OPTIONAL { ?measA base:P40_observed_dimension ?dimension_a_1 . ?dimension_a_1 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?v1 . }
+        OPTIONAL { ?measA base:P40_observed_dimension ?dimension_a_2 . ?dimension_a_2 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?v2 . }
+        OPTIONAL { ?measA base:P40_observed_dimension ?dimension_a_3 . ?dimension_a_3 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?v3 . }
+        OPTIONAL { ?measA base:P3_has_note ?d }
+      }
+      GROUP BY ?event
     }
   }
 
-  # Uncertainty
+  # 3. Scale B
   OPTIONAL {
-    ?event crm:P39i_was_measured_by ?unc .
-    ?unc a crmsci:S21_Measurement ;
-         crm:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
-    OPTIONAL {
-      ?unc crm:P40_observed_dimension ?uncDim .
-      ?uncDim crm:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
-              rdfs:label ?minU .
-      FILTER(STRSTARTS(STR(?uncDim), "https://w3id.org/sirius/uncertainty_min"))
-    }
-    OPTIONAL {
-      ?unc crm:P40_observed_dimension ?uncDim2 .
-      ?uncDim2 crm:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
-               rdfs:label ?maxU .
-      FILTER(STRSTARTS(STR(?uncDim2), "https://w3id.org/sirius/uncertainty_max"))
+    { SELECT ?event (SAMPLE(?v1) AS ?b_val1) (SAMPLE(?v2) AS ?b_val2) (SAMPLE(?v3) AS ?b_val3) (SAMPLE(?d) AS ?b_desc)
+      WHERE {
+        ?event base:P39i_was_measured_by ?measB .
+        ?measB a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
+        OPTIONAL { ?measB base:P40_observed_dimension ?dimension_b_1 . ?dimension_b_1 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?v1 . }
+        OPTIONAL { ?measB base:P40_observed_dimension ?dimension_b_2 . ?dimension_b_2 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?v2 . }
+        OPTIONAL { ?measB base:P40_observed_dimension ?dimension_b_3 . ?dimension_b_3 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?v3 . }
+        OPTIONAL { ?measB base:P3_has_note ?d }
+      }
+      GROUP BY ?event
     }
   }
 
+  # 4. Scale C
+  OPTIONAL {
+    { SELECT ?event (SAMPLE(?v1) AS ?c_val1) (SAMPLE(?v2) AS ?c_val2) (SAMPLE(?v3) AS ?c_val3) (SAMPLE(?d) AS ?c_desc)
+      WHERE {
+        ?event base:P39i_was_measured_by ?measC .
+        ?measC a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
+        OPTIONAL { ?measC base:P40_observed_dimension ?dimension_c_1 . ?dimension_c_1 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?v1 . }
+        OPTIONAL { ?measC base:P40_observed_dimension ?dimension_c_2 . ?dimension_c_2 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?v2 . }
+        OPTIONAL { ?measC base:P40_observed_dimension ?dimension_c_3 . ?dimension_c_3 a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?v3 . }
+        OPTIONAL { ?measC base:P3_has_note ?d }
+      }
+      GROUP BY ?event
+    }
+  }
+
+  # 5. Magnitude score
+  OPTIONAL {
+    { SELECT ?event (SAMPLE(?minMag) AS ?magnitude_min) (SAMPLE(?maxMag) AS ?magnitude_max)
+      WHERE {
+        ?event base:P39i_was_measured_by ?magnitude .
+        ?magnitude a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+        OPTIONAL {
+          ?magnitude base:P40_observed_dimension ?magnitude_dim_min .
+          ?magnitude_dim_min a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?minMag .
+          FILTER(STRSTARTS(STR(?magnitude_dim_min), "https://w3id.org/sirius/magnitude_score_min/"))
+        }
+        OPTIONAL {
+          ?magnitude base:P40_observed_dimension ?magnitude_dim_max .
+          ?magnitude_dim_max a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?maxMag .
+          FILTER(STRSTARTS(STR(?magnitude_dim_max), "https://w3id.org/sirius/magnitude_score_max/"))
+        }
+      }
+      GROUP BY ?event
+    }
+  }
+
+  # 6. Uncertainty score
+  OPTIONAL {
+    { SELECT ?event (SAMPLE(?minU) AS ?uncertainty_min) (SAMPLE(?maxU) AS ?uncertainty_max)
+      WHERE {
+        ?event base:P39i_was_measured_by ?uncertainty .
+        ?uncertainty a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+        OPTIONAL {
+          ?uncertainty base:P40_observed_dimension ?uncertainty_dim_min .
+          ?uncertainty_dim_min a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?minU .
+          FILTER(STRSTARTS(STR(?uncertainty_dim_min), "https://w3id.org/sirius/uncertainty_min/"))
+        }
+        OPTIONAL {
+          ?uncertainty base:P40_observed_dimension ?uncertainty_dim_max .
+          ?uncertainty_dim_max a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?maxU .
+          FILTER(STRSTARTS(STR(?uncertainty_dim_max), "https://w3id.org/sirius/uncertainty_max/"))
+        }
+      }
+      GROUP BY ?event
+    }
+  }
 }
-GROUP BY ?site ?site_label
 ORDER BY ?site_label
 '
-                    column-configuration='[
-                      { "displayName": "Site", "cellTemplate": "{{#if site_label.value}}<semantic-link iri=\'{{site.value}}\'>{{site_label.value}}</semantic-link>{{else}}<semantic-link iri=\'{{site.value}}\'>{{site.value}}</semantic-link>{{/if}}" },
-                      { "displayName": "Scale A", "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_desc}}" },
-                      { "displayName": "Scale B", "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_desc}}" },
-                      { "displayName": "Scale C", "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_desc}}" },
-                      { "displayName": "Magnitude", "cellTemplate": "{{> valueRangeCell min=magnitude_min max=magnitude_max}}" },
-                      { "displayName": "Uncertainty", "cellTemplate": "{{> valueRangeCell min=uncertainty_min max=uncertainty_max}}" }
-                    ]'
-                    options='{\"showFilter\": true, \"resultsPerPage\": 10, \"stickyHeader\": true}'>
-                  </semantic-table>
+  column-configuration='[
+    { "displayName": "Site",         "cellTemplate": "{{> siteLinkCell}}" },
+    { "displayName": "Scale A",      "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_desc}}" },
+    { "displayName": "Scale B",      "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_desc}}" },
+    { "displayName": "Scale C",      "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_desc}}" },
+    { "displayName": "Magnitude",    "cellTemplate": "{{> valueRangeCell min=magnitude_min max=magnitude_max}}" },
+    { "displayName": "Uncertainty",  "cellTemplate": "{{> valueRangeCell min=uncertainty_min max=uncertainty_max}}" }
+  ]'
+  options='{"showFilter": true, "resultsPerPage": 50, "stickyHeader": true}'>
 
-  <!-- Missing partials required by the table (scaleTripleCell, valueRangeCell, agentCell, eventNameCell, descCell) -->
-  <template id="agentCell">
-    {{#if agent.value}}
-      <div class="pill">{{agent.value}}</div>
+
+  <template id="siteLinkCell">
+    {{#if site.value}}
+      <semantic-link iri="{{site.value}}">
+        <span class="pill">{{site_label.value}}</span>
+      </semantic-link>
     {{else}}
-      <div class="empty">—</div>
+      <span class="pill">Unknown Site</span>
     {{/if}}
   </template>
 
-  <template id="eventNameCell">
-    {{#if event_name.value}}
-      <div class="pill">{{event_name.value}}</div>
-    {{else}}
-      <div class="empty">—</div>
+  <template id="scaleTripleCell">
+    {{#if v1.value}}
+      <div class="val"><strong><span class="dim-label">V1</span> {{v1.value}}</strong></div>
     {{/if}}
-  </template>
-
-  <template id="descCell">
-    {{#if risk_desc.value}}
-      <div class="note">{{risk_desc.value}}</div>
-    {{else}}
-      <div class="empty">—</div>
+    {{#if v2.value}}
+      <div class="val"><strong><span class="dim-label">V2</span> {{v2.value}}</strong></div>
+    {{/if}}
+    {{#if v3.value}}
+      <div class="val"><strong><span class="dim-label">V3</span> {{v3.value}}</strong></div>
+    {{/if}}
+    {{#unless v1.value}}{{#unless v2.value}}{{#unless v3.value}}<div class="empty">—</div>{{/unless}}{{/unless}}{{/unless}}
+    
+    {{#if desc.value}}
+      <div class="note"><span class="dim-label">Note</span> {{desc.value}}</div>
     {{/if}}
   </template>
 
   <template id="valueRangeCell">
     {{#if min.value}}
-      <div class="val"><span class="dim-label">Val.</span> {{min.value}}</div>
-      {{#if max.value}}<div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>{{/if}}
+      <div class="val"><span class="dim-label">Min</span> {{min.value}}</div>
+      {{#if max.value}}<div class="val"><span class="dim-label">Max</span> {{max.value}}</div>{{/if}}
     {{else}}
       {{#if max.value}}
-        <div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>
+        <div class="val"><span class="dim-label">Max</span> {{max.value}}</div>
       {{else}}
         <div class="empty">—</div>
       {{/if}}
     {{/if}}
   </template>
 
-  <template id="scaleTripleCell">
-    {{#if v1.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v1.value}}</strong></div>{{/if}}
-    {{#if v2.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v2.value}}</strong></div>{{/if}}
-    {{#if v3.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v3.value}}</strong></div>{{/if}}
-    {{#unless v1.value}}{{#unless v2.value}}{{#unless v3.value}}<div class="empty">—</div>{{/unless}}{{/unless}}{{/unless}}
-    <div class="note"><span class="dim-label">Description</span> {{#if desc.value}}{{desc.value}}{{else}}—{{/if}}</div>
+</semantic-table>
+
+<style>
+  #event-sites-table .pill {
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:999px;
+    border:1px solid #ccc;
+    background:#f9f9f9;
+  }
+  #event-sites-table .note {
+    font-size:0.85em;
+    opacity:0.75;
+  }
+  #event-sites-table .val  { line-height: 1.25; }
+  #event-sites-table .empty{ text-align:center; opacity:.5; }
+  #event-sites-table .dim-label { font-size:.825em; text-transform:uppercase; letter-spacing:.02em; opacity:.7; margin-right:.35rem; }
+</style>
+
+                </div>
+                </div>
+            </bs-tab-pane>
+
+          </bs-tab-content>
+
+        </div>
+      </bs-tab-container>
+
+    </div>
   </template>
 
-  <!-- close with-types and inline started at top -->
-  </with-types>
+</with-types>
 [[/inline]]
+[[> resource]]
