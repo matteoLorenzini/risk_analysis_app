@@ -74,32 +74,86 @@
                   <mp-field-visualization
                     subject='[[this]]'
                     fields='[[fieldDefinitions
-                      siti="http://www.siriusplatform-risk-assessment/field/event_site_inverse"
-                      magnitudo="http://www.siriusplatform-risk-assessment/field/event_site_magnitudo_inverse"
-                      event_name="http://www.siriusplatform-risk-assessment/field/event_event_name"
-                      agent="http://www.siriusplatform-risk-assessment/field/event_agent"
-                      risk_desc="http://www.siriusplatform-risk-assessment/field/event_risk_desc"
+                      site="http://www.siriusplatform-risk-assessment/field/event_site_inverse"
+                      site_label="http://www.siriusplatform-risk-assessment/field/event_site_label"
                       a_val1="http://www.siriusplatform-risk-assessment/field/event_a_val1"
                       a_val2="http://www.siriusplatform-risk-assessment/field/event_a_val2"
                       a_val3="http://www.siriusplatform-risk-assessment/field/event_a_val3"
-                      a_desc="http://www.siriusplatform-risk-assessment/field/event_a_desc"
                       b_val1="http://www.siriusplatform-risk-assessment/field/event_b_val1"
                       b_val2="http://www.siriusplatform-risk-assessment/field/event_b_val2"
                       b_val3="http://www.siriusplatform-risk-assessment/field/event_b_val3"
-                      b_desc="http://www.siriusplatform-risk-assessment/field/event_b_desc"
                       c_val1="http://www.siriusplatform-risk-assessment/field/event_c_val1"
                       c_val2="http://www.siriusplatform-risk-assessment/field/event_c_val2"
                       c_val3="http://www.siriusplatform-risk-assessment/field/event_c_val3"
-                      c_desc="http://www.siriusplatform-risk-assessment/field/event_c_desc"
                       magnitude_min_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_min_score"
                       magnitude_max_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_max_score"
                       uncertainty_min_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_min_score"
                       uncertainty_max_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_max_score"
                     ]]'
-                    template='{{> template}}'>
-                    <template id="template">
-                      {{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}
+                    template='{{> compactCards}}'>
+
+                    <template id="compactCards">
+                      <style>
+                        .cards-row { display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; }
+                        .event-card { width: calc(33% - 12px); min-width:220px; border:1px solid #e6e6e6; border-radius:6px; padding:10px; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.03); }
+                        .event-card .title { font-weight:600; margin-bottom:6px; font-size:0.98rem; }
+                        .cols { display:flex; gap:8px; align-items:center; font-size:0.92rem; }
+                        .badge-small { font-size:0.75rem; padding:3px 6px; border-radius:12px; background:#f0f0f0; color:#333; }
+                        .progress-xs { height:8px; border-radius:4px; overflow:hidden; background:#f5f5f5; }
+                        .progress-xs > .bar { height:8px; display:block; background:linear-gradient(90deg,#4caf50,#f44336); }
+                        @media (max-width:900px){ .event-card{width: calc(50% - 12px);} }
+                        @media (max-width:560px){ .event-card{width:100%;} }
+                      </style>
+
+                      <div class="cards-row">
+                        {{#each bindings}}
+                          <div class="event-card">
+                            <div class="title">
+                              {{#if site_label.value}}
+                                <semantic-link iri="{{site.value}}">{{site_label.value}}</semantic-link>
+                              {{else}}
+                                <semantic-link iri="{{site.value}}">{{site.value}}</semantic-link>
+                              {{/if}}
+                            </div>
+
+                            <div class="cols" style="justify-content:space-between; margin-bottom:6px;">
+                              <div>
+                                <div class="badge-small">A: {{#if a_val1.value}}{{a_val1.value}}{{/if}}{{#if a_val2.value}} / {{a_val2.value}}{{/if}}{{#if a_val3.value}} / {{a_val3.value}}{{/if}}</div>
+                                <div class="badge-small" style="margin-left:6px;">B: {{#if b_val1.value}}{{b_val1.value}}{{/if}}{{#if b_val2.value}} / {{b_val2.value}}{{/if}}{{#if b_val3.value}} / {{b_val3.value}}{{/if}}</div>
+                                <div class="badge-small" style="margin-left:6px;">C: {{#if c_val1.value}}{{c_val1.value}}{{/if}}{{#if c_val2.value}} / {{c_val2.value}}{{/if}}{{#if c_val3.value}} / {{c_val3.value}}{{/if}}</div>
+                              </div>
+                            </div>
+
+                            <div style="margin-top:8px;">
+                              <div style="font-size:0.85rem;color:#666;margin-bottom:4px;">Magnitude</div>
+                              {{#if magnitude_min_score.value}}{{#if magnitude_max_score.value}}
+                                {{!-- Render range as progress with position derived from min/max (normalized 0..100 if numeric) --}}
+                                {{#with magMin=magnitude_min_score.value magMax=magnitude_max_score.value}}
+                                  <div class="progress-xs" title="Min: {{magMin}} — Max: {{magMax}}">
+                                    {{!-- approximate width: compute percentage if numeric, otherwise show full bar --}}
+                                    <span class="bar" style="width:{{#if (isNumber magMax)}}{{calcPercent magMin magMax}}%{{else}}100%{{/if}}"></span>
+                                  </div>
+                                  <div style="font-size:0.82rem;color:#444;margin-top:4px;">{{magMin}}{{#if magMax}} – {{magMax}}{{/if}}</div>
+                                {{/with}}
+                              {{else}}
+                                <div class="progress-xs"><span class="bar" style="width:0%"></span></div>
+                                <div style="font-size:0.82rem;color:#999;margin-top:4px;">—</div>
+                              {{/if}}
+                            </div>
+
+                            <div style="margin-top:8px;">
+                              <div style="font-size:0.85rem;color:#666;margin-bottom:4px;">Uncertainty</div>
+                              <div style="font-size:0.92rem;color:#444;">
+                                {{#if uncertainty_min_score.value}}{{uncertainty_min_score.value}}{{/if}}{{#if uncertainty_max_score.value}} – {{uncertainty_max_score.value}}{{/if}}
+                                {{#unless uncertainty_min_score.value}}{{#unless uncertainty_max_score.value}}<span style="color:#999">—</span>{{/unless}}{{/unless}}
+                              </div>
+                            </div>
+
+                          </div>
+                        {{/each}}
+                      </div>
                     </template>
+
                   </mp-field-visualization>
 
                 </div>
