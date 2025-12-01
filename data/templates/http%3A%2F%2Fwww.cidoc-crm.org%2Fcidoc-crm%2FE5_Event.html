@@ -138,17 +138,17 @@ WHERE {
         BIND(COALESCE(?umin_s_final, ?umin_e_final) AS ?uncertainty_min_score)
         BIND(COALESCE(?umax_s_final, ?umax_e_final) AS ?uncertainty_max_score)
 
-      } GROUP BY ?event }   
-  ORDER BY ?site_label
+      } GROUP BY ?event }
+} 
+ORDER BY ?site_label
 '
   column-configuration='[
-  // ...existing code...
     { "displayName": "Agent",       "cellTemplate": "{{> agentCell}}" },
     { "displayName": "Event",       "cellTemplate": "{{> eventNameCell}}" },
     { "displayName": "Scale A",     "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_desc}}" },
     { "displayName": "Scale B",     "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_desc}}" },
     { "displayName": "Scale C",     "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_desc}}" },
-    { "displayName": "Description","cellTemplate": "{{> descCell}}" },
+    { "displayName": "Description", "cellTemplate": "{{> descCell}}" },
     { "displayName": "Magnitude",   "cellTemplate": "{{> valueRangeCell min=magnitude_min_score max=magnitude_max_score}}" },
     { "displayName": "Uncertainty", "cellTemplate": "{{> valueRangeCell min=uncertainty_min_score max=uncertainty_max_score}}" }
   ]'
