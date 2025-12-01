@@ -49,34 +49,120 @@
                   <span class="h1 rs-resource-section--header">Event</span>
                 </div>
                 <div class="rs-resource-data-table">
-                  <mp-field-visualization
-                    subject='[[this]]'
-                    fields='[[fieldDefinitions
-                      siti="http://www.siriusplatform-risk-assessment/field/event_site_inverse"
-                      magnitudo="http://www.siriusplatform-risk-assessment/field/event_site_magnitudo_inverse"
-                      event_name="http://www.siriusplatform-risk-assessment/field/event_event_name"
-                      agent="http://www.siriusplatform-risk-assessment/field/event_agent"
-                      risk_desc="http://www.siriusplatform-risk-assessment/field/event_risk_desc"
-                      a_val1="http://www.siriusplatform-risk-assessment/field/event_a_val1"
-                      a_val2="http://www.siriusplatform-risk-assessment/field/event_a_val2"
-                      a_val3="http://www.siriusplatform-risk-assessment/field/event_a_val3"
-                      a_desc="http://www.siriusplatform-risk-assessment/field/event_a_desc"
-                      b_val1="http://www.siriusplatform-risk-assessment/field/event_b_val1"
-                      b_val2="http://www.siriusplatform-risk-assessment/field/event_b_val2"
-                      b_val3="http://www.siriusplatform-risk-assessment/field/event_b_val3"
-                      b_desc="http://www.siriusplatform-risk-assessment/field/event_b_desc"
-                      c_val1="http://www.siriusplatform-risk-assessment/field/event_c_val1"
-                      c_val2="http://www.siriusplatform-risk-assessment/field/event_c_val2"
-                      c_val3="http://www.siriusplatform-risk-assessment/field/event_c_val3"
-                      c_desc="http://www.siriusplatform-risk-assessment/field/event_c_desc"
-                      magnitude_min_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_min_score"
-                      magnitude_max_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_max_score"
-                      uncertainty_min_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_min_score"
-                      uncertainty_max_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_max_score"
-                    ]]'
-                    template='{{> template}}'>
-                    <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
-                  </mp-field-visualization>
+
+                  <!-- Flex grid: left = two stacked panels (Scale A + Scale B), right = Site info -->
+                  <div data-flex-layout="row stretch-stretch" style="gap:12px; align-items:stretch;">
+
+                    <div data-flex-layout="column top-stretch" style="flex:1; gap:12px;">
+
+                      <!-- Panel 1: Scale A values for site(s) -->
+                      <div class="grid-demo" style="padding:8px; border:1px solid #e5e7eb; border-radius:6px;">
+                        <div style="font-weight:600; margin-bottom:6px;">Scale A (site-scoped)</div>
+                        <semantic-table id="scale-a-site"
+                          query='
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?site (SAMPLE(?v1) AS ?val1) (SAMPLE(?v2) AS ?val2) (SAMPLE(?v3) AS ?val3) (SAMPLE(?note) AS ?note)
+WHERE {
+  BIND(<[[this]]> AS ?event)
+  ?event base:P31_has_modified ?site .
+  ?event base:P39i_was_measured_by ?meas .
+  ?meas a crmsci:S21_Measurement ;
+        base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> ;
+        base:P129_is_about ?site .
+  OPTIONAL { ?meas base:P40_observed_dimension ?d1 . ?d1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?v1. }
+  OPTIONAL { ?meas base:P40_observed_dimension ?d2 . ?d2 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?v2. }
+  OPTIONAL { ?meas base:P40_observed_dimension ?d3 . ?d3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?v3. }
+  OPTIONAL { ?meas base:P3_has_note ?note. }
+} GROUP BY ?site
+' column-configuration='[
+  { "displayName":"Site", "cellTemplate":"{{> siteLinkCell}}" },
+  { "displayName":"Val.1", "field":"val1" },
+  { "displayName":"Val.2", "field":"val2" },
+  { "displayName":"Val.3", "field":"val3" },
+  { "displayName":"Note", "field":"note" }
+]' options='{"showFilter":false,"resultsPerPage":5}'>
+                        </semantic-table>
+                      </div>
+
+                      <!-- Panel 2: Scale B values for site(s) -->
+                      <div class="grid-demo" data-flex-self="size-x1" data-flex-layout="column center-center" style="padding:8px; border:1px solid #e5e7eb; border-radius:6px;">
+                        <div style="font-weight:600; margin-bottom:6px;">Scale B (site-scoped)</div>
+                        <semantic-table id="scale-b-site"
+                          query='
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?site (SAMPLE(?v1) AS ?val1) (SAMPLE(?v2) AS ?val2) (SAMPLE(?v3) AS ?val3) (SAMPLE(?note) AS ?note)
+WHERE {
+  BIND(<[[this]]> AS ?event)
+  ?event base:P31_has_modified ?site .
+  ?event base:P39i_was_measured_by ?meas .
+  ?meas a crmsci:S21_Measurement ;
+        base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> ;
+        base:P129_is_about ?site .
+  OPTIONAL { ?meas base:P40_observed_dimension ?d1 . ?d1 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?v1. }
+  OPTIONAL { ?meas base:P40_observed_dimension ?d2 . ?d2 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?v2. }
+  OPTIONAL { ?meas base:P40_observed_dimension ?d3 . ?d3 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?v3. }
+  OPTIONAL { ?meas base:P3_has_note ?note. }
+} GROUP BY ?site
+' column-configuration='[
+  { "displayName":"Site", "cellTemplate":"{{> siteLinkCell}}" },
+  { "displayName":"Val.1", "field":"val1" },
+  { "displayName":"Val.2", "field":"val2" },
+  { "displayName":"Val.3", "field":"val3" },
+  { "displayName":"Note", "field":"note" }
+]' options='{"showFilter":false,"resultsPerPage":5}'>
+                        </semantic-table>
+                      </div>
+
+                    </div>
+
+                    <!-- Right column: single site panel (show site label + quick metadata + magnitude/uncertainty) -->
+                    <div class="grid-demo" data-flex-layout="column center-center" style="width:320px; padding:12px; border:1px solid #e5e7eb; border-radius:6px;">
+                      <div style="font-weight:700; margin-bottom:8px;">Site</div>
+                      <div>
+                        <semantic-link iri='[[this]]'>
+                          <mp-label iri='[[this]]'></mp-label>
+                        </semantic-link>
+                      </div>
+
+                      <!-- quick magnitude/uncertainty lookup for each site (first match) -->
+                      <semantic-table id="site-metrics"
+                        query='
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
+SELECT ?site ?magMin ?magMax ?uncMin ?uncMax WHERE {
+  BIND(<[[this]]> AS ?event)
+  ?event base:P31_has_modified ?site .
+  # magnitude site-scoped
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?m .
+    ?m a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ; base:P129_is_about ?site .
+    OPTIONAL { ?m base:P40_observed_dimension ?d1 . ?d1 base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?magMin . FILTER(STRSTARTS(STR(?d1), "https://w3id.org/sirius/magnitude_score_min/")) }
+    OPTIONAL { ?m base:P40_observed_dimension ?d2 . ?d2 base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?magMax . FILTER(STRSTARTS(STR(?d2), "https://w3id.org/sirius/magnitude_score_max/")) }
+  }
+  # uncertainty site-scoped
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?u .
+    ?u a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> ; base:P129_is_about ?site .
+    OPTIONAL { ?u base:P40_observed_dimension ?ud1 . ?ud1 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; base:P90_has_value ?uncMin . FILTER(STRSTARTS(STR(?ud1), "https://w3id.org/sirius/uncertainty_min/")) }
+    OPTIONAL { ?u base:P40_observed_dimension ?ud2 . ?ud2 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; base:P90_has_value ?uncMax . FILTER(STRSTARTS(STR(?ud2), "https://w3id.org/sirius/uncertainty_max/")) }
+  }
+} GROUP BY ?site ?magMin ?magMax ?uncMin ?uncMax
+' column-configuration='[
+  { "displayName":"Site", "cellTemplate":"{{> siteLinkCell}}"},
+  { "displayName":"Magnitude Min", "field":"magMin" },
+  { "displayName":"Magnitude Max", "field":"magMax" },
+  { "displayName":"Uncertainty Min", "field":"uncMin" },
+  { "displayName":"Uncertainty Max", "field":"uncMax" }
+]' options='{"showFilter":false,"resultsPerPage":5}'>
+                      </semantic-table>
+                    </div>
+
+                  </div>
+
                 </div>
               </div>
             </bs-tab-pane>
