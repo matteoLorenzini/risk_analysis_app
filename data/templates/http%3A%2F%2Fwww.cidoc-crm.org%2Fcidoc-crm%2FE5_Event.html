@@ -134,14 +134,15 @@ WHERE {
         OPTIONAL { ?unc base:P40_observed_dimension ?ud2 . ?ud2 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; base:P90_has_value ?umax . FILTER(STRSTARTS(STR(?ud2), "https://w3id.org/sirius/uncertainty_max/")) }
         OPTIONAL { ?unc base:P40_observed_dimension ?ul1 . ?ul1 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?ulabelMin . FILTER(STRSTARTS(STR(?ul1), "https://w3id.org/sirius/uncertainty_min/")) }
         OPTIONAL { ?unc base:P40_observed_dimension ?ul2 . ?ul2 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?ulabelMax . FILTER(STRSTARTS(STR(?ul2), "https://w3id.org/sirius/uncertainty_max/")) }
-        BIND(COALESCE(?umin, ?ulabelMin) AS ?umin_final)
-        BIND(COALESCE(?umax, ?ulabelMax) AS ?umax_final)
-        ?event base:P31_has_modified ?site .
-      } GROUP BY ?event ?site }
-  }
-ORDER BY ?site_label
+       
+        BIND(COALESCE(?umin_s_final, ?umin_e_final) AS ?uncertainty_min_score)
+        BIND(COALESCE(?umax_s_final, ?umax_e_final) AS ?uncertainty_max_score)
+
+      } GROUP BY ?event }   
+  ORDER BY ?site_label
 '
   column-configuration='[
+  // ...existing code...
     { "displayName": "Agent",       "cellTemplate": "{{> agentCell}}" },
     { "displayName": "Event",       "cellTemplate": "{{> eventNameCell}}" },
     { "displayName": "Scale A",     "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_desc}}" },
