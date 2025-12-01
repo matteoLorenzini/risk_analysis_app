@@ -165,4 +165,47 @@ ORDER BY ?siteLabel
 </with-types>
 [[/inline]]
 [[> resource]]
+<!-- Event-level summary (show measurements NOT scoped to a site) -->
+<semantic-table id="event-summary" query='
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?event (SAMPLE(?a1) AS ?a_val1) (SAMPLE(?a2) AS ?a_val2) (SAMPLE(?a3) AS ?a_val3)
+             (SAMPLE(?magMin) AS ?mag_min) (SAMPLE(?magMax) AS ?mag_max)
+             (SAMPLE(?uncMin) AS ?unc_min) (SAMPLE(?uncMax) AS ?unc_max)
+WHERE {
+  BIND(<[[this]]> AS ?event)
+  ?event a base:E5_Event .
+  # scale A event-level
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?mA .
+    ?mA a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+    OPTIONAL { ?mA base:P40_observed_dimension ?d1 . ?d1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?a1. }
+    OPTIONAL { ?mA base:P40_observed_dimension ?d2 . ?d2 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?a2. }
+    OPTIONAL { ?mA base:P40_observed_dimension ?d3 . ?d3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?a3. }
+  }
+  # magnitude event-level
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?mag .
+    ?mag a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+    OPTIONAL { ?mag base:P40_observed_dimension ?md1 . ?md1 base:P90_has_value ?magMin . FILTER(STRSTARTS(STR(?md1),"https://w3id.org/sirius/magnitude_score_min/")) }
+    OPTIONAL { ?mag base:P40_observed_dimension ?md2 . ?md2 base:P90_has_value ?magMax . FILTER(STRSTARTS(STR(?md2),"https://w3id.org/sirius/magnitude_score_max/")) }
+  }
+  # uncertainty event-level
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?unc .
+    ?unc a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+    OPTIONAL { ?unc base:P40_observed_dimension ?ud1 . ?ud1 base:P90_has_value ?uncMin . FILTER(STRSTARTS(STR(?ud1),"https://w3id.org/sirius/uncertainty_min/")) }
+    OPTIONAL { ?unc base:P40_observed_dimension ?ud2 . ?ud2 base:P90_has_value ?uncMax . FILTER(STRSTARTS(STR(?ud2),"https://w3id.org/sirius/uncertainty_max/")) }
+  }
+} GROUP BY ?event
+' column-configuration='[
+  { "displayName":"Field", "field":"event" },
+  { "displayName":"Scale A (v1/v2/v3)", "cellTemplate":"{{#if a_val1}}{{a_val1}}{{/if}}{{#if a_val2}} / {{a_val2}}{{/if}}{{#if a_val3}} / {{a_val3}}{{/if}}" },
+  { "displayName":"Magnitude", "cellTemplate":"{{#if mag_min}}{{mag_min}}{{/if}}{{#if mag_max}} — {{mag_max}}{{/if}}" },
+  { "displayName":"Uncertainty", "cellTemplate":"{{#if unc_min}}{{unc_min}}{{/if}}{{#if unc_max}} — {{unc_max}}{{/if}}" }
+]' options='{"showFilter":false,"resultsPerPage":1}'>
+</semantic-table>
+<!-- end event-level summary -->
 
