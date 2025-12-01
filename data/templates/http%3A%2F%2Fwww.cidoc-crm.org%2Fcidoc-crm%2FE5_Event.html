@@ -1,309 +1,90 @@
 [[#*inline "resource"]]
 <with-types fixed-key='resource-[[this]]' iri='[[this]]' template='{{> page}}' [[> rsp:TypeMappings]]>
-
   <template id='page'>
     <div class="rs-resource-container">
-      <bs-tab-container id="tab-container" class="rs-resource-tabs" default-active-key="sites-modified">
+      <div class="rs-resource-header {{getValueByKey entityBgColor allTypes 'rs-entity-bg-thing'}}" style="min-height: 400px;">
+        <div class="rs-resource-header-topContainer">
+          <div class="rs-resource-header-topButtons">
+            <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]' urlqueryparam-view='knowledge-map' urlqueryparam-resource='[[this]]'>
+              <button type="button" title="Author Resource in Knowledge Map">
+                <rs-icon icon-type="round" icon-name="account_tree"></rs-icon>
+              </button>
+            </semantic-link-container>
+            <mp-event-trigger id='details-view-trigger' type='Component.TemplateUpdate' data='{"iri": "{{iri}}"}' targets='["details-view", "open-details-sidebar"]'>
+              <button type="button" title="Resource Details">
+                <rs-icon icon-type="rounded" icon-name="info" symbol="true"></rs-icon>
+              </button>
+            </mp-event-trigger>
+          </div>
+        </div>
+
+        <div class="rs-resource-header-content-container">
+          <!-- map removed for Event resource; keep title / actions -->
+          <div style="padding: 1.8% 1.5% 1.5% 5%; flex: 1;">
+            <div class="rs-resource-header--singletitle">
+              <div class="rs-resource-header--title" style="text-transform: capitalize;">
+                <mp-label iri='[[this]]'></mp-label>
+              </div>
+              <div style="display: flex; gap: 12px; align-items:center;">
+                <mp-copy-to-clipboard text='[[this]]'>
+                  <div class="rs-copy-IRI">Copy IRI</div>
+                </mp-copy-to-clipboard>
+                <div class="statements">Statements</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <bs-tab-container id="tab-container" class="rs-resource-tabs" default-active-key="event-details">
         <div>
           <bs-nav bs-style="tabs">
-            <bs-nav-item event-key="sites-modified">Sites Affected</bs-nav-item>
+            <bs-nav-item event-key="event-details">Event</bs-nav-item>
           </bs-nav>
           <bs-tab-content animation="true">
-            <bs-tab-pane event-key="sites-modified">
+            <bs-tab-pane event-key="event-details">
               <div class="rs-resource-tab-container">
                 <div>
                   <hr class="rs-resource-section--headerLine">
-                  <span class="h1 rs-resource-section--header">Sites Modified and Associated Risk</span>
+                  <span class="h1 rs-resource-section--header">Event</span>
                 </div>
-                
-                <div style="margin-top:40px;">
-                  <h2 class="h2" style="margin-bottom:15px;">Sites Affected by this Event</h2>
-
-<semantic-table
-  id="event-risk-table"
-  query='
-PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
-PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
-
-SELECT DISTINCT
-  ?subject
-  ?agent
-  ?event_name
-  ?a_val1 ?a_val2 ?a_val3 ?a_desc
-  ?b_val1 ?b_val2 ?b_val3 ?b_desc
-  ?c_val1 ?c_val2 ?c_val3 ?c_desc
-  ?risk_desc
-  ?magnitude_min_score ?magnitude_max_score
-  ?uncertainty_min_score ?uncertainty_max_score
-WHERE {
-  BIND(<[[this]]> AS ?event)
-  ?event a base:E5_Event .
-
-  # sites impacted by event -> one row per E18
-  ?event base:P31_has_modified ?site .
-  ?site a base:E18_Physical_Thing .
-  BIND(?site AS ?subject)
-  OPTIONAL { ?site rdfs:label ?site_label }
-  OPTIONAL { ?event rdfs:label ?event_name }
-
-  OPTIONAL {
-    ?event base:P11_had_participant ?actor .
-    ?actor a base:E39_Actor ;
-           rdfs:label ?agent .
-  }
-
-  OPTIONAL {
-    ?ra a base:E89_Propositional_Object ;
-        base:P129_is_about ?subject ;
-        base:P129_is_about ?event .
-    OPTIONAL { ?ra base:P3_has_note ?risk_desc }
-  }
-
-  # --- SCALE A: prefer measurement about the site, fallback to event-level ---
-  OPTIONAL {
-    { SELECT ?event ?site (SAMPLE(?sv1) AS ?a_val1_site) (SAMPLE(?sv2) AS ?a_val2_site) (SAMPLE(?sv3) AS ?a_val3_site) (SAMPLE(?snote) AS ?a_desc_site)
-      WHERE {
-        ?event base:P39i_was_measured_by ?measA .
-        ?measA a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
-        ?measA base:P129_is_about ?site .
-        OPTIONAL { ?measA base:P40_observed_dimension ?dA1 . ?dA1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?sv1. }
-        OPTIONAL { ?measA base:P40_observed_dimension ?dA2 . ?dA2 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?sv2. }
-        OPTIONAL { ?measA base:P40_observed_dimension ?dA3 . ?dA3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?sv3. }
-        OPTIONAL { ?measA base:P3_has_note ?snote }
-        ?event base:P31_has_modified ?site .
-      } GROUP BY ?event ?site }
-  }
-  OPTIONAL {
-    { SELECT ?event (SAMPLE(?ev1) AS ?a_val1_event) (SAMPLE(?ev2) AS ?a_val2_event) (SAMPLE(?ev3) AS ?a_val3_event) (SAMPLE(?enote) AS ?a_desc_event)
-      WHERE {
-        ?event base:P39i_was_measured_by ?measA2 .
-        ?measA2 a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
-        FILTER NOT EXISTS { ?measA2 base:P129_is_about ?anySite }     # event-level measurements only
-        OPTIONAL { ?measA2 base:P40_observed_dimension ?dA1e . ?dA1e base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?ev1. }
-        OPTIONAL { ?measA2 base:P40_observed_dimension ?dA2e . ?dA2e base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?ev2. }
-        OPTIONAL { ?measA2 base:P40_observed_dimension ?dA3e . ?dA3e base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?ev3. }
-        OPTIONAL { ?measA2 base:P3_has_note ?enote }
-      } GROUP BY ?event }
-  }
-  BIND(COALESCE(?a_val1_site, ?a_val1_event) AS ?a_val1)
-  BIND(COALESCE(?a_val2_site, ?a_val2_event) AS ?a_val2)
-  BIND(COALESCE(?a_val3_site, ?a_val3_event) AS ?a_val3)
-  BIND(COALESCE(?a_desc_site, ?a_desc_event) AS ?a_desc)
-
-  # --- SCALE B: same pattern (site-preferred, then event-level) ---
-  OPTIONAL {
-    { SELECT ?event ?site (SAMPLE(?sv1) AS ?b_val1_site) (SAMPLE(?sv2) AS ?b_val2_site) (SAMPLE(?sv3) AS ?b_val3_site) (SAMPLE(?snote) AS ?b_desc_site)
-      WHERE {
-        ?event base:P39i_was_measured_by ?measB .
-        ?measB a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
-        ?measB base:P129_is_about ?site .
-        OPTIONAL { ?measB base:P40_observed_dimension ?dB1 . ?dB1 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?sv1. }
-        OPTIONAL { ?measB base:P40_observed_dimension ?dB2 . ?dB2 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?sv2. }
-        OPTIONAL { ?measB base:P40_observed_dimension ?dB3 . ?dB3 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?sv3. }
-        OPTIONAL { ?measB base:P3_has_note ?snote }
-        ?event base:P31_has_modified ?site .
-      } GROUP BY ?event ?site }
-  }
-  OPTIONAL {
-    { SELECT ?event (SAMPLE(?ev1) AS ?b_val1_event) (SAMPLE(?ev2) AS ?b_val2_event) (SAMPLE(?ev3) AS ?b_val3_event) (SAMPLE(?enote) AS ?b_desc_event)
-      WHERE {
-        ?event base:P39i_was_measured_by ?measB2 .
-        ?measB2 a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
-        FILTER NOT EXISTS { ?measB2 base:P129_is_about ?anySite }
-        OPTIONAL { ?measB2 base:P40_observed_dimension ?dB1e . ?dB1e base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?ev1. }
-        OPTIONAL { ?measB2 base:P40_observed_dimension ?dB2e . ?dB2e base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?ev2. }
-        OPTIONAL { ?measB2 base:P40_observed_dimension ?dB3e . ?dB3e base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?ev3. }
-        OPTIONAL { ?measB2 base:P3_has_note ?enote }
-      } GROUP BY ?event }
-  }
-  BIND(COALESCE(?b_val1_site, ?b_val1_event) AS ?b_val1)
-  BIND(COALESCE(?b_val2_site, ?b_val2_event) AS ?b_val2)
-  BIND(COALESCE(?b_val3_site, ?b_val3_event) AS ?b_val3)
-  BIND(COALESCE(?b_desc_site, ?b_desc_event) AS ?b_desc)
-
-  # --- SCALE C: same pattern ---
-  OPTIONAL {
-    { SELECT ?event ?site (SAMPLE(?sv1) AS ?c_val1_site) (SAMPLE(?sv2) AS ?c_val2_site) (SAMPLE(?sv3) AS ?c_val3_site) (SAMPLE(?snote) AS ?c_desc_site)
-      WHERE {
-        ?event base:P39i_was_measured_by ?measC .
-        ?measC a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
-        ?measC base:P129_is_about ?site .
-        OPTIONAL { ?measC base:P40_observed_dimension ?dC1 . ?dC1 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?sv1. }
-        OPTIONAL { ?measC base:P40_observed_dimension ?dC2 . ?dC2 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?sv2. }
-        OPTIONAL { ?measC base:P40_observed_dimension ?dC3 . ?dC3 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?sv3. }
-        OPTIONAL { ?measC base:P3_has_note ?snote }
-        ?event base:P31_has_modified ?site .
-      } GROUP BY ?event ?site }
-  }
-  OPTIONAL {
-    { SELECT ?event (SAMPLE(?ev1) AS ?c_val1_event) (SAMPLE(?ev2) AS ?c_val2_event) (SAMPLE(?ev3) AS ?c_val3_event) (SAMPLE(?enote) AS ?c_desc_event)
-      WHERE {
-        ?event base:P39i_was_measured_by ?measC2 .
-        ?measC2 a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
-        FILTER NOT EXISTS { ?measC2 base:P129_is_about ?anySite }
-        OPTIONAL { ?measC2 base:P40_observed_dimension ?dC1e . ?dC1e base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?ev1. }
-        OPTIONAL { ?measC2 base:P40_observed_dimension ?dC2e . ?dC2e base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?ev2. }
-        OPTIONAL { ?measC2 base:P40_observed_dimension ?dC3e . ?dC3e base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?ev3. }
-        OPTIONAL { ?measC2 base:P3_has_note ?enote }
-      } GROUP BY ?event }
-  }
-  BIND(COALESCE(?c_val1_site, ?c_val1_event) AS ?c_val1)
-  BIND(COALESCE(?c_val2_site, ?c_val2_event) AS ?c_val2)
-  BIND(COALESCE(?c_val3_site, ?c_val3_event) AS ?c_val3)
-  BIND(COALESCE(?c_desc_site, ?c_desc_event) AS ?c_desc)
-
-  # --- MAGNITUDE: prefer site-specific dimension, else event-level ---
-  OPTIONAL {
-    { SELECT ?event ?site (SAMPLE(?minM_s) AS ?mag_min_site) (SAMPLE(?maxM_s) AS ?mag_max_site)
-      WHERE {
-        ?event base:P39i_was_measured_by ?mag .
-        ?mag a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
-        ?mag base:P129_is_about ?site .
-        OPTIONAL { ?mag base:P40_observed_dimension ?md1 . ?md1 base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?minM_s . FILTER(STRSTARTS(STR(?md1), "https://w3id.org/sirius/magnitude_score_min")) }
-        OPTIONAL { ?mag base:P40_observed_dimension ?md2 . ?md2 base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?maxM_s . FILTER(STRSTARTS(STR(?md2), "https://w3id.org/sirius/magnitude_score_max")) }
-        ?event base:P31_has_modified ?site .
-      } GROUP BY ?event ?site }
-  }
-  OPTIONAL {
-    { SELECT ?event (SAMPLE(?minM_e) AS ?mag_min_event) (SAMPLE(?maxM_e) AS ?mag_max_event)
-      WHERE {
-        ?event base:P39i_was_measured_by ?mag2 .
-        ?mag2 a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
-        FILTER NOT EXISTS { ?mag2 base:P129_is_about ?anySite }
-        OPTIONAL { ?mag2 base:P40_observed_dimension ?md1e . ?md1e base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?minM_e . FILTER(STRSTARTS(STR(?md1e), "https://w3id.org/sirius/magnitude_score_min")) }
-        OPTIONAL { ?mag2 base:P40_observed_dimension ?md2e . ?md2e base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ; base:P90_has_value ?maxM_e . FILTER(STRSTARTS(STR(?md2e), "https://w3id.org/sirius/magnitude_score_max")) }
-      } GROUP BY ?event }
-  }
-  BIND(COALESCE(?mag_min_site, ?mag_min_event) AS ?magnitude_min_score)
-  BIND(COALESCE(?mag_max_site, ?mag_max_event) AS ?magnitude_max_score)
-
-  # --- UNCERTAINTY: prefer site-specific, else event-level; try P90 then rdfs:label ---
-  OPTIONAL {
-    { SELECT ?event ?site (SAMPLE(?umin_s) AS ?unc_min_site) (SAMPLE(?umax_s) AS ?unc_max_site)
-      WHERE {
-        ?event base:P39i_was_measured_by ?unc .
-        ?unc a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
-        ?unc base:P129_is_about ?site .
-        OPTIONAL { ?unc base:P40_observed_dimension ?ud1 . ?ud1 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; base:P90_has_value ?umin_s . FILTER(STRSTARTS(STR(?ud1), "https://w3id.org/sirius/uncertainty_min")) }
-        OPTIONAL { ?unc base:P40_observed_dimension ?ud2 . ?ud2 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; base:P90_has_value ?umax_s . FILTER(STRSTARTS(STR(?ud2), "https://w3id.org/sirius/uncertainty_max")) }
-        OPTIONAL { ?unc base:P40_observed_dimension ?ul1 . ?ul1 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?ulabelMin_s . FILTER(STRSTARTS(STR(?ul1), "https://w3id.org/sirius/uncertainty_min")) }
-        OPTIONAL { ?unc base:P40_observed_dimension ?ul2 . ?ul2 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?ulabelMax_s . FILTER(STRSTARTS(STR(?ul2), "https://w3id.org/sirius/uncertainty_max")) }
-        BIND(COALESCE(?umin_s, ?ulabelMin_s) AS ?umin_s_final)
-        BIND(COALESCE(?umax_s, ?ulabelMax_s) AS ?umax_s_final)
-        ?event base:P31_has_modified ?site .
-      } GROUP BY ?event ?site }
-  }
-  OPTIONAL {
-    { SELECT ?event (SAMPLE(?umin_e) AS ?unc_min_event) (SAMPLE(?umax_e) AS ?unc_max_event)
-      WHERE {
-        ?event base:P39i_was_measured_by ?unc2 .
-        ?unc2 a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
-        FILTER NOT EXISTS { ?unc2 base:P129_is_about ?anySite }
-        OPTIONAL { ?unc2 base:P40_observed_dimension ?ud1e . ?ud1e base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; base:P90_has_value ?umin_e . FILTER(STRSTARTS(STR(?ud1e), "https://w3id.org/sirius/uncertainty_min")) }
-        OPTIONAL { ?unc2 base:P40_observed_dimension ?ud2e . ?ud2e base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; base:P90_has_value ?umax_e . FILTER(STRSTARTS(STR(?ud2e), "https://w3id.org/sirius/uncertainty_max")) }
-        OPTIONAL { ?unc2 base:P40_observed_dimension ?ul1e . ?ul1e base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?ulabelMin_e . FILTER(STRSTARTS(STR(?ul1e), "https://w3id.org/sirius/uncertainty_min")) }
-        OPTIONAL { ?unc2 base:P40_observed_dimension ?ul2e . ?ul2e base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label ?ulabelMax_e . FILTER(STRSTARTS(STR(?ul2e), "https://w3id.org/sirius/uncertainty_max")) }
-        BIND(COALESCE(?umin_e, ?ulabelMin_e) AS ?umin_e_final)
-        BIND(COALESCE(?umax_e, ?ulabelMax_e) AS ?umax_e_final)
-      } GROUP BY ?event }
-  }
-  BIND(COALESCE(?umin_s_final, ?umin_e_final) AS ?uncertainty_min_score)
-  BIND(COALESCE(?umax_s_final, ?umax_e_final) AS ?uncertainty_max_score)
-
-}
-ORDER BY ?site_label
-'
-  column-configuration='[
-    { "displayName": "Agent",       "cellTemplate": "{{> agentCell}}" },
-    { "displayName": "Event",       "cellTemplate": "{{> eventNameCell}}" },
-    { "displayName": "Scale A",     "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_desc}}" },
-    { "displayName": "Scale B",     "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_desc}}" },
-    { "displayName": "Scale C",     "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_desc}}" },
-    { "displayName": "Description","cellTemplate": "{{> descCell}}" },
-    { "displayName": "Magnitude",   "cellTemplate": "{{> valueRangeCell min=magnitude_min_score max=magnitude_max_score}}" },
-    { "displayName": "Uncertainty", "cellTemplate": "{{> valueRangeCell min=uncertainty_min_score max=uncertainty_max_score}}" }
-  ]'
-  options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
-
-
-  <!-- Site link cell (subject = site) -->
-  <template id="siteLinkCell">
-    {{#if subject.value}}
-      <semantic-link iri="{{subject.value}}">
-        <span class="pill">{{site_label.value}}</span>
-      </semantic-link>
-    {{else}}
-      <span class="pill">Unknown Site</span>
-    {{/if}}
-  </template>
-
-  <!-- Agent label -->
-  <template id="agentCell">
-    {{#if agent.value}}
-      <div class="pill">{{agent.value}}</div>
-    {{else}}
-      <div class="empty">—</div>
-    {{/if}}
-  </template>
-
-  <!-- Event name label -->
-  <template id="eventNameCell">
-    {{#if event_name.value}}
-      <div class="pill">{{event_name.value}}</div>
-    {{else}}
-      <div class="empty">—</div>
-    {{/if}}
-  </template>
-
-  <!-- Generic min / max value cell -->
-  <template id="valueRangeCell">
-    {{#if min.value}}
-      <div class="val"><span class="dim-label">Val.</span> {{min.value}}</div>
-      {{#if max.value}}<div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>{{/if}}
-    {{else}}
-      {{#if max.value}}
-        <div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>
-      {{else}}
-        <div class="empty">—</div>
-      {{/if}}
-    {{/if}}
-  </template>
-
-  <!-- Scale triple cell -->
-  <template id="scaleTripleCell">
-    {{#if v1.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v1.value}}</strong></div>{{/if}}
-    {{#if v2.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v2.value}}</strong></div>{{/if}}
-    {{#if v3.value}}<div class="val"><strong><span class="dim-label">Val.</span> {{v3.value}}</strong></div>{{/if}}
-    {{#unless v1.value}}{{#unless v2.value}}{{#unless v3.value}}<div class="empty">—</div>{{/unless}}{{/unless}}{{/unless}}
-    <div class="note"><span class="dim-label">Description</span> {{#if desc.value}}{{desc.value}}{{else}}—{{/if}}</div>
-  </template>
-
-  <!-- Risk Analysis description -->
-  <template id="descCell">
-    {{#if risk_desc.value}}<div class="note">{{risk_desc.value}}</div>{{else}}<div class="empty">—</div>{{/if}}
-  </template>
-
-</semantic-table>
-
-<style>
-  #event-risk-table .pill { display:inline-block; padding:.2rem .5rem; border:1px solid #e5e7eb; border-radius:999px; }
-  #event-risk-table .val  { line-height: 1.25; }
-  #event-risk-table .note { white-space: pre-wrap; opacity:.9; line-height:1.25; margin-top:.15rem; }
-  #event-risk-table .empty{ text-align:center; opacity:.5; }
-  #event-risk-table .dim-label { font-size:.825em; text-transform:uppercase; letter-spacing:.02em; opacity:.7; margin-right:.35rem; }
-</style>
-
+                <div class="rs-resource-data-table">
+                  <mp-field-visualization
+                    subject='[[this]]'
+                    fields='[[fieldDefinitions
+                      siti="http://www.siriusplatform-risk-assessment/field/event_site_inverse"
+                      magnitudo="http://www.siriusplatform-risk-assessment/field/event_site_magnitudo_inverse"
+                      event_name="http://www.siriusplatform-risk-assessment/field/event_event_name"
+                      agent="http://www.siriusplatform-risk-assessment/field/event_agent"
+                      risk_desc="http://www.siriusplatform-risk-assessment/field/event_risk_desc"
+                      a_val1="http://www.siriusplatform-risk-assessment/field/event_a_val1"
+                      a_val2="http://www.siriusplatform-risk-assessment/field/event_a_val2"
+                      a_val3="http://www.siriusplatform-risk-assessment/field/event_a_val3"
+                      a_desc="http://www.siriusplatform-risk-assessment/field/event_a_desc"
+                      b_val1="http://www.siriusplatform-risk-assessment/field/event_b_val1"
+                      b_val2="http://www.siriusplatform-risk-assessment/field/event_b_val2"
+                      b_val3="http://www.siriusplatform-risk-assessment/field/event_b_val3"
+                      b_desc="http://www.siriusplatform-risk-assessment/field/event_b_desc"
+                      c_val1="http://www.siriusplatform-risk-assessment/field/event_c_val1"
+                      c_val2="http://www.siriusplatform-risk-assessment/field/event_c_val2"
+                      c_val3="http://www.siriusplatform-risk-assessment/field/event_c_val3"
+                      c_desc="http://www.siriusplatform-risk-assessment/field/event_c_desc"
+                      magnitude_min_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_min_score"
+                      magnitude_max_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_max_score"
+                      uncertainty_min_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_min_score"
+                      uncertainty_max_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_max_score"
+                    ]]'
+                    template='{{> template}}'>
+                    <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
+                  </mp-field-visualization>
                 </div>
               </div>
             </bs-tab-pane>
           </bs-tab-content>
         </div>
       </bs-tab-container>
-
     </div>
   </template>
-
 </with-types>
 [[/inline]]
 [[> resource]]
