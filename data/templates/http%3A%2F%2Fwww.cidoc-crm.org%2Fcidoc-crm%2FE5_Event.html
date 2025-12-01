@@ -55,7 +55,6 @@
                       <th style="text-align:left; padding:8px; border-bottom:1px solid #e5e7eb; width:240px;">Field</th>
                       <td style="padding:8px; border-bottom:1px solid #e5e7eb;">
                         <!-- Event name (single-value query) -->
-                        // ...existing code...
                   <semantic-table id="event-risk-table" query='
 PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
@@ -168,11 +167,11 @@ ORDER BY ?siteLabel
   { "displayName":"Site", "field":"siteLabel" },
   { "displayName":"Agent", "field":"agent" },
   { "displayName":"Event", "field":"event_name" },
-  { "displayName":"Scale A", "cellTemplate":"{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_note}}" },
-  { "displayName":"Scale B", "cellTemplate":"{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_note}}" },
-  { "displayName":"Scale C", "cellTemplate":"{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_note}}" },
-  { "displayName":"Magnitude", "cellTemplate":"{{> valueRangeCell min=mag_min max=mag_max}}" },
-  { "displayName":"Uncertainty", "cellTemplate":"{{> valueRangeCell min=unc_min max=unc_max}}" },
+  { "displayName":"Scale A", "cellTemplate":"{{#if a_val1}}{{a_val1}}{{/if}}{{#if a_val2}} / {{a_val2}}{{/if}}{{#if a_val3}} / {{a_val3}}{{/if}}{{#if a_note}}<div class=\\\"muted\\\">{{a_note}}</div>{{/if}}" },
+  { "displayName":"Scale B", "cellTemplate":"{{#if b_val1}}{{b_val1}}{{/if}}{{#if b_val2}} / {{b_val2}}{{/if}}{{#if b_val3}} / {{b_val3}}{{/if}}{{#if b_note}}<div class=\\\"muted\\\">{{b_note}}</div>{{/if}}" },
+  { "displayName":"Scale C", "cellTemplate":"{{#if c_val1}}{{c_val1}}{{/if}}{{#if c_val2}} / {{c_val2}}{{/if}}{{#if c_val3}} / {{c_val3}}{{/if}}{{#if c_note}}<div class=\\\"muted\\\">{{c_note}}</div>{{/if}}" },
+  { "displayName":"Magnitude", "cellTemplate":"{{#if mag_min}}{{mag_min}}{{/if}}{{#if mag_max}} — {{mag_max}}{{/if}}" },
+  { "displayName":"Uncertainty", "cellTemplate":"{{#if unc_min}}{{unc_min}}{{/if}}{{#if unc_max}} — {{unc_max}}{{/if}}" },
   { "displayName":"Risk note", "field":"risk_desc" }
 ]' options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
                   </semantic-table>
