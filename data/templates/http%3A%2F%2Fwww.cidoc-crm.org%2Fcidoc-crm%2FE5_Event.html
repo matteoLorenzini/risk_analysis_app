@@ -178,17 +178,17 @@ WHERE {
 }
 ORDER BY ?siteLabel
 ' 
-# FIX APPLIED HERE: Added .value to all partial arguments
+# VALID JSON FIX APPLIED HERE (no non-breaking spaces or junk characters)
 column-configuration='[
-  { "displayName":"Site", "field":"siteLabel", "cellTemplate": "{{> siteLinkCell}}" },
-  { "displayName":"Agent", "field":"agent" },
-  { "displayName":"Event", "field":"event_name" },
-  { "displayName":"Scale A", "cellTemplate":"{{> scaleTripleCell v1=a_val1.value v2=a_val2.value v3=a_val3.value desc=a_note.value}}" },
-  { "displayName":"Scale B", "cellTemplate":"{{> scaleTripleCell v1=b_val1.value v2=b_val2.value v3=b_val3.value desc=b_note.value}}" },
-  { "displayName":"Scale C", "cellTemplate":"{{> scaleTripleCell v1=c_val1.value v2=c_val2.value v3=c_val3.value desc=c_note.value}}" },
-  { "displayName":"Magnitude", "cellTemplate":"{{> valueRangeCell min=mag_min.value max=mag_max.value}}" },
-  { "displayName":"Uncertainty", "cellTemplate":"{{> valueRangeCell min=unc_min.value max=unc_max.value}}" },
-  { "displayName":"Risk note", "field":"risk_desc" }
+  { "displayName":"Site", "field":"siteLabel", "cellTemplate": "{{> siteLinkCell}}" },
+  { "displayName":"Agent", "field":"agent" },
+  { "displayName":"Event", "field":"event_name" },
+  { "displayName":"Scale A", "cellTemplate":"{{> scaleTripleCell v1=a_val1.value v2=a_val2.value v3=a_val3.value desc=a_note.value}}" },
+  { "displayName":"Scale B", "cellTemplate":"{{> scaleTripleCell v1=b_val1.value v2=b_val2.value v3=b_val3.value desc=b_note.value}}" },
+  { "displayName":"Scale C", "cellTemplate":"{{> scaleTripleCell v1=c_val1.value v2=c_val2.value v3=c_val3.value desc=c_note.value}}" },
+  { "displayName":"Magnitude", "cellTemplate":"{{> valueRangeCell min=mag_min.value max=mag_max.value}}" },
+  { "displayName":"Uncertainty", "cellTemplate":"{{> valueRangeCell min=unc_min.value max=unc_max.value}}" },
+  { "displayName":"Risk note", "field":"risk_desc" }
 ]' 
 options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
                   
