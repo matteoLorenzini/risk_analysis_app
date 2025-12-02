@@ -62,14 +62,14 @@ SELECT DISTINCT
   ?b_val1 ?b_val2 ?b_val3 ?b_note
   ?c_val1 ?c_val2 ?c_val3 ?c_note
 WHERE {
-  BIND(<https://w3id.org/sirius/cultural-heritage-site/1> AS ?site)
+  # bind current resource as the event
+  BIND(<[[this]]> AS ?event)
 
   #################################################################
-  # 1. FIND ALL EVENTS THAT MODIFY THIS SITE
+  # 1. EVENT + SITE
   #################################################################
-  BIND(<[[this]]> AS ?event)
   ?event a base:E5_Event ;
-         rdfs:label ?eventLabel ;
+         rdfs:label ?event_name ;
          base:P31_has_modified ?site .
 
   OPTIONAL { ?site rdfs:label ?siteLabel }
