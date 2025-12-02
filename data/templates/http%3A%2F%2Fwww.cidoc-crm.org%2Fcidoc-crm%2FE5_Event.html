@@ -1,13 +1,6 @@
 [[#*inline "resource"]]
 <with-types fixed-key='resource-[[this]]' iri='[[this]]' template='{{> page}}' [[> rsp:TypeMappings]]>
   <template id='page'>
-    <style>
-      /* template-specific custom rules */
-      .rs-resource-data-table .event-field-grid th { background:#f6f8fa; padding:8px; text-align:left; }
-      .rs-resource-data-table .event-field-grid td  { padding:8px; border-top:1px solid #eee; }
-      .rs-resource-header--title { color:#ff0b0b; }
-      /* add/override additional selectors as needed */
-    </style>
     <div class="rs-resource-container">
       <div class="rs-resource-header {{getValueByKey entityBgColor allTypes 'rs-entity-bg-thing'}}" style="min-height: 400px;">
         <div class="rs-resource-header-topContainer">
@@ -56,34 +49,126 @@
                   <span class="h1 rs-resource-section--header">Event</span>
                 </div>
                 <div class="rs-resource-data-table">
-                  <mp-field-visualization
-                    subject='[[this]]'
-                    fields='[[fieldDefinitions
-                      siti="http://www.siriusplatform-risk-assessment/field/event_site_inverse"
-                      magnitudo="http://www.siriusplatform-risk-assessment/field/event_site_magnitudo_inverse"
-                      event_name="http://www.siriusplatform-risk-assessment/field/event_event_name"
-                      agent="http://www.siriusplatform-risk-assessment/field/event_agent"
-                      risk_desc="http://www.siriusplatform-risk-assessment/field/event_risk_desc"
-                      a_val1="http://www.siriusplatform-risk-assessment/field/event_a_val1"
-                      a_val2="http://www.siriusplatform-risk-assessment/field/event_a_val2"
-                      a_val3="http://www.siriusplatform-risk-assessment/field/event_a_val3"
-                      a_desc="http://www.siriusplatform-risk-assessment/field/event_a_desc"
-                      b_val1="http://www.siriusplatform-risk-assessment/field/event_b_val1"
-                      b_val2="http://www.siriusplatform-risk-assessment/field/event_b_val2"
-                      b_val3="http://www.siriusplatform-risk-assessment/field/event_b_val3"
-                      b_desc="http://www.siriusplatform-risk-assessment/field/event_b_desc"
-                      c_val1="http://www.siriusplatform-risk-assessment/field/event_c_val1"
-                      c_val2="http://www.siriusplatform-risk-assessment/field/event_c_val2"
-                      c_val3="http://www.siriusplatform-risk-assessment/field/event_c_val3"
-                      c_desc="http://www.siriusplatform-risk-assessment/field/event_c_desc"
-                      magnitude_min_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_min_score"
-                      magnitude_max_score="http://www.siriusplatform-risk-assessment/field/event_magnitude_max_score"
-                      uncertainty_min_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_min_score"
-                      uncertainty_max_score="http://www.siriusplatform-risk-assessment/field/event_uncertainty_max_score"
-                    ]]'
-                    template='{{> template}}'>
-                    <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
-                  </mp-field-visualization>
+
+                  <!-- Horizontal layout: left = event meta, center = per-site table, right = event summary -->
+                  <div style="display:flex; gap:16px; align-items:flex-start;">
+
+                    <!-- LEFT: event metadata -->
+                    <div style="flex:0 0 320px; border:1px solid #e6e6e6; padding:12px; border-radius:6px;">
+                      <div style="font-weight:700; margin-bottom:8px;">Event</div>
+                      <div style="margin-bottom:10px;"><mp-label iri='[[this]]'></mp-label></div>
+
+                      <div style="font-weight:600; margin-top:8px; margin-bottom:6px;">Agent</div>
+                      <semantic-table id="ev-agent-compact" query='
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?agentLabel WHERE {
+  BIND(<[[this]]> AS ?event)
+  OPTIONAL { ?event base:P11_had_participant ?actor . ?actor rdfs:label ?agentLabel }
+} LIMIT 1' column-configuration='[{"displayName":"Agent","field":"agentLabel"}]' options='{"showFilter":false,"resultsPerPage":1}'>
+                      </semantic-table>
+
+                      <div style="font-weight:600; margin-top:12px; margin-bottom:6px;">Risk note</div>
+                      <semantic-table id="ev-risk-compact" query='
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+SELECT ?note WHERE {
+  BIND(<[[this]]> AS ?event)
+  OPTIONAL { ?event base:P129_is_about ?x . } # keep SPARQL engine happy
+  OPTIONAL {
+    ?ra a base:E89_Propositional_Object ;
+        base:P129_is_about ?event .
+    ?ra base:P3_has_note ?note .
+  }
+} LIMIT 1' column-configuration='[{"displayName":"Note","field":"note"}]' options='{"showFilter":false,"resultsPerPage":1}'>
+                      </semantic-table>
+                    </div>
+
+                    <!-- CENTER: per-site aggregated table (horizontal main area) -->
+                    <div style="flex:1 1 auto; border:1px solid #e6e6e6; padding:12px; border-radius:6px; min-width:420px;">
+                      <div style="font-weight:700; margin-bottom:8px;">Sites & metrics</div>
+                      <semantic-table id="event-risk-table" query='
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?site (SAMPLE(?siteLabel) AS ?siteLabel) (SAMPLE(?agent) AS ?agent)
+       (SAMPLE(?a_val1) AS ?a_val1) (SAMPLE(?a_val2) AS ?a_val2) (SAMPLE(?a_val3) AS ?a_val3)
+       (SAMPLE(?magMin) AS ?mag_min) (SAMPLE(?magMax) AS ?mag_max)
+       (SAMPLE(?uncMin) AS ?unc_min) (SAMPLE(?uncMax) AS ?unc_max)
+WHERE {
+  BIND(<[[this]]> AS ?event)
+  ?event a base:E5_Event .
+  ?event base:P31_has_modified ?site .
+  OPTIONAL { ?site rdfs:label ?siteLabel }
+  OPTIONAL { ?event base:P11_had_participant ?act . ?act rdfs:label ?agent }
+
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?mA .
+    ?mA a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+    OPTIONAL { ?mA base:P40_observed_dimension ?d1 . ?d1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?a_val1. }
+    OPTIONAL { ?mA base:P40_observed_dimension ?d2 . ?d2 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?a_val2. }
+    OPTIONAL { ?mA base:P40_observed_dimension ?d3 . ?d3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?a_val3. }
+  }
+
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?mag .
+    ?mag a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+    OPTIONAL { ?mag base:P40_observed_dimension ?md1 . ?md1 base:P90_has_value ?magMin . FILTER(STRSTARTS(STR(?md1),"https://w3id.org/sirius/magnitude_score_min/")) }
+    OPTIONAL { ?mag base:P40_observed_dimension ?md2 . ?md2 base:P90_has_value ?magMax . FILTER(STRSTARTS(STR(?md2),"https://w3id.org/sirius/magnitude_score_max/")) }
+  }
+
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?unc .
+    ?unc a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+    OPTIONAL { ?unc base:P40_observed_dimension ?ud1 . ?ud1 base:P90_has_value ?uncMin . FILTER(STRSTARTS(STR(?ud1),"https://w3id.org/sirius/uncertainty_min/")) }
+    OPTIONAL { ?unc base:P40_observed_dimension ?ud2 . ?ud2 base:P90_has_value ?uncMax . FILTER(STRSTARTS(STR(?ud2),"https://w3id.org/sirius/uncertainty_max/")) }
+  }
+
+} GROUP BY ?site ORDER BY ?siteLabel
+' column-configuration='[
+  { "displayName":"Site", "field":"siteLabel" },
+  { "displayName":"Agent", "field":"agent" },
+  { "displayName":"Scale A (v1/v2/v3)", "cellTemplate":"{{#if a_val1}}{{a_val1}}{{/if}}{{#if a_val2}} / {{a_val2}}{{/if}}{{#if a_val3}} / {{a_val3}}{{/if}}"},
+  { "displayName":"Magnitude", "cellTemplate":"{{#if mag_min}}{{mag_min}}{{/if}}{{#if mag_max}} — {{mag_max}}{{/if}}"},
+  { "displayName":"Uncertainty", "cellTemplate":"{{#if unc_min}}{{unc_min}}{{/if}}{{#if unc_max}} — {{unc_max}}{{/if}}"}
+]' options='{"showFilter":true,"resultsPerPage":10}'>
+                      </semantic-table>
+                    </div>
+
+                    <!-- RIGHT: event-level summary (single-row) -->
+                    <div style="flex:0 0 300px; border:1px solid #e6e6e6; padding:12px; border-radius:6px;">
+                      <div style="font-weight:700; margin-bottom:8px;">Event summary</div>
+                      <semantic-table id="event-summary-compact" query='
+PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
+SELECT (SAMPLE(?a1) AS ?a_val1) (SAMPLE(?magMin) AS ?mag_min) (SAMPLE(?magMax) AS ?mag_max) (SAMPLE(?uncMin) AS ?unc_min) (SAMPLE(?uncMax) AS ?unc_max) WHERE {
+  BIND(<[[this]]> AS ?event)
+  ?event a base:E5_Event .
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?mA . ?mA a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+    OPTIONAL { ?mA base:P40_observed_dimension ?d1 . ?d1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?a1. }
+  }
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?mag . ?mag a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+    OPTIONAL { ?mag base:P40_observed_dimension ?md1 . ?md1 base:P90_has_value ?magMin . FILTER(STRSTARTS(STR(?md1), "https://w3id.org/sirius/magnitude_score_min/")) }
+    OPTIONAL { ?mag base:P40_observed_dimension ?md2 . ?md2 base:P90_has_value ?magMax . FILTER(STRSTARTS(STR(?md2), "https://w3id.org/sirius/magnitude_score_max/")) }
+  }
+  OPTIONAL {
+    ?event base:P39i_was_measured_by ?unc . ?unc a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+    OPTIONAL { ?unc base:P40_observed_dimension ?ud1 . ?ud1 base:P90_has_value ?uncMin . FILTER(STRSTARTS(STR(?ud1), "https://w3id.org/sirius/uncertainty_min/")) }
+    OPTIONAL { ?unc base:P40_observed_dimension ?ud2 . ?ud2 base:P90_has_value ?uncMax . FILTER(STRSTARTS(STR(?ud2), "https://w3id.org/sirius/uncertainty_max/")) }
+  }
+} GROUP BY ?event' column-configuration='[
+  { "displayName":"Scale A", "cellTemplate":"{{#if a_val1}}{{a_val1}}{{/if}}" },
+  { "displayName":"Magnitude", "cellTemplate":"{{#if mag_min}}{{mag_min}}{{/if}}{{#if mag_max}} — {{mag_max}}{{/if}}" },
+  { "displayName":"Uncertainty", "cellTemplate":"{{#if unc_min}}{{unc_min}}{{/if}}{{#if unc_max}} — {{unc_max}}{{/if}}" }
+]' options='{"showFilter":false,"resultsPerPage":1}'>
+                      </semantic-table>
+                    </div>
+
+                  </div>
+
+                  <!-- end horizontal layout -->
+                   </div>
                 </div>
               </div>
             </bs-tab-pane>
