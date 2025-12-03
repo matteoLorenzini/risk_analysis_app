@@ -1,14 +1,5 @@
 [[#*inline "resource"]]
 
-[[#*inline "scaleTripleCell"]]
-  <div class="scale-triple-cell" style="white-space:nowrap;">
-    {{#if a_val1}}<span class="val1">{{a_val1}}</span>{{/if}}
-    {{#if a_val2}} {{#if a_val1}}/ {{/if}}<span class="val2">{{a_val2}}</span>{{/if}}
-    {{#if a_val3}} {{#if (or a_val1 a_val2)}}/ {{/if}}<span class="val3">{{a_val3}}</span>{{/if}}
-    {{#if a_note}}<div class="muted" style="margin-top:4px;">{{a_note}}</div>{{/if}}
-  </div>
-[[/inline]]
-
   <with-types fixed-key='resource-[[this]]' iri='[[this]]' template='{{> page}}' [[> rsp:TypeMappings]]>
   <template id='page'>
     <div class="rs-resource-container">
@@ -29,7 +20,6 @@
         </div>
 
         <div class="rs-resource-header-content-container">
-          <!-- map removed for Event resource; keep title / actions -->
           <div style="padding: 1.8% 1.5% 1.5% 5%; flex: 1;">
             <div class="rs-resource-header--singletitle">
               <div class="rs-resource-header--title" style="text-transform: capitalize;">
@@ -59,7 +49,7 @@
                   <span class="h1 rs-resource-section--header">Event</span>
                 </div>
                 <div class="rs-resource-data-table">
-                  <!-- Semantic table: events affecting a fixed site (single-query result integrated) -->
+                  
                   <semantic-table id="site-events-table" query='
 PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
@@ -85,7 +75,7 @@ WHERE {
   OPTIONAL { ?site rdfs:label ?siteLabel }
 
   #################################################################
-  # UNCERTAINTY
+  # UNCERTAINTY (Event Global)
   #################################################################
   OPTIONAL {
     SELECT ?event (SAMPLE(?uVal) AS ?uncertainty_score)
@@ -101,7 +91,7 @@ WHERE {
   }
 
   #################################################################
-  # MAGNITUDE
+  # MAGNITUDE (Event Global)
   #################################################################
   OPTIONAL {
     SELECT ?event (SAMPLE(?mVal) AS ?magnitude_value)
@@ -117,7 +107,7 @@ WHERE {
   }
 
   #################################################################
-  # SCALE A
+  # SCALE A (Event Global)
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -151,7 +141,7 @@ WHERE {
   }
 
   #################################################################
-  # SCALE B
+  # SCALE B (Event Global)
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -185,7 +175,7 @@ WHERE {
   }
 
   #################################################################
-  # SCALE C
+  # SCALE C (Event Global)
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -223,9 +213,9 @@ WHERE {
   { "displayName":"Event", "field":"event_name" },
   { "displayName":"Magnitude", "field":"magnitude_value" },
   { "displayName":"Uncertainty", "field":"uncertainty_score" },
-  { "displayName":"Scale A (v1/v2/v3)", "cellTemplate":"{{#if a_val1}}{{a_val1}}{{/if}}{{#if a_val2}} / {{a_val2}}{{/if}}{{#if a_val3}} / {{a_val3}}{{/if}}{{#if a_note}}<div class=\\\"muted\\\">{{a_note}}</div>{{/if}}" },
-  { "displayName":"Scale B (v1/v2/v3)", "cellTemplate":"{{#if b_val1}}{{b_val1}}{{/if}}{{#if b_val2}} / {{b_val2}}{{/if}}{{#if b_val3}} / {{b_val3}}{{/if}}{{#if b_note}}<div class=\\\"muted\\\">{{b_note}}</div>{{/if}}" },
-  { "displayName":"Scale C (v1/v2/v3)", "cellTemplate":"{{#if c_val1}}{{c_val1}}{{/if}}{{#if c_val2}} / {{c_val2}}{{/if}}{{#if c_val3}} / {{c_val3}}{{/if}}{{#if c_note}}<div class=\\\"muted\\\">{{c_note}}</div>{{/if}}" }
+  { "displayName":"Scale A (v1/v2/v3)", "cellTemplate":"{{#if a_val1.value}}{{a_val1.value}}{{/if}}{{#if a_val2.value}} / {{a_val2.value}}{{/if}}{{#if a_val3.value}} / {{a_val3.value}}{{/if}}{{#if a_note.value}}<div class=\\\"muted\\\">{{a_note.value}}</div>{{/if}}" },
+  { "displayName":"Scale B (v1/v2/v3)", "cellTemplate":"{{#if b_val1.value}}{{b_val1.value}}{{/if}}{{#if b_val2.value}} / {{b_val2.value}}{{/if}}{{#if b_val3.value}} / {{b_val3.value}}{{/if}}{{#if b_note.value}}<div class=\\\"muted\\\">{{b_note.value}}</div>{{/if}}" },
+  { "displayName":"Scale C (v1/v2/v3)", "cellTemplate":"{{#if c_val1.value}}{{c_val1.value}}{{/if}}{{#if c_val2.value}} / {{c_val2.value}}{{/if}}{{#if c_val3.value}} / {{c_val3.value}}{{/if}}{{#if c_note.value}}<div class=\\\"muted\\\">{{c_note.value}}</div>{{/if}}" }
 ]' options='{"showFilter": true, "resultsPerPage": 15, "stickyHeader": true}'>
                   </semantic-table>
                    </div>
