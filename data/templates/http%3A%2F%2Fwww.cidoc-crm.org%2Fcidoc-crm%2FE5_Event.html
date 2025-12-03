@@ -209,30 +209,17 @@ WHERE {
   }
 }
 ' 
-# 3. COLUMN CONFIGURATION: INLINE ESCAPED TEMPLATES (NO PARTIALS)
-column-configuration='[ 
-              { "displayName": "Magnitude", 
-                "cellTemplate": "<div>{{magnitude_value.value}}</div>" 
-              },
-              { "displayName": "Uncertainty", 
-                "cellTemplate": "<div>{{uncertainty_score.value}}</div>" 
-              },
-              { "displayName": "Scale A", 
-                "cellTemplate": "<div>Val1: {{a_val1.value}}; Val2: {{a_val2.value}}; Val3: {{a_val3.value}}<br/>Note: {{a_note.value}}</div>" 
-              },
-              { "displayName": "Scale B", 
-                "cellTemplate": "<div>Val1: {{b_val1.value}}; Val2: {{b_val2.value}}; Val3: {{b_val3.value}}<br/>Note: {{b_note.value}}</div>" 
-              },
-              { "displayName": "Scale C", 
-                "cellTemplate": "<div>Val1: {{c_val1.value}}; Val2: {{c_val2.value}}; Val3: {{c_val3.value}}<br/>Note: {{c_note.value}}</div>" 
-              },
-{
-                "displayName": "event", 
-                "cellTemplate": "<div>{{event_name.value}}</div>" 
-              } ]'
+column-configuration='[
+  { "displayName":"Magnitude", "cellTemplate":"<div>{{#if magnitude_value.value}}{{magnitude_value.value}}{{else}}{{#if magnitude_value}}{{magnitude_value}}{{else}}{{#if row.magnitude_value.value}}{{row.magnitude_value.value}}{{else}}{{row.magnitude_value}}{{/if}}{{/if}}{{/if}}</div>" },
+  { "displayName":"Uncertainty", "cellTemplate":"<div>{{#if uncertainty_score.value}}{{uncertainty_score.value}}{{else}}{{#if uncertainty_score}}{{uncertainty_score}}{{else}}{{#if row.uncertainty_score.value}}{{row.uncertainty_score.value}}{{else}}{{row.uncertainty_score}}{{/if}}{{/if}}{{/if}}</div>" },
+  { "displayName":"Scale A", "cellTemplate":"<div>Val1: {{#if a_val1.value}}{{a_val1.value}}{{else}}{{#if a_val1}}{{a_val1}}{{else}}{{#if row.a_val1.value}}{{row.a_val1.value}}{{else}}{{row.a_val1}}{{/if}}{{/if}}{{/if}}; Val2: {{#if a_val2.value}}{{a_val2.value}}{{else}}{{#if a_val2}}{{a_val2}}{{else}}{{#if row.a_val2.value}}{{row.a_val2.value}}{{else}}{{row.a_val2}}{{/if}}{{/if}}{{/if}}; Val3: {{#if a_val3.value}}{{a_val3.value}}{{else}}{{#if a_val3}}{{a_val3}}{{else}}{{#if row.a_val3.value}}{{row.a_val3.value}}{{else}}{{row.a_val3}}{{/if}}{{/if}}{{/if}}<br/>Note: {{#if a_note.value}}{{a_note.value}}{{else}}{{#if a_note}}{{a_note}}{{else}}{{#if row.a_note.value}}{{row.a_note.value}}{{else}}{{row.a_note}}{{/if}}{{/if}}{{/if}}</div>" },
+  { "displayName":"Scale B", "cellTemplate":"<div>Val1: {{#if b_val1.value}}{{b_val1.value}}{{else}}{{#if b_val1}}{{b_val1}}{{else}}{{#if row.b_val1.value}}{{row.b_val1.value}}{{else}}{{row.b_val1}}{{/if}}{{/if}}{{/if}}; Val2: {{#if b_val2.value}}{{b_val2.value}}{{else}}{{#if b_val2}}{{b_val2}}{{else}}{{#if row.b_val2.value}}{{row.b_val2.value}}{{else}}{{row.b_val2}}{{/if}}{{/if}}{{/if}}; Val3: {{#if b_val3.value}}{{b_val3.value}}{{else}}{{#if b_val3}}{{b_val3}}{{else}}{{#if row.b_val3.value}}{{row.b_val3.value}}{{else}}{{row.b_val3}}{{/if}}{{/if}}{{/if}}<br/>Note: {{#if b_note.value}}{{b_note.value}}{{else}}{{#if b_note}}{{b_note}}{{else}}{{#if row.b_note.value}}{{row.b_note.value}}{{else}}{{row.b_note}}{{/if}}{{/if}}{{/if}}</div>" },
+  { "displayName":"Scale C", "cellTemplate":"<div>Val1: {{#if c_val1.value}}{{c_val1.value}}{{else}}{{#if c_val1}}{{c_val1}}{{else}}{{#if row.c_val1.value}}{{row.c_val1.value}}{{else}}{{row.c_val1}}{{/if}}{{/if}}{{/if}}; Val2: {{#if c_val2.value}}{{c_val2.value}}{{else}}{{#if c_val2}}{{c_val2}}{{else}}{{#if row.c_val2.value}}{{row.c_val2.value}}{{else}}{{row.c_val2}}{{/if}}{{/if}}{{/if}}; Val3: {{#if c_val3.value}}{{c_val3.value}}{{else}}{{#if c_val3}}{{c_val3}}{{else}}{{#if row.c_val3.value}}{{row.c_val3.value}}{{else}}{{row.c_val3}}{{/if}}{{/if}}{{/if}}<br/>Note: {{#if c_note.value}}{{c_note.value}}{{else}}{{#if c_note}}{{c_note}}{{else}}{{#if row.c_note.value}}{{row.c_note.value}}{{else}}{{row.c_note}}{{/if}}{{/if}}{{/if}}</div>" },
+  { "displayName":"event", "cellTemplate":"<div>{{#if event_name.value}}{{event_name.value}}{{else}}{{#if event_name}}{{event_name}}{{else}}{{#if row.event_name.value}}{{row.event_name.value}}{{else}}{{row.event_name}}{{/if}}{{/if}}{{/if}}</div>" }
++]'
  options='{"showFilter": true, "resultsPerPage": 15, "stickyHeader": true}'>
-                  </semantic-table>
-                   </div>
+                   </semantic-table>
+                    </div>
               </div>
             </bs-tab-pane>
           </bs-tab-content>
