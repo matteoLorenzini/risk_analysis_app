@@ -11,7 +11,7 @@
   <semantic-link iri="{{site.value}}">{{siteLabel.value}}</semantic-link>
 [[/inline]]
 
-  <with-types fixed-key='resource-[[this]]' iri='[[this]]' template='{{> page}}' [[> rsp:TypeMappings]]>
+<with-types fixed-key='resource-[[this]]' iri='[[this]]' template='{{> page}}' [[> rsp:TypeMappings]]>
   <template id='page'>
     <div class="rs-resource-container">
       <div class="rs-resource-header {{getValueByKey entityBgColor allTypes 'rs-entity-bg-thing'}}" style="min-height: 400px;">
