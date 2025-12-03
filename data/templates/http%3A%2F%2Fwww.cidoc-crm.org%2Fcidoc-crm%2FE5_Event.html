@@ -31,14 +31,12 @@
               <div class="rs-resource-header--title" style="text-transform: capitalize;">
                 <mp-label iri='[[this]]'></mp-label>
               </div>
-
               <div style="display: flex; gap: 12px; align-items:center;">
                 <mp-copy-to-clipboard text='[[this]]'>
                   <div class="rs-copy-IRI">Copy IRI</div>
-                </mp-copy-to-clipboard>
+                </mp-copy-clipboard>
                 <div class="statements">Statements</div>
               </div>
-
             </div>
           </div>
         </div>
@@ -46,7 +44,6 @@
 
       <!-- TABS -->
       <bs-tab-container id="tab-container" class="rs-resource-tabs" default-active-key="event-details">
-
         <div>
           <bs-nav bs-style="tabs">
             <bs-nav-item event-key="event-details">Event</bs-nav-item>
@@ -56,27 +53,37 @@
             <bs-tab-pane event-key="event-details">
 
               <div class="rs-resource-tab-container">
-
                 <div>
                   <hr class="rs-resource-section--headerLine">
                   <span class="h1 rs-resource-section--header">Event</span>
                 </div>
 
-                <!-- SEMANTIC TABLE -->
-                <semantic-table
-                  id="event-site-table"
-                  query='
+                <div class="rs-resource-data-table">
+
+                  <!-- ===================== -->
+                  <!--     SEMANTIC TABLE    -->
+                  <!-- ===================== -->
+                  <semantic-table
+                    id="event-site-table"
+                    query='
 PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 
 SELECT DISTINCT
-  ?event ?event_label ?site ?siteLabel ?risk_desc
-  ?a1 ?a2 ?a3 ?a_note
-  ?b1 ?b2 ?b3 ?b_note
-  ?c1 ?c2 ?c3 ?c_note
-  ?magnitude ?uncertainty
+  ?event ?event_label
+  ?site ?siteLabel
+  ?risk_desc
+
+  ?a1 ?a2 ?a3 ?a1_color ?a2_color ?a3_color ?a_note
+  ?b1 ?b2 ?b3 ?b1_color ?b2_color ?b3_color ?b_note
+  ?c1 ?c2 ?c3 ?c1_color ?c2_color ?c3_color ?c_note
+
+  ?magnitude ?magnitude_color
+  ?uncertainty ?uncertainty_color
 WHERE {
+  # work on the current event resource
   VALUES ?event { <[[this]]> }
 
   ?event a base:E5_Event ;
@@ -85,6 +92,9 @@ WHERE {
 
   OPTIONAL { ?site rdfs:label ?siteLabel }
 
+  #################################################################
+  # RISK DESCRIPTION (E89 per Event + Site)
+  #################################################################
   OPTIONAL {
     ?ra a base:E89_Propositional_Object ;
         base:P129_is_about ?event ;
@@ -92,42 +102,87 @@ WHERE {
     OPTIONAL { ?ra base:P3_has_note ?risk_desc }
   }
 
+  #################################################################
+  # SCALE A
+  #################################################################
   OPTIONAL {
     ?event base:P39i_was_measured_by ?mA .
     ?mA base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
-    OPTIONAL { ?mA base:P40_observed_dimension ?d1 .
-               ?d1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ; rdfs:label ?a1 . }
-    OPTIONAL { ?mA base:P40_observed_dimension ?d2 .
-               ?d2 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ; rdfs:label ?a2 . }
-    OPTIONAL { ?mA base:P40_observed_dimension ?d3 .
-               ?d3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ; rdfs:label ?a3 . }
+
+    OPTIONAL {
+      ?mA base:P40_observed_dimension ?d1 .
+      ?d1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ;
+          rdfs:label ?a1 .
+    }
+    OPTIONAL {
+      ?mA base:P40_observed_dimension ?d2 .
+      ?d2 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ;
+          rdfs:label ?a2 .
+    }
+    OPTIONAL {
+      ?mA base:P40_observed_dimension ?d3 .
+      ?d3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ;
+          rdfs:label ?a3 .
+    }
+
     OPTIONAL { ?mA base:P3_has_note ?a_note }
   }
 
+  #################################################################
+  # SCALE B
+  #################################################################
   OPTIONAL {
     ?event base:P39i_was_measured_by ?mB .
     ?mB base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
-    OPTIONAL { ?mB base:P40_observed_dimension ?db1 .
-               ?db1 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ; rdfs:label ?b1 . }
-    OPTIONAL { ?mB base:P40_observed_dimension ?db2 .
-               ?db2 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ; rdfs:label ?b2 . }
-    OPTIONAL { ?mB base:P40_observed_dimension ?db3 .
-               ?db3 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ; rdfs:label ?b3 . }
+
+    OPTIONAL {
+      ?mB base:P40_observed_dimension ?db1 .
+      ?db1 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ;
+           rdfs:label ?b1 .
+    }
+    OPTIONAL {
+      ?mB base:P40_observed_dimension ?db2 .
+      ?db2 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ;
+           rdfs:label ?b2 .
+    }
+    OPTIONAL {
+      ?mB base:P40_observed_dimension ?db3 .
+      ?db3 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ;
+           rdfs:label ?b3 .
+    }
+
     OPTIONAL { ?mB base:P3_has_note ?b_note }
   }
 
+  #################################################################
+  # SCALE C
+  #################################################################
   OPTIONAL {
     ?event base:P39i_was_measured_by ?mC .
     ?mC base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
-    OPTIONAL { ?mC base:P40_observed_dimension ?dc1 .
-               ?dc1 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ; rdfs:label ?c1 . }
-    OPTIONAL { ?mC base:P40_observed_dimension ?dc2 .
-               ?dc2 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ; rdfs:label ?c2 . }
-    OPTIONAL { ?mC base:P40_observed_dimension ?dc3 .
-               ?dc3 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ; rdfs:label ?c3 . }
+
+    OPTIONAL {
+      ?mC base:P40_observed_dimension ?dc1 .
+      ?dc1 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ;
+           rdfs:label ?c1 .
+    }
+    OPTIONAL {
+      ?mC base:P40_observed_dimension ?dc2 .
+      ?dc2 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ;
+           rdfs:label ?c2 .
+    }
+    OPTIONAL {
+      ?mC base:P40_observed_dimension ?dc3 .
+      ?dc3 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ;
+           rdfs:label ?c3 .
+    }
+
     OPTIONAL { ?mC base:P3_has_note ?c_note }
   }
 
+  #################################################################
+  # MAGNITUDE
+  #################################################################
   OPTIONAL {
     ?event base:P39i_was_measured_by ?mag .
     ?mag base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
@@ -136,6 +191,9 @@ WHERE {
         base:P90_has_value ?magnitude .
   }
 
+  #################################################################
+  # UNCERTAINTY
+  #################################################################
   OPTIONAL {
     ?event base:P39i_was_measured_by ?unc .
     ?unc base:P2_has_type <https://w3id.org/sirius/type/uncertainty> ;
@@ -143,90 +201,245 @@ WHERE {
     ?uD base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
         rdfs:label ?uncertainty .
   }
+
+  #################################################################
+  # COLOR BINDINGS (same thresholds for all numeric values)
+  #   >= 7  -> color-red
+  #   >= 4  -> color-yellow
+  #   < 4   -> color-green
+  #   non-numeric or missing -> color-gray
+  #################################################################
+
+  BIND(
+    IF(BOUND(?a1) && REGEX(STR(?a1), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?a1) >= 7, "color-red",
+          IF(xsd:decimal(?a1) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?a1_color
+  )
+
+  BIND(
+    IF(BOUND(?a2) && REGEX(STR(?a2), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?a2) >= 7, "color-red",
+          IF(xsd:decimal(?a2) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?a2_color
+  )
+
+  BIND(
+    IF(BOUND(?a3) && REGEX(STR(?a3), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?a3) >= 7, "color-red",
+          IF(xsd:decimal(?a3) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?a3_color
+  )
+
+  BIND(
+    IF(BOUND(?b1) && REGEX(STR(?b1), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?b1) >= 7, "color-red",
+          IF(xsd:decimal(?b1) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?b1_color
+  )
+
+  BIND(
+    IF(BOUND(?b2) && REGEX(STR(?b2), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?b2) >= 7, "color-red",
+          IF(xsd:decimal(?b2) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?b2_color
+  )
+
+  BIND(
+    IF(BOUND(?b3) && REGEX(STR(?b3), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?b3) >= 7, "color-red",
+          IF(xsd:decimal(?b3) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?b3_color
+  )
+
+  BIND(
+    IF(BOUND(?c1) && REGEX(STR(?c1), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?c1) >= 7, "color-red",
+          IF(xsd:decimal(?c1) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?c1_color
+  )
+
+  BIND(
+    IF(BOUND(?c2) && REGEX(STR(?c2), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?c2) >= 7, "color-red",
+          IF(xsd:decimal(?c2) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?c2_color
+  )
+
+  BIND(
+    IF(BOUND(?c3) && REGEX(STR(?c3), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?c3) >= 7, "color-red",
+          IF(xsd:decimal(?c3) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?c3_color
+  )
+
+  BIND(
+    IF(BOUND(?magnitude) && REGEX(STR(?magnitude), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?magnitude) >= 7, "color-red",
+          IF(xsd:decimal(?magnitude) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?magnitude_color
+  )
+
+  BIND(
+    IF(BOUND(?uncertainty) && REGEX(STR(?uncertainty), "^[0-9]+(\\.[0-9]+)?$"),
+       IF(xsd:decimal(?uncertainty) >= 7, "color-red",
+          IF(xsd:decimal(?uncertainty) >= 4, "color-yellow", "color-green")
+       ),
+       "color-gray"
+    ) AS ?uncertainty_color
+  )
 }
 ORDER BY ?siteLabel
 '
-                  column-configuration='[
-                    {"displayName":"Event","cellTemplate":"{{> eventCell}}"},
-                    {"displayName":"Site","cellTemplate":"{{> siteCell}}"},
-                    {"displayName":"Risk Description","cellTemplate":"{{> riskCell}}"},
-                    {"displayName":"Scale A","cellTemplate":"{{> scaleTripleColored v1=a1 v2=a2 v3=a3 note=a_note}}"},
-                    {"displayName":"Scale B","cellTemplate":"{{> scaleTripleColored v1=b1 v2=b2 v3=b3 note=b_note}}"},
-                    {"displayName":"Scale C","cellTemplate":"{{> scaleTripleColored v1=c1 v2=c2 v3=c3 note=c_note}}"},
-                    {"displayName":"Magnitude","cellTemplate":"{{> coloredValue value=magnitude}}"},
-                    {"displayName":"Uncertainty","cellTemplate":"{{> coloredValue value=uncertainty}}"}
-                  ]'
-                  options='{"showFilter": true, "resultsPerPage": 20}'>
+                    column-configuration='[
+                      { "displayName": "Event",           "cellTemplate": "{{> eventCell}}" },
+                      { "displayName": "Site",            "cellTemplate": "{{> siteCell}}" },
+                      { "displayName": "Risk Description","cellTemplate": "{{> riskCell}}" },
+                      { "displayName": "Scale A",         "cellTemplate": "{{> scaleTripleColored v1=a1 v1_color=a1_color v2=a2 v2_color=a2_color v3=a3 v3_color=a3_color note=a_note}}" },
+                      { "displayName": "Scale B",         "cellTemplate": "{{> scaleTripleColored v1=b1 v1_color=b1_color v2=b2 v2_color=b2_color v3=b3 v3_color=b3_color note=b_note}}" },
+                      { "displayName": "Scale C",         "cellTemplate": "{{> scaleTripleColored v1=c1 v1_color=c1_color v2=c2 v2_color=c2_color v3=c3 v3_color=c3_color note=c_note}}" },
+                      { "displayName": "Magnitude",       "cellTemplate": "{{> coloredValue value=magnitude color=magnitude_color}}" },
+                      { "displayName": "Uncertainty",     "cellTemplate": "{{> coloredValue value=uncertainty color=uncertainty_color}}" }
+                    ]'
+                    options='{"showFilter": true, "resultsPerPage": 20, "stickyHeader": true}'>
 
+                    <!-- ============ PARTIALS (INSIDE semantic-table) ============ -->
 
-      <!-- ====== PARTIALS INSIDE SEMANTIC-TABLE (MODE A) ====== -->
+                    <template id="eventCell">
+                      {{#if event_label.value}}
+                        <span class="pill">{{event_label.value}}</span>
+                      {{else}}
+                        <span class="empty">—</span>
+                      {{/if}}
+                    </template>
 
-      <template id="eventCell">
-        {{#if event_label.value}}
-          <span class="pill">{{event_label.value}}</span>
-        {{else}}
-          <span class="empty">—</span>
-        {{/if}}
-      </template>
+                    <template id="siteCell">
+                      {{#if siteLabel.value}}
+                        <span class="pill">{{siteLabel.value}}</span>
+                      {{else}}
+                        <span class="mono">{{site.value}}</span>
+                      {{/if}}
+                    </template>
 
-      <template id="siteCell">
-        {{#if siteLabel.value}}
-          <span class="pill">{{siteLabel.value}}</span>
-        {{else}}
-          <span class="mono">{{site.value}}</span>
-        {{/if}}
-      </template>
+                    <template id="riskCell">
+                      {{#if risk_desc.value}}
+                        <div class="note">{{risk_desc.value}}</div>
+                      {{else}}
+                        <span class="empty">—</span>
+                      {{/if}}
+                    </template>
 
-      <template id="riskCell">
-        {{#if risk_desc.value}}
-          <div class="note">{{risk_desc.value}}</div>
-        {{else}}
-          <span class="empty">—</span>
-        {{/if}}
-      </template>
+                    <!-- Generic colored numeric value -->
+                    <template id="coloredValue">
+                      {{#if value.value}}
+                        <span class="colored-badge {{color.value}}">
+                          {{value.value}}
+                        </span>
+                      {{else}}
+                        <span class="empty">—</span>
+                      {{/if}}
+                    </template>
 
-      <!-- colored numeric value -->
-      <template id="coloredValue">
-        {{#if value.value}}
-          <span style="
-            padding:3px 7px;
-            border-radius:4px;
-            color:#000;
-            background-color:
-              {{#if (gte value.value 7)}}#ff6666{{else}}
-              {{#if (gte value.value 4)}}#ffdd57{{else}}
-              #77dd77{{/if}}{{/if}};">
-            {{value.value}}
-          </span>
-        {{else}}
-          <span class="empty">—</span>
-        {{/if}}
-      </template>
+                    <!-- Triple scale (A/B/C) using 3 colored values -->
+                    <template id="scaleTripleColored">
+                      <div class="scale-triple">
+                        {{#if v1.value}}{{> coloredValue value=v1 color=v1_color}}{{/if}}
+                        {{#if v2.value}}{{> coloredValue value=v2 color=v2_color}}{{/if}}
+                        {{#if v3.value}}{{> coloredValue value=v3 color=v3_color}}{{/if}}
+                      </div>
+                      {{#if note.value}}
+                        <div class="note">{{note.value}}</div>
+                      {{/if}}
+                    </template>
 
-      <!-- triple scale colored -->
-      <template id="scaleTripleColored">
-        <div>
-          {{#if v1.value}}{{> coloredValue value=v1}}{{/if}}
-          {{#if v2.value}}{{> coloredValue value=v2}}{{/if}}
-          {{#if v3.value}}{{> coloredValue value=v3}}{{/if}}
-          {{#if note.value}}<div class="note">{{note.value}}</div>{{/if}}
+                    <!-- Styling for table -->
+                    <style>
+                      #event-site-table .mono {
+                        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+                        font-size: .9em;
+                        word-break: break-all;
+                      }
+                      #event-site-table .pill {
+                        display:inline-block;
+                        padding:.2rem .5rem;
+                        border:1px solid #e5e7eb;
+                        border-radius:999px;
+                        background:#f9fafb;
+                      }
+                      #event-site-table .note {
+                        white-space: pre-wrap;
+                        line-height: 1.25;
+                        opacity:.9;
+                      }
+                      #event-site-table .empty {
+                        opacity: .5;
+                        font-style: italic;
+                      }
+                      #event-site-table .colored-badge {
+                        padding: 3px 7px;
+                        border-radius: 4px;
+                        font-weight: 500;
+                        display: inline-block;
+                        min-width: 2.2em;
+                        text-align: center;
+                      }
+                      .color-red {
+                        background:#ff6666;
+                        color:#000;
+                      }
+                      .color-yellow {
+                        background:#ffdd57;
+                        color:#000;
+                      }
+                      .color-green {
+                        background:#77dd77;
+                        color:#000;
+                      }
+                      .color-gray {
+                        background:#e5e7eb;
+                        color:#111827;
+                      }
+                      .scale-triple > .colored-badge {
+                        margin-right: 4px;
+                      }
+                    </style>
+
+                  </semantic-table>
+
+                </div> <!-- /.rs-resource-data-table -->
+
+              </div>
+
+            </bs-tab-pane>
+          </bs-tab-content>
         </div>
-      </template>
+      </bs-tab-container>
 
-    </semantic-table>
-
-  </div>
-
-</bs-tab-pane>
-</bs-tab-content>
-
-</div>
-</bs-tab-container>
-
-</div>
-</template>
+    </div>
+  </template>
 
 </with-types>
 
 [[/inline]]
+
 [[> resource]]
