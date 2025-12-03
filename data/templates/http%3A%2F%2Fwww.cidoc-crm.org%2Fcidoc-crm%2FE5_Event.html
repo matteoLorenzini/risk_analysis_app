@@ -210,7 +210,11 @@ WHERE {
 }
 ' 
 # 3. COLUMN CONFIGURATION: INLINE ESCAPED TEMPLATES (NO PARTIALS)
-column-configuration='[ { "displayName": "Site", "cellTemplate":"<semantic-link iri=\\\"{{site.value}}\\\">{{siteLabel.value}}</semantic-link>" } ]'
+column-configuration='[ { "displayName": "Site", "cellTemplate":"<semantic-link iri=\\\"{{site.value}}\\\">{{site.value}}</semantic-link>" },
+{
+                "displayName": "event", 
+                "cellTemplate": "<div>{{event_name.value}}</div>" 
+              } ]'
  options='{"showFilter": true, "resultsPerPage": 15, "stickyHeader": true}'>
                   </semantic-table>
                    </div>
