@@ -1,28 +1,28 @@
 [[#*inline "resource"]]
 
   [[#*inline "scaleCellA"]]
-    {{#if v1}}<span>{{v1}}</span>{{/if}}
-    {{#if v2}} / <span>{{v2}}</span>{{/if}}
-    {{#if v3}} / <span>{{v3}}</span>{{/if}}
-    {{#if desc}}<div class="muted">{{desc}}</div>{{/if}}
+    {{#if a_val1.value}}<span>{{a_val1.value}}</span>{{/if}}
+    {{#if a_val2.value}} / <span>{{a_val2.value}}</span>{{/if}}
+    {{#if a_val3.value}} / <span>{{a_val3.value}}</span>{{/if}}
+    {{#if a_note.value}}<div class="muted">{{a_note.value}}</div>{{/if}}
   [[/inline]]
 
   [[#*inline "scaleCellB"]]
-    {{#if v1}}<span>{{v1}}</span>{{/if}}
-    {{#if v2}} / <span>{{v2}}</span>{{/if}}
-    {{#if v3}} / <span>{{v3}}</span>{{/if}}
-    {{#if desc}}<div class="muted">{{desc}}</div>{{/if}}
+    {{#if b_val1.value}}<span>{{b_val1.value}}</span>{{/if}}
+    {{#if b_val2.value}} / <span>{{b_val2.value}}</span>{{/if}}
+    {{#if b_val3.value}} / <span>{{b_val3.value}}</span>{{/if}}
+    {{#if b_note.value}}<div class="muted">{{b_note.value}}</div>{{/if}}
   [[/inline]]
 
   [[#*inline "scaleCellC"]]
-    {{#if v1}}<span>{{v1}}</span>{{/if}}
-    {{#if v2}} / <span>{{v2}}</span>{{/if}}
-    {{#if v3}} / <span>{{v3}}</span>{{/if}}
-    {{#if desc}}<div class="muted">{{desc}}</div>{{/if}}
+    {{#if c_val1.value}}<span>{{c_val1.value}}</span>{{/if}}
+    {{#if c_val2.value}} / <span>{{c_val2.value}}</span>{{/if}}
+    {{#if c_val3.value}} / <span>{{c_val3.value}}</span>{{/if}}
+    {{#if c_note.value}}<div class="muted">{{c_note.value}}</div>{{/if}}
   [[/inline]]
 
   [[#*inline "siteLinkCell"]]
-    <semantic-link iri="{{iri}}">{{label}}</semantic-link>
+    <semantic-link iri="{{site.value}}">{{siteLabel.value}}</semantic-link>
   [[/inline]]
 
   <with-types fixed-key='resource-[[this]]' iri='[[this]]' template='{{> page}}' [[> rsp:TypeMappings]]>
@@ -234,15 +234,15 @@ WHERE {
   }
 }
 ' 
-# 3. CLEAN COLUMN CONFIGURATION (Calls partials with arguments)
+# 3. CLEAN COLUMN CONFIGURATION (Calls partials without arguments)
 column-configuration='[
-  { "displayName":"Site", "cellTemplate":"{{> siteLinkCell iri=site.value label=siteLabel.value}}" },
+  { "displayName":"Site", "cellTemplate":"{{> siteLinkCell}}" },
   { "displayName":"Event", "field":"event_name.value" },
   { "displayName":"Magnitude", "field":"magnitude_value.value" },
   { "displayName":"Uncertainty", "field":"uncertainty_score.value" },
-  { "displayName":"Scale A (v1/v2/v3)", "cellTemplate":"{{> scaleCellA v1=a_val1.value v2=a_val2.value v3=a_val3.value desc=a_note.value}}" },
-  { "displayName":"Scale B (v1/v2/v3)", "cellTemplate":"{{> scaleCellB v1=b_val1.value v2=b_val2.value v3=b_val3.value desc=b_note.value}}" },
-  { "displayName":"Scale C (v1/v2/v3)", "cellTemplate":"{{> scaleCellC v1=c_val1.value v2=c_val2.value v3=c_val3.value desc=c_note.value}}" }
+  { "displayName":"Scale A (v1/v2/v3)", "cellTemplate":"{{> scaleCellA}}" },
+  { "displayName":"Scale B (v1/v2/v3)", "cellTemplate":"{{> scaleCellB}}" },
+  { "displayName":"Scale C (v1/v2/v3)", "cellTemplate":"{{> scaleCellC}}" }
 ]' 
 options='{"showFilter": true, "resultsPerPage": 15, "stickyHeader": true}'>
                   </semantic-table>
