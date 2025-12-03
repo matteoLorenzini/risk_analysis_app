@@ -58,9 +58,64 @@
 
               <div class="rs-resource-data-table">
 
-                <!-- ===================== -->
-                <!--     SEMANTIC TABLE    -->
-                <!-- ===================== -->
+<!-- ========================================================= -->
+<!--   ALL PARTIALS MOVED *BEFORE* THE TABLE (FIX APPLIED)     -->
+<!-- ========================================================= -->
+
+<template id="eventCell">
+  {{event_name.value}}
+</template>
+
+<template id="siteCell">
+  {{siteLabel.value}}
+</template>
+
+<template id="riskCell">
+  {{#if risk_desc.value}}
+    <div class="note">{{risk_desc.value}}</div>
+  {{else}}
+    <div class="empty">—</div>
+  {{/if}}
+</template>
+
+<!-- COLORED VALUE -->
+<template id="coloredValue">
+  {{#if value.value}}
+    <span style="
+      padding:3px 7px;
+      border-radius:4px;
+      background-color:
+        {{#if (gte value.value 7)}}#ff6666{{else}}
+        {{#if (gte value.value 4)}}#ffdd57{{else}}
+        #77dd77{{/if}}{{/if}};
+      color:#000;">
+      {{value.value}}
+    </span>
+  {{else}}
+    <span class="empty">—</span>
+  {{/if}}
+</template>
+
+<!-- COLORED SCALE TRIPLE -->
+<template id="scaleTripleColored">
+  <div style="margin-bottom:4px;">
+    {{> coloredValue value=v1}}
+    {{> coloredValue value=v2}}
+    {{> coloredValue value=v3}}
+  </div>
+  {{#if desc.value}}
+    <div class="note">{{desc.value}}</div>
+  {{/if}}
+</template>
+
+<!-- RANGE (MAGNITUDE / UNCERTAINTY) -->
+<template id="rangeColored">
+  {{> coloredValue value=min}}
+</template>
+
+<!-- ========================================================= -->
+<!--                    SEMANTIC TABLE                         -->
+<!-- ========================================================= -->
 
 <semantic-table id="event-site-table" query='
 PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
@@ -100,7 +155,7 @@ WHERE {
   }
 
   #################################################################
-  # RISK DESCRIPTION (Event + Site matching)
+  # RISK DESCRIPTION
   #################################################################
   OPTIONAL {
     ?risk a base:E89_Propositional_Object ;
@@ -228,10 +283,10 @@ WHERE {
     }
     GROUP BY ?event
   }
+
 }
 ORDER BY ?event ?siteLabel
 '
-
 column-configuration='[
   { "displayName": "Event", "cellTemplate": "{{> eventCell}}" },
   { "displayName": "Site", "cellTemplate": "{{> siteCell}}" },
@@ -243,64 +298,10 @@ column-configuration='[
   { "displayName": "Uncertainty", "cellTemplate": "{{> rangeColored min=uncertainty_score max=uncertainty_score}}" }
 ]'
 options='{"showFilter": true, "resultsPerPage": 20, "stickyHeader": true}'>
+
 </semantic-table>
 
-
-<!-- =============== CELL TEMPLATES =============== -->
-
-<template id="eventCell">
-  {{event_name.value}}
-</template>
-
-<template id="siteCell">
-  {{siteLabel.value}}
-</template>
-
-<template id="riskCell">
-  {{#if risk_desc.value}}
-    <div class="note">{{risk_desc.value}}</div>
-  {{else}}
-    <div class="empty">—</div>
-  {{/if}}
-</template>
-
-<!-- COLORED VALUE -->
-<template id="coloredValue">
-  {{#if value.value}}
-    <span style="
-      padding:3px 7px;
-      border-radius:4px;
-      background-color:
-        {{#if (gte value.value 7)}}#ff6666{{else}}
-        {{#if (gte value.value 4)}}#ffdd57{{else}}
-        #77dd77{{/if}}{{/if}};
-      color:#000;">
-      {{value.value}}
-    </span>
-  {{else}}
-    <span class="empty">—</span>
-  {{/if}}
-</template>
-
-<!-- COLORED SCALE TRIPLE -->
-<template id="scaleTripleColored">
-  <div style="margin-bottom:4px;">
-    {{> coloredValue value=v1}}
-    {{> coloredValue value=v2}}
-    {{> coloredValue value=v3}}
-  </div>
-  {{#if desc.value}}
-    <div class="note">{{desc.value}}</div>
-  {{/if}}
-</template>
-
-<!-- RANGE (MAGNITUDE / UNCERTAINTY) -->
-<template id="rangeColored">
-  {{> coloredValue value=min}}
-</template>
-
 </div> <!-- end data table -->
-
             </div>
           </bs-tab-pane>
         </bs-tab-content>
