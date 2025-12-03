@@ -56,7 +56,8 @@ PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT
-  ?event ?event_name ?site ?siteLabel
+  ?event ?event_name
+  ?site ?siteLabel
   ?uncertainty_score ?magnitude_value
   ?a_val1 ?a_val2 ?a_val3 ?a_note
   ?b_val1 ?b_val2 ?b_val3 ?b_note
@@ -64,27 +65,30 @@ SELECT DISTINCT
 WHERE {
 
   #################################################################
-  # 1) DETERMINE THE TYPE OF THE CURRENT EVENT INSTANCE
+  # 1) CURRENT EVENT + ITS TYPE (E55_Type)
   #################################################################
   BIND(<[[this]]> AS ?currentEvent)
-  ?currentEvent a ?eventType .
+
+  ?currentEvent a base:E5_Event ;
+                base:P2_has_type ?eventType .
 
   #################################################################
-  # 2) LIST ALL EVENTS OF THE SAME TYPE
+  # 2) RETRIEVE ALL EVENTS OF SAME TYPE
   #################################################################
-  ?event a ?eventType ;
+  ?event a base:E5_Event ;
+         base:P2_has_type ?eventType ;
          rdfs:label ?event_name .
 
   #################################################################
-  # 3) SITE RELATION (each event may modify multiple sites)
+  # 3) SITE IMPACTED BY THE EVENT
   #################################################################
-  OPTIONAL { 
+  OPTIONAL {
     ?event base:P31_has_modified ?site .
     OPTIONAL { ?site rdfs:label ?siteLabel }
   }
 
   #################################################################
-  # 4) UNCERTAINTY (per event)
+  # 4) UNCERTAINTY SCORE
   #################################################################
   OPTIONAL {
     SELECT ?event (SAMPLE(?uVal) AS ?uncertainty_score)
@@ -100,7 +104,7 @@ WHERE {
   }
 
   #################################################################
-  # 5) MAGNITUDE (per event)
+  # 5) MAGNITUDE SCORE
   #################################################################
   OPTIONAL {
     SELECT ?event (SAMPLE(?mVal) AS ?magnitude_value)
@@ -116,7 +120,7 @@ WHERE {
   }
 
   #################################################################
-  # 6) SCALE A (per event)
+  # 6) SCALE A
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -126,31 +130,27 @@ WHERE {
            (SAMPLE(?note) AS ?a_note)
     WHERE {
       ?event base:P39i_was_measured_by ?mA .
-      ?mA a crmsci:S21_Measurement ;
-          base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+      ?mA base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
 
-      OPTIONAL {
-        ?mA base:P40_observed_dimension ?d1 .
-        ?d1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ;
-             rdfs:label ?v1 .
-      }
-      OPTIONAL {
-        ?mA base:P40_observed_dimension ?d2 .
-        ?d2 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ;
-             rdfs:label ?v2 .
-      }
-      OPTIONAL {
-        ?mA base:P40_observed_dimension ?d3 .
-        ?d3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ;
-             rdfs:label ?v3 .
-      }
+      OPTIONAL { ?mA base:P40_observed_dimension ?d1 .
+                 ?d1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ;
+                      rdfs:label ?v1 . }
+
+      OPTIONAL { ?mA base:P40_observed_dimension ?d2 .
+                 ?d2 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ;
+                      rdfs:label ?v2 . }
+
+      OPTIONAL { ?mA base:P40_observed_dimension ?d3 .
+                 ?d3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ;
+                      rdfs:label ?v3 . }
+
       OPTIONAL { ?mA base:P3_has_note ?note }
     }
     GROUP BY ?event
   }
 
   #################################################################
-  # 7) SCALE B (per event)
+  # 7) SCALE B
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -160,31 +160,27 @@ WHERE {
            (SAMPLE(?noteB) AS ?b_note)
     WHERE {
       ?event base:P39i_was_measured_by ?mB .
-      ?mB a crmsci:S21_Measurement ;
-          base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
+      ?mB base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
 
-      OPTIONAL {
-        ?mB base:P40_observed_dimension ?db1 .
-        ?db1 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ;
-             rdfs:label ?v1b .
-      }
-      OPTIONAL {
-        ?mB base:P40_observed_dimension ?db2 .
-        ?db2 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ;
-             rdfs:label ?v2b .
-      }
-      OPTIONAL {
-        ?mB base:P40_observed_dimension ?db3 .
-        ?db3 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ;
-             rdfs:label ?v3b .
-      }
+      OPTIONAL { ?mB base:P40_observed_dimension ?db1 .
+                 ?db1 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ;
+                      rdfs:label ?v1b . }
+
+      OPTIONAL { ?mB base:P40_observed_dimension ?db2 .
+                 ?db2 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ;
+                      rdfs:label ?v2b . }
+
+      OPTIONAL { ?mB base:P40_observed_dimension ?db3 .
+                 ?db3 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ;
+                      rdfs:label ?v3b . }
+
       OPTIONAL { ?mB base:P3_has_note ?noteB }
     }
     GROUP BY ?event
   }
 
   #################################################################
-  # 8) SCALE C (per event)
+  # 8) SCALE C
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -194,30 +190,27 @@ WHERE {
            (SAMPLE(?noteC) AS ?c_note)
     WHERE {
       ?event base:P39i_was_measured_by ?mC .
-      ?mC a crmsci:S21_Measurement ;
-          base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
+      ?mC base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
 
-      OPTIONAL {
-        ?mC base:P40_observed_dimension ?dc1 .
-        ?dc1 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ;
-             rdfs:label ?v1c .
-      }
-      OPTIONAL {
-        ?mC base:P40_observed_dimension ?dc2 .
-        ?dc2 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ;
-             rdfs:label ?v2c .
-      }
-      OPTIONAL {
-        ?mC base:P40_observed_dimension ?dc3 .
-        ?dc3 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ;
-             rdfs:label ?v3c .
-      }
+      OPTIONAL { ?mC base:P40_observed_dimension ?dc1 .
+                 ?dc1 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ;
+                      rdfs:label ?v1c . }
+
+      OPTIONAL { ?mC base:P40_observed_dimension ?dc2 .
+                 ?dc2 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ;
+                      rdfs:label ?v2c . }
+
+      OPTIONAL { ?mC base:P40_observed_dimension ?dc3 .
+                 ?dc3 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ;
+                      rdfs:label ?v3c . }
+
       OPTIONAL { ?mC base:P3_has_note ?noteC }
     }
     GROUP BY ?event
   }
 }
 ORDER BY ?event ?siteLabel
+
 ' >
                    </semantic-table>
                     </div>
