@@ -62,20 +62,29 @@ SELECT DISTINCT
   ?b_val1 ?b_val2 ?b_val3 ?b_note
   ?c_val1 ?c_val2 ?c_val3 ?c_note
 WHERE {
-  # bind current resource as the event
-  BIND(<[[this]]> AS ?event)
 
   #################################################################
-  # 1. EVENT + SITE
+  # 1) DETERMINE THE TYPE OF THE CURRENT EVENT INSTANCE
   #################################################################
-  ?event a base:E5_Event ;
-         rdfs:label ?event_name ;
-         base:P31_has_modified ?site .
-
-  OPTIONAL { ?site rdfs:label ?siteLabel }
+  BIND(<[[this]]> AS ?currentEvent)
+  ?currentEvent a ?eventType .
 
   #################################################################
-  # UNCERTAINTY (Event Global)
+  # 2) LIST ALL EVENTS OF THE SAME TYPE
+  #################################################################
+  ?event a ?eventType ;
+         rdfs:label ?event_name .
+
+  #################################################################
+  # 3) SITE RELATION (each event may modify multiple sites)
+  #################################################################
+  OPTIONAL { 
+    ?event base:P31_has_modified ?site .
+    OPTIONAL { ?site rdfs:label ?siteLabel }
+  }
+
+  #################################################################
+  # 4) UNCERTAINTY (per event)
   #################################################################
   OPTIONAL {
     SELECT ?event (SAMPLE(?uVal) AS ?uncertainty_score)
@@ -91,7 +100,7 @@ WHERE {
   }
 
   #################################################################
-  # MAGNITUDE (Event Global)
+  # 5) MAGNITUDE (per event)
   #################################################################
   OPTIONAL {
     SELECT ?event (SAMPLE(?mVal) AS ?magnitude_value)
@@ -107,7 +116,7 @@ WHERE {
   }
 
   #################################################################
-  # SCALE A (Event Global)
+  # 6) SCALE A (per event)
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -141,7 +150,7 @@ WHERE {
   }
 
   #################################################################
-  # SCALE B (Event Global)
+  # 7) SCALE B (per event)
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -171,11 +180,11 @@ WHERE {
       }
       OPTIONAL { ?mB base:P3_has_note ?noteB }
     }
-    GROUP by ?event
+    GROUP BY ?event
   }
 
   #################################################################
-  # SCALE C (Event Global)
+  # 8) SCALE C (per event)
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -208,6 +217,7 @@ WHERE {
     GROUP BY ?event
   }
 }
+ORDER BY ?event ?siteLabel
 ' >
                    </semantic-table>
                     </div>
