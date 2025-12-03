@@ -208,9 +208,7 @@ WHERE {
     GROUP BY ?event
   }
 }
-' 
-column-configuration='[{"displayName":"Magnitude","field":"magnitude_value.value"},{"displayName":"Uncertainty","field":"uncertainty_score.value"},{"displayName":"Scale A","cellTemplate":"<div>Val1: {{#if a_val1.value}}{{a_val1.value}}{{/if}}{{#if a_val2.value}} / {{a_val2.value}}{{/if}}{{#if a_val3.value}} / {{a_val3.value}}{{/if}}<br/>Note: {{#if a_note.value}}{{a_note.value}}{{/if}}</div>"},{"displayName":"Scale B","cellTemplate":"<div>Val1: {{#if b_val1.value}}{{b_val1.value}}{{/if}}{{#if b_val2.value}} / {{b_val2.value}}{{/if}}{{#if b_val3.value}} / {{b_val3.value}}{{/if}}<br/>Note: {{#if b_note.value}}{{b_note.value}}{{/if}}</div>"},{"displayName":"Scale C","cellTemplate":"<div>Val1: {{#if c_val1.value}}{{c_val1.value}}{{/if}}{{#if c_val2.value}} / {{c_val2.value}}{{/if}}{{#if c_val3.value}} / {{c_val3.value}}{{/if}}<br/>Note: {{#if c_note.value}}{{c_note.value}}{{/if}}</div>"},{"displayName":"Event","field":"event_name.value"}]'
- options='{"showFilter": true, "resultsPerPage": 15, "stickyHeader": true}'>
+' >
                    </semantic-table>
                     </div>
               </div>
