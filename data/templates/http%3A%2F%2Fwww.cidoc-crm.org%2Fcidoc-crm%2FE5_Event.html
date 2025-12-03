@@ -176,7 +176,7 @@ WHERE {
 
       OPTIONAL { ?mB base:P3_has_note ?noteB }
     }
-    GROUP BY ?event
+    GROUP by ?event
   }
 
   #################################################################
@@ -214,6 +214,65 @@ ORDER BY ?event ?siteLabel
 ' >
                    </semantic-table>
                     </div>
+
+                  <style>
+                    /* Scoped styles for the event semantic-table */
+                    #site-events-table {
+                      display: block;
+                      overflow-x: auto;
+                      margin-top: .75rem;
+                      --rs-table-min-width: 760px;
+                    }
+
+                    /* If the component renders a real table inside, target it */
+                    #site-events-table table {
+                      width: 100%;
+                      min-width: var(--rs-table-min-width);
+                      border-collapse: collapse;
+                      background: #fff;
+                      font-size: 0.95rem;
+                    }
+
+                    #site-events-table thead th {
+                      background: #f7fafc;
+                      color: #111827;
+                      font-weight: 600;
+                      padding: .6rem .75rem;
+                      text-align: left;
+                      border-bottom: 1px solid #e6eef6;
+                      position: sticky;
+                      top: 0;
+                      z-index: 3;
+                    }
+
+                    #site-events-table tbody td {
+                      padding: .55rem .75rem;
+                      border-bottom: 1px solid #eef2f6;
+                      vertical-align: top;
+                      color: #111827;
+                    }
+
+                    /* subtle row striping for readability */
+                    #site-events-table tbody tr:nth-child(odd) { background: #ffffff; }
+                    #site-events-table tbody tr:nth-child(even){ background: #fbfdff; }
+
+                    /* small helpers used by cell templates */
+                    #site-events-table .scale-triple-cell { white-space: nowrap; }
+                    #site-events-table .scale-triple-cell .muted { color: #6b7280; font-size: .85rem; margin-top: .25rem; }
+                    #site-events-table .cell-note { white-space: pre-wrap; line-height: 1.25; }
+                    #site-events-table .cell-empty { text-align: center; opacity: .5; }
+
+                    /* make semantic links look like links inside table cells */
+                    #site-events-table semantic-link { display: inline-block; color: #0b5fff; text-decoration: none; }
+                    #site-events-table semantic-link:hover { text-decoration: underline; }
+
+                    /* responsive tweaks */
+                    @media (max-width: 800px) {
+                      #site-events-table table { font-size: 0.9rem; }
+                      #site-events-table thead th, #site-events-table tbody td { padding: .45rem .5rem; }
+                    }
+                  </style>
+                </div>
               </div>
             </bs-tab-pane>
           </bs-tab-content>
