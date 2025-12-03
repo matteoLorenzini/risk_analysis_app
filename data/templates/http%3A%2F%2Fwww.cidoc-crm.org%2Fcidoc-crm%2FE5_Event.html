@@ -48,16 +48,9 @@
                     <hr class="rs-resource-section--headerLine">
                     <span class="h1 rs-resource-section--header">Event</span>
                   </div>
-
                   <div class="rs-resource-data-table">
-
-                    <!-- ============================= -->
-                    <!--      SEMANTIC TABLE + UI     -->
-                    <!-- ============================= -->
-
-                    <semantic-table
-                      id="site-events-table"
-                      query='
+                    
+                    <semantic-table id="site-events-table" query='
 PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
@@ -217,218 +210,17 @@ WHERE {
   }
 }
 ORDER BY ?event ?siteLabel
-                      '
-                      column-configuration='[
-                        { "displayName": "Event",        "cellTemplate": "{{> eventCell}}" },
-                        { "displayName": "Site",         "cellTemplate": "{{> siteCell}}" },
-                        { "displayName": "Uncertainty",  "cellTemplate": "{{> uncCell}}" },
-                        { "displayName": "Magnitude",    "cellTemplate": "{{> magCell}}" },
-                        { "displayName": "Scale A",      "cellTemplate": "{{> scaleCell a_val1 a_val2 a_val3 a_note}}" },
-                        { "displayName": "Scale B",      "cellTemplate": "{{> scaleCell b_val1 b_val2 b_val3 b_note}}" },
-                        { "displayName": "Scale C",      "cellTemplate": "{{> scaleCell c_val1 c_val2 c_val3 c_note}}" }
-                      ]'
-                      options='{"showFilter": true, "resultsPerPage": 20, "stickyHeader": true}'>
 
-                      <!-- EVENT CELL -->
-                      <template id="eventCell">
-                        {{#if event_name.value}}
-                          <span class="pill">{{event_name.value}}</span>
-                        {{else}}
-                          <span class="empty">—</span>
-                        {{/if}}
-                      </template>
-
-                      <!-- SITE CELL -->
-                      <template id="siteCell">
-                        {{#if siteLabel.value}}
-                          <span class="pill">{{siteLabel.value}}</span>
-                        {{else}}
-                          {{#if site.value}}
-                            <span class="mono">{{site.value}}</span>
-                          {{else}}
-                            <span class="empty">—</span>
-                          {{/if}}
-                        {{/if}}
-                      </template>
-
-                      <!-- UNCERTAINTY CELL -->
-                      <template id="uncCell">
-                        {{#if uncertainty_score.value}}
-                          <span class="badge-soft">{{uncertainty_score.value}}</span>
-                        {{else}}
-                          <span class="empty">—</span>
-                        {{/if}}
-                      </template>
-
-                      <!-- MAGNITUDE CELL -->
-                      <template id="magCell">
-                        {{#if magnitude_value.value}}
-                          <span class="badge-soft">{{magnitude_value.value}}</span>
-                        {{else}}
-                          <span class="empty">—</span>
-                        {{/if}}
-                      </template>
-
-                      <!-- GENERIC SCALE CELL: 3 values + note -->
-                      <template id="scaleCell">
-                        <div class="scale-block">
-                          {{#if 0.value}}{{/if}}
-                          {{#if 1.value}}{{/if}}
-                        </div>
-                      </template>
-
-                      <!-- We can’t use positional args directly, so define 3 specific templates instead -->
-                      <!-- SCALE A -->
-                      <template id="scaleCell">
-                        <div class="scale-block">
-                          {{#if a_val1.value}}
-                            <div><span class="label-small">Val.1</span> {{a_val1.value}}</div>
-                          {{/if}}
-                          {{#if a_val2.value}}
-                            <div><span class="label-small">Val.2</span> {{a_val2.value}}</div>
-                          {{/if}}
-                          {{#if a_val3.value}}
-                            <div><span class="label-small">Val.3</span> {{a_val3.value}}</div>
-                          {{/if}}
-
-                          {{#unless a_val1.value}}
-                            {{#unless a_val2.value}}
-                              {{#unless a_val3.value}}
-                                <span class="empty">—</span>
-                              {{/unless}}
-                            {{/unless}}
-                          {{/unless}}
-
-                          {{#if a_note.value}}
-                            <div class="note">{{a_note.value}}</div>
-                          {{/if}}
-                        </div>
-                      </template>
-
-                      <!-- SCALE B -->
-                      <template id="scaleCellB">
-                        <div class="scale-block">
-                          {{#if b_val1.value}}
-                            <div><span class="label-small">Val.1</span> {{b_val1.value}}</div>
-                          {{/if}}
-                          {{#if b_val2.value}}
-                            <div><span class="label-small">Val.2</span> {{b_val2.value}}</div>
-                          {{/if}}
-                          {{#if b_val3.value}}
-                            <div><span class="label-small">Val.3</span> {{b_val3.value}}</div>
-                          {{/if}}
-
-                          {{#unless b_val1.value}}
-                            {{#unless b_val2.value}}
-                              {{#unless b_val3.value}}
-                                <span class="empty">—</span>
-                              {{/unless}}
-                            {{/unless}}
-                          {{/unless}}
-
-                          {{#if b_note.value}}
-                            <div class="note">{{b_note.value}}</div>
-                          {{/if}}
-                        </div>
-                      </template>
-
-                      <!-- SCALE C -->
-                      <template id="scaleCellC">
-                        <div class="scale-block">
-                          {{#if c_val1.value}}
-                            <div><span class="label-small">Val.1</span> {{c_val1.value}}</div>
-                          {{/if}}
-                          {{#if c_val2.value}}
-                            <div><span class="label-small">Val.2</span> {{c_val2.value}}</div>
-                          {{/if}}
-                          {{#if c_val3.value}}
-                            <div><span class="label-small">Val.3</span> {{c_val3.value}}</div>
-                          {{/if}}
-
-                          {{#unless c_val1.value}}
-                            {{#unless c_val2.value}}
-                              {{#unless c_val3.value}}
-                                <span class="empty">—</span>
-                              {{/unless}}
-                            {{/unless}}
-                          {{/unless}}
-
-                          {{#if c_note.value}}
-                            <div class="note">{{c_note.value}}</div>
-                          {{/if}}
-                        </div>
-                      </template>
-
-                      <!-- override column config to use specific scale templates -->
-                      <script type="application/json" data-semantic-table-config-for="site-events-table">
-                        {
-                          "columnConfiguration": [
-                            { "displayName": "Event",        "cellTemplate": "{{> eventCell}}" },
-                            { "displayName": "Site",         "cellTemplate": "{{> siteCell}}" },
-                            { "displayName": "Uncertainty",  "cellTemplate": "{{> uncCell}}" },
-                            { "displayName": "Magnitude",    "cellTemplate": "{{> magCell}}" },
-                            { "displayName": "Scale A",      "cellTemplate": "{{> scaleCell}}" },
-                            { "displayName": "Scale B",      "cellTemplate": "{{> scaleCellB}}" },
-                            { "displayName": "Scale C",      "cellTemplate": "{{> scaleCellC}}" }
-                          ]
-                        }
-                      </script>
-
-                      <!-- TABLE STYLES -->
-                      <style>
-                        #site-events-table .mono {
-                          font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-                          font-size: .9em;
-                          word-break: break-all;
-                        }
-                        #site-events-table .pill {
-                          display:inline-block;
-                          padding:.2rem .55rem;
-                          border-radius:999px;
-                          background:#f3f4f6;
-                          border:1px solid #e5e7eb;
-                        }
-                        #site-events-table .badge-soft {
-                          display:inline-block;
-                          padding:.15rem .45rem;
-                          border-radius:.35rem;
-                          background:#eef2ff;
-                          border:1px solid #e5e7eb;
-                          font-size:.9em;
-                        }
-                        #site-events-table .empty {
-                          opacity:.6;
-                          font-style:italic;
-                        }
-                        #site-events-table .note {
-                          margin-top:.15rem;
-                          font-size:.9em;
-                          opacity:.85;
-                          white-space:pre-wrap;
-                        }
-                        #site-events-table .scale-block > div {
-                          line-height:1.25;
-                        }
-                        #site-events-table .label-small {
-                          font-size:.8em;
-                          text-transform:uppercase;
-                          letter-spacing:.04em;
-                          opacity:.7;
-                          margin-right:.3rem;
-                        }
-                      </style>
-
-                    </semantic-table>
-
-                  </div>
-                </div>
-              </bs-tab-pane>
-            </bs-tab-content>
-          </div>
-        </bs-tab-container>
-      </div>
-    </template>
-  </with-types>
-
+' >
+                   </semantic-table>
+                    </div>
+              </div>
+            </bs-tab-pane>
+          </bs-tab-content>
+        </div>
+      </bs-tab-container>
+    </div>
+  </template>
+</with-types>
 [[/inline]]
 [[> resource]]
