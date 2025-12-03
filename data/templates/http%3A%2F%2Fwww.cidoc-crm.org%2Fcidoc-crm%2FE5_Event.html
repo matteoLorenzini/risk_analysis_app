@@ -228,4 +228,43 @@
   </template>
 </with-types>
 [[/inline]]
+<!-- fallback partials required by semantic-table column templates -->
+<template id="siteLinkCell">
+  {{#if siteLabel.value}}
+    <semantic-link iri="{{site.value}}">{{siteLabel.value}}</semantic-link>
+  {{else}}
+    <semantic-link iri="{{site.value}}">{{site.value}}</semantic-link>
+  {{/if}}
+</template>
+
+<template id="scaleTripleCell_v2">
+  <div class="scale-triple-cell" style="white-space:nowrap;">
+    {{#if a_val1.value}}{{a_val1.value}}{{/if}}
+    {{#if a_val2.value}} / {{a_val2.value}}{{/if}}
+    {{#if a_val3.value}} / {{a_val3.value}}{{/if}}
+    {{#if a_note.value}}<div class="muted" style="margin-top:4px;">{{a_note.value}}</div>{{/if}}
+  </div>
+</template>
+
+<template id="scaleTripleCell_v2_b">
+  <div class="scale-triple-cell" style="white-space:nowrap;">
+    {{#if b_val1.value}}{{b_val1.value}}{{/if}}
+    {{#if b_val2.value}} / {{b_val2.value}}{{/if}}
+    {{#if b_val3.value}} / {{b_val3.value}}{{/if}}
+    {{#if b_note.value}}<div class="muted" style="margin-top:4px;">{{b_note.value}}</div>{{/if}}
+  </div>
+</template>
+
+<template id="scaleTripleCell_v2_c">
+  <div class="scale-triple-cell" style="white-space:nowrap;">
+    {{#if c_val1.value}}{{c_val1.value}}{{/if}}
+    {{#if c_val2.value}} / {{c_val2.value}}{{/if}}
+    {{#if c_val3.value}} / {{c_val3.value}}{{/if}}
+    {{#if c_note.value}}<div class="muted" style="margin-top:4px;">{{c_note.value}}</div>{{/if}}
+  </div>
+</template>
+
+[[#*inline "resource"]]
+[[/inline]]
+
 [[> resource]]
