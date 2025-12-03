@@ -211,13 +211,9 @@ WHERE {
 ' 
 # 3. COLUMN CONFIGURATION: INLINE ESCAPED TEMPLATES (NO PARTIALS)
 column-configuration='[
-  { "displayName":"Site", "cellTemplate":"<semantic-link iri=\\\"{{site.value}}\\\">{{siteLabel.value}}</semantic-link>" },
-  { "displayName":"Event", "field":"event_name.value" },
-  { "displayName":"Magnitude", "field":"magnitude_value.value" },
-  { "displayName":"Uncertainty", "field":"uncertainty_score.value" },
-  { "displayName":"Scale A (v1/v2/v3)", "cellTemplate":"{{#if a_val1.value}}<span>{{a_val1.value}}</span>{{/if}}{{#if a_val2.value}} / <span>{{a_val2.value}}</span>{{/if}}{{#if a_val3.value}} / <span>{{a_val3.value}}</span>{{/if}}{{#if a_note.value}}<div class=\\\"muted\\\">{{a_note.value}}</div>{{/if}}" },
-  { "displayName":"Scale B (v1/v2/v3)", "cellTemplate":"{{#if b_val1.value}}<span>{{b_val1.value}}</span>{{/if}}{{#if b_val2.value}} / <span>{{b_val2.value}}</span>{{/if}}{{#if b_val3.value}} / <span>{{b_val3.value}}</span>{{/if}}{{#if b_note.value}}<div class=\\\"muted\\\">{{b_note.value}}</div>{{/if}}" },
-  { "displayName":"Scale C (v1/v2/v3)", "cellTemplate":"{{#if c_val1.value}}<span>{{c_val1.value}}</span>{{/if}}{{#if c_val2.value}} / <span>{{c_val2.value}}</span>{{/if}}{{#if c_val3.value}} / <span>{{c_val3.value}}</span>{{/if}}{{#if c_note.value}}<div class=\\\"muted\\\">{{c_note.value}}</div>{{/if}}" }
+  { "displayName": "Site", 
+                "cellTemplate": "<semantic-link iri=\"{{site.value}}\">{{siteLabel.value}}</semantic-link>"  },
+  
 ]' 
 options='{"showFilter": true, "resultsPerPage": 15, "stickyHeader": true}'>
                   </semantic-table>
