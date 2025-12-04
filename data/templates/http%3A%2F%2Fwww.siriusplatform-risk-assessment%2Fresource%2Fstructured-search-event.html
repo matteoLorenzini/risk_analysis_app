@@ -170,7 +170,8 @@
                                    rdfs:label ?value .
                       
                       OPTIONAL {
-                        ?subject crm:P3_has_note ?note .
+                        ?subject base:P3_has_note ?event_Note .
+    ?event_Note rdfs:label ?note .
                       }
                       
                       OPTIONAL {
