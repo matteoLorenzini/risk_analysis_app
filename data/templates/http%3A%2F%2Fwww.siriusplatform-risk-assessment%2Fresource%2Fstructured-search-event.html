@@ -1,130 +1,133 @@
 <semantic-search
 
-  categories='{
-    "http://www.siriusplatform-risk-assessment/field/site": [{
-      "kind": "resource",
-      "queryPattern": "{ $subject crm:P31_has_modified ?__value__ . }"
-    }],
-    "http://www.siriusplatform-risk-assessment/field/actor": [{
-      "kind": "resource",
-      "queryPattern": "{ $subject crm:P11_had_participant ?__value__ . }"
-    }],
-    "http://www.siriusplatform-risk-assessment/field/magnitude": [{
-      "kind": "numeric-range",
-      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
-      "queryPattern": "{ 
-        $subject crm:P39i_was_measured_by ?m . 
-        ?m crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-           crm:P40_observed_dimension ?d . 
-        ?d crm:P90_has_value ?score .
-        FILTER(?score <= ?__numericRangeEndValue__) .
-        FILTER(?score >= ?__numericRangeBeginValue__) .
-      }"
-    }],
-    "http://www.siriusplatform-risk-assessment/field/type": [{
-      "kind": "resource",
-      "queryPattern": "{ 
-        $subject crm:P2_has_type ?__value__ .
-        ?__value__ a crm:E55_Type .
-      }"
-    }]
-  }'
+ categories='{
+  "http://www.siriusplatform-risk-assessment/field/site": [{
+    "kind": "resource",
+    "queryPattern": "{ $subject crm:P31_has_modified ?__value__ . }"
+  }],
+  "http://www.siriusplatform-risk-assessment/field/actor": [{
+    "kind": "resource",
+    "queryPattern": "{ $subject crm:P11_had_participant ?__value__ . }"
+  }],
+  "http://www.siriusplatform-risk-assessment/field/magnitude": [{
+    "kind": "numeric-range",
+    "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+    "queryPattern": "{ 
+      $subject crm:P39i_was_measured_by ?m . 
+      ?m crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+         crm:P40_observed_dimension ?d . 
+      ?d crm:P90_has_value ?score .
+      FILTER(?score <= ?__numericRangeEndValue__) .
+      FILTER(?score >= ?__numericRangeBeginValue__) .
+    }"
+  }],
+  "http://www.siriusplatform-risk-assessment/field/type": [{
+    "kind": "resource",
+    "queryPattern": "{ 
+      $subject crm:P2_has_type ?__value__ .
+      ?__value__ a crm:E55_Type .
+    }"
+  }]
+}'
 
-  search-profile='{
-    "categories": [
-      {
-        "iri": "http://www.cidoc-crm.org/cidoc-crm/E5_Event",
-        "label": "Event",
-        "thumbnail": "../assets/images/icons/rs-icons/event.svg"
-      },
-      {
-        "iri": "http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing",
-        "label": "Site",
-        "thumbnail": "../assets/images/icons/rs-icons/place.svg"
-      },
-      {
-        "iri": "http://www.cidoc-crm.org/cidoc-crm/E39_Actor",
-        "label": "Actor",
-        "thumbnail": "../assets/images/icons/rs-icons/actor.svg"
-      },
-      {
-        "iri": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
-        "label": "Event Type",
-        "thumbnail": "../assets/images/icons/rs-icons/concept.svg"
-      },
-      {
-        "iri": "http://www.cidoc-crm.org/extensions/crmsci/S21_Measurement",
-        "label": "Magnitude Score",
-        "thumbnail": "../assets/images/icons/rs-icons/decimal.svg"
-      }
-    ],
 
-    "relations": [
-      {
-        "iri": "http://www.siriusplatform-risk-assessment/field/site",
-        "label": "Site",
-        "hasDomain": "http://www.cidoc-crm.org/cidoc-crm/E5_Event",
-        "hasRange": "http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing"
-      },
-      {
-        "iri": "http://www.siriusplatform-risk-assessment/field/actor",
-        "label": "Actor",
-        "hasDomain": "http://www.cidoc-crm.org/cidoc-crm/E5_Event",
-        "hasRange": "http://www.cidoc-crm.org/cidoc-crm/E39_Actor"
-      },
-      {
-        "iri": "http://www.siriusplatform-risk-assessment/field/magnitude",
-        "label": "Magnitude",
-        "hasDomain": "http://www.cidoc-crm.org/cidoc-crm/E5_Event",
-        "hasRange": "http://www.w3.org/2001/XMLSchema#decimal"
-      },
-      {
-        "iri": "http://www.siriusplatform-risk-assessment/field/type",
-        "label": "Event Type",
-        "hasDomain": "http://www.cidoc-crm.org/cidoc-crm/E5_Event",
-        "hasRange": "http://www.cidoc-crm.org/cidoc-crm/E55_Type"
-      }
-    ]
-  }'
+ search-profile='{
+  "categories": [
+    {
+      "iri": "<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
+      "label": "Event",
+      "thumbnail": "../assets/images/icons/rs-icons/event.svg"
+    },
+    {
+      "iri": "<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
+      "label": "Site",
+      "thumbnail": "../assets/images/icons/rs-icons/place.svg"
+    },
+    {
+      "iri": "<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
+      "label": "Actor",
+      "thumbnail": "../assets/images/icons/rs-icons/actor.svg"
+    },
+    {
+      "iri": "<http://www.cidoc-crm.org/cidoc-crm/E55_Type>",
+      "label": "Event Type",
+      "thumbnail": "../assets/images/icons/rs-icons/concept.svg"
+    },
+    {
+      "iri": "<http://www.cidoc-crm.org/extensions/crmsci/S21_Measurement>",
+      "label": "Magnitude Score",
+      "thumbnail": "../assets/images/icons/rs-icons/decimal.svg"
+    }
+  ],
 
-  relations='{
-    "http://www.siriusplatform-risk-assessment/field/site": [{
-      "kind": "resource",
-      "queryPattern": "{ 
-        $subject crm:P31_has_modified ?__value__ .
-        ?__value__ a crm:E18_Physical_Thing .
-      }"
-    }],
+  "relations": [
+    {
+      "iri": "<http://www.siriusplatform-risk-assessment/field/site>",
+      "label": "Site",
+      "hasDomain": "<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
+      "hasRange": "<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>"
+    },
+    {
+      "iri": "<http://www.siriusplatform-risk-assessment/field/actor>",
+      "label": "Actor",
+      "hasDomain": "<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
+      "hasRange": "<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>"
+    },
+    {
+      "iri": "<http://www.siriusplatform-risk-assessment/field/magnitude>",
+      "label": "Magnitude",
+      "hasDomain": "<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
+      "hasRange": "<http://www.w3.org/2001/XMLSchema#decimal>"
+    },
+    {
+      "iri": "<http://www.siriusplatform-risk-assessment/field/type>",
+      "label": "Event Type",
+      "hasDomain": "<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
+      "hasRange": "<http://www.cidoc-crm.org/cidoc-crm/E55_Type>"
+    }
+  ]
+}'
 
-    "http://www.siriusplatform-risk-assessment/field/actor": [{
-      "kind": "resource",
-      "queryPattern": "{ 
-        $subject crm:P11_had_participant ?__value__ .
-        ?__value__ a crm:E39_Actor .
-      }"
-    }],
 
-    "http://www.siriusplatform-risk-assessment/field/magnitude": [{
-      "kind": "numeric-range",
-      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
-      "queryPattern": "{ 
-        $subject crm:P39i_was_measured_by ?m . 
-        ?m crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-           crm:P40_observed_dimension ?d . 
-        ?d crm:P90_has_value ?score .
-        FILTER(?score <= ?__numericRangeEndValue__) .
-        FILTER(?score >= ?__numericRangeBeginValue__) .
-      }"
-    }],
+relations='{
+  "http://www.siriusplatform-risk-assessment/field/site": [{
+    "kind": "resource",
+    "queryPattern": "{ 
+      $subject crm:P31_has_modified ?__value__ .
+      ?__value__ a crm:E18_Physical_Thing .
+    }"
+  }],
 
-    "http://www.siriusplatform-risk-assessment/field/type": [{
-      "kind": "resource",
-      "queryPattern": "{ 
-        $subject crm:P2_has_type ?__value__ .
-        ?__value__ a crm:E55_Type .
-      }"
-    }]
-  }'
+  "http://www.siriusplatform-risk-assessment/field/actor": [{
+    "kind": "resource",
+    "queryPattern": "{ 
+      $subject crm:P11_had_participant ?__value__ .
+      ?__value__ a crm:E39_Actor .
+    }"
+  }],
+
+  "http://httpwww.siriusplatform-risk-assessment/field/magnitude": [{
+    "kind": "numeric-range",
+    "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+    "queryPattern": "{ 
+      $subject crm:P39i_was_measured_by ?m . 
+      ?m crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+         crm:P40_observed_dimension ?d . 
+      ?d crm:P90_has_value ?score .
+      FILTER(?score <= ?__numericRangeEndValue__) .
+      FILTER(?score >= ?__numericRangeBeginValue__) .
+    }"
+  }],
+
+  "http://www.siriusplatform-risk-assessment/field/type": [{
+    "kind": "resource",
+    "queryPattern": "{ 
+      $subject crm:P2_has_type ?__value__ .
+      ?__value__ a crm:E55_Type .
+    }"
+  }]
+}'
+
 >
   <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E5_Event>' query='
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
