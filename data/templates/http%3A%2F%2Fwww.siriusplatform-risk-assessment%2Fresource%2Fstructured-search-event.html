@@ -237,10 +237,10 @@
                     PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
                     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                     
-                    SELECT DISTINCT ?subject ?value ?note
+                    SELECT DISTINCT ?subject ?value ?site ?note
                     WHERE { 
                       ?subject a crm:E5_Event ;
-                                a crm:P31_has_modified ?site;
+                                 crm:P31_has_modified ?site;
                     
                                    rdfs:label ?value .
                       
