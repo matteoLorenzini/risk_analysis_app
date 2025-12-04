@@ -33,27 +33,27 @@
   search-profile='{
     "categories": [
       {
-        "iri": "<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
+        "iri": "http://www.cidoc-crm.org/cidoc-crm/E5_Event",
         "label": "Event",
         "thumbnail": "../assets/images/icons/rs-icons/event.svg"
       },
       {
-        "iri": "<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
+        "iri": "http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing",
         "label": "Site",
         "thumbnail": "../assets/images/icons/rs-icons/place.svg"
       },
       {
-        "iri": "<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
+        "iri": "http://www.cidoc-crm.org/cidoc-crm/E39_Actor",
         "label": "Actor",
         "thumbnail": "../assets/images/icons/rs-icons/actor.svg"
       },
       {
-        "iri": "<http://www.cidoc-crm.org/cidoc-crm/E55_Type>",
+        "iri": "http://www.cidoc-crm.org/cidoc-crm/E55_Type",
         "label": "Event Type",
         "thumbnail": "../assets/images/icons/rs-icons/concept.svg"
       },
       {
-        "iri": "<https://w3id.org/sirius/type/magnitude-score>",
+        "iri": "https://w3id.org/sirius/type/magnitude-score",
         "label": "Magnitude Score",
         "thumbnail": "../assets/images/icons/rs-icons/decimal.svg"
       }
@@ -61,28 +61,28 @@
 
     "relations": [
       {
-        "iri": "<http://www.siriusplatform-risk-assessment/field/site>",
+        "iri": "http://www.siriusplatform-risk-assessment/field/site",
         "label": "Site",
-        "hasDomain": "<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
-        "hasRange": "<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>"
+        "hasDomain": "http://www.cidoc-crm.org/cidoc-crm/E5_Event",
+        "hasRange": "http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing"
       },
       {
-        "iri": "<http://www.siriusplatform-risk-assessment/field/actor>",
+        "iri": "http://www.siriusplatform-risk-assessment/field/actor",
         "label": "Actor",
-        "hasDomain": "<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
-        "hasRange": "<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>"
+        "hasDomain": "http://www.cidoc-crm.org/cidoc-crm/E5_Event",
+        "hasRange": "http://www.cidoc-crm.org/cidoc-crm/E39_Actor"
       },
       {
-        "iri": "<http://www.siriusplatform-risk-assessment/field/magnitude>",
+        "iri": "http://www.siriusplatform-risk-assessment/field/magnitude",
         "label": "Magnitude",
-        "hasDomain": "<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
-        "hasRange": "<http://www.w3.org/2001/XMLSchema#decimal>"
+        "hasDomain": "http://www.cidoc-crm.org/cidoc-crm/E5_Event",
+        "hasRange": "http://www.w3.org/2001/XMLSchema#decimal"
       },
       {
-        "iri": "<http://www.siriusplatform-risk-assessment/field/type>",
+        "iri": "http://www.siriusplatform-risk-assessment/field/type",
         "label": "Event Type",
-        "hasDomain": "<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
-        "hasRange": "<http://www.cidoc-crm.org/cidoc-crm/E55_Type>"
+        "hasDomain": "http://www.cidoc-crm.org/cidoc-crm/E5_Event",
+        "hasRange": "http://www.cidoc-crm.org/cidoc-crm/E55_Type"
       }
     ]
   }'
@@ -126,6 +126,7 @@
     }]
   }'
 >
+
 
   <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E5_Event>' query='
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
