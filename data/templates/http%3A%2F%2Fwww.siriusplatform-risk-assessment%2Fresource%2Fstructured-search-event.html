@@ -237,10 +237,12 @@
               PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
               PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
               
-              SELECT DISTINCT ?subject ?value ?label_type ?note
+              SELECT DISTINCT ?subject ?value  ?note
               WHERE { 
                 ?subject a crm:E5_Event ;
-                              rdfs:label ?value .
+                              crm:P2_has_type ?type .
+                  ?type a crm:E55_Type ;
+                        skos:prefLabel ?value .
                              
                 
                 OPTIONAL {
@@ -248,22 +250,18 @@
     ?event_Note rdfs:label ?note .
                       }
                 
-                OPTIONAL {
-                  ?subject crm:P2_has_type ?type .
-                  ?type a crm:E55_Type ;
-                        skos:prefLabel ?label_type .
-                }
               }
               ORDER BY ?value
               " column-configuration='[
               {
+                "displayName": "Event", 
+                "cellTemplate": "<div>{{value.value}}</div>" 
+              },
+              {
                 "displayName": "Site", 
                 "cellTemplate": "<semantic-link iri=\"{{subject.value}}\">{{value.value}}</semantic-link>" 
               },
-              {
-                "displayName": "Type", 
-                "cellTemplate": "<div>{{label_type.value}}</div>" 
-              },
+              
               {
                 "displayName": "Description", 
                 "cellTemplate": "<div>{{note.value}}</div>" 
