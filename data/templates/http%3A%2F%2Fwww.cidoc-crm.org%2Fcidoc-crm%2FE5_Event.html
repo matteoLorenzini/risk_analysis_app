@@ -222,7 +222,9 @@ WHERE {
   # EVENT DESCRIPTION: simple note attached to the current event
   #################################################################
   OPTIONAL {
-    ?currentEvent base:P3_has_note ?eventNote .
+    ?currentEvent base:P3_has_note ?event_Note .
+    ?event_Note rdfs:label ?eventNote .
+
   }
  
 }
