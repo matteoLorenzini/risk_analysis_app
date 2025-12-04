@@ -233,8 +233,7 @@ WHERE {
 ORDER BY ?event ?siteLabel
 
 ' column-configuration='[
-  { "displayName": "Agent",       "cellTemplate": "{{> agentCell}}" },
-  { "displayName": "Event",       "cellTemplate": "{{> eventNameCell}}" },
+  { "displayName": "Site",        "cellTemplate": "{{> siteCell}}" },
   { "displayName": "Scale A",     "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_note}}" },
   { "displayName": "Scale B",     "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_note}}" },
   { "displayName": "Scale C",     "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_note}}" },
@@ -244,25 +243,14 @@ ORDER BY ?event ?siteLabel
 ]'
  options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
  
-  <!-- Agent label -->
-  <template id="agentCell">
-    {{#if agent.value}}
-      <div class="pill">{{agent.value}}</div>
-    {{else if agent}}
-      <div class="pill">{{agent}}</div>
-    {{else}}
-      <div class="empty">—</div>
-    {{/if}}
-  </template>
-
-  <!-- Event name label -->
-  <template id="eventNameCell">
-    {{#if event_name.value}}
-      <div class="pill">{{event_name.value}}</div>
-    {{else if event_name}}
-      <div class="pill">{{event_name}}</div>
-    {{else if event.value}}
-      <div class="pill">{{event.value}}</div>
+  <!-- Site label -->
+  <template id="siteCell">
+    {{#if siteLabel.value}}
+      <semantic-link iri="{{site.value}}">{{siteLabel.value}}</semantic-link>
+    {{else if siteLabel}}
+      <semantic-link iri="{{site.value}}">{{siteLabel}}</semantic-link>
+    {{else if site.value}}
+      <semantic-link iri="{{site.value}}">{{site.value}}</semantic-link>
     {{else}}
       <div class="empty">—</div>
     {{/if}}
