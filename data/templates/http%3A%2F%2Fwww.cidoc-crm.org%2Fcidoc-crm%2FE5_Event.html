@@ -56,8 +56,8 @@ PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT
-  ?event ?event_name
-  ?site ?siteLabel
+  ?event 
+  ?site 
   ?uncertainty_score ?magnitude_value
   ?a_val1 ?a_val2 ?a_val3 ?a_note
   ?b_val1 ?b_val2 ?b_val3 ?b_note
@@ -176,7 +176,7 @@ WHERE {
 
       OPTIONAL { ?mB base:P3_has_note ?noteB }
     }
-    GROUP BY ?event
+    GROUP by ?event
   }
 
   #################################################################
@@ -211,9 +211,65 @@ WHERE {
 }
 ORDER BY ?event ?siteLabel
 
-' >
-                   </semantic-table>
-                    </div>
+' column-configuration='[
+  {"displayName":"Event","cellTemplate":"{{> eventCell}}"},
+  {"displayName":"Site","cellTemplate":"{{> siteCell}}"},
+  {"displayName":"Magnitude","field":"magnitude_value.value"},
+  {"displayName":"Uncertainty","field":"uncertainty_score.value"},
+  {"displayName":"Scale A","cellTemplate":"{{> scaleCellA}}"},
+  {"displayName":"Scale B","cellTemplate":"{{> scaleCellB}}"},
+  {"displayName":"Scale C","cellTemplate":"{{> scaleCellC}}"}
+]'>
+  <!-- Inline cell templates to visualize bindings -->
+  <template id="eventCell">
+    {{#if event_name.value}}
+      <div class="mono">{{event_name.value}}</div>
+    {{else if event_name}}
+      <div class="mono">{{event_name}}</div>
+    {{else}}
+      <div class="mono">{{event.value}}</div>
+    {{/if}}
+  </template>
+
+  <template id="siteCell">
+    {{#if siteLabel.value}}
+      <semantic-link iri="{{site.value}}">{{siteLabel.value}}</semantic-link>
+    {{else if siteLabel}}
+      <semantic-link iri="{{site.value}}">{{siteLabel}}</semantic-link>
+    {{else}}
+      <semantic-link iri="{{site.value}}">{{site.value}}</semantic-link>
+    {{/if}}
+  </template>
+
+  <template id="scaleCellA">
+    <div class="scale-triple-cell">
+      {{#if a_val1.value}}{{a_val1.value}}{{else}}{{#if a_val1}}{{a_val1}}{{/if}}{{/if}}
+      {{#if a_val2.value}} / {{a_val2.value}}{{else}}{{#if a_val2}} / {{a_val2}}{{/if}}{{/if}}
+      {{#if a_val3.value}} / {{a_val3.value}}{{else}}{{#if a_val3}} / {{a_val3}}{{/if}}{{/if}}
+      {{#if a_note.value}}<div class="muted">{{a_note.value}}</div>{{/if}}
+    </div>
+  </template>
+
+  <template id="scaleCellB">
+    <div class="scale-triple-cell">
+      {{#if b_val1.value}}{{b_val1.value}}{{else}}{{#if b_val1}}{{b_val1}}{{/if}}{{/if}}
+      {{#if b_val2.value}} / {{b_val2.value}}{{else}}{{#if b_val2}} / {{b_val2}}{{/if}}{{/if}}
+      {{#if b_val3.value}} / {{b_val3.value}}{{else}}{{#if b_val3}} / {{b_val3}}{{/if}}{{/if}}
+      {{#if b_note.value}}<div class="muted">{{b_note.value}}</div>{{/if}}
+    </div>
+  </template>
+
+  <template id="scaleCellC">
+    <div class="scale-triple-cell">
+      {{#if c_val1.value}}{{c_val1.value}}{{else}}{{#if c_val1}}{{c_val1}}{{/if}}{{/if}}
+      {{#if c_val2.value}} / {{c_val2.value}}{{else}}{{#if c_val2}} / {{c_val2}}{{/if}}{{/if}}
+      {{#if c_val3.value}} / {{c_val3.value}}{{else}}{{#if c_val3}} / {{c_val3}}{{/if}}{{/if}}
+      {{#if c_note.value}}<div class="muted">{{c_note.value}}</div>{{/if}}
+    </div>
+  </template>
+</semantic-table>
+
+                  </div>
               </div>
             </bs-tab-pane>
           </bs-tab-content>
