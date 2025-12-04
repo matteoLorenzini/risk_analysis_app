@@ -141,8 +141,13 @@
   ' debounce=500></semantic-search-query-keyword>
   
   <div data-flex-layout="row stretch-stretch">
-    <div data-flex-self="size-1of3" style="flex: 0 0 20px;">
-      <semantic-search-facet></semantic-search-facet>
+    <!-- make facet column wide enough to display contents -->
+    <div data-flex-self="size-1of3" style="flex: 0 0 320px; min-width: 240px; max-width: 38%;">
+      <div style="height:100%; overflow:auto; padding-right:8px;">
+        <semantic-search-facet></semantic-search-facet>
+        <!-- fallback when no facets rendered -->
+        <div id="facet-debug" style="display:none;color:#666;font-size:.9rem;margin-top:.6rem;">No facets available</div>
+      </div>
     </div>
     
     <semantic-search-result-holder>
