@@ -62,10 +62,11 @@ SELECT DISTINCT
   ?a_val1 ?a_val2 ?a_val3 ?a_note
   ?b_val1 ?b_val2 ?b_val3 ?b_note
   ?c_val1 ?c_val2 ?c_val3 ?c_note
+  ?eventNote
 WHERE {
 
   #################################################################
-  # 1) CURRENT EVENT + ITS TYPE (E55_Type)
+  # 1) CURRENT EVENT + ITS TYPE
   #################################################################
   BIND(<[[this]]> AS ?currentEvent)
 
@@ -88,15 +89,19 @@ WHERE {
   }
 
   #################################################################
-  # 4) UNCERTAINTY SCORE
+  # 4) UNCERTAINTY SCORE + NOTES
   #################################################################
   OPTIONAL {
     SELECT ?event (SAMPLE(?uVal) AS ?uncertainty_score)
+                  (SAMPLE(?uNote) AS ?uncertainty_note)
     WHERE {
       ?event base:P39i_was_measured_by ?u .
       ?u a crmsci:S21_Measurement ;
-         base:P2_has_type <https://w3id.org/sirius/type/uncertainty> ;
-         base:P40_observed_dimension ?uDim .
+         base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+
+      OPTIONAL { ?u base:P3_has_note ?uNote }
+
+      ?u base:P40_observed_dimension ?uDim .
       ?uDim base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
             rdfs:label ?uVal .
     }
@@ -104,15 +109,19 @@ WHERE {
   }
 
   #################################################################
-  # 5) MAGNITUDE SCORE
+  # 5) MAGNITUDE SCORE + NOTES
   #################################################################
   OPTIONAL {
     SELECT ?event (SAMPLE(?mVal) AS ?magnitude_value)
+                  (SAMPLE(?mNote) AS ?magnitude_note)
     WHERE {
       ?event base:P39i_was_measured_by ?mag .
       ?mag a crmsci:S21_Measurement ;
-           base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-           base:P40_observed_dimension ?mDim .
+           base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+
+      OPTIONAL { ?mag base:P3_has_note ?mNote }
+
+      ?mag base:P40_observed_dimension ?mDim .
       ?mDim base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
             base:P90_has_value ?mVal .
     }
@@ -120,7 +129,7 @@ WHERE {
   }
 
   #################################################################
-  # 6) SCALE A
+  # 6) SCALE A (VAL1 / VAL2 / VAL3) + NOTE
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -131,6 +140,8 @@ WHERE {
     WHERE {
       ?event base:P39i_was_measured_by ?mA .
       ?mA base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> .
+
+      OPTIONAL { ?mA base:P3_has_note ?note }
 
       OPTIONAL { ?mA base:P40_observed_dimension ?d1 .
                  ?d1 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ;
@@ -143,14 +154,12 @@ WHERE {
       OPTIONAL { ?mA base:P40_observed_dimension ?d3 .
                  ?d3 base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ;
                       rdfs:label ?v3 . }
-
-      OPTIONAL { ?mA base:P3_has_note ?note }
     }
     GROUP BY ?event
   }
 
   #################################################################
-  # 7) SCALE B
+  # 7) SCALE B (VAL1 / VAL2 / VAL3) + NOTE
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -161,6 +170,8 @@ WHERE {
     WHERE {
       ?event base:P39i_was_measured_by ?mB .
       ?mB base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> .
+
+      OPTIONAL { ?mB base:P3_has_note ?noteB }
 
       OPTIONAL { ?mB base:P40_observed_dimension ?db1 .
                  ?db1 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ;
@@ -173,14 +184,12 @@ WHERE {
       OPTIONAL { ?mB base:P40_observed_dimension ?db3 .
                  ?db3 base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ;
                       rdfs:label ?v3b . }
-
-      OPTIONAL { ?mB base:P3_has_note ?noteB }
     }
     GROUP BY ?event
   }
 
   #################################################################
-  # 8) SCALE C
+  # 8) SCALE C (VAL1 / VAL2 / VAL3) + NOTE
   #################################################################
   OPTIONAL {
     SELECT ?event
@@ -191,6 +200,8 @@ WHERE {
     WHERE {
       ?event base:P39i_was_measured_by ?mC .
       ?mC base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> .
+
+      OPTIONAL { ?mC base:P3_has_note ?noteC }
 
       OPTIONAL { ?mC base:P40_observed_dimension ?dc1 .
                  ?dc1 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ;
@@ -203,18 +214,68 @@ WHERE {
       OPTIONAL { ?mC base:P40_observed_dimension ?dc3 .
                  ?dc3 base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ;
                       rdfs:label ?v3c . }
-
-      OPTIONAL { ?mC base:P3_has_note ?noteC }
     }
     GROUP BY ?event
   }
+
+  #################################################################
+  # 9) EVENT-LEVEL NOTE
+  #################################################################
+  OPTIONAL { ?event base:P3_has_note ?eventNote }
+
 }
 ORDER BY ?event ?siteLabel
 
 ' column-configuration='[
                   {"variableName": "site",
-                  "displayName": "Sito Interessato"
+                  "displayName": "Impacted Site"
+                  },
+                  {"variableName": "eventNote",
+                   "displayName": "Event Description"
+                  },
+                  {"variableName": "uncertainty_score",
+                   "displayName": "Uncertainty Score"
+                  },
+                  {"variableName": "magnitude_value",
+                   "displayName": "Magnitude Value"
+                  },
+                  {"variableName": "a_val1",
+                   "displayName": "Scale A - Value 1"
+                  },
+                  {"variableName": "a_val2",
+                   "displayName": "Scale A - Value 2"
+                  },
+                  {"variableName": "a_val3",
+                   "displayName": "Scale A - Value 3"
+                  },
+                  {"variableName": "a_note",
+                   "displayName": "Scale A - Note"
+                  },
+                  {"variableName": "b_val1",
+                   "displayName": "Scale B - Value 1"
+                  },
+                  {"variableName": "b_val2",
+                   "displayName": "Scale B - Value 2"
+                  },
+                  {"variableName": "b_val3",
+                   "displayName": "Scale B - Value 3"
+                  },
+                  {"variableName": "b_note",
+                   "displayName": "Scale B - Note"
+                  },
+                  {"variableName": "c_val1",
+                   "displayName": "Scale C - Value 1"
+                  },
+                  {"variableName": "c_val2",
+                   "displayName": "Scale C - Value 2"
+                  },
+                  {"variableName": "c_val3",
+                   "displayName": "Scale C - Value 3"
+                  },
+                  {"variableName": "c_note",
+                   "displayName": "Scale C - Note"
                   }
+                  
                 ]'>
                    </semantic-table>
                     </div>
