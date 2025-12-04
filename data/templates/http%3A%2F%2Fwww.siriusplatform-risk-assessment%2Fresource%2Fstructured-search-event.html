@@ -233,25 +233,22 @@
             <semantic-search-result id='table-result-wrapper'>
               <semantic-table id='table-result' query="
               PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-              PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-              PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-              PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-              
-              SELECT DISTINCT ?subject ?value  ?note
-              WHERE { 
-                ?subject a crm:E5_Event ;
-                              crm:P2_has_type ?type .
-                  ?type a crm:E55_Type ;
-                        skos:prefLabel ?value .
-                             
-                
-                OPTIONAL {
+                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                    PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+                    
+                    SELECT DISTINCT ?subject ?value ?note
+                    WHERE { 
+                      ?subject a crm:E5_Event ;
+                    
+                                   rdfs:label ?value .
+                      
+                      OPTIONAL {
                         ?subject base:P3_has_note ?event_Note .
     ?event_Note rdfs:label ?note .
                       }
-                
-              }
-              ORDER BY ?value
+                    }
+                    ORDER BY ?value
               " column-configuration='[
               {
                 "displayName": "Event", 
