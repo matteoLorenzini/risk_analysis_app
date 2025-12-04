@@ -219,16 +219,12 @@ WHERE {
   }
 
     #################################################################
-  # EVENT DESCRIPTION FROM E89 PROPOSITIONAL OBJECT
+  # EVENT DESCRIPTION: simple note attached to the current event
   #################################################################
   OPTIONAL {
-    ?propObj base:P129_is_about ?event ;
-             a base:E89_Propositional_Object .
-
-    OPTIONAL { ?propObj base:P3_has_note ?eventNote}
+    ?currentEvent base:P3_has_note ?eventNote .
   }
-
-
+ 
 }
 ORDER BY ?event ?siteLabel
 
