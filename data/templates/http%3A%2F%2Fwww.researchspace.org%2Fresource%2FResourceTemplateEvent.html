@@ -8,6 +8,16 @@
     [[> crm:E5_Event]]
 </div>
 
+<!-- Fallback partial used by event templates -->
+<template id="scaleTripleCell">
+  <div class="scale-triple-cell" style="white-space:nowrap;">
+    {{#if v1.value}}{{v1.value}}{{else if v1}}{{v1}}{{/if}}
+    {{#if v2.value}} / {{v2.value}}{{else if v2}} / {{v2}}{{/if}}
+    {{#if v3.value}} / {{v3.value}}{{else if v3}} / {{v3}}{{/if}}
+    {{#if desc.value}}<div class="muted" style="margin-top:.25rem">{{desc.value}}</div>{{else if desc}}<div class="muted" style="margin-top:.25rem">{{desc}}</div>{{/if}}
+  </div>
+</template>
+
 [[else]]
 [[!-- Breadcrumb --]]
 <ol class="page-breadcrumb">
