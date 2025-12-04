@@ -218,10 +218,16 @@ WHERE {
     GROUP BY ?event
   }
 
+    #################################################################
+  # EVENT DESCRIPTION FROM E89 PROPOSITIONAL OBJECT
   #################################################################
-  # 9) EVENT-LEVEL NOTE
-  #################################################################
-  OPTIONAL { ?event base:P3_has_note ?eventNote }
+  OPTIONAL {
+    ?propObj base:P129_is_about ?event ;
+             a base:E89_Propositional_Object .
+
+    OPTIONAL { ?propObj base:P3_has_note ?eventNote}
+  }
+
 
 }
 ORDER BY ?event ?siteLabel
