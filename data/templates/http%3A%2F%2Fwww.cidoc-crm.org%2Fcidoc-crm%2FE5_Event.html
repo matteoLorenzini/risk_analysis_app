@@ -233,58 +233,120 @@ WHERE {
 ORDER BY ?event ?siteLabel
 
 ' column-configuration='[
-                  {"variableName": "site",
-                  "displayName": "Impacted Site"
-                  },
-                  {"variableName": "eventNote",
-                   "displayName": "Event Description"
-                  },
-                  {"variableName": "uncertainty_score",
-                   "displayName": "Uncertainty Score"
-                  },
-                  {"variableName": "magnitude_value",
-                   "displayName": "Magnitude Value"
-                  },
-                  {"variableName": "a_val1",
-                   "displayName": "Scale A - Value 1"
-                  },
-                  {"variableName": "a_val2",
-                   "displayName": "Scale A - Value 2"
-                  },
-                  {"variableName": "a_val3",
-                   "displayName": "Scale A - Value 3"
-                  },
-                  {"variableName": "a_note",
-                   "displayName": "Scale A - Note"
-                  },
-                  {"variableName": "b_val1",
-                   "displayName": "Scale B - Value 1"
-                  },
-                  {"variableName": "b_val2",
-                   "displayName": "Scale B - Value 2"
-                  },
-                  {"variableName": "b_val3",
-                   "displayName": "Scale B - Value 3"
-                  },
-                  {"variableName": "b_note",
-                   "displayName": "Scale B - Note"
-                  },
-                  {"variableName": "c_val1",
-                   "displayName": "Scale C - Value 1"
-                  },
-                  {"variableName": "c_val2",
-                   "displayName": "Scale C - Value 2"
-                  },
-                  {"variableName": "c_val3",
-                   "displayName": "Scale C - Value 3"
-                  },
-                  {"variableName": "c_note",
-                   "displayName": "Scale C - Note"
-                  }
-                  
-                ]'>
-                   </semantic-table>
-                    </div>
+  { "displayName": "Agent",       "cellTemplate": "{{> agentCell}}" },
+  { "displayName": "Event",       "cellTemplate": "{{> eventNameCell}}" },
+  { "displayName": "Scale A",     "cellTemplate": "{{> scaleTripleCell v1=a_val1 v2=a_val2 v3=a_val3 desc=a_note}}" },
+  { "displayName": "Scale B",     "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_note}}" },
+  { "displayName": "Scale C",     "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_note}}" },
+  { "displayName": "Description", "cellTemplate": "{{> descCell desc=eventNote}}" },
+  { "displayName": "Magnitude",   "cellTemplate": "{{> valueRangeCell min=magnitude_value max=magnitude_value}}" },
+  { "displayName": "Uncertainty", "cellTemplate": "{{> valueRangeCell min=uncertainty_score max=uncertainty_score}}" }
+]'
+ options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'>
+ 
+  <!-- Agent label -->
+  <template id="agentCell">
+    {{#if agent.value}}
+      <div class="pill">{{agent.value}}</div>
+    {{else if agent}}
+      <div class="pill">{{agent}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+  <!-- Event name label -->
+  <template id="eventNameCell">
+    {{#if event_name.value}}
+      <div class="pill">{{event_name.value}}</div>
+    {{else if event_name}}
+      <div class="pill">{{event_name}}</div>
+    {{else if event.value}}
+      <div class="pill">{{event.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+  <!-- Generic min / max value cell (e.g., Magnitude / Uncertainty) -->
+  <template id="valueRangeCell">
+    {{#if min.value}}
+      <div class="val"><span class="dim-label">Val.</span> {{min.value}}</div>
+      {{#if max.value}}
+        <div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>
+      {{/if}}
+    {{else if min}}
+      <div class="val"><span class="dim-label">Val.</span> {{min}}</div>
+      {{#if max}}
+        <div class="val"><span class="dim-label">Val.</span> {{max}}</div>
+      {{/if}}
+    {{else if max.value}}
+      <div class="val"><span class="dim-label">Val.</span> {{max.value}}</div>
+    {{else if max}}
+      <div class="val"><span class="dim-label">Val.</span> {{max}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+  <!-- Scale score: Val. 1 / Val. 2 / Val. 3 + Description -->
+  <template id="scaleTripleCell">
+    {{#if v1.value}}
+      <div class="val"><strong><span class="dim-label">Val.</span> {{v1.value}}</strong></div>
+    {{else if v1}}
+      <div class="val"><strong><span class="dim-label">Val.</span> {{v1}}</strong></div>
+    {{/if}}
+
+    {{#if v2.value}}
+      <div class="val"><strong><span class="dim-label">Val.</span> {{v2.value}}</strong></div>
+    {{else if v2}}
+      <div class="val"><strong><span class="dim-label">Val.</span> {{v2}}</strong></div>
+    {{/if}}
+
+    {{#if v3.value}}
+      <div class="val"><strong><span class="dim-label">Val.</span> {{v3.value}}</strong></div>
+    {{else if v3}}
+      <div class="val"><strong><span class="dim-label">Val.</span> {{v3}}</strong></div>
+    {{/if}}
+
+    {{#unless v1.value}}
+      {{#unless v2.value}}
+        {{#unless v3.value}}
+          <div class="empty">—</div>
+        {{/unless}}
+      {{/unless}}
+    {{/unless}}
+
+    <div class="note"><span class="dim-label">Description</span>
+      {{#if desc.value}}{{desc.value}}{{else if desc}}{{desc}}{{else}}—{{/if}}
+    </div>
+  </template>
+
+  <!-- Risk Analysis description -->
+  <template id="descCell">
+    {{#if desc.value}}
+      <div class="note">{{desc.value}}</div>
+    {{else if desc}}
+      <div class="note">{{desc}}</div>
+    {{else}}
+      <div class="empty">—</div>
+    {{/if}}
+  </template>
+
+</semantic-table>
+
+<style>
+  /* Scoped table helpers */
+  #site-events-table .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; word-break: break-all; }
+  #site-events-table .pill { display:inline-block; padding:.2rem .5rem; border:1px solid #e5e7eb; border-radius:999px; }
+  #site-events-table .val  { line-height: 1.25; }
+  #site-events-table .note { white-space: pre-wrap; opacity:.95; line-height:1.25; margin-top:.15rem; }
+  #site-events-table .empty{ text-align:center; opacity:.5; }
+  #site-events-table .dim-label { font-size:.825em; text-transform:uppercase; letter-spacing:.02em; opacity:.7; margin-right:.35rem; }
+  #site-events-table .muted { color:#6b7280; font-size:.875rem; margin-top:.25rem; }
+</style>
+
+                   </div>
               </div>
             </bs-tab-pane>
           </bs-tab-content>
