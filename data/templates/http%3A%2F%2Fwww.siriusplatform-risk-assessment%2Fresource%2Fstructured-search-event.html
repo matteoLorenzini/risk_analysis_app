@@ -240,6 +240,7 @@
                     SELECT DISTINCT ?subject ?value ?note
                     WHERE { 
                       ?subject a crm:E5_Event ;
+                                a crm:P31_has_modified ?site;
                     
                                    rdfs:label ?value .
                       
@@ -252,11 +253,11 @@
               " column-configuration='[
               {
                 "displayName": "Event", 
-                "cellTemplate": "<div>{{value.value}}</div>" 
+                "cellTemplate": "<semantic-link iri=\"{{subject.value}}\">{{value.value}}</semantic-link>"  
               },
               {
                 "displayName": "Site", 
-                "cellTemplate": "<semantic-link iri=\"{{subject.value}}\">{{value.value}}</semantic-link>" 
+                "cellTemplate": "<semantic-link iri=\"{{site.value}}\"></semantic-link>" 
               },
               
               {
