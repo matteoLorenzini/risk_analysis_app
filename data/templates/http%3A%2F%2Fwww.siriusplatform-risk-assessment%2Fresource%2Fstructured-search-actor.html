@@ -111,7 +111,7 @@
     }],
     "<http://www.siriusplatform-risk-assessment/field/event>": [{
       "kind": "resource",
-      "queryPattern": "{$subject ^base:P11_had_participant ?__value__ . ?__value__ a base:E5_Event .}"
+      "queryPattern": "{$subject ^base:P11_had_participant ?__value__ . ?__value__ a base:E5_Event; rdf:label ?label. GROUP BY ?label .}"
     }]
   }'
   >
