@@ -80,7 +80,7 @@
         "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
         "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>"
       },
-      { // ✨ NEW RELATION: Used for the facet list to group options by label
+      { 
         "iri":"<http://www.siriusplatform-risk-assessment/field/event_label_group>", 
         "label":"Event", 
         "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
@@ -119,7 +119,7 @@
       "kind": "resource",
       "queryPattern": "{$subject ^base:P11_had_participant ?__value__ . ?__value__ a base:E5_Event .}"
     }],
-    // ✨ NEW RELATION DEFINITION: Maps Actor to Event Label (used for facet)
+
     "<http://www.siriusplatform-risk-assessment/field/event_label_group>": [{
       "kind": "resource",
       "queryPattern": "{$subject ^base:P11_had_participant ?eventIRI . ?eventIRI rdfs:label ?__value__ . ?eventIRI a base:E5_Event .}"
@@ -182,7 +182,7 @@
                       ?subject a crm:E39_Actor ;
                                    rdfs:label ?value .
                       
-                      // ✨ ADDED: Links Actor to Event Label for new facet filtering
+                  
                       OPTIONAL {
                         ?subject ^crm:P11_had_participant ?eventIRI .
                         ?eventIRI rdfs:label ?eventLabel .
@@ -261,7 +261,7 @@
                 ?subject a crm:E39_Actor ;
                               rdfs:label ?value .
                 
-                // ✨ ADDED: Links Actor to Event Label for new facet filtering
+               
                 OPTIONAL {
                   ?subject ^crm:P11_had_participant ?eventIRI .
                   ?eventIRI rdfs:label ?eventLabel .
