@@ -115,12 +115,11 @@
         FILTER(?score >= ?__numericRangeBeginValue__) .
       }"
     }],
-    "<http://www.siriusplatform-risk-assessment/field/event>": [{
+"<http://www.siriusplatform-risk-assessment/field/event>": [{
       "kind": "resource",
       "queryPattern": "{$subject ^base:P11_had_participant ?__value__ . ?__value__ a base:E5_Event .}"
     }],
-
-    "<http://www.siriusplatform-risk-assessment/field/event_label_group>": [{
+"<http://www.siriusplatform-risk-assessment/field/event_label_group>": [{
       "kind": "resource",
       "queryPattern": "{$subject ^base:P11_had_participant ?eventIRI . ?eventIRI rdfs:label ?__value__ . ?eventIRI a base:E5_Event .}"
     }]
