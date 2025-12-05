@@ -276,18 +276,23 @@
             <semantic-search-result id='map-result-wrapper'>
               <div style='height: 30vw;'>
                 <semantic-map id='map-result' query='
-                PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-                PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                
-                SELECT DISTINCT (CONCAT("Point(", STR(?coords), ")") AS ?wkt) ?label ?subject WHERE {
-                  ?subject a crm:E18_Physical_Thing ;
-                           crm:P1_is_identified_by ?appellation ;
-                           crm:P55_has_current_location ?coords .
-                  ?appellation a crm:E41_Appellation ;
-                               skos:prefLabel ?label .
-                }
+              PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  crm:  <http://www.cidoc-crm.org/cidoc-crm/>
+
+SELECT DISTINCT  (concat("Point(", str(?coords), ")") AS ?wkt) ?label ?subject
+WHERE
+  { ?subject  rdf:type  crm:E39_Actor .
+    ?subject ^crm:P11_had_participant ?event .
+    ?subject  rdfs:label            ?label .
+    ?event    rdf:type              crm:E5_Event ;
+              crm:P31_has_modified  ?site .
+    ?site     rdf:type              crm:E18_Physical_Thing ;
+              crm:P1_is_identified_by  ?appellation ;
+              crm:P55_has_current_location  ?coords .
+    ?appellation  rdf:type          crm:E41_Appellation
+  }
                 ' tuple-template='{{> template }}'>
                 <template id='template'>
                   <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
