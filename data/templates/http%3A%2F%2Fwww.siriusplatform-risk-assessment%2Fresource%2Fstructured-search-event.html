@@ -59,8 +59,13 @@
       {
         "kind": "resource",
         "queryPattern": "{ $subject crm:P31_has_modified  ?site .
-                            ?site   rdf:type crm:E18_Physical_Thing ;
-                                    crm:P53_has_former_or_current_location  ?__value__. }"
+    ?site     rdf:type              crm:E18_Physical_Thing ;
+              crm:P53_has_former_or_current_location  ?__value__ .
+    ?__value__    rdf:type              crm:E53_Place ;
+              crmgeo:P1_is_identified_by  ?place_appellation .
+    ?place_appellation
+              rdf:type              crmgeo:E44_Place_Appellation ;
+              skos:prefLabel        ?__literal__ }"
       }
     ],
     "<http://www.siriusplatform-risk-assessment/field/site>": [
