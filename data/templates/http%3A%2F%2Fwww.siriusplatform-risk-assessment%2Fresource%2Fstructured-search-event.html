@@ -261,7 +261,8 @@ PREFIX  crm:  <http://www.cidoc-crm.org/cidoc-crm/>
 
 SELECT DISTINCT  (concat("Point(", str(?coords), ")") AS ?wkt) ?label ?subject
 WHERE
-  { ?event    rdf:type              crm:E5_Event ;
+  { ?subject    rdf:type              crm:E5_Event ;
+              rdfs:label ?label;
               crm:P31_has_modified  ?site .
     ?site     rdf:type              crm:E18_Physical_Thing ;
               crm:P1_is_identified_by  ?appellation ;
