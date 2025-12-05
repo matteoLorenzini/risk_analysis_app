@@ -279,19 +279,7 @@
                 }
               }
               ORDER BY ?value
-              " column-configuration='[
-              {
-                "displayName": "Actor", 
-                "cellTemplate": "<semantic-link iri=\"{{subject.value}}\">{{value.value}}</semantic-link>" 
-              },
-              {
-                "displayName": "Type", 
-                "cellTemplate": "<div>{{label_type.value}}</div>" 
-              },
-              {
-                "displayName": "Description", 
-                "cellTemplate": "<div>{{note.value}}</div>" 
-              }]' options='{"showFilter":true, "resultsPerPage":10}'>
+              " column-configuration='[{"displayName":"Actor","cellTemplate":"<semantic-link iri=\\\"{{subject.value}}\\\">{{value.value}}<\\/semantic-link>"},{"displayName":"Type","cellTemplate":"<div>{{label_type.value}}<\\/div>"},{"displayName":"Description","cellTemplate":"<div>{{note.value}}<\\/div>"}]' options='{\"showFilter\":true,\"resultsPerPage\":10}'>
               </semantic-table>
             </semantic-search-result>
           </bs-tab>
@@ -332,13 +320,13 @@ WHERE
           filename="csv-result.csv">
           <button class="btn btn-default">Download CSV</button>
         </mp-sparql-download>
-      </semantic-search-result>
-      <semantic-search-result id='json-download-wrapper'>
+        </semantic-search-result>
+        <semantic-search-result id='json-download-wrapper'>
         <mp-sparql-download id='json-download' query="SELECT * WHERE { }" header="application/sparql-results+json"
         filename="json-result.json">
         <button class="btn btn-default">Download JSON</button>
         </mp-sparql-download>
-      </semantic-search-result>
+        </semantic-search-result>
     </bs-panel>
 </div>
 </semantic-search-result-holder>
