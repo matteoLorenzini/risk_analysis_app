@@ -110,9 +110,9 @@
       }"
     }],
     "<http://www.siriusplatform-risk-assessment/field/event>": [{
-      "kind": "resource",
-      "queryPattern": "{$subject ^base:P11_had_participant ?__value__ . }"
-    }]
+ "kind": "resource",
+queryPattern": "{$subject ^base:P11_had_participant ?eventIRI . ?eventIRI rdfs:label ?__value__ . ?eventIRI a base:E5_Event .}"
+}]
   }'
   >
   
