@@ -22,21 +22,48 @@ categories='{
       "iri":"<http://www.cidoc-crm.org/cidoc-crm/E55_Type>",
       "label":"Place Type",
       "thumbnail": "../assets/images/icons/rs-icons/concept.svg"
-    }
+    },
+    { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>", 
+    "label":"Event", 
+    "thumbnail":"../assets/images/icons/rs-icons/event.svg" },
+    { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>", 
+    "label":"Site", 
+    "thumbnail":"../assets/images/icons/rs-icons/place.svg" }
     ],
     
     "relations":
     [
     {
-      "iri":"<http://www.siriusplatform-risk-assessment/field/place_type>",
+      "iri":"<http://www.siriusplatform-risk-assessment/field/place_site>",
       "label":"Place Type",
       "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E53_Place>",
-      "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E55_Type>"
-    }
+      "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>"
+    },
+      {
+        "iri":"<http://www.siriusplatform-risk-assessment/field/event_place>",
+        "label":"Place",
+        "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E53_Place>",
+        "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>"
+      }
     ]
   }'
 
   relations='{
+    "<http://www.siriusplatform-risk-assessment/field/event_place>": [
+      {
+        "kind": "resource",
+        "queryPattern": "{ $subject a crm:E53_Place;
+         ^crm:P53_has_former_or_current_location ?site.
+ ?site a crm:E18_Physical_Thing; ^crm:P31_has_modified ?__value__ . ?__value__ a crm:E5_Event . }"
+      }
+    ],
+    "<http://www.siriusplatform-risk-assessment/field/place_site>": [
+      {
+        "kind": "resource",
+        "queryPattern": "{ $subject a crm:E53_Place;
+         ^crm:P53_has_former_or_current_location ?__value__ .}"
+      }
+    ],
     "<http://www.siriusplatform-risk-assessment/field/place_type>": [{
       "kind": "resource",
       "queryPattern": "{$subject a base:E53_Place ; base:P2_has_type ?__value__ . ?__value__ a base:E55_Type .}"
