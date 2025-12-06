@@ -205,7 +205,7 @@ categories='{
                   SELECT DISTINCT (CONCAT("Point(", STR(?coords), ")") AS ?wkt) ?label ?subject WHERE {
                     ?subject a crm:E53_Place ;
                              crmgeo:P1_is_identified_by ?appellation ;
-                             crmgeo:P168_place_is_defined_by ?coords .
+                             crm:P168_place_is_defined_by ?coords .
                     ?appellation a crmgeo:E44_Place_Appellation ;
                                  skos:prefLabel ?label .
                   }
