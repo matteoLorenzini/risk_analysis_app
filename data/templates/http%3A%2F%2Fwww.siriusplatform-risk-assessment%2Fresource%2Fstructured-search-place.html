@@ -54,7 +54,7 @@ categories='{
         "kind": "resource",
         "queryPattern": "{ $subject a crm:E53_Place;
          ^crm:P53_has_former_or_current_location ?site.
- ?site a crm:E18_Physical_Thing; ^crm:P31_has_modified ?__value__ . ?__value__ a crm:E5_Event . }"
+ ?site a crm:E18_Physical_Thing; ^crm:P31_has_modified ?event . ?event a crm:E5_Event; crm:P2_has_type ?__value__. }"
       }
     ],
     "<http://www.siriusplatform-risk-assessment/field/place_site>": [
