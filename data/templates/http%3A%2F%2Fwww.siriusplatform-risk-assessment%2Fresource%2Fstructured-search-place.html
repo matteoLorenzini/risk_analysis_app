@@ -202,10 +202,11 @@ categories='{
                   PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/>
                   PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                   
-                  SELECT DISTINCT (CONCAT("Point(", STR(?coords), ")") AS ?wkt) ?label ?subject WHERE {
+                  SELECT DISTINCT (CONCAT("Point(", STR(?point), ")") AS ?wkt) ?label ?subject WHERE {
                     ?subject a crm:E53_Place ;
                              crmgeo:P1_is_identified_by ?appellation ;
                              crm:P168_place_is_defined_by ?coords .
+                             ?coords rdfs:label ?point.
                     ?appellation a crmgeo:E44_Place_Appellation ;
                                  skos:prefLabel ?label .
                   }
