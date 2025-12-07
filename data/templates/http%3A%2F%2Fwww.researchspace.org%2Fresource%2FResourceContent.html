@@ -48,6 +48,31 @@
               query='ASK { {<[[this]]> crm:P138i_has_representation|rs:PX_has_main_representation ?image . } UNION {<[[this]]> a rs:EX_Digital_Image . } UNION {<[[this]]> a rs:EX_Digital_Image_Region . } }'
               then='{{> then}}'>
               <template id="then">
+                <!-- fetch ArCo / Sirius document preview for this E18 physical thing -->
+                <semantic-query query='
+PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
+
+SELECT DISTINCT ?document ?preview WHERE {
+  BIND(<[[this]]> AS ?subject)
+
+  ?subject a crm:E18_Physical_Thing ;
+           crm:P70i_is_documented_in ?document .
+
+  ?document a crm:E31_Document .
+  OPTIONAL { ?document pico:preview ?preview . }
+} ORDER BY ?subject LIMIT 1
+' template='{{> previewTemplate}}'>
+                  <template id="previewTemplate">
+                    {{#if bindings.[0].preview.value}}
+                      <div class="detail-thumb" style="margin-bottom:8px;">
+                        <img src="{{bindings.[0].preview.value}}" alt="Preview" class="detail-preview-img" style="max-width:240px;max-height:160px;object-fit:cover;border-radius:4px;">
+                      </div>
+                    {{/if}}
+                  </template>
+                </semantic-query>
+
                 <div class="rs-resource-img__btngroup">
                   {{#if (hasKey allTypes "http://www.researchspace.org/ontology/EX_Digital_Image_Region")}}
                     <!-- no media icon for image regions -->
