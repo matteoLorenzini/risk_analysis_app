@@ -11,30 +11,27 @@ PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
 PREFIX arco: <https://w3id.org/arco/ontology/arco/>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX schema: <http://schema.org/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
-SELECT DISTINCT ?preview WHERE {
+SELECT DISTINCT ?subject  ?preview
+WHERE {
   BIND(<[[this]]> AS ?subject)
+
+  ### 1) Sirius: Physical Thing + Document + optional preview
   {
     ?subject a crm:E18_Physical_Thing ;
              crm:P70i_is_documented_in ?document .
     ?document a crm:E31_Document .
-    OPTIONAL { ?document (pico:preview|foaf:depiction|foaf:thumbnail|schema:image|schema:thumbnailUrl) ?preview . }
+    OPTIONAL { ?document pico:preview ?preview . }
   }
+
   UNION
+
+  ### 2) ArCo: Heritage object + pico:preview
   {
-    ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage .
-    OPTIONAL { ?subject (pico:preview|foaf:depiction|foaf:thumbnail|schema:image|schema:thumbnailUrl) ?preview . }
-  }
-  OPTIONAL {
-    ?document (rdfs:seeAlso|owl:sameAs) ?ext .
-    OPTIONAL { ?ext (pico:preview|foaf:depiction|foaf:thumbnail|schema:image|schema:thumbnailUrl) ?preview . }
+    ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage ;
+             pico:preview ?preview .
   }
 }
-LIMIT 1
 ' template='{{> thumbnailPreview}}'>
         <template id='thumbnailPreview'>
           {{#if bindings}}
@@ -133,40 +130,25 @@ PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
 PREFIX arco: <https://w3id.org/arco/ontology/arco/>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX schema: <http://schema.org/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
-SELECT DISTINCT ?document ?preview WHERE {
+SELECT DISTINCT ?subject  ?preview
+WHERE {
   BIND(<[[this]]> AS ?subject)
 
-  # 1) Document attached to E18 Physical Thing
+  ### 1) Sirius: Physical Thing + Document + optional preview
   {
     ?subject a crm:E18_Physical_Thing ;
              crm:P70i_is_documented_in ?document .
     ?document a crm:E31_Document .
-    OPTIONAL {
-      ?document (pico:preview|foaf:depiction|foaf:thumbnail|schema:image|schema:thumbnailUrl) ?preview .
-    }
+    OPTIONAL { ?document pico:preview ?preview . }
   }
 
   UNION
 
-  # 2) ArCo heritage resource with preview directly
+  ### 2) ArCo: Heritage object + pico:preview
   {
-    ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage .
-    OPTIONAL {
-      ?subject (pico:preview|foaf:depiction|foaf:thumbnail|schema:image|schema:thumbnailUrl) ?preview .
-    }
-  }
-
-  # 3) If no direct preview, follow seeAlso / sameAs from the document to an external resource and try the same predicates
-  OPTIONAL {
-    ?document (rdfs:seeAlso|owl:sameAs) ?ext .
-    OPTIONAL {
-      ?ext (pico:preview|foaf:depiction|foaf:thumbnail|schema:image|schema:thumbnailUrl) ?preview .
-    }
+    ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage ;
+             pico:preview ?preview .
   }
 }
 ' template='{{> headerImageTemplate}}'>
