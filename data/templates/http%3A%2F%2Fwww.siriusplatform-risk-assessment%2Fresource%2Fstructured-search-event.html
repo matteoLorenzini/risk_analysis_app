@@ -27,7 +27,14 @@
       { "iri":"<http://www.cidoc-crm.org/cidoc-crm/E53_Place>", "label":"Place", "thumbnail":"../assets/images/icons/rs-icons/place.svg" }
     ],
     "relations": [
+    
       {
+        "iri":"<http://www.siriusplatform-risk-assessment/field/event_place>",
+        "label":"Place",
+        "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
+        "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E53_Place>"
+      },  
+    {
         "iri":"<http://www.siriusplatform-risk-assessment/field/site>",
         "label":"Site",
         "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
@@ -44,12 +51,6 @@
         "label":"Magnitude Range",
         "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
         "hasRange":"<http://www.w3.org/2001/XMLSchema#Decimal>"
-      },
-      {
-        "iri":"<http://www.siriusplatform-risk-assessment/field/event_place>",
-        "label":"Place",
-        "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
-        "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E53_Place>"
       }
     ]
   }'
