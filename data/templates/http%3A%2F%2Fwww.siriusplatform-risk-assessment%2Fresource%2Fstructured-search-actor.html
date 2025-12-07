@@ -63,34 +63,34 @@
     "relations": [
       {
         "iri":"<http://www.siriusplatform-risk-assessment/field/site_type>",
-        "label":"Site Type",
+        "label":"Sites Type",
         "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
         "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E55_Type>"
       },
       {
         "iri":"<http://www.siriusplatform-risk-assessment/field/actor_sites>",
-        "label":"Sites (agent involved)",
+        "label":"Sites",
         "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
         "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>"
       },
       {
+        "iri":"<http://www.siriusplatform-risk-assessment/field/agent_places>",
+        "label":"Places",
+        "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
+        "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E53_Place>"
+      },
+      {
+        "iri":"<http://www.siriusplatform-risk-assessment/field/event>",
+        "label":"Events",
+        "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
+        "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>"
+      },{
         "iri":"<http://www.siriusplatform-risk-assessment/field/min_score>",
         "label":"Magnitude Range",
         "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
         "hasRange":"<http://www.w3.org/2001/XMLSchema#Decimal>"
-      },
-      {
-        "iri":"<http://www.siriusplatform-risk-assessment/field/event>",
-        "label":"Event",
-        "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
-        "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>"
-      },
-      {
-        "iri":"<http://www.siriusplatform-risk-assessment/field/agent_places>",
-        "label":"Places (agent involved)",
-        "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
-        "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E53_Place>"
       }
+      
     ]
   }'
 
