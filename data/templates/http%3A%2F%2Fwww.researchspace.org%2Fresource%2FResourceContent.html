@@ -5,34 +5,82 @@
     <div class="details-header">
       <mp-resource-thumbnail iri='[[this]]' class='detail-img'>
         <mp-resource-thumbnail-fallback>
-          <with-types iri='[[this]]' template='{{> noImage}}' [[> rsp:TypeMappings]]>
-            <template id="noImage">
-              <span class="rs-icon {{getValueByKey typeToImage allTypes 'rs-icon-no-image'}} detail-icon-noimg" alt="{{directTypesLabels}}" title='{{directTypesLabels}}'></span>
-            </template>
-          </with-types>
-        </mp-resource-thumbnail-fallback>
-      </mp-resource-thumbnail>
-      <div style="max-width: 70%;">
-        <mp-draggable iri='[[this]]'>
-          <div class="draggable-container">
-            <semantic-query
-              query='SELECT ?type ?typeLabel WHERE { <[[this]]> a ?type . ?type rdfs:label ?typeLabel . FILTER (lang(?typeLabel) = "en") }'
-              template='{{> resourceType }}'>
-              <template id='resourceType'>
-                <div class="detail-type">
-                  {{#each bindings}}{{typeLabel.value}}{{#if @last}}{{else}}, {{/if}}{{/each}}
-                </div>
-              </template>
-            </semantic-query>
-            <mp-label iri='[[this]]' class="detail-label"></mp-label>
-          </div>
-        </mp-draggable>
-        <mp-copy-to-clipboard text='[[this]]'>
-          <div class="rs-copy-IRI">Copy IRI</div>
-        </mp-copy-to-clipboard>
+          <!-- Try to fetch preview URL(s) from document / external resources -->
+          <semantic-query query='
+PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
+PREFIX arco: <https://w3id.org/arco/ontology/arco/>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX schema: <http://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT DISTINCT ?preview WHERE {
+  BIND(<[[this]]> AS ?subject)
+  {
+    ?subject a crm:E18_Physical_Thing ;
+             crm:P70i_is_documented_in ?document .
+    ?document a crm:E31_Document .
+    OPTIONAL { ?document (pico:preview|foaf:depiction|foaf:thumbnail|schema:image|schema:thumbnailUrl) ?preview . }
+  }
+  UNION
+  {
+    ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage .
+    OPTIONAL { ?subject (pico:preview|foaf:depiction|foaf:thumbnail|schema:image|schema:thumbnailUrl) ?preview . }
+  }
+  OPTIONAL {
+    ?document (rdfs:seeAlso|owl:sameAs) ?ext .
+    OPTIONAL { ?ext (pico:preview|foaf:depiction|foaf:thumbnail|schema:image|schema:thumbnailUrl) ?preview . }
+  }
+}
+LIMIT 1
+' template='{{> thumbnailPreview}}'>
+        <template id='thumbnailPreview'>
+          {{#if bindings}}
+            {{#with bindings.[0]}}
+              {{#if preview.value}}
+                <img src='{{preview.value}}' alt='Preview' class='detail-img' />
+              {{else}}
+                {{> noImage}}
+              {{/if}}
+            {{/with}}
+          {{else}}
+            {{> noImage}}
+          {{/if}}
+        </template>
+      </semantic-query>
+
+      <!-- Original type-based fallback icon -->
+      <with-types iri='[[this]]' template='{{> noImage}}' [[> rsp:TypeMappings]]>
+        <template id="noImage">
+          <span class="rs-icon {{getValueByKey typeToImage allTypes 'rs-icon-no-image'}} detail-icon-noimg" alt="{{directTypesLabels}}" title='{{directTypesLabels}}'></span>
+        </template>
+      </with-types>
+    </mp-resource-thumbnail-fallback>
+  </mp-resource-thumbnail>
+
+  <div style="max-width: 70%;">
+    <mp-draggable iri='[[this]]'>
+      <div class="draggable-container">
+        <semantic-query
+          query='SELECT ?type ?typeLabel WHERE { <[[this]]> a ?type . ?type rdfs:label ?typeLabel . FILTER (lang(?typeLabel) = "en") }'
+          template='{{> resourceType }}'>
+          <template id='resourceType'>
+            <div class="detail-type">
+              {{#each bindings}}{{typeLabel.value}}{{#if @last}}{{else}}, {{/if}}{{/each}}
+            </div>
+          </template>
+        </semantic-query>
+        <mp-label iri='[[this]]' class="detail-label"></mp-label>
       </div>
-    </div>
-    [[/block]]
+    </mp-draggable>
+    <mp-copy-to-clipboard text='[[this]]'>
+      <div class="rs-copy-IRI">Copy IRI</div>
+    </mp-copy-to-clipboard>
+  </div>
+</div>
+[[/block]]
   -->
   <bs-tabs class="details-tabs">
     <bs-tab title='Site Description' event-key='site-description' mount-on-enter=true class="rawdata-tab">
@@ -111,7 +159,6 @@ SELECT DISTINCT ?document ?preview WHERE {
     OPTIONAL {
       ?subject (pico:preview|foaf:depiction|foaf:thumbnail|schema:image|schema:thumbnailUrl) ?preview .
     }
-    BIND("" AS ?document)
   }
 
   # 3) If no direct preview, follow seeAlso / sameAs from the document to an external resource and try the same predicates
