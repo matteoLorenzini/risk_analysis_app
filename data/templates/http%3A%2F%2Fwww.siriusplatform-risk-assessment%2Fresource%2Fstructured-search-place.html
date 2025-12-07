@@ -1,14 +1,26 @@
 <semantic-search
-categories='{
-  "<http://www.siriusplatform-risk-assessment/field/place_type>": [{
-    "kind": "resource",
-    "queryPattern": "
-      {
-        $subject a <http://www.cidoc-crm.org/cidoc-crm/E53_Place> ;
-                 <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?__value__ .
-      }
-    "
-  }]}'
+  categories='{
+    "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
+      "kind": "numeric-range",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "queryPattern": "
+        {
+          $subject a crm:E53_Place .
+
+  ?site a crm:E18_Physical_Thing ;
+        crm:P53_has_former_or_current_location ?subject .
+
+  ?event a crm:E5_Event ;
+           crm:P39i_was_measured_by ?m .
+          ?m crm:P40_observed_dimension ?d .
+          ?d crm:P90_has_value ?score .
+          FILTER(?score <= ?__numericRangeEndValue__) .
+          FILTER(?score >= ?__numericRangeBeginValue__) .
+        }
+      "
+    }]
+  }'
+
 
   search-profile='{                   
     "categories":  
@@ -94,7 +106,28 @@ categories='{
       "kind": "resource",
       "queryPattern": "{$subject a base:E53_Place ; base:P2_has_type ?__value__ . ?__value__ a base:E55_Type .}"
     }]
-  }' 
+  ,
+    "<http://www.siriusplatform-risk-assessment/field/min_score>": [{
+      "kind": "numeric-range",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "queryPattern": "{
+        $subject a crm:E53_Place .
+
+  ?site a crm:E18_Physical_Thing ;
+        crm:P53_has_former_or_current_location ?subject .
+
+  ?event a crm:E5_Event ;
+           crm:P39i_was_measured_by ?magnitude .
+        ?magnitude a <http://www.ics.forth.gr/isl/CRMsci/S21_Measurement> ;
+                   crm:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
+                   crm:P40_observed_dimension ?dimension .
+        ?dimension a crm:E54_Dimension ;
+                   crm:P90_has_value ?score .
+        FILTER(?score <= ?__numericRangeEndValue__) .
+        FILTER(?score >= ?__numericRangeBeginValue__) .
+      }"
+    }],
+  }'
   >
   <semantic-search-query-keyword domain='<http://www.cidoc-crm.org/cidoc-crm/E53_Place>' query='
     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
