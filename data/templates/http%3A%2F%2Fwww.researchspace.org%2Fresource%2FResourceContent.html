@@ -1,39 +1,5 @@
 [[#if (urlParam "details")]]
 <div class="details-content">
-  <!--
-    [[#block "detailsResourceHeader"]]
-    <div class="details-header">
-      <mp-resource-thumbnail iri='[[this]]' class='detail-img'>
-        <mp-resource-thumbnail-fallback>
-          <with-types iri='[[this]]' template='{{> noImage}}' [[> rsp:TypeMappings]]>
-            <template id="noImage">
-              <span class="rs-icon {{getValueByKey typeToImage allTypes 'rs-icon-no-image'}} detail-icon-noimg" alt="{{directTypesLabels}}" title='{{directTypesLabels}}'></span>
-            </template>
-          </with-types>
-        </mp-resource-thumbnail-fallback>
-      </mp-resource-thumbnail>
-      <div style="max-width: 70%;">
-        <mp-draggable iri='[[this]]'>
-          <div class="draggable-container">
-            <semantic-query
-              query='SELECT ?type ?typeLabel WHERE { <[[this]]> a ?type . ?type rdfs:label ?typeLabel . FILTER (lang(?typeLabel) = "en") }'
-              template='{{> resourceType }}'>
-              <template id='resourceType'>
-                <div class="detail-type">
-                  {{#each bindings}}{{typeLabel.value}}{{#if @last}}{{else}}, {{/if}}{{/each}}
-                </div>
-              </template>
-            </semantic-query>
-            <mp-label iri='[[this]]' class="detail-label"></mp-label>
-          </div>
-        </mp-draggable>
-        <mp-copy-to-clipboard text='[[this]]'>
-          <div class="rs-copy-IRI">Copy IRI</div>
-        </mp-copy-to-clipboard>
-      </div>
-    </div>
-    [[/block]]
-  -->
   <bs-tabs class="details-tabs">
     <bs-tab title='Site Description' event-key='site-description' mount-on-enter=true class="rawdata-tab">
       <mp-field-visualization
