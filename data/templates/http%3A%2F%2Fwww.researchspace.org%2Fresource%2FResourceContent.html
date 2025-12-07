@@ -1,6 +1,6 @@
 [[#if (urlParam "details")]]
 <div class="details-content">
-  <!--
+  
     [[#block "detailsResourceHeader"]]
     <div class="details-header">
       <mp-resource-thumbnail iri='[[this]]' class='detail-img'>
@@ -81,7 +81,7 @@ LIMIT 1
   </div>
 </div>
 [[/block]]
-  -->
+
   <bs-tabs class="details-tabs">
     <bs-tab title='Site Description' event-key='site-description' mount-on-enter=true class="rawdata-tab">
       <mp-field-visualization
