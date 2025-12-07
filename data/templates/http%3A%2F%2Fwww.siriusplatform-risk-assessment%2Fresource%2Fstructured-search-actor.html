@@ -52,7 +52,12 @@
         "iri":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
         "label":"Event",
         "thumbnail": "../assets/images/icons/rs-icons/event.svg"
-      }
+      },
+      {
+      "iri":"<http://www.cidoc-crm.org/cidoc-crm/E53_Place>",
+      "label":"Place",
+      "thumbnail": "../assets/images/icons/rs-icons/place.svg"
+    }
     ],
     
     "relations": [
@@ -79,11 +84,27 @@
         "label":"Event",
         "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
         "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>"
+      },
+      {
+        "iri":"<http://www.siriusplatform-risk-assessment/field/agent_places>",
+        "label":"Event",
+        "hasDomain":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
+        "hasRange":"<http://www.cidoc-crm.org/cidoc-crm/E53_Place>"
       }
     ]
   }'
 
   relations='{
+    "<http://www.siriusplatform-risk-assessment/field/agent_places>": [{
+      "kind": "resource",
+      "queryPattern": "{$subject a crm:E39_Actor;
+         ^crm:P11_had_participant ?event.
+  ?event a crm:E5_Event;
+         crm:P31_has_modified ?site.
+  ?site a crm:E18_Physical_Thing;
+          crm:P53_has_former_or_current_location ?__value__.
+ ?__value__ a crm:E53_Place.}"
+    }],
     "<http://www.siriusplatform-risk-assessment/field/site_type>": [{
       "kind": "resource",
       "queryPattern": "{$subject a base:E18_Physical_Thing ; base:P2_has_type ?__value__ . ?__value__ a base:E55_Type .}"
