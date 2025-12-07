@@ -78,46 +78,44 @@
         <!-- Header content with image (if available) and resource primary information -->
         <div class="rs-resource-header-content-container">
           <div class="rs-resource-header--image-container">
-            <semantic-if
-              query='ASK { {<[[this]]> crm:P138i_has_representation|rs:PX_has_main_representation ?image . } UNION {<[[this]]> a rs:EX_Digital_Image . } UNION {<[[this]]> a rs:EX_Digital_Image_Region . } }'
-              then='{{> then}}'>
-              <template id="then">
-                <div class="rs-resource-img__btngroup">
-                  {{#if (hasKey allTypes "http://www.researchspace.org/ontology/EX_Digital_Image_Region")}}
-                    <!-- no media icon for image regions -->
-                  {{else}}
-                    <mp-overlay-dialog title="Resource Media" type="modal" class="modal-xlSize">
-                      <mp-overlay-dialog-trigger>
-                        <button type="button" class="btn btn-icon" title="Explore Media">
-                          <rs-icon icon-type="rounded" icon-name="fullscreen" symbol="true"></rs-icon>
-                        </button>
-                      </mp-overlay-dialog-trigger>
-                      <mp-overlay-dialog-content>
-                        <mp-page-loader urlqueryparam-frame=true iri='http://www.researchspace.org/resource/ItemCardMedia' context='[[this]]'></mp-page-loader>
-                      </mp-overlay-dialog-content>
-                    </mp-overlay-dialog>
-                  {{/if}}
-                  <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]' urlqueryparam-view='iiif' urlqueryparam-resource='[[this]]'>
-                    <button type="button" class="btn btn-icon" title="Explore Images in high resolution Viewer">
-                      <rs-icon icon-type="rounded" icon-name="image" symbol="true"></rs-icon>
-                    </button>
-                  </semantic-link-container>
-                  [[#if (hasPermission "forms:ldp:*")]]
-                    {{#if (hasKey allTypes "http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing")}}
-                      {{#if (hasKey allTypes "http://www.researchspace.org/ontology/EX_Digital_Image_Region")}}
-                        <!-- no annotation icon for image regions -->
-                      {{else}}
-                        <semantic-link-container uri='[[resolvePrefix "rsp:ThinkingFrames"]]' urlqueryparam-view='image-annotation' urlqueryparam-resource='[[this]]'>
-                          <button type="button" class="btn btn-icon" title="Annotate Images">
-                            <rs-icon icon-type="round" icon-name="photo_size_select_large"></rs-icon>
-                          </button>
-                        </semantic-link-container>
+
+            <!-- Retrieve document / preview for this resource and render preview image if present -->
+            <semantic-query query='
+PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
+PREFIX arco: <https://w3id.org/arco/ontology/arco/>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+
+SELECT DISTINCT ?document ?preview WHERE {
+  BIND(<[[this]]> AS ?subject)
+
+  {
+    ?subject a crm:E18_Physical_Thing ;
+             crm:P70i_is_documented_in ?document .
+    ?document a crm:E31_Document .
+    OPTIONAL { ?document pico:preview ?preview . }
+  }
+  UNION
+  {
+    ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage ;
+             pico:preview ?preview .
+    BIND(\"\" AS ?document)
+  }
+}
+' template='{{> headerImageTemplate}}'>
+              <template id='headerImageTemplate'>
+                {{#if bindings}}
+                  <div class="header-previews">
+                    {{#each bindings}}
+                      {{#if preview.value}}
+                        <img src="{{preview.value}}" alt="Preview" class="rs-header-preview" />
                       {{/if}}
-                    {{/if}}
-                  [[/if]]
-                </div>
+                    {{/each}}
+                  </div>
+                {{/if}}
               </template>
-            </semantic-if>
+            </semantic-query>
+
             [[#block "imageContent"]]
             <rs-object-representations
               query='SELECT DISTINCT ?label ?imgURL ?isMainRep WHERE {
@@ -257,3 +255,7 @@
   [[/block]]
 [[/inline]]
 <!-- noop: deploy trigger to ensure reverted header is deployed -->
+<style>
+  .rs-header-preview { max-width: 160px; max-height: 120px; object-fit:cover; border-radius:4px; margin-right:8px; }
+  .header-previews { display:flex; gap:8px; align-items:center; }
+</style>
