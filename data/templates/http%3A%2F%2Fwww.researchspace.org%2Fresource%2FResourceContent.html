@@ -95,11 +95,13 @@ SELECT DISTINCT ?document ?preview WHERE {
     ?document a crm:E31_Document .
     OPTIONAL { ?document pico:preview ?preview . }
   }
+
   UNION
+
   {
     ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage ;
              pico:preview ?preview .
-    BIND(\"\" AS ?document)
+    BIND("" AS ?document)
   }
 }
 ' template='{{> headerImageTemplate}}'>
