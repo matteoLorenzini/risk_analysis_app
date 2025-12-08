@@ -96,43 +96,45 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
   BIND( IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "" ) AS ?previewImageStr )
 } ORDER BY ?rand LIMIT 10' template='{{> siteCardGrid}}'>
               <template id="siteCardGrid">
-                <style>
-                  .site-grid { display:flex; flex-wrap:wrap; gap:12px; }
-                  .site-card { width:200px; border:1px solid #ddd; border-radius:6px; overflow:hidden; background:#fff; text-align:center; }
-                  .site-card .thumb { height:140px; display:flex; align-items:center; justify-content:center; background:#f6f6f6; }
-                  .site-card img { max-width:100%; max-height:140px; object-fit:contain; display:block; border-radius:4px; }
-                  .site-card mp-resource-thumbnail { max-width:100%; max-height:140px; display:block; }
-                  .site-card .label { padding:10px 8px; font-size:.95rem; line-height:1.2em; height:48px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
-                  .site-card a { color:inherit; text-decoration:none; }
-                </style>
+              <style>
+                .site-grid { display:flex; flex-wrap:wrap; gap:12px; }
+                .site-card { width:200px; border:1px solid #ddd; border-radius:6px; overflow:hidden; background:#fff; text-align:center; }
+                .site-card .thumb { height:140px; display:flex; align-items:center; justify-content:center; background:#f6f6f6; }
+                .site-card img { max-width:100%; max-height:140px; object-fit:contain; display:block; border-radius:4px; }
+                .site-card mp-resource-thumbnail { max-width:100%; max-height:140px; display:block; }
+                .site-card .label { padding:10px 8px; font-size:.95rem; line-height:1.2em; height:48px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; color:#000; }
+                .site-card .label a, .site-card .label semantic-link { color:#000; text-decoration:none; }
+                .site-card a { color:inherit; text-decoration:none; }
+              </style>
 
-                {{#if bindings}}
-                  <div class="site-grid">
-                    {{#each bindings}}
-                      <div class="site-card">
-                        <div class="thumb">
-                          {{#with this}}
-                            {{#if previewImageStr.value}}
-                              <a href="{{preview.value}}" target="_blank" rel="noopener">
-                                <img src="{{preview.value}}" alt="{{label.value}}" loading="lazy" />
-                              </a>
-                            {{else}}
-                              <a href="{{subject.value}}">
-                                <mp-resource-thumbnail iri="{{#if preview.value}}{{preview.value}}{{else}}{{subject.value}}{{/if}}" no-image-uri="/images/help/thenounproject/noun_1113333.svg" />
-                              </a>
-                            {{/if}}
-                          {{/with}}
-                        </div>
-                        <div class="label">
-                          <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
-                        </div>
+              {{#if bindings}}
+                <div class="site-grid">
+                  {{#each bindings}}
+                    <div class="site-card">
+                      <div class="thumb">
+                        {{#with this}}
+                          {{#if previewImageStr.value}}
+                            <a href="{{preview.value}}" target="_blank" rel="noopener">
+                              <img src="{{preview.value}}" alt="{{label.value}}" loading="lazy"
+                                   onerror="this.onerror=null;this.src='/images/help/thenounproject/noun_1113333.svg';this.style.objectFit='contain';" />
+                            </a>
+                          {{else}}
+                            <a href="{{subject.value}}">
+                              <mp-resource-thumbnail iri="{{#if preview.value}}{{preview.value}}{{else}}{{subject.value}}{{/if}}" no-image-uri="/images/help/thenounproject/noun_1113333.svg" />
+                            </a>
+                          {{/if}}
+                        {{/with}}
                       </div>
-                    {{/each}}
-                  </div>
-                {{else}}
-                  <div style="color:#666">No sites</div>
-                {{/if}}
-              </template>
+                      <div class="label">
+                        <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
+                      </div>
+                    </div>
+                  {{/each}}
+                </div>
+              {{else}}
+                <div style="color:#666">No sites</div>
+              {{/if}}
+            </template>
             </semantic-query>
         </bs-col>
     </bs-row>
