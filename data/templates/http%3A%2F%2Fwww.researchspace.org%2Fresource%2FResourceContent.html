@@ -66,7 +66,7 @@ SELECT DISTINCT ?document ?preview WHERE {
                     {{#if bindings.[0].preview.value}}
                       <div class="detail-thumb" style="margin-bottom:8px;">
                         <a href="{{bindings.[0].preview.value}}" target="_blank" rel="noopener">
-                          <img src="{{bindings.[0].preview.value}}" alt="Preview" class="detail-preview-img" style="max-width:240px;max-height:160px;object-fit:cover;border-radius:4px;display:block;">
+                          <mp-resource-thumbnail iri='{{bindings.[0].preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:240px; max-height:160px; display:block;" />
                         </a>
                       </div>
                     {{/if}}
@@ -240,17 +240,17 @@ SELECT DISTINCT ?preview WHERE {
                         justify-content: center;
                         box-shadow: 0 1px 2px rgba(0,0,0,0.04);
                       }
-                      /* Image respects intrinsic aspect ratio */
+                      .site-picture-item mp-resource-thumbnail,
                       .site-picture-item img {
                         width: 100%;
                         height: auto;
                         display: block;
-                        max-height: 480px; /* cap extremely tall images */
+                        max-height: 480px;
                         object-fit: contain;
                         border-radius: 4px;
                       }
-                      /* optional: make thumbnails slightly taller on wide screens */
                       @media (min-width: 1200px) {
+                        .site-picture-item mp-resource-thumbnail,
                         .site-picture-item img { max-height: 560px; }
                       }
                     </style>
@@ -260,9 +260,12 @@ SELECT DISTINCT ?preview WHERE {
                         {{#each bindings}}
                           {{#if preview.value}}
                             <div class="site-picture-item">
-                              <a href="{{preview.value}}" target="_blank" rel="noopener">
-                                <img src="{{preview.value}}" alt="Preview" loading="lazy" />
-                              </a>
+-                              <a href="{{preview.value}}" target="_blank" rel="noopener">
+-                                <img src="{{preview.value}}" alt="Preview" loading="lazy" />
+-                              </a>
++                              <a href="{{preview.value}}" target="_blank" rel="noopener">
++                                <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' loading="lazy" />
++                              </a>
                             </div>
                           {{/if}}
                         {{/each}}
