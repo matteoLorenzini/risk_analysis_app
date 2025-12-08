@@ -51,37 +51,49 @@ PREFIX arco: <https://w3id.org/arco/ontology/arco/>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
 
-SELECT DISTINCT ?subject ?document ?preview
+SELECT DISTINCT ?subject ?document ?preview ?previewStr ?previewImageStr
 WHERE {
   BIND(<[[this]]> AS ?subject)
 
-  ### 1) Sirius: Physical Thing + Document + optional preview
   {
     ?subject a crm:E18_Physical_Thing ;
              crm:P70i_is_documented_in ?document .
-
     ?document a crm:E31_Document .
-
-    OPTIONAL { ?document pico:preview ?preview . }
+    OPTIONAL {
+      ?document pico:preview ?preview .
+      BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
+      BIND( IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "" ) AS ?previewImageStr )
+    }
   }
 
   UNION
 
-  ### 2) ArCo: Heritage object + pico:preview
   {
     ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage ;
              pico:preview ?preview .
+    BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
+    BIND( IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "" ) AS ?previewImageStr )
   }
 }
 ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
           <template id="headerPreview">
-            {{#if bindings.[0].preview.value}}
-              <div class="detail-thumb" style="margin-bottom:8px;">
-                <a href="{{bindings.[0].preview.value}}" target="_blank" rel="noopener">
-                  <mp-resource-thumbnail iri='{{bindings.[0].preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:240px; max-height:160px; display:block;" />
-                </a>
-              </div>
-            {{/if}}
+            {{#with bindings.[0]}}
+              {{#if previewImageStr.value}}
+                <div class="detail-thumb" style="margin-bottom:8px;">
+                  <a href="{{preview.value}}" target="_blank" rel="noopener">
+                    <img src="{{previewImageStr.value}}" alt="Preview" style="max-width:240px; max-height:160px; object-fit:cover; border-radius:4px; display:block;" />
+                  </a>
+                </div>
+              {{else}}
+                {{#if preview.value}}
+                  <div class="detail-thumb" style="margin-bottom:8px;">
+                    <a href="{{preview.value}}" target="_blank" rel="noopener">
+                      <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:240px; max-height:160px; display:block;" />
+                    </a>
+                  </div>
+                {{/if}}
+              {{/if}}
+            {{/with}}
           </template>
         </semantic-query>
 
