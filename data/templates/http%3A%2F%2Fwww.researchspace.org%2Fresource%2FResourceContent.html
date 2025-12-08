@@ -73,18 +73,17 @@ WHERE {
              pico:preview ?preview .
   }
 }
-ORDER BY ?subject LIMIT 1
-+' template='{{> headerPreview}}'>
-              <template id="headerPreview">
-                {{#if bindings.[0].preview.value}}
-                  <div class="detail-thumb" style="margin-bottom:8px;">
-                    <a href="{{bindings.[0].preview.value}}" target="_blank" rel="noopener">
-                      <mp-resource-thumbnail iri='{{bindings.[0].preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:240px; max-height:160px; display:block;" />
-                    </a>
-                  </div>
-                {{/if}}
-              </template>
-            </semantic-query>
+ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
+          <template id="headerPreview">
+            {{#if bindings.[0].preview.value}}
+              <div class="detail-thumb" style="margin-bottom:8px;">
+                <a href="{{bindings.[0].preview.value}}" target="_blank" rel="noopener">
+                  <mp-resource-thumbnail iri='{{bindings.[0].preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:240px; max-height:160px; display:block;" />
+                </a>
+              </div>
+            {{/if}}
+          </template>
+        </semantic-query>
 
             <div class="rs-resource-img__btngroup">
               {{#if (hasKey allTypes "http://www.researchspace.org/ontology/EX_Digital_Image_Region")}}
