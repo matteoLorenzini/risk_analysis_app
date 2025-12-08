@@ -159,6 +159,7 @@
             <bs-nav-item event-key="nara-grid">Nara Grid</bs-nav-item>
             <bs-nav-item event-key="risk-analysis">Risk Analysis</bs-nav-item>
             <bs-nav-item event-key="places">Magnitude Scale</bs-nav-item>
+            <bs-nav-item event-key="site-pictures">Site Pictures</bs-nav-item>
           </bs-nav>
           <bs-tab-content animation="true">
             <bs-tab-pane event-key="site-description">
@@ -178,6 +179,39 @@
                     <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
                   </mp-field-visualization>
                 </div>
+              </div>
+            </bs-tab-pane>
+            <bs-tab-pane event-key="site-pictures" mount-on-enter=true>
+              <div class="rs-resource-tab-container">
+                <h3>Site Pictures</h3>
+                <semantic-query query='
+PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
+
+SELECT DISTINCT ?preview WHERE {
+  BIND(<[[this]]> AS ?subject)
+  ?subject a crm:E18_Physical_Thing ;
+           crm:P70i_is_documented_in ?document .
+  ?document a crm:E31_Document .
+  OPTIONAL { ?document pico:preview ?preview . }
+} ORDER BY ?preview'
+                  template='{{> picturesGrid}}'>
+                  <template id="picturesGrid">
+                    {{#if bindings}}
+                      <div class="site-pictures-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;">
+                        {{#each bindings}}
+                          {{#if preview.value}}
+                            <div class="site-picture-item" style="border-radius:6px;overflow:hidden;background:#fafafa;padding:6px;display:flex;align-items:center;justify-content:center;">
+                              <img src="{{preview.value}}" alt="Preview" style="width:100%;height:120px;object-fit:cover;border-radius:4px;" />
+                            </div>
+                          {{/if}}
+                        {{/each}}
+                      </div>
+                    {{else}}
+                      <div style="color:#666">No pictures available.</div>
+                    {{/if}}
+                  </template>
               </div>
             </bs-tab-pane>
             <bs-tab-pane event-key="places" mount-on-enter=true>
