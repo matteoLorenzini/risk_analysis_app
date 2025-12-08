@@ -198,12 +198,46 @@ SELECT DISTINCT ?preview WHERE {
 } ORDER BY ?preview'
                   template='{{> picturesGrid}}'>
                   <template id="picturesGrid">
+                    <style>
+                      .site-pictures-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                        gap: 12px;
+                        align-items: start;
+                      }
+                      .site-picture-item {
+                        background: #fafafa;
+                        border-radius: 6px;
+                        overflow: hidden;
+                        padding: 6px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+                      }
+                      /* Image respects intrinsic aspect ratio */
+                      .site-picture-item img {
+                        width: 100%;
+                        height: auto;
+                        display: block;
+                        max-height: 480px; /* cap extremely tall images */
+                        object-fit: contain;
+                        border-radius: 4px;
+                      }
+                      /* optional: make thumbnails slightly taller on wide screens */
+                      @media (min-width: 1200px) {
+                        .site-picture-item img { max-height: 560px; }
+                      }
+                    </style>
+
                     {{#if bindings}}
-                      <div class="site-pictures-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;">
+                      <div class="site-pictures-grid">
                         {{#each bindings}}
                           {{#if preview.value}}
-                            <div class="site-picture-item" style="border-radius:6px;overflow:hidden;background:#fafafa;padding:6px;display:flex;align-items:center;justify-content:center;">
-                              <img src="{{preview.value}}" alt="Preview" style="width:100%;height:120px;object-fit:cover;border-radius:4px;" />
+                            <div class="site-picture-item">
+                              <a href="{{preview.value}}" target="_blank" rel="noopener">
+                                <img src="{{preview.value}}" alt="Preview" loading="lazy" />
+                              </a>
                             </div>
                           {{/if}}
                         {{/each}}
