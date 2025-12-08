@@ -119,9 +119,17 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
                                    onerror="this.onerror=null;this.src='/images/help/thenounproject/noun_1113333.svg';this.style.objectFit='contain';" />
                             </a>
                           {{else}}
-                            <a href="{{subject.value}}">
-                              <mp-resource-thumbnail iri="{{#if preview.value}}{{preview.value}}{{else}}{{subject.value}}{{/if}}" no-image-uri="/images/help/thenounproject/noun_1113333.svg" />
-                            </a>
+                            {{#if preview.value}}
+                              <!-- preview exists but is not a direct image URL: use platform thumbnail rendering -->
+                              <a href="{{subject.value}}">
+                                <mp-resource-thumbnail iri="{{preview.value}}" no-image-uri="/images/help/thenounproject/noun_1113333.svg" />
+                              </a>
+                            {{else}}
+                              <!-- no preview at all: show static icon to avoid fetch/errors -->
+                              <a href="{{subject.value}}">
+                                <img src="/images/help/thenounproject/noun_1113333.svg" alt="No image" style="width:72px;height:72px;object-fit:contain;" />
+                              </a>
+                            {{/if}}
                           {{/if}}
                         {{/with}}
                       </div>
