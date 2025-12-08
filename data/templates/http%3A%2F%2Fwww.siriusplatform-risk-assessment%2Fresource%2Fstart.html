@@ -112,20 +112,18 @@
                                       crm:P1_is_identified_by ?appellation .
                              ?appellation a crm:E41_Appellation ;
                                          skos:prefLabel ?label .
-+
                              OPTIONAL {
-+                               ?subject crm:P70i_is_documented_in ?document .
-+                               ?document a crm:E31_Document .
-+                               OPTIONAL { ?document pico:preview ?preview . }
-+                             }
-+
+                               ?subject crm:P70i_is_documented_in ?document .
+                               ?document a crm:E31_Document .
+                               OPTIONAL { ?document pico:preview ?preview . }
+                             }
                              BIND(DAY(NOW()) AS ?day)
                              BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?rand)
                            }
                            GROUP BY ?subject ?label
                          }
                        } ORDER BY ?rand LIMIT 10'
-                template='{{#if bindings}}<style>.site-grid{display:flex;flex-wrap:wrap;gap:12px}.site-card{width:200px;border:1px solid #ddd;border-radius:6px;overflow:hidden;background:#fff;text-align:center}.site-card .thumb{height:140px;display:flex;align-items:center;justify-content:center;background:#f6f6f6}.site-card mp-resource-thumbnail{max-width:100%;max-height:140px;display:block}.site-card .label{padding:10px 8px;font-size:.95rem;line-height:1.2em;height:48px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.site-card a{color:inherit;text-decoration:none}</style><div class=\"site-grid\">{{#each bindings}}<div class=\"site-card\"><div class=\"thumb\">{{#if preview.value}}<a href=\"{{subject.value}}\"><mp-resource-thumbnail iri=\"{{preview.value}}\" no-image-uri=\"/images/help/thenounproject/noun_1113333.svg\" /></a>{{else}}<a href=\"{{subject.value}}\"><mp-resource-thumbnail iri=\"{{subject.value}}\" no-image-uri=\"/images/help/thenounproject/noun_1113333.svg\" /></a>{{/if}}</div><div class=\"label\"><semantic-link iri=\"{{subject.value}}\">{{label.value}}</semantic-link></div></div>{{/each}}</div>{{else}}<div style=\"color:#666\">No sites</div>{{/if}}'>
+                template='{{> siteCardGrid}}'>
             </semantic-query>
         </bs-col>
     </bs-row>
