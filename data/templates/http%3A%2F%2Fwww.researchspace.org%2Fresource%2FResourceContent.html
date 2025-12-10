@@ -179,6 +179,7 @@ ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
             <bs-nav-item event-key="risk-analysis">Risk Analysis</bs-nav-item>
             <bs-nav-item event-key="places">Magnitude Scale</bs-nav-item>
             <bs-nav-item event-key="site-pictures">Site Pictures</bs-nav-item>
+            <bs-nav-item event-key="cartographic-docs">Cartographic Documentation</bs-nav-item>
           </bs-nav>
           <bs-tab-content animation="true">
             <bs-tab-pane event-key="site-description">
@@ -282,6 +283,76 @@ SELECT DISTINCT ?preview WHERE {
             <bs-tab-pane event-key="risk-analysis">
               <div class="rs-resource-tab-container">
                 [[> sirius:risk-analysis]]
+              </div>
+            </bs-tab-pane>
+            <bs-tab-pane event-key="cartographic-docs" mount-on-enter=true>
+              <div class="rs-resource-tab-container">
+                <h3>Cartographic Documentation</h3>
+                <semantic-query query='
+PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/>
+PREFIX smapit: <https://w3id.org/italia/onto/SM/>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
+
+SELECT DISTINCT ?doc ?docURL ?docStr ?docImageStr WHERE {
+  BIND(<[[this]]> AS ?subject)
+
+  # documentation nodes linked to the subject
+  ?subject a crm:E18_Physical_Thing ;
+           a-cd:hasDocumentation ?doc .
+
+  OPTIONAL {
+    ?doc smapit:URL ?docURL .
+    BIND(STRAFTER(STR(?docURL), "") AS ?docStr)
+    BIND( IF(REGEX(?docStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?docStr, "" ) AS ?docImageStr )
+  }
+}
+ORDER BY ?doc LIMIT 50' template='{{> cartoGrid}}'>
+                  <template id="cartoGrid">
+                    <style>
+                      .carto-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; }
+                      .carto-item { background:#fafafa;border-radius:6px;overflow:hidden;padding:6px;display:flex;flex-direction:column;align-items:stretch; }
+                      .carto-thumb { height:140px; display:flex; align-items:center; justify-content:center; background:#f6f6f6; border-radius:4px; overflow:hidden; }
+                      .carto-thumb img { width:100%; height:auto; max-height:140px; object-fit:contain; display:block; }
+                      .carto-thumb mp-resource-thumbnail { max-width:100%; max-height:140px; display:block; }
+                      .carto-label { padding-top:8px; font-size:0.95rem; color:#000; text-align:center; height:44px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+                    </style>
+
+                    {{#if bindings}}
+                      <div class="carto-grid">
+                        {{#each bindings}}
+                          <div class="carto-item">
+                            {{#with this}}
+                              <div class="carto-thumb">
+                                {{#if docImageStr.value}}
+                                  <a href="{{docURL.value}}" target="_blank" rel="noopener">
+                                    <img src="{{docURL.value}}" alt="Cartographic doc" loading="lazy"
+                                         onerror="this.onerror=null;this.src='/images/help/thenounproject/noun_1113333.svg';" />
+                                  </a>
+                                {{else}}
+                                  {{#if docURL.value}}
+                                    <a href="{{docURL.value}}" target="_blank" rel="noopener">
+                                      <mp-resource-thumbnail iri="{{docURL.value}}" no-image-uri="/images/help/thenounproject/noun_1113333.svg" />
+                                    </a>
+                                  {{else}}
+                                    <a href="{{doc.value}}">
+                                      <img src="/images/help/thenounproject/noun_1113333.svg" alt="No doc" style="width:72px;height:72px;object-fit:contain;" />
+                                    </a>
+                                  {{/if}}
+                                {{/if}}
+                              </div>
+                              <div class="carto-label">
+                                <semantic-link iri="{{doc.value}}">{{#if doc.value}}{{doc.value}}{{else}}Document{{/if}}</semantic-link>
+                              </div>
+                            {{/with}}
+                          </div>
+                        {{/each}}
+                      </div>
+                    {{else}}
+                      <div style="color:#666">No cartographic documentation available.</div>
+                    {{/if}}
+                  </template>
+                </semantic-query>
               </div>
             </bs-tab-pane>
           </bs-tab-content>
