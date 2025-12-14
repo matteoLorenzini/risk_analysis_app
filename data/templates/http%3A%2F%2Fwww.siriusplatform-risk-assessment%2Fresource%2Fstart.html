@@ -302,7 +302,7 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
                        GROUP BY ?subject ?label ?random
                        ORDER BY ?random 
                        LIMIT 10"
-                template='{{#if bindings}}
+                template="<?xml version='1.0'?>{{#if bindings}}
 <style>
 .agent-grid{display:flex;flex-wrap:wrap;gap:12px}
 .agent-card{width:200px;border:1px solid #ddd;border-radius:6px;overflow:hidden;background:#fff;text-align:center;padding:12px}
@@ -310,15 +310,15 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
 .agent-label{display:inline-block;vertical-align:middle;font-weight:600;color:#000}
 .agent-count{display:block;color:#666;margin-top:6px;font-size:0.9rem}
 </style>
-<div class="agent-grid">
+<div class='agent-grid'>
 {{#each bindings}}
-  <div class="agent-card">
-    <a href="{{subject.value}}" style="text-decoration:none;color:inherit;">
+  <div class='agent-card'>
+    <a href='{{subject.value}}' style='text-decoration:none;color:inherit;'>
       <div>
-        <img class="agent-icon" data-label="{{label.value}}" src="/icons/question.svg" alt="icon" />
-        <span class="agent-label">{{label.value}}</span>
+        <img class='agent-icon' data-label='{{label.value}}' src='/icons/question.svg' alt='icon' />
+        <span class='agent-label'>{{label.value}}</span>
       </div>
-      <span class="agent-count">{{eventCount.value}} events</span>
+      <span class='agent-count'>{{eventCount.value}} events</span>
     </a>
   </div>
 {{/each}}
@@ -326,16 +326,16 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
 <script>(function(){
 try{
   var map = {
-    "Physical_Forces": "icons/seismometer-square-svgrepo-com.svg",
-    "Fire": "icons/fire-svgrepo-com.svg",
-    "Water": "icons/water-fee-svgrepo-com.svg",
-    "Pests": "icons/bug-svgrepo-com.svg",
-    "Pollutants": "icons/gas-mask-svgrepo-com.svg",
-    "Light_UV_IR": "icons/light-bulb-1-svgrepo-com.svg",
-    "Dissociation": "icons/split-branch-svgrepo-com.svg",
-    "Incorrect_RH": "icons/humidity-svgrepo-com.svg"
+    'Physical_Forces': 'icons/seismometer-square-svgrepo-com.svg',
+    'Fire': 'icons/fire-svgrepo-com.svg',
+    'Water': 'icons/water-fee-svgrepo-com.svg',
+    'Pests': 'icons/bug-svgrepo-com.svg',
+    'Pollutants': 'icons/gas-mask-svgrepo-com.svg',
+    'Light_UV_IR': 'icons/light-bulb-1-svgrepo-com.svg',
+    'Dissociation': 'icons/split-branch-svgrepo-com.svg',
+    'Incorrect_RH': 'icons/humidity-svgrepo-com.svg'
   };
-  var defaultIcon = "/icons/question.svg";
+  var defaultIcon = '/icons/question.svg';
   Array.prototype.forEach.call(document.querySelectorAll('.agent-card .agent-icon'), function(img){
     var lbl = (img.getAttribute('data-label')||'').toString();
     var src = map[lbl] || defaultIcon;
@@ -344,7 +344,7 @@ try{
   });
 }catch(e){console.warn('agent icon mapper error',e);}
 })();</script>
-{{else}}<div style="color:#666">No agents</div>{{/if}}'
+{{else}}<div style='color:#666'>No agents</div>{{/if}}">
             </semantic-query>
         </bs-col>
     </bs-row>
