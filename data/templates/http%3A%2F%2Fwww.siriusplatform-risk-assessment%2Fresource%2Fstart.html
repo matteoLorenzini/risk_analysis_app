@@ -376,17 +376,24 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
    # Icon mapping: root-relative paths so browser requests /icons/...
    BIND(
      IF(?label = 'Physical_Forces', '/icons/seismometer-square-svgrepo-com.svg',
-     IF(?label = 'Fire',            '/icons/fire-svgrepo-com.svg',
-     IF(?label = 'Water',           '/icons/water-fee-svgrepo-com.svg',
-     IF(?label = 'Pests',           '/icons/bug-svgrepo-com.svg',
-     IF(?label = 'Pollutants',      '/icons/gas-mask-svgrepo-com.svg',
-     IF(?label = 'Light_UV_IR',     '/icons/light-bulb-1-svgrepo-com.svg',
-     IF(?label = 'Dissociation',    '/icons/split-branch-svgrepo-com.svg',
-     IF(?label = 'Incorrect_RH',    '/icons/humidity-svgrepo-com.svg',
-                                                          '/icons/default.svg'
-     )))))))) AS ?icon)
+       IF(?label = 'Fire', '/icons/fire-svgrepo-com.svg',
+         IF(?label = 'Water', '/icons/water-fee-svgrepo-com.svg',
+           IF(?label = 'Pests', '/icons/bug-svgrepo-com.svg',
+             IF(?label = 'Pollutants', '/icons/gas-mask-svgrepo-com.svg',
+               IF(?label = 'Light_UV_IR', '/icons/light-bulb-1-svgrepo-com.svg',
+                 IF(?label = 'Dissociation', '/icons/split-branch-svgrepo-com.svg',
+                   IF(?label = 'Incorrect_RH', '/icons/humidity-svgrepo-com.svg',
+                     '/icons/default.svg'
+                   )
+                 )
+               )
+             )
+           )
+         )
+       )
+     ) AS ?icon
    )
-
+ 
    BIND(DAY(NOW()) AS ?day)
    BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?random)
  }
