@@ -321,11 +321,12 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
           <div class="agent-card">
             <div class="thumb">
               <img
-                data-agent-subject="{{subject.value}}"
-                alt="{{label.value}}"
-                src="../assets/images/icons/rs-icons/height.svg"
-                onerror="this.onerror=null;this.src='../assets/images/icons/rs-icons/height.svg';"
-              />
+  data-agent-subject="{{subject.value}}"
+  alt="{{label.value}}"
+  src=""
+  onerror="this.onerror=null;"
+/>
+
             </div>
             <div class="label">
               <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
@@ -337,19 +338,21 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
         {{/each}}
       </div>
 
-      <script>
+     <script>
 (function () {
-  const BASE = "../assets/images/icons/rs-icons/";
+  // Compute application base path safely
+  const basePath = window.location.pathname.replace(/\/[^\/]*$/, "");
+  const ICON_BASE = basePath + "/assets/images/icons/rs-icons/";
 
   const map = {
-    "https://w3id.org/sirius/agent/Physical_Forces": BASE + "seismometer-square-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Fire":            BASE + "fire-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Water":           BASE + "water-fee-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Pests":           BASE + "bug-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Pollutants":      BASE + "gas-mask-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Light_UV_IR":     BASE + "light-bulb-1-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Dissociation":    BASE + "split-branch-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Incorrect_RH":    BASE + "humidity-svgrepo-com.svg"
+    "https://w3id.org/sirius/agent/Physical_Forces": ICON_BASE + "seismometer-square-svgrepo-com.svg",
+    "https://w3id.org/sirius/agent/Fire":            ICON_BASE + "fire-svgrepo-com.svg",
+    "https://w3id.org/sirius/agent/Water":           ICON_BASE + "water-fee-svgrepo-com.svg",
+    "https://w3id.org/sirius/agent/Pests":           ICON_BASE + "bug-svgrepo-com.svg",
+    "https://w3id.org/sirius/agent/Pollutants":      ICON_BASE + "gas-mask-svgrepo-com.svg",
+    "https://w3id.org/sirius/agent/Light_UV_IR":     ICON_BASE + "light-bulb-1-svgrepo-com.svg",
+    "https://w3id.org/sirius/agent/Dissociation":    ICON_BASE + "split-branch-svgrepo-com.svg",
+    "https://w3id.org/sirius/agent/Incorrect_RH":    ICON_BASE + "humidity-svgrepo-com.svg"
   };
 
   document.querySelectorAll("img[data-agent-subject]").forEach(img => {
@@ -360,6 +363,7 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
   });
 })();
 </script>
+
 
     {{else}}
       <div style="color:#666">No actors</div>
