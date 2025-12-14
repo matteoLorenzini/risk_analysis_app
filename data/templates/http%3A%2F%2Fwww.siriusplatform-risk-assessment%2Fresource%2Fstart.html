@@ -285,10 +285,63 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
             </div>
         </bs-col>
         <bs-col md="10" class="bso-component card-container horizontal-scroll">
+            <template id="agentGrid">
+              <style>
+                .agent-grid{display:flex;flex-wrap:wrap;gap:12px}
+                .agent-card{width:200px;border:1px solid #ddd;border-radius:6px;overflow:hidden;background:#fff;text-align:center;padding:12px}
+                .agent-icon{width:48px;height:48px;vertical-align:middle;margin-right:8px;display:inline-block;object-fit:contain}
+                .agent-label{display:inline-block;vertical-align:middle;font-weight:600;color:#000}
+                .agent-count{display:block;color:#666;margin-top:6px;font-size:0.9rem}
+              </style>
+
+              {{#if bindings}}
+                <div class="agent-grid">
+                {{#each bindings}}
+                  <div class="agent-card">
+                    <a href="{{subject.value}}" style="text-decoration:none;color:inherit;">
+                      <div>
+                        <img class="agent-icon" data-label="{{label.value}}" src="/images/help/thenounproject/noun_1113333.svg" alt="icon" />
+                        <span class="agent-label">{{label.value}}</span>
+                      </div>
+                      <span class="agent-count">{{eventCount.value}} events</span>
+                    </a>
+                  </div>
+                {{/each}}
+                </div>
+
+                <script>
+                (function(){
+                  try{
+                    var map=[
+                      {re:/physical[_ ]*forces/i,url:'https://upload.wikimedia.org/wikipedia/commons/7/70/Font_Awesome_5_solid_hand-rock.svg'},
+                      {re:/fire/i,url:'https://upload.wikimedia.org/wikipedia/commons/1/12/Font_Awesome_5_solid_fire.svg'},
+                      {re:/water/i,url:'https://upload.wikimedia.org/wikipedia/commons/4/4f/Font_Awesome_5_solid_tint.svg'},
+                      {re:/pest|insect|bug/i,url:'https://upload.wikimedia.org/wikipedia/commons/6/6b/Font_Awesome_5_solid_bug.svg'},
+                      {re:/pollut|smog/i,url:'https://upload.wikimedia.org/wikipedia/commons/2/27/Font_Awesome_5_solid_smog.svg'},
+                      {re:/light|uv|ir/i,url:'https://upload.wikimedia.org/wikipedia/commons/7/7b/Font_Awesome_5_solid_sun.svg'},
+                      {re:/dissoc|dissociation|break/i,url:'https://upload.wikimedia.org/wikipedia/commons/3/33/Font_Awesome_5_solid_link-broken.svg'},
+                      {re:/incorrect[_ ]*rh|humidity|rh/i,url:'https://upload.wikimedia.org/wikipedia/commons/6/67/Font_Awesome_5_solid_thermometer-half.svg'}
+                    ];
+                    var defaultUrl='https://upload.wikimedia.org/wikipedia/commons/e/e6/Font_Awesome_5_solid_question.svg';
+                    document.querySelectorAll('.agent-card .agent-icon').forEach(function(img){
+                      var lbl=(img.getAttribute('data-label')||'').toString();
+                      var picked=map.find(function(m){return m.re.test(lbl);});
+                      img.src = picked ? picked.url : defaultUrl;
+                      img.onerror = function(){ this.onerror=null; this.src='/images/help/thenounproject/noun_1113333.svg'; };
+                    });
+                  }catch(e){console.warn('agent icon mapper error',e);}
+                })();
+                </script>
+
+              {{else}}
+                <div style="color:#666">No agents</div>
+              {{/if}}
+            </template>
+
             <semantic-query
                 query="PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                       
+
                        SELECT DISTINCT ?subject ?label (COUNT(?event) as ?eventCount) WHERE {
                            ?subject a crm:E39_Actor ;
                                    rdfs:label ?label .
@@ -298,12 +351,12 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
                            }
                            BIND(DAY(NOW()) as ?day)
                            BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?random)
-                       } 
+                       }
                        GROUP BY ?subject ?label ?random
-                       ORDER BY ?random 
+                       ORDER BY ?random
                        LIMIT 10"
-                template="{{#each bindings}}<div class='card' style='display: inline-block; margin: 10px; width: 200px; height: 120px; border: 1px solid #ddd; padding: 15px; border-radius: 4px; vertical-align: top; overflow: hidden;'><div class='card-body' style='height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;'><h5 style='margin: 0 0 5px 0; text-align: center; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;'><semantic-link iri='{{subject.value}}'>{{label.value}}</semantic-link></h5><small style='color: #666;'>{{eventCount.value}} events</small></div></div>{{/each}}"
-            ></semantic-query>
+                template='{{> agentGrid}}'>
+            </semantic-query>
         </bs-col>
     </bs-row>
 </div>
