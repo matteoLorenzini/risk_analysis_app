@@ -339,25 +339,25 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
               {{/if}}
             </template>
 
-            <semantic-query
-                query="PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-                       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+<semantic-query
+    query="PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+           PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-                       SELECT DISTINCT ?subject ?label (COUNT(?event) as ?eventCount) WHERE {
-                           ?subject a crm:E39_Actor ;
-                                   rdfs:label ?label .
-                           OPTIONAL {
-                               ?event a crm:E5_Event ;
-                                     crm:P11_had_participant ?subject .
-                           }
-                           BIND(DAY(NOW()) as ?day)
-                           BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?random)
-                       }
-                       GROUP BY ?subject ?label ?random
-                       ORDER BY ?random
-                       LIMIT 10"
-                template='{{> agentGrid}}'>
-            </semantic-query>
+           SELECT DISTINCT ?subject ?label (COUNT(?event) as ?eventCount) WHERE {
+               ?subject a crm:E39_Actor ;
+                       rdfs:label ?label .
+               OPTIONAL {
+                   ?event a crm:E5_Event ;
+                         crm:P11_had_participant ?subject .
+               }
+               BIND(DAY(NOW()) as ?day)
+               BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?random)
+           }
+           GROUP BY ?subject ?label ?random
+           ORDER BY ?random
+           LIMIT 10"
+    template='{{> agentGrid}}'
+></semantic-query>
         </bs-col>
     </bs-row>
 </div>
