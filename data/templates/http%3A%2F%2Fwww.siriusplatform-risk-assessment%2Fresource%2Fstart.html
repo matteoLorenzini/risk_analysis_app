@@ -285,92 +285,84 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
             </div>
         </bs-col>
         <bs-col md="10" class="bso-component card-container horizontal-scroll">
+            <template id="agentGrid">
+              <style>
+                .agent-grid{display:flex;flex-wrap:wrap;gap:12px}
+                .agent-card{width:200px;border:1px solid #ddd;border-radius:6px;overflow:hidden;background:#fff;text-align:center;padding:12px}
+                .agent-icon{width:48px;height:48px;vertical-align:middle;margin-bottom:6px;object-fit:contain}
+                .agent-label{display:block;font-weight:600;color:#000;margin-bottom:4px}
+                .agent-count{display:block;color:#666;font-size:0.9rem}
+              </style>
+
+              {{#if bindings}}
+                <div class="agent-grid">
+                  {{#each bindings}}
+                    <div class="agent-card">
+                      <a href="{{subject.value}}" style="text-decoration:none;color:inherit;">
+                        <img class="agent-icon" data-label="{{label.value}}" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48'></svg>" alt="icon" />
+                        <span class="agent-label">{{label.value}}</span>
+                        <span class="agent-count">{{eventCount.value}} events</span>
+                      </a>
+                    </div>
+                  {{/each}}
+                </div>
+
+                <script>
+                (function(){
+                  try{
+                    var map = {
+                      "Physical_Forces": "/icons/seismometer-square-svgrepo-com.svg",
+                      "Fire": "/icons/fire-svgrepo-com.svg",
+                      "Water": "/icons/water-fee-svgrepo-com.svg",
+                      "Pests": "/icons/bug-svgrepo-com.svg",
+                      "Pollutants": "/icons/gas-mask-svgrepo-com.svg",
+                      "Light_UV_IR": "/icons/light-bulb-1-svgrepo-com.svg",
+                      "Dissociation": "/icons/split-branch-svgrepo-com.svg",
+                      "Incorrect_RH": "/icons/humidity-svgrepo-com.svg"
+                    };
+                    var defaultIcon = "/icons/question.svg";
+                    var fallbackOnline = "https://upload.wikimedia.org/wikipedia/commons/e/e6/Font_Awesome_5_solid_question.svg";
+
+                    var imgs = document.querySelectorAll('.agent-card .agent-icon');
+                    Array.prototype.forEach.call(imgs, function(img){
+                      var lbl = (img.getAttribute('data-label')||'').toString();
+                      var src = map[lbl] || defaultIcon;
+                      img.src = src;
+                      img.onerror = function(){
+                        this.onerror = null;
+                        // try default local, then an online fallback
+                        if(this.src !== defaultIcon) { this.src = defaultIcon; return; }
+                        this.src = fallbackOnline;
+                      };
+                    });
+                  } catch(e) { console.warn('agent icon mapper error', e); }
+                })();
+                </script>
+
+              {{else}}
+                <div style="color:#666">No agents</div>
+              {{/if}}
+            </template>
+
             <semantic-query
-  query="
-PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                query="PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                       PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT DISTINCT ?subject ?label (COUNT(?event) AS ?eventCount) WHERE {
-  ?subject a crm:E39_Actor ;
-           rdfs:label ?label .
-
-  OPTIONAL {
-    ?event a crm:E5_Event ;
-           crm:P11_had_participant ?subject .
-  }
-
-  BIND(DAY(NOW()) AS ?day)
-  BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?random)
-}
-GROUP BY ?subject ?label ?random
-ORDER BY ?random
-LIMIT 10
-"
-  template='{{#if bindings}}
-  <style>
-    .agent-grid{display:flex;flex-wrap:wrap;gap:12px}
-    .agent-card{width:200px;border:1px solid #ddd;border-radius:6px;overflow:hidden;background:#fff;text-align:center;padding:12px}
-    .agent-icon{width:48px;height:48px;vertical-align:middle;margin-bottom:6px;object-fit:contain}
-    .agent-label{display:block;font-weight:600;color:#000;margin-bottom:4px}
-    .agent-count{display:block;color:#666;font-size:0.9rem}
-  </style>
-
-  <div class="agent-grid">
-    {{#each bindings}}
-      <div class="agent-card">
-        <a href="{{subject.value}}" style="text-decoration:none;color:inherit;">
-          <!-- neutral placeholder, actual src set by mapper script below -->
-          <img class="agent-icon" data-label="{{label.value}}" src="data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22></svg>" alt="icon" />
-          <span class="agent-label">{{label.value}}</span>
-          <span class="agent-count">{{eventCount.value}} events</span>
-        </a>
-      </div>
-    {{/each}}
-  </div>
-
-  <script>
-  (function(){
-    try{
-      // local filenames (per your mapping)
-      var map = {
-        "Physical_Forces": "/icons/seismometer-square-svgrepo-com.svg",
-        "Fire": "/icons/fire-svgrepo-com.svg",
-        "Water": "/icons/water-fee-svgrepo-com.svg",
-        "Pests": "/icons/bug-svgrepo-com.svg",
-        "Pollutants": "/icons/gas-mask-svgrepo-com.svg",
-        "Light_UV_IR": "/icons/light-bulb-1-svgrepo-com.svg",
-        "Dissociation": "/icons/split-branch-svgrepo-com.svg",
-        "Incorrect_RH": "/icons/humidity-svgrepo-com.svg"
-      };
-
-      // reliable online fallback if local file not found
-      var onlineFallback = "https://upload.wikimedia.org/wikipedia/commons/e/e6/Font_Awesome_5_solid_question.svg";
-
-      // set icons after render
-      var imgs = document.querySelectorAll('.agent-card .agent-icon');
-      Array.prototype.forEach.call(imgs, function(img){
-        var lbl = (img.getAttribute('data-label')||'').toString();
-        var local = map[lbl];
-        if(local){
-          img.src = local;
-        } else {
-          // if label not in map, use fallback icon
-          img.src = onlineFallback;
-        }
-        // if local file 404, replace with online fallback
-        img.onerror = function(){
-          this.onerror = null;
-          this.src = onlineFallback;
-        };
-      });
-    } catch(e){
-      console.warn('agent icon mapper error', e);
-    }
-  })();
-  </script>
-
-{{else}}<div style="color:#666">No agents</div>{{/if}}'>
-</semantic-query>
+                       SELECT DISTINCT ?subject ?label (COUNT(?event) AS ?eventCount) WHERE {
+                           ?subject a crm:E39_Actor ;
+                                   rdfs:label ?label .
+                           OPTIONAL {
+                               ?event a crm:E5_Event ;
+                                     crm:P11_had_participant ?subject .
+                           }
+                           BIND(DAY(NOW()) AS ?day)
+                           BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?random)
+                       }
+                       GROUP BY ?subject ?label ?random
+                       ORDER BY ?random
+                       LIMIT 10"
+                template='{{> agentGrid}}'>
+            </semantic-query>
         </bs-col>
     </bs-row>
 </div>
