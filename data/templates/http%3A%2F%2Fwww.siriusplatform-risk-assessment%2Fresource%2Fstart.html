@@ -321,12 +321,11 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
           <div class="agent-card">
             <div class="thumb">
               <img
-  data-agent-subject="{{subject.value}}"
-  alt="{{label.value}}"
-  src=""
-  onerror="this.onerror=null;"
-/>
-
+                data-agent-subject="{{subject.value}}"
+                alt="{{label.value}}"
+                src="../assets/images/icons/rs-icons/humidity-svgrepo-com.svg"
+                onerror="this.onerror=null;this.src='../assets/images/icons/rs-icons/humidity-svgrepo-com.svg';"
+              />
             </div>
             <div class="label">
               <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
