@@ -345,6 +345,19 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
                 <div style="color:#666">No agents</div>
               {{/if}}
             </template>
+
+            <script>
+            (function(){
+              try{
+                if(window.Handlebars && document.getElementById('agentGrid')){
+                  var tpl = document.getElementById('agentGrid').innerHTML;
+                  Handlebars.registerPartial('agentGrid', tpl);
+                }
+              }catch(e){
+                console.warn('registerPartial agentGrid error', e);
+              }
+            })();
+            </script>
             
              <semantic-query
   query="
