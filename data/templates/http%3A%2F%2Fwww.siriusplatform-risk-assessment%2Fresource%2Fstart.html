@@ -302,8 +302,68 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
                        GROUP BY ?subject ?label ?random
                        ORDER BY ?random 
                        LIMIT 10"
-                template="{{#each bindings}}<div class='card' style='display: inline-block; margin: 10px; width: 200px; height: 120px; border: 1px solid #ddd; padding: 15px; border-radius: 4px; vertical-align: top; overflow: hidden;'><div class='card-body' style='height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;'><h5 style='margin: 0 0 5px 0; text-align: center; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;'><semantic-link iri='{{subject.value}}'>{{label.value}}</semantic-link></h5><small style='color: #666;'>{{eventCount.value}} events</small></div></div>{{/each}}"
-            ></semantic-query>
+                template="{{> agentCardGrid}}"
+>
+  <template id="agentCardGrid">
+    <style>
+      .agent-grid { display:flex; flex-wrap:wrap; gap:12px; }
+      .agent-card { width:200px; border:1px solid #ddd; border-radius:6px; overflow:hidden; background:#fff; text-align:center; }
+      .agent-card .thumb { height:72px; display:flex; align-items:center; justify-content:center; background:#f6f6f6; }
+      .agent-card .thumb img { width:56px; height:56px; object-fit:contain; display:block; }
+      .agent-card .label { padding:10px 8px; font-size:.95rem; line-height:1.2em; height:48px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; color:#000; }
+      .agent-card .meta { padding:0 8px 10px; color:#666; font-size:.85rem; }
+      .agent-card .label a, .agent-card .label semantic-link { color:#000; text-decoration:none; }
+    </style>
+
+    {{#if bindings}}
+      <div class="agent-grid">
+        {{#each bindings}}
+          <div class="agent-card">
+            <div class="thumb">
+              <img
+                data-agent-subject="{{subject.value}}"
+                alt="{{label.value}}"
+                src="/images/help/thenounproject/noun_1113333.svg"
+                onerror="this.onerror=null;this.src='/images/help/thenounproject/noun_1113333.svg';"
+              />
+            </div>
+            <div class="label">
+              <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
+            </div>
+            <div class="meta">
+              {{eventCount.value}} events
+            </div>
+          </div>
+        {{/each}}
+      </div>
+
+      <script>
+      (function() {
+        // Map is keyed by the *subject IRI* (exactly as you requested)
+        const map = {
+          "https://w3id.org/sirius/agent/Physical_Forces": "/icons/seismometer-square-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Fire":            "/icons/fire-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Water":           "/icons/water-fee-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Pests":           "/icons/bug-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Pollutants":      "/icons/gas-mask-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Light_UV_IR":     "/icons/light-bulb-1-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Dissociation":    "/icons/split-branch-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Incorrect_RH":    "/icons/humidity-svgrepo-com.svg"
+        };
+
+        // Only update icons inside this template instance
+        document.querySelectorAll("img[data-agent-subject]").forEach(img => {
+          const subj = img.getAttribute("data-agent-subject");
+          const icon = map[subj];
+          if (icon) img.src = icon;
+        });
+      })();
+      </script>
+    {{else}}
+      <div style="color:#666">No actors</div>
+    {{/if}}
+  </template>
+</semantic-query>
         </bs-col>
     </bs-row>
 </div>
