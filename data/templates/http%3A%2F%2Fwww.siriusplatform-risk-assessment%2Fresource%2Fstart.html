@@ -323,8 +323,8 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
               <img
                 data-agent-subject="{{subject.value}}"
                 alt="{{label.value}}"
-                src="../assets/images/icons/rs-icons/decimal.svg"
-                onerror="this.onerror=null;this.src='../assets/images/icons/rs-icons/decimal.svg';"
+                src="/images/help/thenounproject/noun_1113333.svg"
+                onerror="this.onerror=null;this.src='/images/help/thenounproject/noun_1113333.svg';"
               />
             </div>
             <div class="label">
@@ -337,33 +337,28 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
         {{/each}}
       </div>
 
-     <script>
-(function () {
-  // Compute application base path safely
-  const basePath = window.location.pathname.replace(/\/[^\/]*$/, "");
-  const ICON_BASE = basePath + "/assets/images/icons/rs-icons/";
+      <script>
+      (function() {
+        // Map is keyed by the *subject IRI* (exactly as you requested)
+        const map = {
+          "https://w3id.org/sirius/agent/Physical_Forces": "/icons/seismometer-square-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Fire":            "/icons/fire-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Water":           "/icons/water-fee-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Pests":           "/icons/bug-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Pollutants":      "/icons/gas-mask-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Light_UV_IR":     "/icons/light-bulb-1-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Dissociation":    "/icons/split-branch-svgrepo-com.svg",
+          "https://w3id.org/sirius/agent/Incorrect_RH":    "/icons/humidity-svgrepo-com.svg"
+        };
 
-  const map = {
-    "https://w3id.org/sirius/agent/Physical_Forces": ICON_BASE + "event.svg",
-    "https://w3id.org/sirius/agent/Fire":            ICON_BASE + "form.svg",
-    "https://w3id.org/sirius/agent/Water":           ICON_BASE + "water-fee-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Pests":           ICON_BASE + "bug-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Pollutants":      ICON_BASE + "gas-mask-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Light_UV_IR":     ICON_BASE + "light-bulb-1-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Dissociation":    ICON_BASE + "split-branch-svgrepo-com.svg",
-    "https://w3id.org/sirius/agent/Incorrect_RH":    ICON_BASE + "humidity-svgrepo-com.svg"
-  };
-
-  document.querySelectorAll("img[data-agent-subject]").forEach(img => {
-    const subj = img.getAttribute("data-agent-subject");
-    if (map[subj]) {
-      img.src = map[subj];
-    }
-  });
-})();
-</script>
-
-
+        // Only update icons inside this template instance
+        document.querySelectorAll("img[data-agent-subject]").forEach(img => {
+          const subj = img.getAttribute("data-agent-subject");
+          const icon = map[subj];
+          if (icon) img.src = icon;
+        });
+      })();
+      </script>
     {{else}}
       <div style="color:#666">No actors</div>
     {{/if}}
