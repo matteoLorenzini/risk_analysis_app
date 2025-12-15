@@ -200,15 +200,22 @@
 
                       BIND(
                         IF(?value = "Physical_Forces", "/assets/images/icons/rs-icons/seismometer-square-svgrepo-com.svg",
-                        IF(?value = "Fire",            "/assets/images/icons/rs-icons/fire-svgrepo-com.svg",
-                        IF(?value = "Water",           "/assets/images/icons/rs-icons/water-fee-svgrepo-com.svg",
-                        IF(?value = "Pests",           "/assets/images/icons/rs-icons/bug-svgrepo-com.svg",
-                        IF(?value = "Pollutants",      "/assets/images/icons/rs-icons/gas-mask-svgrepo-com.svg",
-                        IF(?value = "Light_UV_IR",     "/assets/images/icons/rs-icons/light-bulb-1-svgrepo-com.svg",
-                        IF(?value = "Dissociation",    "/assets/images/icons/rs-icons/split-branch-svgrepo-com.svg",
-                        IF(?value = "Incorrect_RH",    "/assets/images/icons/rs-icons/humidity-svgrepo-com.svg",
-                                                   "/assets/images/icons/rs-icons/default.svg"
-                        )))))))) AS ?icon)
+                          IF(?value = "Fire",            "/assets/images/icons/rs-icons/fire-svgrepo-com.svg",
+                            IF(?value = "Water",           "/assets/images/icons/rs-icons/water-fee-svgrepo-com.svg",
+                              IF(?value = "Pests",           "/assets/images/icons/rs-icons/bug-svgrepo-com.svg",
+                                IF(?value = "Pollutants",      "/assets/images/icons/rs-icons/gas-mask-svgrepo-com.svg",
+                                  IF(?value = "Light_UV_IR",     "/assets/images/icons/rs-icons/light-bulb-1-svgrepo-com.svg",
+                                    IF(?value = "Dissociation",    "/assets/images/icons/rs-icons/split-branch-svgrepo-com.svg",
+                                      IF(?value = "Incorrect_RH",    "/assets/images/icons/rs-icons/humidity-svgrepo-com.svg",
+                                        "/assets/images/icons/rs-icons/default.svg"
+                                      )
+                                    )
+                                  )
+                                )
+                              )
+                            )
+                          )
+                        ) AS ?icon
                       )
 
                       BIND(DAY(NOW()) AS ?day)
