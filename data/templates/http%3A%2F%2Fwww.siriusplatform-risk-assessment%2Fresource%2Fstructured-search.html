@@ -172,7 +172,7 @@
                 <semantic-table
                   id="grid-table"
                   prefetch-labels="false"
-                  query="
+                  query='
                     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                     PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
@@ -205,11 +205,11 @@
                         GROUP BY ?subject ?value
                       }
 
-                      OPTIONAL { BIND(STRAFTER(STR(?preview), \"\") AS ?previewStr) }
-                      BIND( IF(BOUND(?previewStr) && REGEX(?previewStr, \"\\\\.(jpg|jpeg|png|gif|webp)$\", \"i\"), ?previewStr, \"\" ) AS ?previewImageStr )
+                      OPTIONAL { BIND(STRAFTER(STR(?preview), "") AS ?previewStr) }
+                      BIND( IF(BOUND(?previewStr) && REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "" ) AS ?previewImageStr )
                     }
                     ORDER BY ?value
-                  "
+                  '
                   tuple-template="{{> cardTemplate}}"
                   number-of-displayed-rows="12"
                   no-result-template='<bs-panel class="info">No matches found</bs-panel>'
