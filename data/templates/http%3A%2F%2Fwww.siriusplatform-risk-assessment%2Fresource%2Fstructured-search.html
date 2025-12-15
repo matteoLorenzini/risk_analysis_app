@@ -186,14 +186,13 @@
                                    crm:P1_is_identified_by ?appellation .
                           ?appellation a crm:E41_Appellation ;
                                       skos:prefLabel ?value .
-                          OPTIONAL {
-                            ?subject crm:P3_has_note ?note_ .
-                          }
+                          OPTIONAL { ?subject crm:P3_has_note ?note_ . }
                           OPTIONAL {
                             ?subject crm:P2_has_type ?type .
                             ?type a crm:E55_Type ;
                                   skos:prefLabel ?label_type .
                           }
+                          # collect previews from documents but SAMPLE ensures only one preview per subject
                           OPTIONAL {
                             ?subject crm:P70i_is_documented_in ?document .
                             ?document a crm:E31_Document .
