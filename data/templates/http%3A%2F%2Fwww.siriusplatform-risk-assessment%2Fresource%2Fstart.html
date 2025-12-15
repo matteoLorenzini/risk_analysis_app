@@ -323,8 +323,8 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
               <img
                 data-agent-subject="{{subject.value}}"
                 alt="{{label.value}}"
-                src="/images/help/thenounproject/noun_1113333.svg"
-                onerror="this.onerror=null;this.src='/images/help/thenounproject/noun_1113333.svg';"
+                src="/assets/images/icons/rs-icons/height.svg"
+                onerror="this.onerror=null;this.src='/assets/images/icons/rs-icons/height.svg';"
               />
             </div>
             <div class="label">
@@ -341,15 +341,31 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
       (function() {
         // Map is keyed by the *subject IRI* (exactly as you requested)
         const map = {
-          "https://w3id.org/sirius/agent/Physical_Forces": "/icons/seismometer-square-svgrepo-com.svg",
-          "https://w3id.org/sirius/agent/Fire":            "/icons/fire-svgrepo-com.svg",
-          "https://w3id.org/sirius/agent/Water":           "/icons/water-fee-svgrepo-com.svg",
-          "https://w3id.org/sirius/agent/Pests":           "/icons/bug-svgrepo-com.svg",
-          "https://w3id.org/sirius/agent/Pollutants":      "/icons/gas-mask-svgrepo-com.svg",
-          "https://w3id.org/sirius/agent/Light_UV_IR":     "/icons/light-bulb-1-svgrepo-com.svg",
-          "https://w3id.org/sirius/agent/Dissociation":    "/icons/split-branch-svgrepo-com.svg",
-          "https://w3id.org/sirius/agent/Incorrect_RH":    "/icons/humidity-svgrepo-com.svg"
-        };
+  "https://w3id.org/sirius/agent/Physical_Forces":
+    "/assets/images/icons/seismometer-square-svgrepo-com.svg",
+
+  "https://w3id.org/sirius/agent/Fire":
+    "/assets/images/icons/fire-svgrepo-com.svg",
+
+  "https://w3id.org/sirius/agent/Water":
+    "/assets/images/icons/water-fee-svgrepo-com.svg",
+
+  "https://w3id.org/sirius/agent/Pests":
+    "/assets/images/icons/bug-svgrepo-com.svg",
+
+  "https://w3id.org/sirius/agent/Pollutants":
+    "/assets/images/icons/gas-mask-svgrepo-com.svg",
+
+  "https://w3id.org/sirius/agent/Light_UV_IR":
+    "/assets/images/icons/light-bulb-1-svgrepo-com.svg",
+
+  "https://w3id.org/sirius/agent/Dissociation":
+    "/assets/images/icons/split-branch-svgrepo-com.svg",
+
+  "https://w3id.org/sirius/agent/Incorrect_RH":
+    "/assets/images/icons/humidity-svgrepo-com.svg"
+};
+
 
         // Only update icons inside this template instance
         document.querySelectorAll("img[data-agent-subject]").forEach(img => {
