@@ -212,11 +212,8 @@
                   "
                   tuple-template="{{> cardTemplate}}"
                   number-of-displayed-rows="12"
-                  no-result-template='<bs-panel class=\"info\">No matches found</bs-panel>'
-                  options='{
-                    \"showFilter\": false,
-                    \"pageSizeSelection\": [6, 12, 24, 48]
-                  }'>
+                  no-result-template='<bs-panel class="info">No matches found</bs-panel>'
+                  options='{"showFilter":false,"pageSizeSelection":[6,12,24,48]}'>
                   <template id="cardTemplate">
                     <bs-col sm="4" style="margin-bottom: 20px;">
                       <div class="panel panel-default" style="height: 380px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; flex-direction: column;">
