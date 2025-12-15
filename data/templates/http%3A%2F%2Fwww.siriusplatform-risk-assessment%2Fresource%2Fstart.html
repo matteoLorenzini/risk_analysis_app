@@ -288,28 +288,49 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
             <semantic-query
                 query="PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-                       
-                       SELECT DISTINCT ?subject ?label (COUNT(?event) as ?eventCount) WHERE {
+
+                       SELECT DISTINCT ?subject ?label ?icon (COUNT(?event) as ?eventCount) WHERE {
                            ?subject a crm:E39_Actor ;
                                    rdfs:label ?label .
                            OPTIONAL {
                                ?event a crm:E5_Event ;
                                      crm:P11_had_participant ?subject .
                            }
+
+                           BIND(
+                             IF(?label = 'Physical_Forces', '/icons/seismometer-square-svgrepo-com.svg',
+                               IF(?label = 'Fire', '/icons/fire-svgrepo-com.svg',
+                                 IF(?label = 'Water', '/icons/water-fee-svgrepo-com.svg',
+                                   IF(?label = 'Pests', '/icons/bug-svgrepo-com.svg',
+                                     IF(?label = 'Pollutants', '/icons/gas-mask-svgrepo-com.svg',
+                                       IF(?label = 'Light_UV_IR', '/icons/light-bulb-1-svgrepo-com.svg',
+                                         IF(?label = 'Dissociation', '/icons/split-branch-svgrepo-com.svg',
+                                           IF(?label = 'Incorrect_RH', '/icons/humidity-svgrepo-com.svg',
+                                             '/icons/default.svg'
+                                           )
+                                         )
+                                       )
+                                     )
+                                   )
+                                 )
+                               )
+                             ) AS ?icon
+                           )
+
                            BIND(DAY(NOW()) as ?day)
                            BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?random)
-                       } 
-                       GROUP BY ?subject ?label ?random
-                       ORDER BY ?random 
+                       }
+                       GROUP BY ?subject ?label ?icon ?random
+                       ORDER BY ?random
                        LIMIT 10"
                 template="{{> agentCardGrid}}"
->
+            >
   <template id="agentCardGrid">
     <style>
       .agent-grid { display:flex; flex-wrap:wrap; gap:12px; }
-      .agent-card { width:200px; border:1px solid #ddd; border-radius:6px; overflow:hidden; background:#fff; text-align:center; }
+      .agent-card { width:200px; border:1px solid #ddd; border-radius:6px; overflow:hidden; background:#fff; text-align:center; padding:12px; }
       .agent-card .thumb { height:72px; display:flex; align-items:center; justify-content:center; background:#f6f6f6; }
-      .agent-card .thumb img { width:56px; height:56px; object-fit:contain; display:block; }
+      .agent-card .thumb mp-resource-thumbnail, .agent-card .thumb img { width:56px; height:56px; object-fit:contain; display:block; }
       .agent-card .label { padding:10px 8px; font-size:.95rem; line-height:1.2em; height:48px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; color:#000; }
       .agent-card .meta { padding:0 8px 10px; color:#666; font-size:.85rem; }
       .agent-card .label a, .agent-card .label semantic-link { color:#000; text-decoration:none; }
@@ -320,12 +341,10 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
         {{#each bindings}}
           <div class="agent-card">
             <div class="thumb">
-              <img
-                data-agent-subject="{{subject.value}}"
-                alt="{{label.value}}"
-                src="/assets/images/icons/rs-icons/height.svg"
-                onerror="this.onerror=null;this.src='/assets/images/icons/rs-icons/height.svg';"
-              />
+              <!-- use mp-resource-thumbnail so ResearchSpace renders resource thumbnail and uses ?icon as fallback -->
+              <mp-resource-thumbnail iri="{{subject.value}}"
+                                    no-image-uri="{{icon.value}}"
+                                    style="max-width:56px; max-height:56px; display:block;" />
             </div>
             <div class="label">
               <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
@@ -336,45 +355,6 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
           </div>
         {{/each}}
       </div>
-
-      <script>
-      (function() {
-        // Map is keyed by the *subject IRI* (exactly as you requested)
-        const map = {
-  "https://w3id.org/sirius/agent/Physical_Forces":
-    "/assets/images/icons/rs-icons/seismometer-square-svgrepo-com.svg",
-
-  "https://w3id.org/sirius/agent/Fire":
-    "/assets/images/icons/rs-icons/fire-svgrepo-com.svg",
-
-  "https://w3id.org/sirius/agent/Water":
-    "/assets/images/icons/rs-icons/water-fee-svgrepo-com.svg",
-
-  "https://w3id.org/sirius/agent/Pests":
-    "/assets/images/icons/rs-icons/bug-svgrepo-com.svg",
-
-  "https://w3id.org/sirius/agent/Pollutants":
-    "/assets/images/icons/rs-icons/gas-mask-svgrepo-com.svg",
-
-  "https://w3id.org/sirius/agent/Light_UV_IR":
-    "/assets/images/icons/rs-icons/light-bulb-1-svgrepo-com.svg",
-
-  "https://w3id.org/sirius/agent/Dissociation":
-    "/assets/images/icons/rs-icons/split-branch-svgrepo-com.svg",
-
-  "https://w3id.org/sirius/agent/Incorrect_RH":
-    "/assets/images/icons/rs-icons/humidity-svgrepo-com.svg"
-};
-
-
-        // Only update icons inside this template instance
-        document.querySelectorAll("img[data-agent-subject]").forEach(img => {
-          const subj = img.getAttribute("data-agent-subject");
-          const icon = map[subj];
-          if (icon) img.src = icon;
-        });
-      })();
-      </script>
     {{else}}
       <div style="color:#666">No actors</div>
     {{/if}}
