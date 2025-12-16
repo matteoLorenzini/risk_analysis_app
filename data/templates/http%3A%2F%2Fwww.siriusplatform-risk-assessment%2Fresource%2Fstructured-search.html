@@ -205,7 +205,7 @@
                       }
 
                       OPTIONAL { BIND(STRAFTER(STR(?preview), "") AS ?previewStr) }
-                      BIND( IF(BOUND(?previewStr) && REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "" ) AS ?previewImageStr )
+                      BIND( IF( BOUND(?preview) && REGEX(STR(?preview), "\\.(jpg|jpeg|png|gif|webp)$", "i"), STR(?preview), "" ) AS ?previewImageStr )
                     }
                     ORDER BY ?value
                   '
