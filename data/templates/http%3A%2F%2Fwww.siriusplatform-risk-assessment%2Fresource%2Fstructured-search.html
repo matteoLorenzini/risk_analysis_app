@@ -121,7 +121,7 @@
     }],
     "<http://www.siriusplatform-risk-assessment/field/event>": [{
       "kind": "resource",
-      "queryPattern": "{$subject ^base:P31_has_modified ?__value__ . ?__value__ a base:E5_Event .}"
+      "queryPattern": "{$subject ^base:P31_has_modified ?event . ?event a base:E5_Event; base:P2_has_type ?__value__ .}"
     }]
   }'
   >
