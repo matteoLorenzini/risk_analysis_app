@@ -1,14 +1,22 @@
-<semantic-form id="insertSiteForm"
+<semantic-form
+  id="insertSiteForm"
+  new-subject-template="http://www.siriusplatform-risk-assessment/resource/site/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
   fields='[[ fieldDefinitions
-    denominazione_insert="http://www.siriusplatform-risk-assessment/field/denominazione_insert"
-  ]]'>
+    denominazione_insert="http://<YOUR_RS_HOST>/container/fieldDefinitionContainer/denominazione_insert"
+  ]]'
+>
+  <div class="form-scroll-area">
+    <semantic-form-errors></semantic-form-errors>
 
-  <semantic-form-text-input for="http://www.siriusplatform-risk-assessment/field/denominazione_insert"
-                            label="Denominazione Sito"
-                            placeholder="Insert Site's name here" />
+    <semantic-form-text-input
+      for="denominazione_insert"
+      label="Denominazione Sito"
+      placeholder="Insert Site's name here">
+    </semantic-form-text-input>
 
-  <div style="margin-top:10px;">
-    <button type="submit" class="btn btn-primary">Save (test)</button>
+    <div style="margin-top:10px;">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <a class="btn btn-default" href="javascript:history.back()">Cancel</a>
+    </div>
   </div>
 </semantic-form>
-
