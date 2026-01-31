@@ -1,5 +1,17 @@
+<semantic-form id="insertSiteForm">
+  <!-- ResearchSpace form control (self-closing) -->
+  <semantic-form-text-input for="denominazione_insert"
+                            label="Denominazione Sito"
+                            placeholder="Insert Site's name here" />
 
-<semantic-form-text-input for="denominazione_insert" label="Denominazione Sito" placeholder="Insert Site's name here"> 
+  <!-- Fallback native input to verify the field renders when the custom component isn't available -->
+  <div style="margin-top:8px;">
+    <label for="denominazione_insert_fallback" style="display:block;font-size:0.9rem;margin-bottom:4px;">Denominazione (fallback)</label>
+    <input id="denominazione_insert_fallback" name="denominazione_insert_fallback" placeholder="Insert Site's name here" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:3px;" />
+  </div>
 
-</semantic-form-text-input>
+  <div style="margin-top:10px;">
+    <button type="submit" class="btn btn-primary">Save (test)</button>
+  </div>
+</semantic-form>
 
