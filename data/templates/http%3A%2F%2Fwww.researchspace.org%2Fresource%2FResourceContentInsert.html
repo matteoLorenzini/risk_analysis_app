@@ -1,8 +1,8 @@
-
-<semantic-form new-subject-template='https://w3id.org/sirius/cultural-heritage-site/{{UUID}}'
-  post-action='redirect'
-  browser-persistence=true
-  form-id='example-2'
+<semantic-form
+  new-subject-template="https://w3id.org/sirius/cultural-heritage-site/{{UUID}}"
+  post-action="redirect"
+  browser-persistence="true"
+  form-id="example-2"
   fields='[
     {
       "id": "type",
@@ -30,34 +30,34 @@
       "xsdDatatype": "xsd:string",
       "minOccurs": "1",
       "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { $subject rdfs:label $value }",
-      "insertPattern": "INSERT { $subject skos:prefLabel $value } WHERE {
-        $subject base:P1_is_identified_by ?appellation .
 
-  ?appellation a base:E41_Appellation ;
-               skos:prefLabel ?value .}",
-      "deletePattern": "DELETE { $subject rdfs:label $value } WHERE {}"
+      "selectPattern": "SELECT $value WHERE { $subject skos:prefLabel $value }",
+      "insertPattern": "INSERT { $subject skos:prefLabel $value } WHERE {}",
+      "deletePattern": "DELETE { $subject skos:prefLabel $value } WHERE {}"
     }
-  ]'>
+  ]'
+>
   <bs-panel>
-    <h4>Create CRM Instance </h4>
+    <h4>Create CRM Instance</h4>
+
     <semantic-form-recover-notification></semantic-form-recover-notification>
+
     <bs-tabs fixed-key="form">
       <bs-tab event-key="1" title="General Information">
-        <semantic-form-text-input for='label'></semantic-form-text-input>
-        <semantic-form-select-input for='type'></semantic-form-select-input>
+        <semantic-form-text-input for="label" label="Label"></semantic-form-text-input>
+        <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
       </bs-tab>
+
       <bs-tab event-key="2" title="Acquisition">
-        
+        <!-- add acquisition fields here -->
       </bs-tab>
     </bs-tabs>
-    <semantic-form-errors></semantic-form-errors>
-    <!-- save and reset button for form -->
 
-    <div class="btn-group"> 
+    <semantic-form-errors></semantic-form-errors>
+
+    <div class="btn-group">
       <button name="reset" class="btn btn-default">Reset</button>
       <button name="submit" class="btn btn-action">Save</button>
     </div>
   </bs-panel>
 </semantic-form>
-      
