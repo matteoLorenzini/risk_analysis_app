@@ -1,61 +1,59 @@
 <semantic-form
-  persistence='{"type": "sparql", "targetInsertGraphIri": "http://www.siriusplatform-risk-assessment/graph/data"}'
-  new-subject-template="http://www.siriusplatform-risk-assessment/resource/site/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
-  fields='[[ fieldDefinitions
-    type                = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-    denominazione = "http://www.siriusplatform-risk-assessment/field/denominazione"
-    source_comment      = "https://veniss.net/container/fieldDefinitionContainer/source_comment"
-  ]]'
-  [[> rsp:FormDefaults]]
+  new-subject-template="http://www.researchspace.org/resource/ResourceContent/{{UUID}}"
+  post-action="redirect"
+  browser-persistence="true"
+  form-id="example-2"
+  fields='[
+    {
+      "id": "type",
+      "label": "Type",
+      "description": "The type of the created instance",
+      "xsdDatatype": "xsd:anyURI",
+      "minOccurs": "1",
+      "maxOccurs": "1",
+      "valueSetPattern": "
+        SELECT $value $label WHERE {
+          VALUES ($value $label) {
+            (<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> \"Human Made Object\")
+            (<http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object> \"Information Object\")
+          }
+        }
+      ",
+      "selectPattern": "SELECT $value WHERE { $subject a $value }",
+      "insertPattern": "INSERT { $subject a $value } WHERE {}",
+      "deletePattern": "DELETE { $subject a $value } WHERE {}"
+    },
+    {
+      "id": "label",
+      "label": "Label",
+      "description": "The label used to display the instance",
+      "xsdDatatype": "xsd:string",
+      "minOccurs": "1",
+      "maxOccurs": "1",
+
+      "selectPattern": "SELECT $value WHERE { $subject skos:prefLabel $value }",
+      "insertPattern": "INSERT { $subject skos:prefLabel $value } WHERE {}",
+      "deletePattern": "DELETE { $subject skos:prefLabel $value } WHERE {}"
+    }
+  ]'
 >
-  <div class="form-scroll-area">
-    <div class="container-fluid">
-      
-      <semantic-form-hidden-input for="type" default-value='http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing'></semantic-form-hidden-input>
+  <bs-panel>
+    <h4>Create CRM Instance</h4>
 
-      <bs-row>
-        <bs-col md="12">
-          <h3>Insert New Site/Entity</h3>
-          <hr />
-        </bs-col>
-      </bs-row>
+    <semantic-form-recover-notification></semantic-form-recover-notification>
 
-      <bs-row>
-        <bs-col md="8" sm="12">
-          <div id="denominazione" style="margin-bottom: 20px;">
-            <semantic-form-text-input 
-              for="denominazione" 
-              label="Denominazione (Site Name)" 
-              placeholder="Inserisci la denominazione del sito..."
-              languages='["it", "en"]'>
-            </semantic-form-text-input>
-          </div>
+    <bs-tabs fixed-key="form">
+      <bs-tab event-key="1" title="General Information">
+        <semantic-form-text-input for="label" label="Label"></semantic-form-text-input>
+        <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
+      </bs-tab>
+    </bs-tabs>
 
-          <div id="source_comment" style="margin-bottom: 20px;">
-            <semantic-form-text-input 
-              for="source_comment" 
-              label="Note / Descrizione" 
-              multiline="true" 
-              rows="5" 
-              placeholder="Aggiungi note aggiuntive...">
-            </semantic-form-text-input>
-          </div>
-        </bs-col>
-
-        <bs-col md="4" sm="12">
-          <div style="background: #f9f9f9; padding: 15px; border-radius: 4px; border: 1px solid #ddd;">
-            <h4>Help</h4>
-            <p>This form creates a new record in the Sirius Risk Assessment platform. The ID is generated automatically using a UUID.</p>
-          </div>
-        </bs-col>
-      </bs-row>
-
-      <semantic-form-errors></semantic-form-errors>
-
-      <div class="form-actions">
-        [[> rsp:FormDefaultActions formEntity='Site']]
-      </div>
-
-    </div>
-  </div>
+    <semantic-form-errors></semantic-form-errors>
+    [[#if entityType]]
+      [[> rsp:FormDefaultActions formEntity=entityType]]
+    [[else]]
+      [[> rsp:FormDefaultActions formEntity="Primary Source"]]
+    [[/if]]
+  </bs-panel>
 </semantic-form>
