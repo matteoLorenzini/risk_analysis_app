@@ -1,11 +1,17 @@
-<semantic-form [[> rsp:FormDefaults]]
+<semantic-form
+  persistence='{
+    "type":"sparql",
+    "targetInsertGraphIri":"file://E18_Ravenna.rdf-14-12-2025-08-23-25",
+    "repository":"default"
+  }'
   new-subject-template="http://www.researchspace.org/resource/ResourceContent/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
   post-action="redirect"
   browser-persistence="true"
   form-id="example-2"
   fields='[[ fieldDefinitions
-    denominazione_insert					= "http://www.siriusplatform-risk-assessment/field/denominazione_insert"
+    denominazione_insert = "http://www.siriusplatform-risk-assessment/field/denominazione_insert"
   ]]'
+  [[> rsp:FormDefaults]]
 >
   <bs-panel>
     <h4>Create CRM Instance</h4>
@@ -14,11 +20,19 @@
 
     <bs-tabs fixed-key="form">
       <bs-tab event-key="1" title="General Information">
-        <semantic-form-text-input for="denominazione_insert" label="Label"></semantic-form-text-input>
+
+        <semantic-form-text-input
+          for="denominazione_insert"
+          label="Denominazione"
+          languages='["it","en"]'>
+        </semantic-form-text-input>
+
       </bs-tab>
     </bs-tabs>
 
     <semantic-form-errors></semantic-form-errors>
-    [[> rsp:FormDefaultActions formEntity='ResourceContent']]
+
+    [[> rsp:FormDefaultActions formEntity="ResourceContent"]]
+
   </bs-panel>
 </semantic-form>
