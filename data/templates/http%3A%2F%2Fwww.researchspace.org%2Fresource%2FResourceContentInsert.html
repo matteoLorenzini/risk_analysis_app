@@ -1,4 +1,4 @@
-<semantic-form
+<semantic-form [[> rsp:FormDefaults]]
   new-subject-template="http://www.researchspace.org/resource/ResourceContent/{{UUID}}"
   post-action="redirect"
   browser-persistence="true"
@@ -20,9 +20,6 @@
     </bs-tabs>
 
     <semantic-form-errors></semantic-form-errors>
-
-    <div class="btn-group">
-      [[> rsp:FormDefaultActions formEntity="ResourceContent"]]
-    </div>
+    [[> rsp:FormDefaultActions formEntity='ResourceContent']]
   </bs-panel>
 </semantic-form>
