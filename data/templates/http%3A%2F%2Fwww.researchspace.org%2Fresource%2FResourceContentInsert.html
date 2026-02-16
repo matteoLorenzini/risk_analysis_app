@@ -1,4 +1,4 @@
-<semantic-form 
+<semantic-form
   new-subject-template="http://www.researchspace.org/resource/ResourceContent/{{UUID}}"
   post-action="redirect"
   browser-persistence="true"
@@ -30,12 +30,12 @@
       "xsdDatatype": "xsd:string",
       "minOccurs": "1",
       "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { $subject <http://www.w3.org/2004/02/skos/core#prefLabel> $value }",
-      "insertPattern": "INSERT { $subject <http://www.w3.org/2004/02/skos/core#prefLabel> $value } WHERE {}",
-      "deletePattern": "DELETE { $subject <http://www.w3.org/2004/02/skos/core#prefLabel> $value } WHERE {}"
+
+      "selectPattern": "SELECT $value WHERE { $subject skos:prefLabel $value }",
+      "insertPattern": "INSERT { $subject skos:prefLabel $value } WHERE {}",
+      "deletePattern": "DELETE { $subject skos:prefLabel $value } WHERE {}"
     }
   ]'
-  [[> rsp:FormDefaults]]
 >
   <bs-panel>
     <h4>Create CRM Instance</h4>
@@ -51,7 +51,9 @@
 
     <semantic-form-errors></semantic-form-errors>
 
-    [[> rsp:FormDefaultActions formEntity='{{{{raw}}}}{{#if entityType}}{{entityType}}{{else}}Primary Source{{/if}}{{{{/raw}}}}']]
-
+    <div class="btn-group">
+      <button name="reset" class="btn btn-default">Reset</button>
+      <button name="submit" class="btn btn-action">Save</button>
+    </div>
   </bs-panel>
 </semantic-form>
