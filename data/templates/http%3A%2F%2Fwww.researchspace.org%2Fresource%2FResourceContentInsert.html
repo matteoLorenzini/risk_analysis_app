@@ -3,7 +3,7 @@
   new-subject-template="http://www.siriusplatform-risk-assessment/resource/site/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
   fields='[[ fieldDefinitions
     type                = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-    denominazione = "http://www.siriusplatform-risk-assessment/field/denominazione"
+    denominazione_insert = "http://www.siriusplatform-risk-assessment/field/denominazione_insert"
     source_comment      = "https://veniss.net/container/fieldDefinitionContainer/source_comment"
   ]]'
   [[> rsp:FormDefaults]]
@@ -22,9 +22,9 @@
 
       <bs-row>
         <bs-col md="8" sm="12">
-          <div id="denominazione" style="margin-bottom: 20px;">
+          <div id="denominazione_insert" style="margin-bottom: 20px;">
             <semantic-form-text-input 
-              for="denominazione" 
+              for="denominazione_insert" 
               label="Denominazione (Site Name)" 
               placeholder="Inserisci la denominazione del sito..."
               languages='["it", "en"]'>
