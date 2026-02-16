@@ -50,7 +50,11 @@
     </bs-tabs>
 
     <semantic-form-errors></semantic-form-errors>
-    
-    [[> rsp:FormDefaultActions formEntity='{{#if entityType}}{{entityType}}{{else}}Primary Source{{/if}}']]
+
+    [[#if entityType]]
+      [[> rsp:FormDefaultActions formEntity=entityType]]
+    [[else]]
+      [[> rsp:FormDefaultActions formEntity="Primary Source"]]
+    [[/if]]
   </bs-panel>
 </semantic-form>
