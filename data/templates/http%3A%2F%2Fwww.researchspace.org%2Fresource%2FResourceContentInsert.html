@@ -1,5 +1,5 @@
 <semantic-form
-  persistence='{"type": "sparql", "targetInsertGraphIri": "{{#if scheme}}{{scheme}}{{else}}http://www.researchspace.org/resource/g/data{{/if}}", "repository":"{{#if scheme}}authorities{{else}}assets{{/if}}"}'
+  persistence='{"type":"sparql","targetInsertGraphIri":"http://www.researchspace.org/resource/g/data","repository":"default"}'
   new-subject-template="http://www.researchspace.org/resource/ResourceContent/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
   post-action="redirect"
   browser-persistence="true"
