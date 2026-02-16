@@ -9,7 +9,6 @@
   ]]'
 >
   <bs-panel>
-    <div class="btn-group">
     <h4>Create CRM Instance</h4>
 
     <semantic-form-recover-notification></semantic-form-recover-notification>
@@ -22,8 +21,8 @@
 
     <semantic-form-errors></semantic-form-errors>
 
-    
-      [[> rsp:FormDefaultActions formEntity='{{#if entityType}}{{entityType}}{{else}}Primary Source{{/if}}']]
+    <div class="btn-group">
+      [[> rsp:FormDefaultActions formEntity="ResourceContent"]]
     </div>
   </bs-panel>
 </semantic-form>
