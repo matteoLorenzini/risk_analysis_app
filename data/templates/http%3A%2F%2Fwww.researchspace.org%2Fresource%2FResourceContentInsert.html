@@ -48,8 +48,7 @@
     <semantic-form-errors></semantic-form-errors>
 
     <div class="btn-group">
-      <button name="reset" class="btn btn-default">Reset</button>
-      <button name="submit" class="btn btn-action">Save</button>
+      [[> rsp:FormDefaultActions formEntity='{{#if entityType}}{{entityType}}{{else}}Primary Source{{/if}}']]
     </div>
 
   </bs-panel>
