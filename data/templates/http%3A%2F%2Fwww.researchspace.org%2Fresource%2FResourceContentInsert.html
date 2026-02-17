@@ -1,5 +1,5 @@
-
-<semantic-form new-subject-template='https://w3id.org/sirius/cultural-heritage-site/id/{{uuid}}'
+<semantic-form
+  new-subject-template='https://w3id.org/sirius/cultural-heritage-site/id/{{uuid}}'
   post-action='redirect'
   browser-persistence=true
   form-id='example-1'
@@ -11,43 +11,46 @@
       "xsdDatatype": "xsd:anyURI",
       "minOccurs": "1",
       "maxOccurs": "1",
-      "valueSetPattern": "
-        SELECT $value $label WHERE {
-          VALUES ($value $label) {
-            (<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> \"Site\")
-            (<http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object> \"Information Object\")
-          }
-        }
-      ",
+      "valueSetPattern": "SELECT $value $label WHERE { VALUES ($value $label) { (<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> \"Site\") (<http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object> \"Information Object\") } }",
       "selectPattern": "SELECT $value WHERE { $subject a $value }",
       "insertPattern": "INSERT { $subject a $value } WHERE {}",
       "deletePattern": "DELETE { $subject a $value } WHERE {}"
     },
     {
-      "id": "label",
-      "label": "Label",
-      "description": "The label used to display the instance",
+      "id": "denominazione_insert",
+      "label": "Denominazione (prefLabel via Appellation)",
+      "description": "CIDOC-CRM: E18 -> P1_is_identified_by -> E41_Appellation -> skos:prefLabel",
       "xsdDatatype": "xsd:string",
       "minOccurs": "1",
       "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { $subject rdfs:label $value }",
-      "insertPattern": "INSERT { $subject rdfs:label $value } WHERE {}",
-      "deletePattern": "DELETE { $subject rdfs:label $value } WHERE {}"
+
+      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . }",
+
+      "insertPattern": "INSERT { $subject a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> ; <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } WHERE { BIND(IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID())) AS ?appellation) }",
+
+      "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?value . } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?value . }"
     }
-  ]'>
+  ]'
+>
   <bs-panel>
     <h4>Create new CRM Instance</h4>
+
     <semantic-form-recover-notification></semantic-form-recover-notification>
-    <semantic-form-text-input for='label'></semantic-form-text-input>
-    <semantic-form-select-input for='type'></semantic-form-select-input>
-  
+
+    <semantic-form-text-input
+      for='denominazione_insert'
+      label="Denominazione"
+      languages='["it","en"]'>
+    </semantic-form-text-input>
+
+    <semantic-form-select-input for='type' label="Type"></semantic-form-select-input>
+
     <semantic-form-errors></semantic-form-errors>
-    <!-- save and reset button for form -->
-    <div class="btn-group"> 
+
+    <div class="btn-group">
       <button name="reset" class="btn btn-default">Reset</button>
       <button name="submit" class="btn btn-action">Save</button>
     </div>
 
   </bs-panel>
 </semantic-form>
-      
