@@ -1,21 +1,12 @@
 <semantic-form
-  persistence='{"type":"sparql","targetInsertGraphIri":"http://www.researchspace.org/resource/g/data","repository":"vam"}'
+  persistence='{"type":"sparql","targetInsertGraphIri":"http://www.researchspace.org/resource/g/data","repository":"default"}'
   new-subject-template="http://www.researchspace.org/resource/ResourceContent/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
   post-action="redirect"
   browser-persistence="true"
   form-id="example-2"
-  fields='[
-    {
-      "id": "denominazione_insert",
-      "label": "Denominazione",
-      "xsdDatatype": "xsd:string",
-      "minOccurs": "1",
-      "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?app . ?app <http://www.w3.org/2004/02/skos/core#prefLabel> $value . }",
-      "insertPattern": "INSERT { $subject a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> ; <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?app . ?app a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } WHERE { BIND(IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID())) AS ?app) }",
-      "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?app . ?app <http://www.w3.org/2004/02/skos/core#prefLabel> ?value . } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?app . ?app <http://www.w3.org/2004/02/skos/core#prefLabel> ?value . }"
-    }
-  ]'
+  fields='[[ fieldDefinitions
+    denominazione_insert = "http://www.siriusplatform-risk-assessment/field/denominazione_insert"
+  ]]'
   [[> rsp:FormDefaults]]
 >
   <bs-panel>
@@ -35,9 +26,6 @@
 
     <semantic-form-errors></semantic-form-errors>
 
-    <div class="btn-group">
-      <button name="reset" class="btn btn-default">Reset</button>
-      <button name="submit" class="btn btn-action">Save</button>
-    </div>
+    [[> rsp:FormDefaultActions formEntity="ResourceContent"]]
   </bs-panel>
 </semantic-form>
