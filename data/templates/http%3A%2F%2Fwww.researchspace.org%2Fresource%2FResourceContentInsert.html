@@ -1,5 +1,5 @@
 <semantic-form
-  persistence='{"type":"sparql","targetInsertGraphIri":"http://www.researchspace.org/resource/g/data","repository":"vam"}'
+  persistence='{"type":"sparql","targetInsertGraphIri":"http://www.researchspace.org/resource/g/data","repository":"VAM"}'
   new-subject-template='https://w3id.org/sirius/cultural-heritage-site/id/{{{{raw}}}}{{UUID}}{{{{/raw}}}}'
   post-action='redirect'
   browser-persistence="true"
@@ -21,12 +21,12 @@
       "id": "denominazione_insert",
       "label": "Denominazione",
       "description": "CIDOC-CRM: P1_is_identified_by -> E41_Appellation -> skos:prefLabel",
-      "xsdDatatype": "xsd:string",
+      "xsdDatatype": "rdf:langString",
       "minOccurs": "1",
       "maxOccurs": "1",
       "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . }",
-      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } WHERE { BIND(IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID())) AS ?appellation) }",
-      "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?value . } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?value . }"
+      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } WHERE { OPTIONAL { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID()))) AS ?appellation) }",
+      "deletePattern": "DELETE { ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . }"
     }
   ]'
 >
