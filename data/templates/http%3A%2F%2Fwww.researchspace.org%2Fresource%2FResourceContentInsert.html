@@ -17,6 +17,22 @@
       "insertPattern": "INSERT { $subject a $value } WHERE {}",
       "deletePattern": "DELETE { $subject a $value } WHERE {}"
     },
+
+    {
+      "id": "site_progressive_id",
+      "label": "Progressive Site ID",
+      "description": "Creates an E42 Identifier IRI: https://w3id.org/sirius/site/id/{N}",
+      "xsdDatatype": "xsd:integer",
+      "minOccurs": "1",
+      "maxOccurs": "1",
+
+      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?idiri . FILTER(STRSTARTS(STR(?idiri), \"https://w3id.org/sirius/site/id/\")) BIND(xsd:integer(STRAFTER(STR(?idiri), \"https://w3id.org/sirius/site/id/\")) AS $value) }",
+
+      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?idiri . ?idiri a <http://www.cidoc-crm.org/cidoc-crm/E42_Identifier> . } WHERE { BIND(IRI(CONCAT(\"https://w3id.org/sirius/site/id/\", STR($value))) AS ?idiri) }",
+
+      "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?idiri . } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?idiri . FILTER(STRSTARTS(STR(?idiri), \"https://w3id.org/sirius/site/id/\")) }"
+    },
+
     {
       "id": "denominazione_insert",
       "label": "Denominazione",
@@ -24,16 +40,25 @@
       "xsdDatatype": "rdf:langString",
       "minOccurs": "1",
       "maxOccurs": "1",
+
       "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . }",
+
       "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } WHERE { OPTIONAL { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID()))) AS ?appellation) }",
+
       "deletePattern": "DELETE { ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . }"
     }
   ]'
 >
   <bs-panel>
-    <h4>Create new CRM Instance</h4>
+    <h4>Create new Site (UUID subject + progressive identifier)</h4>
 
     <semantic-form-recover-notification></semantic-form-recover-notification>
+
+    <semantic-form-text-input
+      for="site_progressive_id"
+      label="Progressive ID (existing numeric series)"
+      placeholder="e.g. 258">
+    </semantic-form-text-input>
 
     <semantic-form-text-input
       for="denominazione_insert"
