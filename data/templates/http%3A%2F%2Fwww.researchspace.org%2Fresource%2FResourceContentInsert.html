@@ -1,7 +1,8 @@
 <semantic-form
-  new-subject-template='https://w3id.org/sirius/cultural-heritage-site/id/{{uuid}}'
+  persistence='{"type":"sparql","targetInsertGraphIri":"http://www.researchspace.org/resource/g/data","repository":"VAM"}'
+  new-subject-template='https://w3id.org/sirius/cultural-heritage-site/id/{{{{raw}}}}{{UUID}}{{{{/raw}}}}'
   post-action='redirect'
-  browser-persistence=true
+  browser-persistence="true"
   form-id='example-1'
   fields='[
     {
@@ -23,11 +24,8 @@
       "xsdDatatype": "xsd:string",
       "minOccurs": "1",
       "maxOccurs": "1",
-
       "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . }",
-
       "insertPattern": "INSERT { $subject a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> ; <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } WHERE { BIND(IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID())) AS ?appellation) }",
-
       "deletePattern": "DELETE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?value . } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?value . }"
     }
   ]'
@@ -38,12 +36,12 @@
     <semantic-form-recover-notification></semantic-form-recover-notification>
 
     <semantic-form-text-input
-      for='denominazione_insert'
+      for="denominazione_insert"
       label="Denominazione"
       languages='["it","en"]'>
     </semantic-form-text-input>
 
-    <semantic-form-select-input for='type' label="Type"></semantic-form-select-input>
+    <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
 
     <semantic-form-errors></semantic-form-errors>
 
@@ -51,6 +49,5 @@
       <button name="reset" class="btn btn-default">Reset</button>
       <button name="submit" class="btn btn-action">Save</button>
     </div>
-
   </bs-panel>
 </semantic-form>
