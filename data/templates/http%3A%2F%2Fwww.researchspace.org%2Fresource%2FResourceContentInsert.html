@@ -35,13 +35,37 @@
 
     <semantic-form-recover-notification></semantic-form-recover-notification>
 
-    <semantic-form-text-input
-      for="denominazione_insert"
-      label="Denominazione"
-      languages='["it","en"]'>
-    </semantic-form-text-input>
+    <bs-tabs fixed-key="resource-content-insert-tabs">
+      <bs-tab event-key="site-description" title="Site Description">
+        <semantic-form-text-input
+          for="denominazione_insert"
+          label="Denominazione"
+          languages='["it","en"]'>
+        </semantic-form-text-input>
 
-    <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
+        <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
+      </bs-tab>
+
+      <bs-tab event-key="nara-grid" title="Nara Grid">
+        <div style="color:#666; padding:8px 0;">Nara Grid fields can be configured here.</div>
+      </bs-tab>
+
+      <bs-tab event-key="risk-analysis" title="Risk Analysis">
+        <div style="color:#666; padding:8px 0;">Risk Analysis fields can be configured here.</div>
+      </bs-tab>
+
+      <bs-tab event-key="places" title="Magnitude Scale">
+        <div style="color:#666; padding:8px 0;">Magnitude Scale fields can be configured here.</div>
+      </bs-tab>
+
+      <bs-tab event-key="site-pictures" title="Site Pictures">
+        <div style="color:#666; padding:8px 0;">Site Pictures fields can be configured here.</div>
+      </bs-tab>
+
+      <bs-tab event-key="cartographic-docs" title="Cartographic Documentation">
+        <div style="color:#666; padding:8px 0;">Cartographic Documentation fields can be configured here.</div>
+      </bs-tab>
+    </bs-tabs>
 
     <semantic-form-errors></semantic-form-errors>
 
