@@ -1,9 +1,9 @@
 <semantic-form
-  persistence='{"type":"sparql","targetInsertGraphIri":"http://www.researchspace.org/resource/g/data","repository":"default"}'
-  new-subject-template='https://w3id.org/sirius/cultural-heritage-site/id/{{{{raw}}}}{{UUID}}{{{{/raw}}}}'
-  post-action='redirect'
+  persistence='{"type":"sparql","targetInsertGraphIri":"http://www.researchspace.org/resource/g/data","repository":"VAM"}'
+  new-subject-template="https://w3id.org/sirius/cultural-heritage-site/id/{{UUID}}"
+  post-action="redirect"
   browser-persistence="true"
-  form-id='example-1'
+  form-id="example-1"
   fields='[
     {
       "id": "type",
@@ -35,7 +35,12 @@
 
     <semantic-form-recover-notification></semantic-form-recover-notification>
 
-    <semantic-form-text-input for="denominazione_insert" label="Denominazione" languages='["it","en"]'></semantic-form-text-input>
+    <semantic-form-text-input
+      for="denominazione_insert"
+      label="Denominazione"
+      languages='["it","en"]'>
+    </semantic-form-text-input>
+
     <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
 
     <semantic-form-errors></semantic-form-errors>
