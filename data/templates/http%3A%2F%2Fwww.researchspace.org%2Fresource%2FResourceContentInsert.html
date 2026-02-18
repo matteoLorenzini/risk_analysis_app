@@ -1,5 +1,5 @@
 <semantic-form
-  persistence='{"type":"sparql","targetInsertGraphIri":"http://www.researchspace.org/resource/g/data","repository":"VAM"}'
+  persistence='{"type":"sparql","targetInsertGraphIri":"file://E18_Ravenna.rdf-14-12-2025-08-23-25","repository":"VAM"}'
   new-subject-template='https://w3id.org/sirius/cultural-heritage-site/id/{{{{raw}}}}{{UUID}}{{{{/raw}}}}'
   post-action='redirect'
   browser-persistence="true"
@@ -8,7 +8,6 @@
     {
       "id": "type",
       "label": "Type",
-      "description": "The type of the created instance",
       "xsdDatatype": "xsd:anyURI",
       "minOccurs": "1",
       "maxOccurs": "1",
@@ -19,8 +18,7 @@
     },
     {
       "id": "denominazione_insert",
-      "label": "Denominazione (prefLabel via Appellation)",
-      "description": "CIDOC-CRM: E18 -> P1_is_identified_by -> E41_Appellation -> skos:prefLabel",
+      "label": "Denominazione",
       "xsdDatatype": "xsd:string",
       "minOccurs": "1",
       "maxOccurs": "1",
@@ -35,12 +33,7 @@
 
     <semantic-form-recover-notification></semantic-form-recover-notification>
 
-    <semantic-form-text-input
-      for="denominazione_insert"
-      label="Denominazione"
-      languages='["it","en"]'>
-    </semantic-form-text-input>
-
+    <semantic-form-text-input for="denominazione_insert" label="Denominazione" languages='["it","en"]'></semantic-form-text-input>
     <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
 
     <semantic-form-errors></semantic-form-errors>
