@@ -1,218 +1,62 @@
-<semantic-form
-  persistence='{"type":"sparql","targetInsertGraphIri":"http://www.researchspace.org/resource/g/data","repository":"default"}'
-  new-subject-template="https://w3id.org/sirius/cultural-heritage-site/id/{{{{raw}}}}{{UUID}}{{{{/raw}}}}"
-  post-action="redirect"
-  browser-persistence="true"
-  form-id="example-site-with-nara"
-  fields='[
-    {
-      "id": "type",
-      "label": "Type",
-      "description": "The type of the created instance",
-      "xsdDatatype": "xsd:anyURI",
-      "minOccurs": "1",
-      "maxOccurs": "1",
-      "valueSetPattern": "SELECT $value $label WHERE { VALUES ($value $label) { (<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> \"Site\") (<http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object> \"Information Object\") } }",
-      "selectPattern": "SELECT $value WHERE { $subject a $value }",
-      "insertPattern": "INSERT { $subject a $value } WHERE {}",
-      "deletePattern": "DELETE { $subject a $value } WHERE {}"
-    },
-    {
-      "id": "denominazione_insert",
-      "label": "Denominazione",
-      "description": "CIDOC-CRM: P1_is_identified_by -> E41_Appellation -> skos:prefLabel",
-      "xsdDatatype": "rdf:langString",
-      "minOccurs": "1",
-      "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . }",
-      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } WHERE { OPTIONAL { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID()))) AS ?appellation) }",
-      "deletePattern": "DELETE { ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . }"
-    },
-    {
-      "id": "nara_d1_a1", "label": "NARA Artistic / Form & Design", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a1> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d1_a1> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d1_a1> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a1> ?old . } }"
-    },
-    {
-      "id": "nara_d1_a2", "label": "NARA Artistic / Materials", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a2> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d1_a2> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d1_a2> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a2> ?old . } }"
-    },
-    {
-      "id": "nara_d1_a3", "label": "NARA Artistic / Use & Functions", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a3> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d1_a3> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d1_a3> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a3> ?old . } }"
-    },
-    {
-      "id": "nara_d1_a4", "label": "NARA Artistic / Technics & Workmanship", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a4> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d1_a4> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d1_a4> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a4> ?old . } }"
-    },
-    {
-      "id": "nara_d1_a5", "label": "NARA Artistic / Location & Setting", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a5> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d1_a5> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d1_a5> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a5> ?old . } }"
-    },
-    {
-      "id": "nara_d1_a6", "label": "NARA Artistic / Spirit & Feelings", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a6> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d1_a6> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d1_a6> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d1_a6> ?old . } }"
-    },
-    {
-      "id": "nara_d2_a1", "label": "NARA Historic / Form & Design", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a1> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d2_a1> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d2_a1> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a1> ?old . } }"
-    },
-    {
-      "id": "nara_d2_a2", "label": "NARA Historic / Materials", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a2> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d2_a2> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d2_a2> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a2> ?old . } }"
-    },
-    {
-      "id": "nara_d2_a3", "label": "NARA Historic / Use & Functions", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a3> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d2_a3> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d2_a3> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a3> ?old . } }"
-    },
-    {
-      "id": "nara_d2_a4", "label": "NARA Historic / Technics & Workmanship", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a4> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d2_a4> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d2_a4> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a4> ?old . } }"
-    },
-    {
-      "id": "nara_d2_a5", "label": "NARA Historic / Location & Setting", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a5> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d2_a5> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d2_a5> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a5> ?old . } }"
-    },
-    {
-      "id": "nara_d2_a6", "label": "NARA Historic / Spirit & Feelings", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a6> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d2_a6> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d2_a6> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d2_a6> ?old . } }"
-    },
-    {
-      "id": "nara_d3_a1", "label": "NARA Social / Form & Design", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a1> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d3_a1> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d3_a1> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a1> ?old . } }"
-    },
-    {
-      "id": "nara_d3_a2", "label": "NARA Social / Materials", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a2> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d3_a2> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d3_a2> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a2> ?old . } }"
-    },
-    {
-      "id": "nara_d3_a3", "label": "NARA Social / Use & Functions", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a3> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d3_a3> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d3_a3> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a3> ?old . } }"
-    },
-    {
-      "id": "nara_d3_a4", "label": "NARA Social / Technics & Workmanship", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a4> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d3_a4> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d3_a4> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a4> ?old . } }"
-    },
-    {
-      "id": "nara_d3_a5", "label": "NARA Social / Location & Setting", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a5> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d3_a5> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d3_a5> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a5> ?old . } }"
-    },
-    {
-      "id": "nara_d3_a6", "label": "NARA Social / Spirit & Feelings", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a6> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d3_a6> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d3_a6> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d3_a6> ?old . } }"
-    },
-    {
-      "id": "nara_d4_a1", "label": "NARA Scientific / Form & Design", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a1> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d4_a1> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d4_a1> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a1> ?old . } }"
-    },
-    {
-      "id": "nara_d4_a2", "label": "NARA Scientific / Materials", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a2> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d4_a2> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d4_a2> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a2> ?old . } }"
-    },
-    {
-      "id": "nara_d4_a3", "label": "NARA Scientific / Use & Functions", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a3> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d4_a3> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d4_a3> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a3> ?old . } }"
-    },
-    {
-      "id": "nara_d4_a4", "label": "NARA Scientific / Technics & Workmanship", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a4> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d4_a4> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d4_a4> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a4> ?old . } }"
-    },
-    {
-      "id": "nara_d4_a5", "label": "NARA Scientific / Location & Setting", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a5> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d4_a5> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d4_a5> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a5> ?old . } }"
-    },
-    {
-      "id": "nara_d4_a6", "label": "NARA Scientific / Spirit & Feelings", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a6> $value . } }", "insertPattern": "INSERT { $subject <https://w3id.org/sirius/field/nara_d4_a6> $value . } WHERE {}", "deletePattern": "DELETE { $subject <https://w3id.org/sirius/field/nara_d4_a6> ?old . } WHERE { OPTIONAL { $subject <https://w3id.org/sirius/field/nara_d4_a6> ?old . } }"
-    }
-  ]'
->
-  <bs-panel>
-    <h4>Create new CRM Instance</h4>
+<div class="pivot-wrap">
+  <table class="pivot">
+    <thead>
+      <tr>
+        <th>Dimension ↓ / Aspect →</th>
+        <th>Form &amp; Design</th>
+        <th>Materials</th>
+        <th>Use &amp; Functions</th>
+        <th>Technics &amp; Workmanship</th>
+        <th>Location &amp; Setting</th>
+        <th>Spirit &amp; Feelings</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Artistic</th>
+        <td><semantic-form-text-input for="nara_d1_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d1_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d1_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d1_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d1_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d1_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+      </tr>
+      <tr>
+        <th>Historic</th>
+        <td><semantic-form-text-input for="nara_d2_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d2_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d2_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d2_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d2_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d2_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+      </tr>
+      <tr>
+        <th>Social</th>
+        <td><semantic-form-text-input for="nara_d3_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d3_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d3_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d3_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d3_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d3_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+      </tr>
+      <tr>
+        <th>Scientific</th>
+        <td><semantic-form-text-input for="nara_d4_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d4_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d4_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d4_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d4_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d4_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-    <semantic-form-recover-notification></semantic-form-recover-notification>
-
-    <bs-tabs fixed-key="resource-content-insert-tabs">
-      <bs-tab event-key="site-description" title="Site Description">
-        <semantic-form-text-input
-          for="denominazione_insert"
-          label="Denominazione"
-          languages='["it","en"]'>
-        </semantic-form-text-input>
-
-        <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
-      </bs-tab>
-
-      <bs-tab event-key="nara-grid" title="Nara Grid">
-        <div class="pivot-wrap">
-          <table class="pivot">
-            <thead>
-              <tr>
-                <th>Dimension ↓ / Aspect →</th>
-                <th>Form &amp; Design</th>
-                <th>Materials</th>
-                <th>Use &amp; Functions</th>
-                <th>Technics &amp; Workmanship</th>
-                <th>Location &amp; Setting</th>
-                <th>Spirit &amp; Feelings</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>Artistic</th>
-                <td><semantic-form-text-input for="nara_d1_a1" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d1_a2" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d1_a3" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d1_a4" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d1_a5" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d1_a6" multiline="true" rows="3"></semantic-form-text-input></td>
-              </tr>
-              <tr>
-                <th>Historic</th>
-                <td><semantic-form-text-input for="nara_d2_a1" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d2_a2" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d2_a3" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d2_a4" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d2_a5" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d2_a6" multiline="true" rows="3"></semantic-form-text-input></td>
-              </tr>
-              <tr>
-                <th>Social</th>
-                <td><semantic-form-text-input for="nara_d3_a1" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d3_a2" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d3_a3" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d3_a4" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d3_a5" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d3_a6" multiline="true" rows="3"></semantic-form-text-input></td>
-              </tr>
-              <tr>
-                <th>Scientific</th>
-                <td><semantic-form-text-input for="nara_d4_a1" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d4_a2" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d4_a3" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d4_a4" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d4_a5" multiline="true" rows="3"></semantic-form-text-input></td>
-                <td><semantic-form-text-input for="nara_d4_a6" multiline="true" rows="3"></semantic-form-text-input></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </bs-tab>
-    </bs-tabs>
-
-    <semantic-form-errors></semantic-form-errors>
-
-    <div class="btn-group">
-      <button name="reset" class="btn btn-default">Reset</button>
-      <button name="submit" class="btn btn-action">Save</button>
-    </div>
-  </bs-panel>
-
-  <style>
-    .pivot-wrap { overflow-x: auto; }
-    table.pivot { border-collapse: separate; border-spacing: 0; width: 100%; background: #fff; }
-    .pivot th, .pivot td { border: 1px solid #e5e7eb; padding: .45rem .55rem; vertical-align: top; }
-    .pivot thead th { background: #f9fafb; position: sticky; top: 0; z-index: 1; }
-    .pivot tbody th { background: #f9fafb; position: sticky; left: 0; text-align: left; }
-    .pivot td { min-width: 12rem; }
-  </style>
-</semantic-form>
+<style>
+  .pivot-wrap { overflow-x: auto; }
+  table.pivot { border-collapse: separate; border-spacing: 0; width: 100%; background: #fff; }
+  .pivot th, .pivot td { border: 1px solid #e5e7eb; padding: .45rem .55rem; vertical-align: top; }
+  .pivot thead th { background: #f9fafb; position: sticky; top: 0; z-index: 1; }
+  .pivot tbody th { background: #f9fafb; position: sticky; left: 0; text-align: left; }
+  .pivot td { min-width: 12rem; }
+</style>
