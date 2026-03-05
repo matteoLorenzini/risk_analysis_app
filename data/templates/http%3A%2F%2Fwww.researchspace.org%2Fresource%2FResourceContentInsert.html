@@ -37,6 +37,7 @@
     <bs-tab event-key="nara-grid" title="Nara Grid">
       <semantic-form
         subject='[[this]]'
+        new-subject-template="https://w3id.org/sirius/cultural-heritage-site/id/{{UUID}}"
         persistence='{"type":"sparql","targetInsertGraphIri":"file://E89_nara.rdf-15-01-2026-10-21-05","repository":"default"}'
         post-action="reload"
         browser-persistence="true"
@@ -200,6 +201,7 @@
     <bs-tab event-key="risk-analysis" title="Risk Analysis">
       <semantic-form
         subject='[[this]]'
+        new-subject-template="https://w3id.org/sirius/cultural-heritage-site/id/{{UUID}}"
         persistence='{"type":"sparql","targetInsertGraphIri":"file://E89_risk.rdf-15-01-2026-10-21-25","repository":"default"}'
         post-action="reload"
         browser-persistence="true"
