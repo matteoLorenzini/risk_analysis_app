@@ -136,17 +136,14 @@ WHERE {
     }
   }
 
-  # Magnitude score (aggregate to one row per event)
+  # Magnitude score (aggregate to one row per subject)
   OPTIONAL {
     {
-      SELECT ?event (MAX(?minMagVal) AS ?magnitude_min_score) (MAX(?maxMagVal) AS ?magnitude_max_score)
+      SELECT ?subject (MAX(?minMagVal) AS ?magnitude_min_score) (MAX(?maxMagVal) AS ?magnitude_max_score)
       WHERE {
         OPTIONAL {
+          BIND(REPLACE(STR(?subject), "^.*/", "") AS ?siteKeyMag)
           {
-            ?event base:P39i_was_measured_by ?magnitude .
-            ?magnitude a crmsci:S21_Measurement ;
-                       base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                       base:P40_observed_dimension ?magnitude_dim_min .
             ?magnitude_dim_min a base:E54_Dimension ;
                                base:P2_has_type ?magnitudeDimTypeMin ;
                                base:P90_has_value ?minMagVal .
@@ -154,15 +151,11 @@ WHERE {
               <https://w3id.org/sirius/type/magnitude_score>,
               <https://w3id.org/sirius/type/magnitude-score>
             ))
-            FILTER(STRSTARTS(STR(?magnitude_dim_min), "https://w3id.org/sirius/magnitude_score_min/"))
+            FILTER(STRSTARTS(STR(?magnitude_dim_min), CONCAT("https://w3id.org/sirius/magnitude_score_min/", ENCODE_FOR_URI(?siteKeyMag), "/")))
           }
           UNION
           {
             GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
-              ?event base:P39i_was_measured_by ?magnitude .
-              ?magnitude a crmsci:S21_Measurement ;
-                         base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                         base:P40_observed_dimension ?magnitude_dim_min .
               ?magnitude_dim_min a base:E54_Dimension ;
                                  base:P2_has_type ?magnitudeDimTypeMin ;
                                  base:P90_has_value ?minMagVal .
@@ -170,17 +163,14 @@ WHERE {
                 <https://w3id.org/sirius/type/magnitude_score>,
                 <https://w3id.org/sirius/type/magnitude-score>
               ))
-              FILTER(STRSTARTS(STR(?magnitude_dim_min), "https://w3id.org/sirius/magnitude_score_min/"))
+              FILTER(STRSTARTS(STR(?magnitude_dim_min), CONCAT("https://w3id.org/sirius/magnitude_score_min/", ENCODE_FOR_URI(?siteKeyMag), "/")))
             }
           }
         }
 
         OPTIONAL {
+          BIND(REPLACE(STR(?subject), "^.*/", "") AS ?siteKeyMag2)
           {
-            ?event base:P39i_was_measured_by ?magnitude2 .
-            ?magnitude2 a crmsci:S21_Measurement ;
-                        base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                        base:P40_observed_dimension ?magnitude_dim_max .
             ?magnitude_dim_max a base:E54_Dimension ;
                                base:P2_has_type ?magnitudeDimTypeMax ;
                                base:P90_has_value ?maxMagVal .
@@ -188,15 +178,11 @@ WHERE {
               <https://w3id.org/sirius/type/magnitude_score>,
               <https://w3id.org/sirius/type/magnitude-score>
             ))
-            FILTER(STRSTARTS(STR(?magnitude_dim_max), "https://w3id.org/sirius/magnitude_score_max/"))
+            FILTER(STRSTARTS(STR(?magnitude_dim_max), CONCAT("https://w3id.org/sirius/magnitude_score_max/", ENCODE_FOR_URI(?siteKeyMag2), "/")))
           }
           UNION
           {
             GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
-              ?event base:P39i_was_measured_by ?magnitude2 .
-              ?magnitude2 a crmsci:S21_Measurement ;
-                          base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
-                          base:P40_observed_dimension ?magnitude_dim_max .
               ?magnitude_dim_max a base:E54_Dimension ;
                                  base:P2_has_type ?magnitudeDimTypeMax ;
                                  base:P90_has_value ?maxMagVal .
@@ -204,12 +190,12 @@ WHERE {
                 <https://w3id.org/sirius/type/magnitude_score>,
                 <https://w3id.org/sirius/type/magnitude-score>
               ))
-              FILTER(STRSTARTS(STR(?magnitude_dim_max), "https://w3id.org/sirius/magnitude_score_max/"))
+              FILTER(STRSTARTS(STR(?magnitude_dim_max), CONCAT("https://w3id.org/sirius/magnitude_score_max/", ENCODE_FOR_URI(?siteKeyMag2), "/")))
             }
           }
         }
       }
-      GROUP BY ?event
+      GROUP BY ?subject
     }
   }
 
