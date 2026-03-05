@@ -1,4 +1,4 @@
-<bs-panel>
+﻿<bs-panel>
   <h4>Create new CRM Instance</h4>
 
   <bs-tabs fixed-key="resource-content-insert-tabs">
@@ -10,18 +10,6 @@
         browser-persistence="true"
         form-id="resource-content-insert-e18"
         fields='[
-    {
-      "id": "type",
-      "label": "Type",
-      "description": "The type of the created instance",
-      "xsdDatatype": "xsd:anyURI",
-      "minOccurs": "1",
-      "maxOccurs": "1",
-      "valueSetPattern": "SELECT $value $label WHERE { VALUES ($value $label) { (<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> \"Site\") (<http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object> \"Information Object\") } }",
-      "selectPattern": "SELECT $value WHERE { $subject a $value }",
-      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a $value } } WHERE {}",
-      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a $value } } WHERE {}"
-    },
     {
       "id": "denominazione_insert",
       "label": "Denominazione",
@@ -37,7 +25,6 @@
         <semantic-form-recover-notification></semantic-form-recover-notification>
 
         <semantic-form-text-input for="denominazione_insert" label="Denominazione" languages='["it","en"]'></semantic-form-text-input>
-        <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
 
         <semantic-form-errors></semantic-form-errors>
         <div class="btn-group">
