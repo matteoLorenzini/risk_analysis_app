@@ -1,0 +1,28 @@
+<h4>Risk Analysis Insert (E89)</h4>
+
+<div class="grid" style="display:grid; grid-template-columns:repeat(2,minmax(280px,1fr)); gap:12px;">
+  <semantic-form-text-input for="risk_agent" label="Agent"></semantic-form-text-input>
+  <semantic-form-text-input for="event_name" label="Event"></semantic-form-text-input>
+  <div style="grid-column:1/-1;"><semantic-form-text-input for="risk_desc" multiline="true" rows="3" label="Risk Description"></semantic-form-text-input></div>
+
+  <semantic-form-text-input for="scale_a_val_1" label="Scale A - Val.1"></semantic-form-text-input>
+  <semantic-form-text-input for="scale_a_val_2" label="Scale A - Val.2"></semantic-form-text-input>
+  <semantic-form-text-input for="scale_a_val_3" label="Scale A - Val.3"></semantic-form-text-input>
+  <div style="grid-column:1/-1;"><semantic-form-text-input for="scale_a_description" multiline="true" rows="3" label="Scale A - Description"></semantic-form-text-input></div>
+
+  <semantic-form-text-input for="scale_b_val_1" label="Scale B - Val.1"></semantic-form-text-input>
+  <semantic-form-text-input for="scale_b_val_2" label="Scale B - Val.2"></semantic-form-text-input>
+  <semantic-form-text-input for="scale_b_val_3" label="Scale B - Val.3"></semantic-form-text-input>
+  <div style="grid-column:1/-1;"><semantic-form-text-input for="scale_b_description" multiline="true" rows="3" label="Scale B - Description"></semantic-form-text-input></div>
+
+  <semantic-form-text-input for="scale_c_val_1" label="Scale C - Val.1"></semantic-form-text-input>
+  <semantic-form-text-input for="scale_c_val_2" label="Scale C - Val.2"></semantic-form-text-input>
+  <semantic-form-text-input for="scale_c_val_3" label="Scale C - Val.3"></semantic-form-text-input>
+  <div style="grid-column:1/-1;"><semantic-form-text-input for="scale_c_description" multiline="true" rows="3" label="Scale C - Description"></semantic-form-text-input></div>
+
+  <semantic-form-number-input for="magnitude_min_score" label="Magnitude Min" step="0.001"></semantic-form-number-input>
+  <semantic-form-number-input for="magnitude_max_score" label="Magnitude Max" step="0.001"></semantic-form-number-input>
+
+  <semantic-form-text-input for="uncertainty_min_score" label="Uncertainty Min"></semantic-form-text-input>
+  <semantic-form-text-input for="uncertainty_max_score" label="Uncertainty Max"></semantic-form-text-input>
+</div>
