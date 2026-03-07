@@ -1,9 +1,8 @@
 <semantic-form
+  id="sirius-site-form"
+  subject='{{#if subjectiri}}{{subjectiri}}{{else}}{{urlParam "subjectiri"}}{{/if}}'
   persistence='{"type":"sparql","targetInsertGraphIri":"file://E18_Ravenna.rdf-14-12-2025-08-23-25","repository":"default"}'
-  new-subject-template="https://w3id.org/sirius/cultural-heritage-site/id/{{UUID}}"
-  post-action="redirect"
-  browser-persistence="true"
-  form-id="example-1"
+  browser-persistence=true
   fields='[
     {
       "id": "type",
@@ -13,9 +12,9 @@
       "minOccurs": "1",
       "maxOccurs": "1",
       "valueSetPattern": "SELECT $value $label WHERE { VALUES ($value $label) { (<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> \"Site\") (<http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object> \"Information Object\") } }",
-      "selectPattern": "SELECT $value WHERE { $subject a $value }",
-      "insertPattern": "INSERT { $subject a $value } WHERE {}",
-      "deletePattern": "DELETE { $subject a $value } WHERE {}"
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a $value } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a $value } } WHERE {}",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a $value } } WHERE {}"
     },
     {
       "id": "denominazione_insert",
@@ -24,9 +23,9 @@
       "xsdDatatype": "rdf:langString",
       "minOccurs": "1",
       "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . }",
-      "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } WHERE { OPTIONAL { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID()))) AS ?appellation) }",
-      "deletePattern": "DELETE { ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . }"
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . } } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID()))) AS ?appellation) }",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } }"
     },
     {
       "id": "nara_d1_a1", "label": "NARA Artistic / Form & Design", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
@@ -298,50 +297,108 @@
       "insertPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> INSERT { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?event base:P39i_was_measured_by ?m . ?m a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> ; base:P40_observed_dimension ?d . ?d a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label $value . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) BIND(IRI(CONCAT(\"https://w3id.org/sirius/uncertainty_score/\", ENCODE_FOR_URI(?siteKey))) AS ?m) BIND(IRI(CONCAT(\"https://w3id.org/sirius/uncertainty_max/\", ENCODE_FOR_URI(?siteKey), \"/\", ENCODE_FOR_URI(STR($value)))) AS ?d) }",
       "deletePattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> DELETE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?d rdfs:label ?old . } } WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) ?event base:P39i_was_measured_by ?m . ?m a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> ; base:P40_observed_dimension ?d . FILTER(STRSTARTS(STR(?d), \"https://w3id.org/sirius/uncertainty_max/\")) ?d rdfs:label ?old .  } }"
     }
-  ]'
->
-  <bs-panel>
-    <h4>Create new CRM Instance</h4>
+  ]'>
 
-    <semantic-form-recover-notification></semantic-form-recover-notification>
+  <bs-tabs content-class="mt-3">
+    <bs-tab event-key="site-description" title="Site Description">
+      <semantic-form-select-input for="type"></semantic-form-select-input>
+      <semantic-form-text-input for="denominazione_insert"></semantic-form-text-input>
+    </bs-tab>
 
-    <bs-tabs fixed-key="resource-content-insert-tabs">
-      <bs-tab event-key="site-description" title="Site Description">
-        <semantic-form-text-input
-          for="denominazione_insert"
-          label="Denominazione"
-          languages='["it","en"]'>
-        </semantic-form-text-input>
+    <bs-tab event-key="nara-grid" title="Nara Grid">
+      <div class="pivot-wrap">
+        <table class="pivot">
+          <thead>
+            <tr>
+              <th>Dimension ↓ / Aspect →</th>
+              <th>Form &amp; Design</th>
+              <th>Materials</th>
+              <th>Use &amp; Functions</th>
+              <th>Technics &amp; Workmanship</th>
+              <th>Location &amp; Setting</th>
+              <th>Spirit &amp; Feelings</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Artistic</th>
+              <td><semantic-form-text-input for="nara_d1_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d1_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d1_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d1_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d1_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d1_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+            </tr>
+            <tr>
+              <th>Historic</th>
+              <td><semantic-form-text-input for="nara_d2_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d2_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d2_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d2_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d2_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d2_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+            </tr>
+            <tr>
+              <th>Social</th>
+              <td><semantic-form-text-input for="nara_d3_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d3_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d3_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d3_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d3_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d3_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+            </tr>
+            <tr>
+              <th>Scientific</th>
+              <td><semantic-form-text-input for="nara_d4_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d4_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d4_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d4_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d4_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+              <td><semantic-form-text-input for="nara_d4_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </bs-tab>
 
-        <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
-      </bs-tab>
+    <bs-tab event-key="risk-analysis" title="Risk Analysis">
+      <h4>Risk Analysis Insert (E89)</h4>
 
-      <bs-tab event-key="nara-grid" title="Nara Grid">
-        <div style="color:#666; padding:8px 0;">[[> sirius:nara-grid-insert]]</div>
-      </bs-tab>
+      <div class="grid" style="display:grid; grid-template-columns:repeat(2,minmax(280px,1fr)); gap:12px;">
+        <semantic-form-text-input for="risk_agent" label="Agent"></semantic-form-text-input>
+        <semantic-form-text-input for="event_name" label="Event"></semantic-form-text-input>
+        <div style="grid-column:1/-1;"><semantic-form-text-input for="risk_desc" multiline="true" rows="3" label="Risk Description"></semantic-form-text-input></div>
 
-      <bs-tab event-key="risk-analysis" title="Risk Analysis">
-        <div style="color:#666; padding:8px 0;">[[> sirius:risk-analysis-insert]]</div>
-      </bs-tab>
+        <semantic-form-text-input for="scale_a_val_1" label="Scale A - Val.1"></semantic-form-text-input>
+        <semantic-form-text-input for="scale_a_val_2" label="Scale A - Val.2"></semantic-form-text-input>
+        <semantic-form-text-input for="scale_a_val_3" label="Scale A - Val.3"></semantic-form-text-input>
+        <div style="grid-column:1/-1;"><semantic-form-text-input for="scale_a_description" multiline="true" rows="3" label="Scale A - Description"></semantic-form-text-input></div>
 
-      <bs-tab event-key="places" title="Magnitude Scale">
-        <div style="color:#666; padding:8px 0;">Magnitude Scale fields can be configured here.</div>
-      </bs-tab>
+        <semantic-form-text-input for="scale_b_val_1" label="Scale B - Val.1"></semantic-form-text-input>
+        <semantic-form-text-input for="scale_b_val_2" label="Scale B - Val.2"></semantic-form-text-input>
+        <semantic-form-text-input for="scale_b_val_3" label="Scale B - Val.3"></semantic-form-text-input>
+        <div style="grid-column:1/-1;"><semantic-form-text-input for="scale_b_description" multiline="true" rows="3" label="Scale B - Description"></semantic-form-text-input></div>
 
-      <bs-tab event-key="site-pictures" title="Site Pictures">
-        <div style="color:#666; padding:8px 0;">Site Pictures fields can be configured here.</div>
-      </bs-tab>
+        <semantic-form-text-input for="scale_c_val_1" label="Scale C - Val.1"></semantic-form-text-input>
+        <semantic-form-text-input for="scale_c_val_2" label="Scale C - Val.2"></semantic-form-text-input>
+        <semantic-form-text-input for="scale_c_val_3" label="Scale C - Val.3"></semantic-form-text-input>
+        <div style="grid-column:1/-1;"><semantic-form-text-input for="scale_c_description" multiline="true" rows="3" label="Scale C - Description"></semantic-form-text-input></div>
 
-      <bs-tab event-key="cartographic-docs" title="Cartographic Documentation">
-        <div style="color:#666; padding:8px 0;">Cartographic Documentation fields can be configured here.</div>
-      </bs-tab>
-    </bs-tabs>
+        <semantic-form-number-input for="magnitude_min_score" label="Magnitude Min" step="0.001"></semantic-form-number-input>
+        <semantic-form-number-input for="magnitude_max_score" label="Magnitude Max" step="0.001"></semantic-form-number-input>
 
-    <semantic-form-errors></semantic-form-errors>
-
-    <div class="btn-group">
-      <button name="reset" class="btn btn-default">Reset</button>
-      <button name="submit" class="btn btn-action">Save</button>
-    </div>
-  </bs-panel>
+        <semantic-form-text-input for="uncertainty_min_score" label="Uncertainty Min"></semantic-form-text-input>
+        <semantic-form-text-input for="uncertainty_max_score" label="Uncertainty Max"></semantic-form-text-input>
+      </div>
+    </bs-tab>
+  </bs-tabs>
 </semantic-form>
+
+<style>
+  .pivot-wrap { overflow-x: auto; }
+  table.pivot { border-collapse: separate; border-spacing: 0; width: 100%; background: #fff; }
+  .pivot th, .pivot td { border: 1px solid #e5e7eb; padding: .45rem .55rem; vertical-align: top; }
+  .pivot thead th { background: #f9fafb; position: sticky; top: 0; z-index: 1; }
+  .pivot tbody th { background: #f9fafb; position: sticky; left: 0; text-align: left; }
+  .pivot td { min-width: 12rem; }
+</style>
