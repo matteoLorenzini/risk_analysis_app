@@ -1,5 +1,6 @@
 <semantic-form
   id="sirius-site-form"
+  new-subject-template='https://w3id.org/sirius/cultural-heritage-site/id/{{{{raw}}}}{{UUID}}{{{{/raw}}}}'
   subject='{{#if subjectiri}}{{subjectiri}}{{else}}{{urlParam "subjectiri"}}{{/if}}'
   persistence='{"type":"sparql","targetInsertGraphIri":"file://E18_Ravenna.rdf-14-12-2025-08-23-25","repository":"default"}'
   browser-persistence=true
