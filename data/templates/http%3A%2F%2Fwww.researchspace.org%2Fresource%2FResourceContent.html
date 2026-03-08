@@ -196,14 +196,16 @@ ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 SELECT ?type ?denominazione WHERE {
   BIND(<[[this]]> AS ?s)
-  OPTIONAL {
-    ?s a ?type .
-    FILTER(?type IN (crm:E18_Physical_Thing, crm:E73_Information_Object))
-  }
-  OPTIONAL {
-    ?s crm:P1_is_identified_by ?appellation .
-    ?appellation a crm:E41_Appellation ;
-                 skos:prefLabel ?denominazione .
+  GRAPH ?g {
+    OPTIONAL {
+      ?s a ?type .
+      FILTER(?type IN (crm:E18_Physical_Thing, crm:E73_Information_Object))
+    }
+    OPTIONAL {
+      ?s crm:P1_is_identified_by ?appellation .
+      ?appellation a crm:E41_Appellation ;
+                   skos:prefLabel ?denominazione .
+    }
   }
 }
 LIMIT 1' template='{{> siteDescSummary}}'>
