@@ -1,6 +1,7 @@
 <semantic-form [[> rsp:FormDefaults]]
   persistence='{"type":"sparql","targetInsertGraphIri":"file://E89_nara.rdf-15-01-2026-10-21-05","targetSelectGraphIri":"file://E89_nara.rdf-15-01-2026-10-21-05","targetDeleteGraphIri":"file://E89_nara.rdf-15-01-2026-10-21-05","repository":"default"}'
-  subject='[[this]]'
+  subject='[[#if subjectiri]][[subjectiri]][[else]][[#if this]][[this]][[else]][[urlParam "subjectiri"]][[/if]][[/if]]'
+  post-action="redirect"
   browser-persistence="false"
   form-id="nara-grid-form"
   fields='[
