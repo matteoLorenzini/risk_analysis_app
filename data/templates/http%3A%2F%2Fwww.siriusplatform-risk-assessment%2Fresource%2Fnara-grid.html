@@ -6,13 +6,11 @@ PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
 
 SELECT ?subject (COUNT(DISTINCT ?va) AS ?pairCount)
 WHERE {
-  VALUES ?subject { <[[this]]> }        
+  VALUES ?subject { <[[this]]> }
 
   GRAPH <file://E89_nara.rdf-15-01-2026-10-21-05> {
-    ?subject a base:E18_Physical_Thing ;
-             ^base:P129_is_about ?va .
-
     ?va a base:E89_Propositional_Object ;
+        base:P129_is_about ?subject ;
         base:P67_refers_to ?dimension, ?aspect .
   }
 
