@@ -1,61 +1,27 @@
-<bs-panel>
-  <h4>Create new CRM Instance</h4>
+<semantic-form
+  persistence='{"type":"sparql","targetInsertGraphIri":"file://E18_Ravenna.rdf-14-12-2025-08-23-25"}'
+  new-subject-template="https://w3id.org/sirius/cultural-heritage-site/id/{{UUID}}"
+  post-action="redirect"
+  browser-persistence="true"
+  form-id="sirius-main-form"
+  fields='[[ fieldDefinitions
+    # SITE IDENTITY (Graph: E18_Ravenna)
+    denominazione = "http://www.siriusplatform-risk-assessment/field/denominazione_insert"
+    
 
-  <bs-tabs fixed-key="resource-content-insert-tabs">
-    <bs-tab event-key="site-description" title="Site Description">
-      <semantic-form
-        persistence='{"type":"sparql","targetInsertGraphIri":"file://E18_Ravenna.rdf-14-12-2025-08-23-25","repository":"default"}'
-        new-subject-template="https://w3id.org/sirius/cultural-heritage-site/id/{{UUID}}"
-        post-action="redirect"
-        browser-persistence="true"
-        form-id="example-1"
-        fields='[
-          {
-            "id": "type",
-            "label": "Type",
-            "description": "The type of the created instance",
-            "xsdDatatype": "xsd:anyURI",
-            "minOccurs": "1",
-            "maxOccurs": "1",
-            "valueSetPattern": "SELECT $value $label WHERE { VALUES ($value $label) { (<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> \"Site\") (<http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object> \"Information Object\") } }",
-            "selectPattern": "SELECT $value WHERE { $subject a $value }",
-            "insertPattern": "INSERT { $subject a $value } WHERE {}",
-            "deletePattern": "DELETE { $subject a $value } WHERE {}"
-          },
-          {
-            "id": "denominazione_insert",
-            "label": "Denominazione",
-            "description": "CIDOC-CRM: P1_is_identified_by -> E41_Appellation -> skos:prefLabel",
-            "xsdDatatype": "rdf:langString",
-            "minOccurs": "1",
-            "maxOccurs": "1",
-            "selectPattern": "SELECT $value WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . }",
-            "insertPattern": "INSERT { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } WHERE { OPTIONAL { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID()))) AS ?appellation) }",
-            "deletePattern": "DELETE { ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } WHERE { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . }"
-          }
-        ]'
-      >
-        <semantic-form-recover-notification></semantic-form-recover-notification>
-
-        <semantic-form-text-input
-          for="denominazione_insert"
-          label="Denominazione"
-          languages='["it","en"]'>
-        </semantic-form-text-input>
-
+  ]]'
+>
+  <bs-panel>
+    <h4>Create new CRM Instance</h4>
+    <bs-tabs fixed-key="resource-content-insert-tabs" default-active-key="site-description">
+      
+      <bs-tab event-key="site-description" title="Site Description">
+        <semantic-form-text-input for="denominazione" label="Denominazione" languages='["it","en"]'></semantic-form-text-input>
         <semantic-form-select-input for="type" label="Type"></semantic-form-select-input>
+      </bs-tab>
 
-        <semantic-form-errors></semantic-form-errors>
-
-        <div class="btn-group">
-          <button name="reset" class="btn btn-default">Reset</button>
-          <button name="submit" class="btn btn-action">Save</button>
-        </div>
-      </semantic-form>
-    </bs-tab>
-
-    <bs-tab event-key="nara-grid" title="Nara Grid">
-      <div style="color:#666; padding:8px 0;">Save Site Description first. Then use the Nara Grid tab in the opened resource page to edit E89 values.</div>
+       <bs-tab event-key="nara-grid" title="Nara Grid">
+      <div style="color:#666; padding:8px 0;">Nara Grid fields can be configured here.</div>
     </bs-tab>
 
     <bs-tab event-key="risk-analysis" title="Risk Analysis">
@@ -73,5 +39,9 @@
     <bs-tab event-key="cartographic-docs" title="Cartographic Documentation">
       <div style="color:#666; padding:8px 0;">Cartographic Documentation fields can be configured here.</div>
     </bs-tab>
-  </bs-tabs>
-</bs-panel>
+
+    <div class="btn-group pull-right" style="margin-top: 15px;">
+      <button name="submit" class="btn btn-primary">Save All Data</button>
+    </div>
+  </bs-panel>
+</semantic-form>
