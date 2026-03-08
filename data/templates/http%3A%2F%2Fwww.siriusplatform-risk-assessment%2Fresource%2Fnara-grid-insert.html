@@ -2,13 +2,13 @@
   <table class="pivot">
     <thead>
       <tr>
-        <th>Dimension / Aspect</th>
-        <th>Form & Design</th>
+        <th>Dimension ↓ / Aspect →</th>
+        <th>Form &amp; Design</th>
         <th>Materials</th>
-        <th>Use & Function</th>
-        <th>Tradition/Technics</th>
-        <th>Location/Setting</th>
-        <th>Spirit/Feeling</th>
+        <th>Use &amp; Functions</th>
+        <th>Technics &amp; Workmanship</th>
+        <th>Location &amp; Setting</th>
+        <th>Spirit &amp; Feelings</th>
       </tr>
     </thead>
     <tbody>
@@ -21,6 +21,42 @@
         <td><semantic-form-text-input for="nara_d1_a5" multiline="true" rows="3"></semantic-form-text-input></td>
         <td><semantic-form-text-input for="nara_d1_a6" multiline="true" rows="3"></semantic-form-text-input></td>
       </tr>
-      </tbody>
+      <tr>
+        <th>Historic</th>
+        <td><semantic-form-text-input for="nara_d2_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d2_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d2_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d2_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d2_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d2_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+      </tr>
+      <tr>
+        <th>Social</th>
+        <td><semantic-form-text-input for="nara_d3_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d3_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d3_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d3_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d3_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d3_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+      </tr>
+      <tr>
+        <th>Scientific</th>
+        <td><semantic-form-text-input for="nara_d4_a1" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d4_a2" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d4_a3" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d4_a4" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d4_a5" multiline="true" rows="3"></semantic-form-text-input></td>
+        <td><semantic-form-text-input for="nara_d4_a6" multiline="true" rows="3"></semantic-form-text-input></td>
+      </tr>
+    </tbody>
   </table>
 </div>
+
+<style>
+  .pivot-wrap { overflow-x: auto; }
+  table.pivot { border-collapse: separate; border-spacing: 0; width: 100%; background: #fff; }
+  .pivot th, .pivot td { border: 1px solid #e5e7eb; padding: .45rem .55rem; vertical-align: top; }
+  .pivot thead th { background: #f9fafb; position: sticky; top: 0; z-index: 1; }
+  .pivot tbody th { background: #f9fafb; position: sticky; left: 0; text-align: left; }
+  .pivot td { min-width: 12rem; }
+</style>
