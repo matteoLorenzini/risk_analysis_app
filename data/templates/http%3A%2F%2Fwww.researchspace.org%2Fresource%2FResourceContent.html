@@ -192,12 +192,40 @@ ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
                   <span class="text-underline rs-resource-section--header">Latest confirmed data set from [[currentDateTime format="dd-MM-yyyy"]].</span>
                 </div>
                 <div class="rs-resource-data-table">
-                  <mp-field-visualization
-                    subject='[[this]]'
-                    fields='[[fieldDefinitions denominazione="http://www.siriusplatform-risk-assessment/field/denominazione"  tipologia="http://www.siriusplatform-risk-assessment/field/tipologia" descrizione="http://www.siriusplatform-risk-assessment/field/descrizione" cronologia="http://www.siriusplatform-risk-assessment/field/cronologia" contesto-socio-culturale="http://www.siriusplatform-risk-assessment/field/contesto-socio-culturale" contesto-amministrativo="http://www.siriusplatform-risk-assessment/field/contesto-amministrativo" contesto-finanziario="http://www.siriusplatform-risk-assessment/field/contesto-finanziario" contesto-legale="http://www.siriusplatform-risk-assessment/field/contesto-legale" stakeholders="http://www.siriusplatform-risk-assessment/field/stakeholders" ]]'
-                    template='{{> template}}'>
-                    <template id="template">{{> rsp:ResourceFieldBasedVisualization subject="[[this]]"}}</template>
-                  </mp-field-visualization>
+                  <semantic-query query='PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?type ?denominazione WHERE {
+  BIND(<[[this]]> AS ?s)
+  OPTIONAL {
+    ?s a ?type .
+    FILTER(?type IN (crm:E18_Physical_Thing, crm:E73_Information_Object))
+  }
+  OPTIONAL {
+    ?s crm:P1_is_identified_by ?appellation .
+    ?appellation a crm:E41_Appellation ;
+                 skos:prefLabel ?denominazione .
+  }
+}
+LIMIT 1' template='{{> siteDescSummary}}'>
+                    <template id="siteDescSummary">
+                      {{#if bindings.[0]}}
+                        <table class="table table-striped table-condensed">
+                          <tbody>
+                            <tr>
+                              <th style="width:220px;">Type</th>
+                              <td>{{#if bindings.[0].type.value}}{{bindings.[0].type.value}}{{else}}—{{/if}}</td>
+                            </tr>
+                            <tr>
+                              <th>Denominazione</th>
+                              <td>{{#if bindings.[0].denominazione.value}}{{bindings.[0].denominazione.value}}{{else}}—{{/if}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      {{else}}
+                        <div style="color:#666">No site description data available.</div>
+                      {{/if}}
+                    </template>
+                  </semantic-query>
                 </div>
               </div>
             </bs-tab-pane>
