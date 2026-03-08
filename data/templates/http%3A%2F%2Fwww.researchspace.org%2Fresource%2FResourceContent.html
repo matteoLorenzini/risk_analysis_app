@@ -276,7 +276,7 @@ SELECT DISTINCT ?preview WHERE {
             [[#if (hasPermission "forms:ldp:*")]]
               <bs-tab-pane event-key="nara-grid" mount-on-enter=true>
                 <div class="rs-resource-tab-container">
-                  [[> sirius:nara-grid]]
+                  [[> sirius:nara-grid-insert subjectiri=this]]
                 </div>
               </bs-tab-pane>
             [[/if]]
