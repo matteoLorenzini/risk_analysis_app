@@ -55,7 +55,15 @@
     </bs-tab>
 
     <bs-tab event-key="nara-grid" title="Nara Grid">
-      [[> sirius:nara-grid-insert]]
+      {{#if subjectiri}}
+        [[> sirius:nara-grid-insert subjectiri=subjectiri]]
+      {{else}}
+        {{#if (urlParam "subjectiri")}}
+          [[> sirius:nara-grid-insert subjectiri=(urlParam "subjectiri")]]
+        {{else}}
+          <div style="color:#666; padding:8px 0;">Save Site Description first, then reopen this page to edit NARA values for the created Site.</div>
+        {{/if}}
+      {{/if}}
     </bs-tab>
 
     <bs-tab event-key="risk-analysis" title="Risk Analysis">
