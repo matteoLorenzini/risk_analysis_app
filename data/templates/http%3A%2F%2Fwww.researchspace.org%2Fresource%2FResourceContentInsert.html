@@ -10,7 +10,7 @@
       "label": "Type",
       "description": "The type of the created instance",
       "xsdDatatype": "xsd:anyURI",
-      "minOccurs": "1",
+      "minOccurs": "0",
       "maxOccurs": "1",
       "valueSetPattern": "SELECT $value $label WHERE { VALUES ($value $label) { (<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> \"Site\") (<http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object> \"Information Object\") } }",
       "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a $value } }",
@@ -25,7 +25,7 @@
       "minOccurs": "1",
       "maxOccurs": "1",
       "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
-      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . } } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID()))) AS ?appellation) }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/cultural-heritage-site> ; <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . } } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID()))) AS ?appellation) }",
       "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } }"
     },
     {
@@ -447,8 +447,6 @@
 
     <bs-tabs fixed-key="resource-content-insert-tabs">
       <bs-tab event-key="site-description" title="Site Description">
-        <semantic-form-hidden-input for="type" default-value='http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing'></semantic-form-hidden-input>
-
         <semantic-form-text-input
           for="denominazione_insert"
           label="Denominazione"
@@ -460,7 +458,7 @@
             "id": "tipologia_label",
             "label": "Tipologia",
             "xsdDatatype": "rdf:langString",
-            "minOccurs": "1",
+            "minOccurs": "0",
             "maxOccurs": "1",
             "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
             "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } } WHERE {}",
@@ -477,7 +475,7 @@
             "id": "cronologia_label",
             "label": "Cronologia",
             "xsdDatatype": "xsd:string",
-            "minOccurs": "1",
+            "minOccurs": "0",
             "maxOccurs": "1",
             "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> ?timespan . ?timespan a <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
             "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> ; <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> ?timespan . ?timespan a <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> ?existingTimespan . ?existingTimespan a <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> . } } BIND(COALESCE(?existingTimespan, IRI(CONCAT(STR($subject), \"/timespan/\", STRUUID()))) AS ?timespan) }",
@@ -492,7 +490,7 @@
             "id": "contesto_socio_label",
             "label": "Contesto Socio Culturale",
             "xsdDatatype": "xsd:string",
-            "minOccurs": "1",
+            "minOccurs": "0",
             "maxOccurs": "1",
             "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value . } }",
             "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E3_Condition_State> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/socio-cultural-context> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } } WHERE {}",
@@ -507,7 +505,7 @@
             "id": "contesto_amministrativo_label",
             "label": "Contesto Amministrativo",
             "xsdDatatype": "xsd:string",
-            "minOccurs": "1",
+            "minOccurs": "0",
             "maxOccurs": "1",
             "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value . } }",
             "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/administrative-context> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } } WHERE {}",
@@ -522,7 +520,7 @@
             "id": "contesto_legale_label",
             "label": "Contesto Legale",
             "xsdDatatype": "xsd:string",
-            "minOccurs": "1",
+            "minOccurs": "0",
             "maxOccurs": "1",
             "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value . } }",
             "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E30_Right> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/legal-context> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } } WHERE {}",
@@ -537,7 +535,7 @@
             "id": "contesto_finanziario_label",
             "label": "Contesto Finanziario",
             "xsdDatatype": "xsd:string",
-            "minOccurs": "1",
+            "minOccurs": "0",
             "maxOccurs": "1",
             "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value . } }",
             "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/financial-context> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } } WHERE {}",
@@ -552,7 +550,7 @@
             "id": "stakeholders_label",
             "label": "Parti Interessate",
             "xsdDatatype": "xsd:string",
-            "minOccurs": "1",
+            "minOccurs": "0",
             "maxOccurs": "1",
             "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.w3.org/2000/01/rdf-schema#label> $value . } }",
             "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/stakeholders> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } } WHERE {}",
