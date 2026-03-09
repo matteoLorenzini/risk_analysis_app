@@ -15,42 +15,56 @@ SELECT
 WHERE {
   VALUES ?subject { <[[this]]> }
 
-  ################ EVENT + AVG MAGNITUDE ################
+  ################ EVENT + AVG MAGNITUDE (NEW + LEGACY) ################
   {
     SELECT
       ?subject ?event ?event_name
       (AVG(?score) AS ?magnitudo)
     WHERE {
-      GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
-        ?event a cidoc:E5_Event ;
-               cidoc:P31_has_modified ?subject ;
-               rdfs:label ?event_name ;
-               cidoc:P39i_was_measured_by ?measurement .
+      ?subject ^cidoc:P31_has_modified ?event .
+      OPTIONAL { ?event rdfs:label ?event_name . }
 
+      {
+        GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
+          ?event cidoc:P39i_was_measured_by ?measurement .
+
+          ?measurement a crmsci:S21_Measurement ;
+                       cidoc:P2_has_type ?scaleType ;
+                       cidoc:P40_observed_dimension ?dim .
+
+          FILTER(?scaleType IN (
+            <https://w3id.org/sirius/type/scale-a-score>,
+            <https://w3id.org/sirius/type/scale-b-score>,
+            <https://w3id.org/sirius/type/scale-c-score>
+          ))
+
+          ?dim cidoc:P2_has_type ?dimType ;
+               rdfs:label ?rawScore .
+
+          FILTER(?dimType IN (
+            <https://w3id.org/sirius/type/scale_a_val_1>,
+            <https://w3id.org/sirius/type/scale_a_val_2>,
+            <https://w3id.org/sirius/type/scale_a_val_3>,
+            <https://w3id.org/sirius/type/scale_b_val_1>,
+            <https://w3id.org/sirius/type/scale_b_val_2>,
+            <https://w3id.org/sirius/type/scale_b_val_3>,
+            <https://w3id.org/sirius/type/scale_c_val_1>,
+            <https://w3id.org/sirius/type/scale_c_val_2>,
+            <https://w3id.org/sirius/type/scale_c_val_3>
+          ))
+        }
+      }
+      UNION
+      {
+        ?event cidoc:P39i_was_measured_by ?measurement .
         ?measurement a crmsci:S21_Measurement ;
-                     cidoc:P2_has_type ?scaleType ;
+                     cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
                      cidoc:P40_observed_dimension ?dim .
-
-        FILTER(?scaleType IN (
-          <https://w3id.org/sirius/type/scale-a-score>,
-          <https://w3id.org/sirius/type/scale-b-score>,
-          <https://w3id.org/sirius/type/scale-c-score>
-        ))
-
-        ?dim cidoc:P2_has_type ?dimType ;
-             rdfs:label ?rawScore .
-
-        FILTER(?dimType IN (
-          <https://w3id.org/sirius/type/scale_a_val_1>,
-          <https://w3id.org/sirius/type/scale_a_val_2>,
-          <https://w3id.org/sirius/type/scale_a_val_3>,
-          <https://w3id.org/sirius/type/scale_b_val_1>,
-          <https://w3id.org/sirius/type/scale_b_val_2>,
-          <https://w3id.org/sirius/type/scale_b_val_3>,
-          <https://w3id.org/sirius/type/scale_c_val_1>,
-          <https://w3id.org/sirius/type/scale_c_val_2>,
-          <https://w3id.org/sirius/type/scale_c_val_3>
-        ))
+        FILTER(
+          CONTAINS(STR(?dim), "magnitude_score_min") ||
+          CONTAINS(STR(?dim), "magnitude_score_max")
+        )
+        ?dim cidoc:P90_has_value ?rawScore .
       }
 
       FILTER(REGEX(STR(?rawScore), "^-?[0-9]+([\\.,][0-9]+)?$"))
@@ -66,35 +80,49 @@ WHERE {
       {
         SELECT ?subject ?event (AVG(?score) AS ?m)
         WHERE {
-          GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
-            ?event a cidoc:E5_Event ;
-                   cidoc:P31_has_modified ?subject ;
-                   cidoc:P39i_was_measured_by ?measurement .
+          ?subject ^cidoc:P31_has_modified ?event .
 
+          {
+            GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
+              ?event cidoc:P39i_was_measured_by ?measurement .
+
+              ?measurement a crmsci:S21_Measurement ;
+                           cidoc:P2_has_type ?scaleType ;
+                           cidoc:P40_observed_dimension ?dim .
+
+              FILTER(?scaleType IN (
+                <https://w3id.org/sirius/type/scale-a-score>,
+                <https://w3id.org/sirius/type/scale-b-score>,
+                <https://w3id.org/sirius/type/scale-c-score>
+              ))
+
+              ?dim cidoc:P2_has_type ?dimType ;
+                   rdfs:label ?rawScore .
+
+              FILTER(?dimType IN (
+                <https://w3id.org/sirius/type/scale_a_val_1>,
+                <https://w3id.org/sirius/type/scale_a_val_2>,
+                <https://w3id.org/sirius/type/scale_a_val_3>,
+                <https://w3id.org/sirius/type/scale_b_val_1>,
+                <https://w3id.org/sirius/type/scale_b_val_2>,
+                <https://w3id.org/sirius/type/scale_b_val_3>,
+                <https://w3id.org/sirius/type/scale_c_val_1>,
+                <https://w3id.org/sirius/type/scale_c_val_2>,
+                <https://w3id.org/sirius/type/scale_c_val_3>
+              ))
+            }
+          }
+          UNION
+          {
+            ?event cidoc:P39i_was_measured_by ?measurement .
             ?measurement a crmsci:S21_Measurement ;
-                         cidoc:P2_has_type ?scaleType ;
+                         cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> ;
                          cidoc:P40_observed_dimension ?dim .
-
-            FILTER(?scaleType IN (
-              <https://w3id.org/sirius/type/scale-a-score>,
-              <https://w3id.org/sirius/type/scale-b-score>,
-              <https://w3id.org/sirius/type/scale-c-score>
-            ))
-
-            ?dim cidoc:P2_has_type ?dimType ;
-                 rdfs:label ?rawScore .
-
-            FILTER(?dimType IN (
-              <https://w3id.org/sirius/type/scale_a_val_1>,
-              <https://w3id.org/sirius/type/scale_a_val_2>,
-              <https://w3id.org/sirius/type/scale_a_val_3>,
-              <https://w3id.org/sirius/type/scale_b_val_1>,
-              <https://w3id.org/sirius/type/scale_b_val_2>,
-              <https://w3id.org/sirius/type/scale_b_val_3>,
-              <https://w3id.org/sirius/type/scale_c_val_1>,
-              <https://w3id.org/sirius/type/scale_c_val_2>,
-              <https://w3id.org/sirius/type/scale_c_val_3>
-            ))
+            FILTER(
+              CONTAINS(STR(?dim), "magnitude_score_min") ||
+              CONTAINS(STR(?dim), "magnitude_score_max")
+            )
+            ?dim cidoc:P90_has_value ?rawScore .
           }
 
           FILTER(REGEX(STR(?rawScore), "^-?[0-9]+([\\.,][0-9]+)?$"))
