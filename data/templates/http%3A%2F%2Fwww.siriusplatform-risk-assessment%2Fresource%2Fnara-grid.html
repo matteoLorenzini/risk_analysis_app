@@ -6,13 +6,13 @@ PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
 
 SELECT ?subject (COUNT(DISTINCT ?va) AS ?pairCount)
 WHERE {
-  VALUES ?subject { <[[this]]> }
+  VALUES ?subject { <[[this]]> }        
 
-  GRAPH <file://E89_nara.rdf-15-01-2026-10-21-05> {
-    ?va a base:E89_Propositional_Object ;
-        base:P129_is_about ?subject ;
-        base:P67_refers_to ?dimension, ?aspect .
-  }
+  ?subject a base:E18_Physical_Thing ;
+           ^base:P129_is_about ?va .
+
+  ?va a base:E89_Propositional_Object ;
+      base:P67_refers_to ?dimension, ?aspect .
 
   FILTER(CONTAINS(STR(?dimension), "/dimension/"))
   FILTER(CONTAINS(STR(?aspect),    "/aspect/"))
@@ -107,12 +107,10 @@ PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/>
 SELECT (GROUP_CONCAT(DISTINCT ?note; separator=" ⏵ ") AS ?notes)
 WHERE {
   BIND(<{{subject.value}}> AS ?site)
-  GRAPH <file://E89_nara.rdf-15-01-2026-10-21-05> {
-    ?site ^base:P129_is_about ?va .
-    ?va a base:E89_Propositional_Object ;
-        base:P3_has_note ?note ;
-        base:P67_refers_to ?dimension, ?aspect .
-  }
+  ?site ^base:P129_is_about ?va .
+  ?va a base:E89_Propositional_Object ;
+      base:P3_has_note ?note ;
+      base:P67_refers_to ?dimension, ?aspect .
   FILTER(CONTAINS(STR(?dimension), "/dimension/id/{{d}}/"))
   FILTER(CONTAINS(STR(?aspect),    "/aspect/id/{{a}}/"))
 }
