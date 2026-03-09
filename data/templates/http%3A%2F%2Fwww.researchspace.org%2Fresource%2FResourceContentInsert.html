@@ -99,6 +99,27 @@
       "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?group <http://www.w3.org/2000/01/rdf-schema#label> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> ?group . ?group <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/stakeholders> ; <http://www.w3.org/2000/01/rdf-schema#label> ?old . } }"
     },
     {
+      "id": "place_uri_insert",
+      "label": "Place",
+      "xsdDatatype": "xsd:anyURI",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "valueSetPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX crmgeo: <http://www.ics.forth.gr/isl/CRMgeo/> PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT DISTINCT $value $label WHERE { GRAPH <file://E53_place.rdf-13-12-2025-10-00-52> { ?place a base:E53_Place ; crmgeo:P1_is_identified_by ?appellation . ?appellation a crmgeo:E44_Place_Appellation ; skos:prefLabel ?placeLabel . BIND(?place AS $value) BIND(STR(?placeLabel) AS $label) } } ORDER BY LCASE($label)",
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P53_has_former_or_current_location> $value . } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P53_has_former_or_current_location> $value . } } WHERE {}",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P53_has_former_or_current_location> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P53_has_former_or_current_location> ?old . } }"
+    },
+    {
+      "id": "site_coordinates_insert",
+      "label": "Address (lat long)",
+      "xsdDatatype": "xsd:string",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P55_has_current_location> $value . } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P55_has_current_location> $value . } } WHERE {}",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P55_has_current_location> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P55_has_current_location> ?old . } }"
+    },
+    {
       "id": "nara_d1_a1", "label": "NARA Artistic / Form & Design", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
       "selectPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> SELECT $value WHERE { GRAPH <file://E89_nara.rdf-15-01-2026-10-21-05> { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/value-aspect/site/\", ENCODE_FOR_URI(?siteKey), \"/d/1/a/1\")) AS ?va) OPTIONAL { ?va base:P3_has_note $value . }  } }",
       "insertPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> INSERT { GRAPH <file://E89_nara.rdf-15-01-2026-10-21-05> { ?analysis a base:E89_Propositional_Object ; base:P2_has_type <https://w3id.org/sirius/nara-grid> ; base:P129_is_about $subject ; base:P148_has_component ?va . ?va a base:E89_Propositional_Object ; base:P129_is_about $subject ; base:P3_has_note $value ; base:P67_refers_to ?dimPO, ?aspPO ; base:P1_is_identified_by ?idNode . ?dimPO a base:E89_Propositional_Object ; rdfs:label \"artistic\"@en . ?aspPO a base:E89_Propositional_Object ; rdfs:label \"form and design\"@en . ?idNode a base:E42_Identifier .  } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/nara-grid-analysis/site/\", ENCODE_FOR_URI(?siteKey))) AS ?analysis) BIND(IRI(CONCAT(\"https://w3id.org/sirius/value-aspect/site/\", ENCODE_FOR_URI(?siteKey), \"/d/1/a/1\")) AS ?va) BIND(IRI(CONCAT(\"https://w3id.org/sirius/nara-grid/site/\", ENCODE_FOR_URI(?siteKey), \"/d/1/a/1\")) AS ?idNode) BIND(IRI(CONCAT(\"https://w3id.org/sirius/dimension/id/1/propositionalobject/site/\", ENCODE_FOR_URI(?siteKey), \"/a/1\")) AS ?dimPO) BIND(IRI(CONCAT(\"https://w3id.org/sirius/aspect/id/1/propositionalobject/site/\", ENCODE_FOR_URI(?siteKey), \"/d/1\")) AS ?aspPO) }",
@@ -452,6 +473,10 @@
           label="Denominazione"
           languages='["it","en"]'>
         </semantic-form-text-input>
+
+        <semantic-form-select-input for="place_uri_insert" label="Place"></semantic-form-select-input>
+
+        <semantic-form-text-input for="site_coordinates_insert" label="Address (lat long), es. 12.5655796 44.0598933"></semantic-form-text-input>
 
         <semantic-form-composite-input for="tipologia_node" new-subject-template="https://w3id.org/sirius/type/{{UUID}}" fields='[
           {
