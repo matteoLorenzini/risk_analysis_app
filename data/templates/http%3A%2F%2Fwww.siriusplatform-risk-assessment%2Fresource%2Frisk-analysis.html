@@ -140,22 +140,24 @@ WHERE {
   OPTIONAL {
     { SELECT ?event (SAMPLE(?minMag) AS ?magnitude_min_score) (SAMPLE(?maxMag) AS ?magnitude_max_score)
       WHERE {
-        ?event base:P39i_was_measured_by ?magnitude .
-        ?magnitude a crmsci:S21_Measurement ;
-                   base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
-        OPTIONAL {
-          ?magnitude base:P40_observed_dimension ?magnitude_dim_min .
-          ?magnitude_dim_min a base:E54_Dimension ;
-                             base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
-                             base:P90_has_value ?minMag .
-          FILTER(STRSTARTS(STR(?magnitude_dim_min), "https://w3id.org/sirius/magnitude_score_min/"))
-        }
-        OPTIONAL {
-          ?magnitude base:P40_observed_dimension ?magnitude_dim_max .
-          ?magnitude_dim_max a base:E54_Dimension ;
-                             base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
-                             base:P90_has_value ?maxMag .
-          FILTER(STRSTARTS(STR(?magnitude_dim_max), "https://w3id.org/sirius/magnitude_score_max/"))
+        GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
+          ?event base:P39i_was_measured_by ?magnitude .
+          ?magnitude a crmsci:S21_Measurement ;
+                     base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+          OPTIONAL {
+            ?magnitude base:P40_observed_dimension ?magnitude_dim_min .
+            ?magnitude_dim_min a base:E54_Dimension ;
+                               base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                               base:P90_has_value ?minMag .
+            FILTER(STRSTARTS(STR(?magnitude_dim_min), "https://w3id.org/sirius/magnitude_score_min/"))
+          }
+          OPTIONAL {
+            ?magnitude base:P40_observed_dimension ?magnitude_dim_max .
+            ?magnitude_dim_max a base:E54_Dimension ;
+                               base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
+                               base:P90_has_value ?maxMag .
+            FILTER(STRSTARTS(STR(?magnitude_dim_max), "https://w3id.org/sirius/magnitude_score_max/"))
+          }
         }
       }
       GROUP BY ?event
@@ -166,22 +168,24 @@ WHERE {
   OPTIONAL {
     { SELECT ?event (SAMPLE(?minU) AS ?uncertainty_min_score) (SAMPLE(?maxU) AS ?uncertainty_max_score)
       WHERE {
-        ?event base:P39i_was_measured_by ?uncertainty .
-        ?uncertainty a crmsci:S21_Measurement ;
-                     base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
-        OPTIONAL {
-          ?uncertainty base:P40_observed_dimension ?uncertainty_dim_min .
-          ?uncertainty_dim_min a base:E54_Dimension ;
-                               base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
-                               rdfs:label ?minU .
-          FILTER(STRSTARTS(STR(?uncertainty_dim_min), "https://w3id.org/sirius/uncertainty_min/"))
-        }
-        OPTIONAL {
-          ?uncertainty base:P40_observed_dimension ?uncertainty_dim_max .
-          ?uncertainty_dim_max a base:E54_Dimension ;
-                               base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
-                               rdfs:label ?maxU .
-          FILTER(STRSTARTS(STR(?uncertainty_dim_max), "https://w3id.org/sirius/uncertainty_max/"))
+        GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
+          ?event base:P39i_was_measured_by ?uncertainty .
+          ?uncertainty a crmsci:S21_Measurement ;
+                       base:P2_has_type <https://w3id.org/sirius/type/uncertainty> .
+          OPTIONAL {
+            ?uncertainty base:P40_observed_dimension ?uncertainty_dim_min .
+            ?uncertainty_dim_min a base:E54_Dimension ;
+                                 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
+                                 rdfs:label ?minU .
+            FILTER(STRSTARTS(STR(?uncertainty_dim_min), "https://w3id.org/sirius/uncertainty_min/"))
+          }
+          OPTIONAL {
+            ?uncertainty base:P40_observed_dimension ?uncertainty_dim_max .
+            ?uncertainty_dim_max a base:E54_Dimension ;
+                                 base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ;
+                                 rdfs:label ?maxU .
+            FILTER(STRSTARTS(STR(?uncertainty_dim_max), "https://w3id.org/sirius/uncertainty_max/"))
+          }
         }
       }
       GROUP BY ?event
