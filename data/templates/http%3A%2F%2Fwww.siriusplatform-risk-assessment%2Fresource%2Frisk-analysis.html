@@ -5,6 +5,7 @@
 PREFIX base:   <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
 
 SELECT DISTINCT
   ?subject
@@ -138,11 +139,16 @@ WHERE {
 
   # Magnitude score (aggregate to one row per event)
   OPTIONAL {
-    { SELECT ?event (SAMPLE(?minMag) AS ?magnitude_min_score) (SAMPLE(?maxMag) AS ?magnitude_max_score)
+    {
+      SELECT ?event
+             (COALESCE(SAMPLE(?minMag), AVG(?score)) AS ?magnitude_min_score)
+             (COALESCE(SAMPLE(?maxMag), AVG(?score)) AS ?magnitude_max_score)
       WHERE {
-        ?event base:P39i_was_measured_by ?magnitude .
-        ?magnitude a crmsci:S21_Measurement ;
-                   base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+        OPTIONAL {
+          ?event base:P39i_was_measured_by ?magnitude .
+          ?magnitude a crmsci:S21_Measurement ;
+                     base:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+        }
         OPTIONAL {
           ?magnitude base:P40_observed_dimension ?magnitude_dim_min .
           ?magnitude_dim_min a base:E54_Dimension ;
@@ -156,6 +162,47 @@ WHERE {
                              base:P2_has_type <https://w3id.org/sirius/type/magnitude_score> ;
                              base:P90_has_value ?maxMag .
           FILTER(STRSTARTS(STR(?magnitude_dim_max), "https://w3id.org/sirius/magnitude_score_max/"))
+        }
+
+        OPTIONAL {
+          ?event base:P39i_was_measured_by ?scoreMeas .
+          ?scoreMeas a crmsci:S21_Measurement ;
+                     base:P2_has_type ?scoreType ;
+                     base:P40_observed_dimension ?scoreDim .
+
+          FILTER(
+            ?scoreType IN (
+              <https://w3id.org/sirius/type/scale-a-score>,
+              <https://w3id.org/sirius/type/scale-b-score>,
+              <https://w3id.org/sirius/type/scale-c-score>
+            )
+          )
+
+          ?scoreDim a base:E54_Dimension ;
+                    base:P2_has_type ?scoreDimType ;
+                    rdfs:label ?rawScore .
+
+          FILTER(
+            ?scoreDimType IN (
+              <https://w3id.org/sirius/type/scale_a_val_1>,
+              <https://w3id.org/sirius/type/scale_a_val_2>,
+              <https://w3id.org/sirius/type/scale_a_val_3>,
+              <https://w3id.org/sirius/type/scale_b_val_1>,
+              <https://w3id.org/sirius/type/scale_b_val_2>,
+              <https://w3id.org/sirius/type/scale_b_val_3>,
+              <https://w3id.org/sirius/type/scale_c_val_1>,
+              <https://w3id.org/sirius/type/scale_c_val_2>,
+              <https://w3id.org/sirius/type/scale_c_val_3>
+            )
+          )
+
+          BIND(
+            IF(
+              REGEX(STR(?rawScore), "^-?[0-9]+(\\.[0-9]+)?$"),
+              xsd:decimal(STR(?rawScore)),
+              UNDEF
+            ) AS ?score
+          )
         }
       }
       GROUP BY ?event
