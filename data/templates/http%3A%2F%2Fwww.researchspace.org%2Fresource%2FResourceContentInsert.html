@@ -29,6 +29,76 @@
       "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } }"
     },
     {
+      "id": "tipologia_insert",
+      "label": "Tipologia",
+      "xsdDatatype": "xsd:string",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?type . ?type a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?type . ?type a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> . } } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/type/\", STRUUID()))) AS ?type) }",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?type <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?type . ?type <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } }"
+    },
+    {
+      "id": "descrizione_insert",
+      "label": "Descrizione",
+      "xsdDatatype": "rdf:langString",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P3_has_note> $value . } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P3_has_note> $value . } } WHERE {}",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P3_has_note> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P3_has_note> ?old . } }"
+    },
+    {
+      "id": "cronologia_insert",
+      "label": "Cronologia",
+      "xsdDatatype": "xsd:string",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P16i_was_used_for> ?activity . ?activity a <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> ; <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> ?timespan . ?timespan a <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P16i_was_used_for> ?activity . ?activity a <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> ; <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> ?timespan . ?timespan a <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P16i_was_used_for> ?existingActivity . ?existingActivity a <http://www.cidoc-crm.org/cidoc-crm/E7_Activity> . OPTIONAL { ?existingActivity <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> ?existingTimespan . ?existingTimespan a <http://www.cidoc-crm.org/cidoc-crm/E52_Time-Span> . } } } BIND(COALESCE(?existingActivity, IRI(CONCAT(STR($subject), \"/activity/\", STRUUID()))) AS ?activity) BIND(COALESCE(?existingTimespan, IRI(CONCAT(STR($subject), \"/timespan/\", STRUUID()))) AS ?timespan) }",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?timespan <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P16i_was_used_for> ?activity . ?activity <http://www.cidoc-crm.org/cidoc-crm/P4_has_time-span> ?timespan . ?timespan <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } }"
+    },
+    {
+      "id": "contesto_socio_culturale_insert",
+      "label": "Contesto Socio Culturale",
+      "xsdDatatype": "xsd:string",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P44_has_condition> ?condition . ?condition a <http://www.cidoc-crm.org/cidoc-crm/E3_Condition_State> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/socio-cultural-context> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P44_has_condition> ?condition . ?condition a <http://www.cidoc-crm.org/cidoc-crm/E3_Condition_State> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/socio-cultural-context> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P44_has_condition> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E3_Condition_State> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/socio-cultural-context> . } } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/condition/socio-cultural/\", STRUUID()))) AS ?condition) }",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?condition <http://www.w3.org/2000/01/rdf-schema#label> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P44_has_condition> ?condition . ?condition <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/socio-cultural-context> ; <http://www.w3.org/2000/01/rdf-schema#label> ?old . } }"
+    },
+    {
+      "id": "contesto_amministrativo_insert",
+      "label": "Contesto Amministrativo",
+      "xsdDatatype": "xsd:string",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P52_has_current_owner> ?owner . ?owner a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/administrative-context> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P52_has_current_owner> ?owner . ?owner a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/administrative-context> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P52_has_current_owner> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/administrative-context> . } } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/owner/administrative/\", STRUUID()))) AS ?owner) }",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?owner <http://www.w3.org/2000/01/rdf-schema#label> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P52_has_current_owner> ?owner . ?owner <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/administrative-context> ; <http://www.w3.org/2000/01/rdf-schema#label> ?old . } }"
+    },
+    {
+      "id": "contesto_legale_insert",
+      "label": "Contesto Legale",
+      "xsdDatatype": "xsd:string",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P104_is_subject_to> ?right . ?right a <http://www.cidoc-crm.org/cidoc-crm/E30_Right> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/legal-context> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P104_is_subject_to> ?right . ?right a <http://www.cidoc-crm.org/cidoc-crm/E30_Right> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/legal-context> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P104_is_subject_to> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E30_Right> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/legal-context> . } } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/right/legal/\", STRUUID()))) AS ?right) }",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?right <http://www.w3.org/2000/01/rdf-schema#label> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P104_is_subject_to> ?right . ?right <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/legal-context> ; <http://www.w3.org/2000/01/rdf-schema#label> ?old . } }"
+    },
+    {
+      "id": "stakeholders_insert",
+      "label": "Parti Interessate",
+      "xsdDatatype": "xsd:string",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> ?group . ?group a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/stakeholders> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> ?group . ?group a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/stakeholders> ; <http://www.w3.org/2000/01/rdf-schema#label> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/stakeholders> . } } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/group/stakeholder/\", STRUUID()))) AS ?group) }",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?group <http://www.w3.org/2000/01/rdf-schema#label> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> ?group . ?group <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/stakeholders> ; <http://www.w3.org/2000/01/rdf-schema#label> ?old . } }"
+    },
+    {
       "id": "nara_d1_a1", "label": "NARA Artistic / Form & Design", "xsdDatatype": "rdf:langString", "minOccurs": "0", "maxOccurs": "1",
       "selectPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> SELECT $value WHERE { GRAPH <file://E89_nara.rdf-15-01-2026-10-21-05> { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/value-aspect/site/\", ENCODE_FOR_URI(?siteKey), \"/d/1/a/1\")) AS ?va) OPTIONAL { ?va base:P3_has_note $value . }  } }",
       "insertPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> INSERT { GRAPH <file://E89_nara.rdf-15-01-2026-10-21-05> { ?analysis a base:E89_Propositional_Object ; base:P2_has_type <https://w3id.org/sirius/nara-grid> ; base:P129_is_about $subject ; base:P148_has_component ?va . ?va a base:E89_Propositional_Object ; base:P129_is_about $subject ; base:P3_has_note $value ; base:P67_refers_to ?dimPO, ?aspPO ; base:P1_is_identified_by ?idNode . ?dimPO a base:E89_Propositional_Object ; rdfs:label \"artistic\"@en . ?aspPO a base:E89_Propositional_Object ; rdfs:label \"form and design\"@en . ?idNode a base:E42_Identifier .  } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/nara-grid-analysis/site/\", ENCODE_FOR_URI(?siteKey))) AS ?analysis) BIND(IRI(CONCAT(\"https://w3id.org/sirius/value-aspect/site/\", ENCODE_FOR_URI(?siteKey), \"/d/1/a/1\")) AS ?va) BIND(IRI(CONCAT(\"https://w3id.org/sirius/nara-grid/site/\", ENCODE_FOR_URI(?siteKey), \"/d/1/a/1\")) AS ?idNode) BIND(IRI(CONCAT(\"https://w3id.org/sirius/dimension/id/1/propositionalobject/site/\", ENCODE_FOR_URI(?siteKey), \"/a/1\")) AS ?dimPO) BIND(IRI(CONCAT(\"https://w3id.org/sirius/aspect/id/1/propositionalobject/site/\", ENCODE_FOR_URI(?siteKey), \"/d/1\")) AS ?aspPO) }",
