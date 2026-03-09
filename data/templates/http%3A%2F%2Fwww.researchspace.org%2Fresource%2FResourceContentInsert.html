@@ -36,7 +36,7 @@
       "maxOccurs": "1",
       "valueSetPattern": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT DISTINCT $value $label WHERE { GRAPH <file://skos_thesaurus.rdf> { ?concept skos:prefLabel ?prefLabel . BIND(?concept AS $value) BIND(STR(?prefLabel) AS $label) } } ORDER BY LCASE($label)",
       "selectPattern": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?type . } GRAPH <file://skos_thesaurus.rdf> { ?type skos:prefLabel ?label . } BIND(?type AS $value) }",
-      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> $value . } } WHERE {}",
+      "insertPattern": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> $value . $value a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> ; skos:prefLabel ?prefLabel . } } WHERE { GRAPH <file://skos_thesaurus.rdf> { $value skos:prefLabel ?prefLabel . } }",
       "deletePattern": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?oldType . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?oldType . } GRAPH <file://skos_thesaurus.rdf> { ?oldType skos:prefLabel ?lbl . } }"
     },
     {
