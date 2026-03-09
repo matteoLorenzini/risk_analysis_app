@@ -141,8 +141,8 @@ WHERE {
   OPTIONAL {
     {
       SELECT ?event
-             (COALESCE(SAMPLE(?minMag), AVG(?score)) AS ?magnitude_min_score)
-             (COALESCE(SAMPLE(?maxMag), AVG(?score)) AS ?magnitude_max_score)
+             (COALESCE(SAMPLE(?minMag), SAMPLE(?avgScore)) AS ?magnitude_min_score)
+             (COALESCE(SAMPLE(?maxMag), SAMPLE(?avgScore)) AS ?magnitude_max_score)
       WHERE {
         OPTIONAL {
           ?event base:P39i_was_measured_by ?magnitude .
@@ -165,39 +165,87 @@ WHERE {
         }
 
         OPTIONAL {
-          ?event base:P39i_was_measured_by ?scoreMeas .
-          ?scoreMeas a crmsci:S21_Measurement ;
-                     base:P2_has_type ?scoreType ;
-                     base:P40_observed_dimension ?scoreDim .
+          {
+            SELECT ?event (AVG(?score) AS ?avgScore)
+            WHERE {
+              {
+                ?event base:P39i_was_measured_by ?mA .
+                ?mA a crmsci:S21_Measurement ;
+                    base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> ;
+                    base:P40_observed_dimension ?d .
+                ?d base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_1> ;
+                   rdfs:label ?rawScore .
+              }
+              UNION {
+                ?event base:P39i_was_measured_by ?mA .
+                ?mA a crmsci:S21_Measurement ;
+                    base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> ;
+                    base:P40_observed_dimension ?d .
+                ?d base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_2> ;
+                   rdfs:label ?rawScore .
+              }
+              UNION {
+                ?event base:P39i_was_measured_by ?mA .
+                ?mA a crmsci:S21_Measurement ;
+                    base:P2_has_type <https://w3id.org/sirius/type/scale-a-score> ;
+                    base:P40_observed_dimension ?d .
+                ?d base:P2_has_type <https://w3id.org/sirius/type/scale_a_val_3> ;
+                   rdfs:label ?rawScore .
+              }
+              UNION {
+                ?event base:P39i_was_measured_by ?mB .
+                ?mB a crmsci:S21_Measurement ;
+                    base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> ;
+                    base:P40_observed_dimension ?d .
+                ?d base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_1> ;
+                   rdfs:label ?rawScore .
+              }
+              UNION {
+                ?event base:P39i_was_measured_by ?mB .
+                ?mB a crmsci:S21_Measurement ;
+                    base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> ;
+                    base:P40_observed_dimension ?d .
+                ?d base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_2> ;
+                   rdfs:label ?rawScore .
+              }
+              UNION {
+                ?event base:P39i_was_measured_by ?mB .
+                ?mB a crmsci:S21_Measurement ;
+                    base:P2_has_type <https://w3id.org/sirius/type/scale-b-score> ;
+                    base:P40_observed_dimension ?d .
+                ?d base:P2_has_type <https://w3id.org/sirius/type/scale_b_val_3> ;
+                   rdfs:label ?rawScore .
+              }
+              UNION {
+                ?event base:P39i_was_measured_by ?mC .
+                ?mC a crmsci:S21_Measurement ;
+                    base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> ;
+                    base:P40_observed_dimension ?d .
+                ?d base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_1> ;
+                   rdfs:label ?rawScore .
+              }
+              UNION {
+                ?event base:P39i_was_measured_by ?mC .
+                ?mC a crmsci:S21_Measurement ;
+                    base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> ;
+                    base:P40_observed_dimension ?d .
+                ?d base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_2> ;
+                   rdfs:label ?rawScore .
+              }
+              UNION {
+                ?event base:P39i_was_measured_by ?mC .
+                ?mC a crmsci:S21_Measurement ;
+                    base:P2_has_type <https://w3id.org/sirius/type/scale-c-score> ;
+                    base:P40_observed_dimension ?d .
+                ?d base:P2_has_type <https://w3id.org/sirius/type/scale_c_val_3> ;
+                   rdfs:label ?rawScore .
+              }
 
-          FILTER(
-            ?scoreType IN (
-              <https://w3id.org/sirius/type/scale-a-score>,
-              <https://w3id.org/sirius/type/scale-b-score>,
-              <https://w3id.org/sirius/type/scale-c-score>
-            )
-          )
-
-          ?scoreDim a base:E54_Dimension ;
-                    base:P2_has_type ?scoreDimType ;
-                    rdfs:label ?rawScore .
-
-          FILTER(
-            ?scoreDimType IN (
-              <https://w3id.org/sirius/type/scale_a_val_1>,
-              <https://w3id.org/sirius/type/scale_a_val_2>,
-              <https://w3id.org/sirius/type/scale_a_val_3>,
-              <https://w3id.org/sirius/type/scale_b_val_1>,
-              <https://w3id.org/sirius/type/scale_b_val_2>,
-              <https://w3id.org/sirius/type/scale_b_val_3>,
-              <https://w3id.org/sirius/type/scale_c_val_1>,
-              <https://w3id.org/sirius/type/scale_c_val_2>,
-              <https://w3id.org/sirius/type/scale_c_val_3>
-            )
-          )
-
-          FILTER(REGEX(STR(?rawScore), "^-?[0-9]+(\\.[0-9]+)?$"))
-          BIND(xsd:decimal(STR(?rawScore)) AS ?score)
+              FILTER(REGEX(STR(?rawScore), "^-?[0-9]+(\\.[0-9]+)?$"))
+              BIND(xsd:decimal(STR(?rawScore)) AS ?score)
+            }
+            GROUP BY ?event
+          }
         }
       }
       GROUP BY ?event
