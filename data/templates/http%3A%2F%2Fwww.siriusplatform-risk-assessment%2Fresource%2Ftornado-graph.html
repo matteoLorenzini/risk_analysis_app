@@ -15,67 +15,96 @@ SELECT
 WHERE {
   VALUES ?subject { <[[this]]> }
 
-  ################ EVENT + MIN/MAX VALUES ################
+  ################ EVENT + COMPUTED MAGNITUDE ################
   {
     SELECT
       ?subject ?event ?event_name
-      (SAMPLE(?minExtracted) AS ?minNum)
-      (SAMPLE(?maxExtracted) AS ?maxNum)
+      (AVG(?score) AS ?magnitudo)
     WHERE {
-      ?subject ^cidoc:P31_has_modified ?event .
-      ?event a cidoc:E5_Event ;
-             rdfs:label ?event_name ;
-             cidoc:P39i_was_measured_by ?measurement .
+      GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
+        ?event a cidoc:E5_Event ;
+               cidoc:P31_has_modified ?subject ;
+               rdfs:label ?event_name ;
+               cidoc:P39i_was_measured_by ?measurement .
 
-      ?measurement a crmsci:S21_Measurement ;
-                   cidoc:P2_has_type <https://w3id.org/sirius/type/magnitude-score> .
+        ?measurement a crmsci:S21_Measurement ;
+                     cidoc:P2_has_type ?scaleType ;
+                     cidoc:P40_observed_dimension ?dim .
 
-      ?measurement cidoc:P40_observed_dimension ?dim .
-      ?dim cidoc:P90_has_value ?valRaw .
-      BIND(xsd:decimal(?valRaw) AS ?val)
+        FILTER(?scaleType IN (
+          <https://w3id.org/sirius/type/scale-a-score>,
+          <https://w3id.org/sirius/type/scale-b-score>,
+          <https://w3id.org/sirius/type/scale-c-score>
+        ))
 
-      # Flags
-      BIND(CONTAINS(STR(?dim), "magnitude_score_min") AS ?isMin)
-      BIND(CONTAINS(STR(?dim), "magnitude_score_max") AS ?isMax)
+        ?dim cidoc:P2_has_type ?dimType ;
+             rdfs:label ?rawScore .
 
-      # Only assign numbers when the flag is true
-      BIND(IF(?isMin, ?val, xsd:decimal(0)) AS ?minExtracted)
-      BIND(IF(?isMax, ?val, xsd:decimal(0)) AS ?maxExtracted)
+        FILTER(?dimType IN (
+          <https://w3id.org/sirius/type/scale_a_val_1>,
+          <https://w3id.org/sirius/type/scale_a_val_2>,
+          <https://w3id.org/sirius/type/scale_a_val_3>,
+          <https://w3id.org/sirius/type/scale_b_val_1>,
+          <https://w3id.org/sirius/type/scale_b_val_2>,
+          <https://w3id.org/sirius/type/scale_b_val_3>,
+          <https://w3id.org/sirius/type/scale_c_val_1>,
+          <https://w3id.org/sirius/type/scale_c_val_2>,
+          <https://w3id.org/sirius/type/scale_c_val_3>
+        ))
+      }
+
+      FILTER(REGEX(STR(?rawScore), "^-?[0-9]+([\\.,][0-9]+)?$"))
+      BIND(xsd:decimal(REPLACE(STR(?rawScore), ",", ".")) AS ?score)
     }
     GROUP BY ?subject ?event ?event_name
   }
 
   ################ GLOBAL RANGE ################
   {
-  SELECT
-    ?subject
-    (MIN(?vReal) AS ?globalMin)
-    (MAX(?vReal) AS ?globalMax)
-  WHERE {
-    ?subject ^cidoc:P31_has_modified ?ev .
-    ?ev cidoc:P39i_was_measured_by ?meas .
-    ?meas cidoc:P40_observed_dimension ?d .
+    SELECT ?subject (MIN(?m) AS ?globalMin) (MAX(?m) AS ?globalMax)
+    WHERE {
+      {
+        SELECT ?subject ?event (AVG(?score) AS ?m)
+        WHERE {
+          GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
+            ?event a cidoc:E5_Event ;
+                   cidoc:P31_has_modified ?subject ;
+                   cidoc:P39i_was_measured_by ?measurement .
 
-    # Only keep TRUE min/max dimensions
-    FILTER(
-      CONTAINS(STR(?d), "magnitude_score_min") ||
-      CONTAINS(STR(?d), "magnitude_score_max")
-    )
+            ?measurement a crmsci:S21_Measurement ;
+                         cidoc:P2_has_type ?scaleType ;
+                         cidoc:P40_observed_dimension ?dim .
 
-    ?d cidoc:P90_has_value ?raw .
-    BIND(xsd:decimal(?raw) AS ?vReal)
+            FILTER(?scaleType IN (
+              <https://w3id.org/sirius/type/scale-a-score>,
+              <https://w3id.org/sirius/type/scale-b-score>,
+              <https://w3id.org/sirius/type/scale-c-score>
+            ))
+
+            ?dim cidoc:P2_has_type ?dimType ;
+                 rdfs:label ?rawScore .
+
+            FILTER(?dimType IN (
+              <https://w3id.org/sirius/type/scale_a_val_1>,
+              <https://w3id.org/sirius/type/scale_a_val_2>,
+              <https://w3id.org/sirius/type/scale_a_val_3>,
+              <https://w3id.org/sirius/type/scale_b_val_1>,
+              <https://w3id.org/sirius/type/scale_b_val_2>,
+              <https://w3id.org/sirius/type/scale_b_val_3>,
+              <https://w3id.org/sirius/type/scale_c_val_1>,
+              <https://w3id.org/sirius/type/scale_c_val_2>,
+              <https://w3id.org/sirius/type/scale_c_val_3>
+            ))
+          }
+
+          FILTER(REGEX(STR(?rawScore), "^-?[0-9]+([\\.,][0-9]+)?$"))
+          BIND(xsd:decimal(REPLACE(STR(?rawScore), ",", ".")) AS ?score)
+        }
+        GROUP BY ?subject ?event
+      }
+    }
+    GROUP BY ?subject
   }
-  GROUP BY ?subject
-}
-
-  ############ MAGNITUDE AVG ############
-  BIND(
-    IF(?minNum > 0 && ?maxNum > 0,
-        (?minNum + ?maxNum)/2,
-        IF(?minNum > 0, ?minNum,
-           IF(?maxNum > 0, ?maxNum, xsd:decimal(0))))
-    AS ?magnitudo
-  )
 
   ############ COLOR LOGIC ############
   BIND(xsd:decimal(?globalMax - ?globalMin) AS ?range)
