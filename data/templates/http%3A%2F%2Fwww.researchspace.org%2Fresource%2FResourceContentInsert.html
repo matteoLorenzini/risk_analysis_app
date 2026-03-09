@@ -297,6 +297,28 @@
       "selectPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT $value WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) OPTIONAL { ?event base:P39i_was_measured_by ?m . ?m a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> ; base:P40_observed_dimension ?d . FILTER(STRSTARTS(STR(?d), \"https://w3id.org/sirius/uncertainty_max/\")) ?d rdfs:label $value . }  } }",
       "insertPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> INSERT { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?event base:P39i_was_measured_by ?m . ?m a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> ; base:P40_observed_dimension ?d . ?d a base:E54_Dimension ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty-score> ; rdfs:label $value . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) BIND(IRI(CONCAT(\"https://w3id.org/sirius/uncertainty_score/\", ENCODE_FOR_URI(?siteKey))) AS ?m) BIND(IRI(CONCAT(\"https://w3id.org/sirius/uncertainty_max/\", ENCODE_FOR_URI(?siteKey), \"/\", ENCODE_FOR_URI(STR($value)))) AS ?d) }",
       "deletePattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> DELETE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?d rdfs:label ?old . } } WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) ?event base:P39i_was_measured_by ?m . ?m a crmsci:S21_Measurement ; base:P2_has_type <https://w3id.org/sirius/type/uncertainty> ; base:P40_observed_dimension ?d . FILTER(STRSTARTS(STR(?d), \"https://w3id.org/sirius/uncertainty_max/\")) ?d rdfs:label ?old .  } }"
+    },
+    {
+      "id": "site_picture_file",
+      "label": "Site Picture",
+      "description": "Upload an image for Site Pictures tab",
+      "xsdDatatype": "xsd:anyURI",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { BIND(IRI(CONCAT(STR($subject), \"/document/site-picture\")) AS ?document) OPTIONAL { ?subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; pico:preview $value . } } }",
+      "insertPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; pico:preview $value . } } WHERE { BIND(IRI(CONCAT(STR($subject), \"/document/site-picture\")) AS ?document) }",
+      "deletePattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?document pico:preview ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { BIND(IRI(CONCAT(STR($subject), \"/document/site-picture\")) AS ?document) OPTIONAL { $subject crm:P70i_is_documented_in ?document . ?document pico:preview ?old . } } }"
+    },
+    {
+      "id": "cartographic_doc_file",
+      "label": "Cartographic Documentation File",
+      "description": "Upload a file for Cartographic Documentation tab",
+      "xsdDatatype": "xsd:anyURI",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { BIND(IRI(CONCAT(STR($subject), \"/document/cartographic\")) AS ?document) BIND(IRI(CONCAT(STR($subject), \"/documentation/cartographic\")) AS ?doc) OPTIONAL { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc a <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ; smapit:URL $value . } } }",
+      "insertPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc a <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ; smapit:URL $value . } } WHERE { BIND(IRI(CONCAT(STR($subject), \"/document/cartographic\")) AS ?document) BIND(IRI(CONCAT(STR($subject), \"/documentation/cartographic\")) AS ?doc) }",
+      "deletePattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?doc smapit:URL ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { BIND(IRI(CONCAT(STR($subject), \"/document/cartographic\")) AS ?document) BIND(IRI(CONCAT(STR($subject), \"/documentation/cartographic\")) AS ?doc) OPTIONAL { $subject crm:P70i_is_documented_in ?document . ?document a-cd:hasDocumentation ?doc . ?doc smapit:URL ?old . } } }"
     }
   ]'
 >
@@ -329,11 +351,21 @@
       </bs-tab>
 
       <bs-tab event-key="site-pictures" title="Site Pictures">
-        <div style="color:#666; padding:8px 0;">Site Pictures fields can be configured here.</div>
+        <semantic-form-file-input
+          for='site_picture_file'
+          context-uri='https://w3id.org/sirius/cultural-heritage-site'
+          storage='undefined-1'
+          temp-storage='undefined-2'>
+        </semantic-form-file-input>
       </bs-tab>
 
       <bs-tab event-key="cartographic-docs" title="Cartographic Documentation">
-        <div style="color:#666; padding:8px 0;">Cartographic Documentation fields can be configured here.</div>
+        <semantic-form-file-input
+          for='cartographic_doc_file'
+          context-uri='https://w3id.org/sirius/cultural-heritage-site'
+          storage='undefined-1'
+          temp-storage='undefined-2'>
+        </semantic-form-file-input>
       </bs-tab>
     </bs-tabs>
 
