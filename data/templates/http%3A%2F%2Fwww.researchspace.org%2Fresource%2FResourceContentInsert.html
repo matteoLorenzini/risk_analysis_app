@@ -10,12 +10,12 @@
       "label": "Type",
       "description": "The type of the created instance",
       "xsdDatatype": "xsd:anyURI",
-      "minOccurs": "1",
+      "minOccurs": "0",
       "maxOccurs": "1",
       "valueSetPattern": "SELECT $value $label WHERE { VALUES ($value $label) { (<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> \"Site\") (<http://www.cidoc-crm.org/cidoc-crm/E73_Information_Object> \"Information Object\") } }",
-      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a $value } }",
-      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a $value } } WHERE {}",
-      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a $value } } WHERE {}"
+      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> . BIND(<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> AS $value) } }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> . } } WHERE {}",
+      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> . } } WHERE {}"
     },
     {
       "id": "denominazione_insert",
