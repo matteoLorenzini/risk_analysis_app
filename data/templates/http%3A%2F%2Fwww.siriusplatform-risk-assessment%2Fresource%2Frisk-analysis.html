@@ -15,7 +15,7 @@ SELECT DISTINCT
   ?b_val1 ?b_val2 ?b_val3 ?b_desc
   ?c_val1 ?c_val2 ?c_val3 ?c_desc
   ?risk_desc
-  ?magnitude_min_score ?magnitude_max_score
+  ?magnitude_avg
   ?uncertainty_min_score ?uncertainty_max_score
 WHERE {
   VALUES ?subject { <[[this]]> }
@@ -140,7 +140,7 @@ WHERE {
   # Magnitude score (aggregate to one row per event)
   OPTIONAL {
     {
-      SELECT ?event (AVG(?score) AS ?avgScore)
+      SELECT ?event (AVG(?score) AS ?magnitude_avg)
       WHERE {
         {
           ?event base:P39i_was_measured_by ?mA .
@@ -220,8 +220,6 @@ WHERE {
       }
       GROUP BY ?event
     }
-    BIND(?avgScore AS ?magnitude_min_score)
-    BIND(?avgScore AS ?magnitude_max_score)
   }
 
   # Uncertainty score (aggregate to one row per event)
@@ -259,7 +257,7 @@ WHERE {
   { "displayName": "Scale B",     "cellTemplate": "{{> scaleTripleCell v1=b_val1 v2=b_val2 v3=b_val3 desc=b_desc}}" },
   { "displayName": "Scale C",     "cellTemplate": "{{> scaleTripleCell v1=c_val1 v2=c_val2 v3=c_val3 desc=c_desc}}" },
   { "displayName": "Description",  "cellTemplate": "{{> descCell}}" },
-    { "displayName": "Magnitude",   "cellTemplate": "{{> valueRangeCell min=magnitude_min_score max=magnitude_max_score}}" },
+    { "displayName": "Magnitude",   "cellTemplate": "{{> magnitudeAvgCell}}" },
     { "displayName": "Uncertainty", "cellTemplate": "{{> valueRangeCell min=uncertainty_min_score max=uncertainty_max_score}}" }
   ]'
   options='{"showFilter": true, "resultsPerPage": 10, "stickyHeader": true}'> 
@@ -294,6 +292,14 @@ WHERE {
       {{else}}
         <div class="empty">—</div>
       {{/if}}
+    {{/if}}
+  </template>
+
+  <template id="magnitudeAvgCell">
+    {{#if magnitude_avg.value}}
+      <div class="val"><span class="dim-label">Avg.</span> {{magnitude_avg.value}}</div>
+    {{else}}
+      <div class="empty">—</div>
     {{/if}}
   </template>
 
