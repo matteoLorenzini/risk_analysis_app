@@ -196,13 +196,8 @@ WHERE {
             )
           )
 
-          BIND(
-            IF(
-              REGEX(STR(?rawScore), "^-?[0-9]+(\\.[0-9]+)?$"),
-              xsd:decimal(STR(?rawScore)),
-              UNDEF
-            ) AS ?score
-          )
+          FILTER(REGEX(STR(?rawScore), "^-?[0-9]+(\\.[0-9]+)?$"))
+          BIND(xsd:decimal(STR(?rawScore)) AS ?score)
         }
       }
       GROUP BY ?event
