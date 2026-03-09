@@ -31,12 +31,13 @@
     {
       "id": "tipologia_insert",
       "label": "Tipologia",
-      "xsdDatatype": "xsd:string",
+      "xsdDatatype": "xsd:anyURI",
       "minOccurs": "0",
       "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?type . ?type a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
-      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?type . ?type a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> . } } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/type/\", STRUUID()))) AS ?type) }",
-      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?type <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?type . ?type <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } }"
+      "valueSetPattern": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT DISTINCT $value $label WHERE { GRAPH <file://skos_thesaurus.rdf> { ?concept skos:prefLabel ?prefLabel . BIND(?concept AS $value) BIND(STR(?prefLabel) AS $label) } } ORDER BY LCASE($label)",
+      "selectPattern": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?type . } GRAPH <file://skos_thesaurus.rdf> { ?type skos:prefLabel ?label . } BIND(?type AS $value) }",
+      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> $value . } } WHERE {}",
+      "deletePattern": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?oldType . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> ?oldType . } GRAPH <file://skos_thesaurus.rdf> { ?oldType skos:prefLabel ?lbl . } }"
     },
     {
       "id": "descrizione_insert",
@@ -478,20 +479,7 @@
 
         <semantic-form-text-input for="site_coordinates_insert" label="Address (lat long), es. 12.5655796 44.0598933"></semantic-form-text-input>
 
-        <semantic-form-composite-input for="tipologia_node" new-subject-template="https://w3id.org/sirius/type/{{UUID}}" fields='[
-          {
-            "id": "tipologia_label",
-            "label": "Tipologia",
-            "xsdDatatype": "rdf:langString",
-            "minOccurs": "0",
-            "maxOccurs": "1",
-            "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
-            "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E55_Type> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } } WHERE {}",
-            "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } }"
-          }
-        ]'>
-          <semantic-form-text-input for="tipologia_label" languages='["it","en"]'></semantic-form-text-input>
-        </semantic-form-composite-input>
+        <semantic-form-select-input for="tipologia_insert" label="Tipologia"></semantic-form-select-input>
 
         <semantic-form-text-input for="descrizione_insert" label="Descrizione" languages='["it","en"]'></semantic-form-text-input>
 
