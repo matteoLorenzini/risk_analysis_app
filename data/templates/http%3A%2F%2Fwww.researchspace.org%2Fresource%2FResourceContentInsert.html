@@ -609,13 +609,8 @@
       </bs-tab>
 
       <bs-tab event-key="site-pictures" title="Site Pictures">
-        <div style="color:#666; padding:8px 0;">Upload pictures to materialize <code>crm:P70i_is_documented_in</code> + <code>pico:preview</code> triples.</div>
-        <semantic-form-file-input
-          for='site_picture_file'
-          context-uri='http://www.siriusplatform-risk-assessment/resource'
-          storage='images'
-          temp-storage='images'
-        ></semantic-form-file-input>
+        <div style="color:#666; padding:8px 0;">Add picture URL(s) to materialize <code>crm:P70i_is_documented_in</code> + <code>pico:preview</code> triples.</div>
+        <semantic-form-text-input for="site_picture_file" label="Picture URL"></semantic-form-text-input>
         <div style="margin-top:10px;">
           <strong>Already linked pictures</strong>
           <semantic-query query='
@@ -648,20 +643,15 @@ ORDER BY ?preview LIMIT 50' template='{{> insertPicturesList}}'>
       </bs-tab>
 
       <bs-tab event-key="cartographic-docs" title="Cartographic Documentation">
-        <div style="color:#666; padding:8px 0;">Upload cartographic files to materialize <code>a-cd:hasDocumentation</code> + <code>smapit:URL</code> triples.</div>
-        <semantic-form-file-input
-          for='cartographic_doc_file'
-          context-uri='http://www.siriusplatform-risk-assessment/resource'
-          storage='images'
-          temp-storage='images'
-        ></semantic-form-file-input>
+        <div style="color:#666; padding:8px 0;">Add cartographic file URL(s) to materialize <code>a-cd:hasDocumentation</code> + <code>smapit:URL</code> triples.</div>
+        <semantic-form-text-input for="cartographic_doc_file" label="Cartographic file URL"></semantic-form-text-input>
         <div style="margin-top:10px;">
           <strong>Already linked cartographic files</strong>
           <semantic-query query='
 PREFIX crm:   <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX a-cd:  <https://w3id.org/arco/ontology/context-description/>
-PREFIX smapit:<https://w3id.org/italia/onto/SM/>
+PREFIX smapit: <https://w3id.org/italia/onto/SM/>
 
 SELECT DISTINCT ?doc ?docURL WHERE {
   BIND(<[[this]]> AS ?subject)
