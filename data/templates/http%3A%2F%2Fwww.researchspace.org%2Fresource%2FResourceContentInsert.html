@@ -616,6 +616,35 @@
           storage='sirius-site-pictures'
           temp-storage='sirius-site-pictures-temp'
         ></semantic-form-file-input>
+        <div style="margin-top:10px;">
+          <strong>Already linked pictures</strong>
+          <semantic-query query='
+PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
+PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
+
+SELECT DISTINCT ?preview WHERE {
+  BIND(<[[this]]> AS ?subject)
+  GRAPH <file://filtered_ravenna.rdf-12-12-2025-02-05-27> {
+    ?subject a crm:E18_Physical_Thing ;
+             crm:P70i_is_documented_in ?document .
+    ?document a crm:E31_Document ;
+              pico:preview ?preview .
+  }
+}
+ORDER BY ?preview LIMIT 50' template='{{> insertPicturesList}}'>
+            <template id="insertPicturesList">
+              {{#if bindings}}
+                <ul style="padding-left:18px; margin:8px 0 0;">
+                  {{#each bindings}}
+                    <li><a href="{{preview.value}}" target="_blank" rel="noopener">{{preview.value}}</a></li>
+                  {{/each}}
+                </ul>
+              {{else}}
+                <div style="color:#666; margin-top:6px;">No pictures linked yet.</div>
+              {{/if}}
+            </template>
+          </semantic-query>
+        </div>
       </bs-tab>
 
       <bs-tab event-key="cartographic-docs" title="Cartographic Documentation">
@@ -626,6 +655,39 @@
           storage='sirius-cartographic-docs'
           temp-storage='sirius-cartographic-docs-temp'
         ></semantic-form-file-input>
+        <div style="margin-top:10px;">
+          <strong>Already linked cartographic files</strong>
+          <semantic-query query='
+PREFIX crm:   <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX a-cd:  <https://w3id.org/arco/ontology/context-description/>
+PREFIX smapit:<https://w3id.org/italia/onto/SM/>
+
+SELECT DISTINCT ?doc ?docURL WHERE {
+  BIND(<[[this]]> AS ?subject)
+  GRAPH <file://filtered_ravenna.rdf-12-12-2025-02-05-27> {
+    ?subject a crm:E18_Physical_Thing ;
+             crm:P70i_is_documented_in ?document .
+    ?document a crm:E31_Document ;
+              a-cd:hasDocumentation ?doc .
+    ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
+         smapit:URL ?docURL .
+  }
+}
+ORDER BY ?doc LIMIT 50' template='{{> insertCartoList}}'>
+            <template id="insertCartoList">
+              {{#if bindings}}
+                <ul style="padding-left:18px; margin:8px 0 0;">
+                  {{#each bindings}}
+                    <li><a href="{{docURL.value}}" target="_blank" rel="noopener">{{docURL.value}}</a></li>
+                  {{/each}}
+                </ul>
+              {{else}}
+                <div style="color:#666; margin-top:6px;">No cartographic files linked yet.</div>
+              {{/if}}
+            </template>
+          </semantic-query>
+        </div>
       </bs-tab>
     </bs-tabs>
 
