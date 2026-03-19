@@ -85,8 +85,8 @@ WHERE {
   BIND(
     IF(
       BOUND(?previewFileName),
-      CONCAT('/proxy/IIIF/2/', ENCODE_FOR_URI(STR(?previewFileName)), '/full/!700,700/0/default.jpg'),
-      ''
+      CONCAT("/proxy/IIIF/2/", ENCODE_FOR_URI(STR(?previewFileName)), "/full/!700,700/0/default.jpg"),
+      ""
     ) AS ?previewIiif
   )
 }
@@ -240,8 +240,8 @@ SELECT DISTINCT ?preview ?previewIiif WHERE {
   BIND(
     IF(
       BOUND(?previewFileName),
-      CONCAT('/proxy/IIIF/2/', ENCODE_FOR_URI(STR(?previewFileName)), '/full/!700,700/0/default.jpg'),
-      ''
+      CONCAT("/proxy/IIIF/2/", ENCODE_FOR_URI(STR(?previewFileName)), "/full/!700,700/0/default.jpg"),
+      ""
     ) AS ?previewIiif
   )
 } ORDER BY ?preview'
