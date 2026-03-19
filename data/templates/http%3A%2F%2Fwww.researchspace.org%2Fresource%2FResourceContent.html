@@ -62,7 +62,14 @@ WHERE {
     OPTIONAL {
       ?document pico:preview ?preview .
       BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
-      BIND( IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "" ) AS ?previewImageStr )
+      BIND(
+        IF(
+          REGEX(?previewStr, "/resource/EX_File/", "i"),
+          "",
+          IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "")
+        )
+        AS ?previewImageStr
+      )
     }
   }
 
@@ -72,7 +79,14 @@ WHERE {
     ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage ;
              pico:preview ?preview .
     BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
-    BIND( IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "" ) AS ?previewImageStr )
+    BIND(
+      IF(
+        REGEX(?previewStr, "/resource/EX_File/", "i"),
+        "",
+        IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "")
+      )
+      AS ?previewImageStr
+    )
   }
 }
 ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
@@ -225,7 +239,14 @@ SELECT DISTINCT ?preview ?previewStr ?previewImageStr WHERE {
   }
   FILTER(BOUND(?preview))
   BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
-  BIND( IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp|tiff)$", "i"), ?previewStr, "" ) AS ?previewImageStr )
+  BIND(
+    IF(
+      REGEX(?previewStr, "/resource/EX_File/", "i"),
+      "",
+      IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp|tiff)$", "i"), ?previewStr, "")
+    )
+    AS ?previewImageStr
+  )
 } ORDER BY ?preview'
                   template='{{> picturesGrid}}'>
                   <template id="picturesGrid">
