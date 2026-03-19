@@ -51,7 +51,7 @@ PREFIX arco: <https://w3id.org/arco/ontology/arco/>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
 
-SELECT DISTINCT ?subject ?document ?preview ?previewStr ?previewImageStr
+SELECT DISTINCT ?subject ?document ?preview ?previewSafe ?previewStr ?previewImageStr
 WHERE {
   BIND(<[[this]]> AS ?subject)
 
@@ -78,31 +78,39 @@ WHERE {
   {
     ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage ;
              pico:preview ?preview .
-    BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
-    BIND(
-      IF(
-        REGEX(?previewStr, "/resource/EX_File/", "i"),
-        "",
-        IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "")
-      )
-      AS ?previewImageStr
-    )
   }
+
+  BIND(
+    IF(
+      STRSTARTS(STR(?preview), "http://"),
+      IRI(CONCAT("https://", STRAFTER(STR(?preview), "http://"))),
+      ?preview
+    ) AS ?previewSafe
+  )
+  BIND(STRAFTER(STR(?previewSafe), "") AS ?previewStr)
+  BIND(
+    IF(
+      REGEX(?previewStr, "/resource/EX_File/", "i"),
+      "",
+      IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "")
+    )
+    AS ?previewImageStr
+  )
 }
 ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
           <template id="headerPreview">
             {{#with bindings.[0]}}
               {{#if previewImageStr.value}}
                 <div class="detail-thumb" style="margin-bottom:8px;">
-                  <a href="{{preview.value}}" target="_blank" rel="noopener">
+                  <a href="{{previewSafe.value}}" target="_blank" rel="noopener">
                     <img src="{{previewImageStr.value}}" alt="Preview" style="max-width:240px; max-height:160px; object-fit:cover; border-radius:4px; display:block;" />
                   </a>
                 </div>
               {{else}}
                 {{#if preview.value}}
                   <div class="detail-thumb" style="margin-bottom:8px;">
-                    <a href="{{preview.value}}" target="_blank" rel="noopener">
-                      <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:240px; max-height:160px; display:block;" />
+                    <a href="{{previewSafe.value}}" target="_blank" rel="noopener">
+                      <mp-resource-thumbnail iri='{{previewSafe.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:240px; max-height:160px; display:block;" />
                     </a>
                   </div>
                 {{/if}}
@@ -223,7 +231,7 @@ PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
 
-SELECT DISTINCT ?preview ?previewStr ?previewImageStr WHERE {
+SELECT DISTINCT ?preview ?previewSafe ?previewStr ?previewImageStr WHERE {
   BIND(<[[this]]> AS ?subject)
   ?subject a crm:E18_Physical_Thing .
   OPTIONAL {
@@ -238,7 +246,14 @@ SELECT DISTINCT ?preview ?previewStr ?previewImageStr WHERE {
     }
   }
   FILTER(BOUND(?preview))
-  BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
+  BIND(
+    IF(
+      STRSTARTS(STR(?preview), "http://"),
+      IRI(CONCAT("https://", STRAFTER(STR(?preview), "http://"))),
+      ?preview
+    ) AS ?previewSafe
+  )
+  BIND(STRAFTER(STR(?previewSafe), "") AS ?previewStr)
   BIND(
     IF(
       REGEX(?previewStr, "/resource/EX_File/", "i"),
@@ -288,12 +303,12 @@ SELECT DISTINCT ?preview ?previewStr ?previewImageStr WHERE {
                           {{#if preview.value}}
                             <div class="site-picture-item">
                               {{#if previewImageStr.value}}
-                                <a href="{{preview.value}}" target="_blank" rel="noopener">
-                                  <img src="{{preview.value}}" alt="Preview" loading="lazy" />
+                                <a href="{{previewSafe.value}}" target="_blank" rel="noopener">
+                                  <img src="{{previewImageStr.value}}" alt="Preview" loading="lazy" />
                                 </a>
                               {{else}}
-                                <a href="{{preview.value}}" target="_blank" rel="noopener">
-                                  <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:100%; max-height:480px; display:block;" />
+                                <a href="{{previewSafe.value}}" target="_blank" rel="noopener">
+                                  <mp-resource-thumbnail iri='{{previewSafe.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:100%; max-height:480px; display:block;" />
                                 </a>
                               {{/if}}
                             </div>
