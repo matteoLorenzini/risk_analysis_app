@@ -209,12 +209,23 @@ PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
 
-SELECT DISTINCT ?preview WHERE {
+SELECT DISTINCT ?preview ?previewStr ?previewImageStr WHERE {
   BIND(<[[this]]> AS ?subject)
-  ?subject a crm:E18_Physical_Thing ;
-           crm:P70i_is_documented_in ?document .
-  ?document a crm:E31_Document .
-  OPTIONAL { ?document pico:preview ?preview . }
+  ?subject a crm:E18_Physical_Thing .
+  OPTIONAL {
+    {
+      ?subject crm:P70i_is_documented_in ?document .
+      ?document a crm:E31_Document ;
+                pico:preview ?preview .
+    }
+    UNION
+    {
+      ?subject crm:P138i_has_representation ?preview .
+    }
+  }
+  FILTER(BOUND(?preview))
+  BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
+  BIND( IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp|tiff)$", "i"), ?previewStr, "" ) AS ?previewImageStr )
 } ORDER BY ?preview'
                   template='{{> picturesGrid}}'>
                   <template id="picturesGrid">
@@ -255,9 +266,15 @@ SELECT DISTINCT ?preview WHERE {
                         {{#each bindings}}
                           {{#if preview.value}}
                             <div class="site-picture-item">
-                              <a href="{{preview.value}}" target="_blank" rel="noopener">
-                                <img src="{{preview.value}}" alt="Preview" loading="lazy" />
-                              </a>
+                              {{#if previewImageStr.value}}
+                                <a href="{{preview.value}}" target="_blank" rel="noopener">
+                                  <img src="{{preview.value}}" alt="Preview" loading="lazy" />
+                                </a>
+                              {{else}}
+                                <a href="{{preview.value}}" target="_blank" rel="noopener">
+                                  <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:100%; max-height:480px; display:block;" />
+                                </a>
+                              {{/if}}
                             </div>
                           {{/if}}
                         {{/each}}
