@@ -1,9 +1,9 @@
 <semantic-form
   persistence='{"type":"sparql","repository":"default"}'
-  new-subject-template="https://w3id.org/sirius/cultural-heritage-site/id/{{UUID}}"
+  new-subject-template="http://www.example.com/id/{{UUID}}"
   post-action="redirect"
   browser-persistence="true"
-  form-id="example-1"
+  form-id="complex-site-upload"
   fields='[
     {
       "id": "type",
@@ -464,23 +464,23 @@
       "id": "site_picture_file",
       "label": "Site Picture File",
       "description": "Upload a picture and associate it as pico:preview of the site document",
-      "xsdDatatype": "xsd:string",
+      "xsdDatatype": "xsd:anyURI",
       "minOccurs": "0",
       "maxOccurs": "50",
-      "selectPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT DISTINCT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject pico:preview ?stored . } UNION { $subject foaf:depiction ?stored . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; pico:preview ?stored . } } BIND(STR(?stored) AS $value) }",
-      "insertPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a crm:E18_Physical_Thing ; crm:P70i_is_documented_in ?document ; pico:preview ?valueIri ; foaf:depiction ?valueIri . ?document a crm:E31_Document ; pico:preview ?valueIri . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/document/\", ENCODE_FOR_URI(?siteKey))) AS ?document) BIND(STR($value) AS ?raw) BIND(IF(REGEX(?raw, \"^https?://\", \"i\"), ?raw, IF(STRSTARTS(?raw, \"/assets/\"), CONCAT(\"http://localhost:10214\", ?raw), IF(STRSTARTS(?raw, \"assets/\"), CONCAT(\"http://localhost:10214/\", ?raw), ?raw))) AS ?normalized) BIND(IRI(?normalized) AS ?valueIri) }",
-      "deletePattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject pico:preview ?old . $subject foaf:depiction ?old . ?document pico:preview ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { OPTIONAL { $subject pico:preview ?old . } OPTIONAL { $subject foaf:depiction ?old . } OPTIONAL { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; pico:preview ?old . } } }"
+      "selectPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT DISTINCT ?value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject pico:preview ?value . } UNION { $subject foaf:depiction ?value . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; pico:preview ?value . } } }",
+      "insertPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a crm:E18_Physical_Thing ; crm:P70i_is_documented_in ?document ; pico:preview $value ; foaf:depiction $value . ?document a crm:E31_Document ; pico:preview $value . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/document/\", ENCODE_FOR_URI(?siteKey))) AS ?document) }",
+      "deletePattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject pico:preview ?old . $subject foaf:depiction ?old . ?document pico:preview ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject pico:preview ?old . } UNION { $subject foaf:depiction ?old . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; pico:preview ?old . } } FILTER(?old = $value) }"
     },
     {
       "id": "cartographic_doc_file",
       "label": "Cartographic Document File",
       "description": "Upload cartographic documentation and associate it through a-cd:hasDocumentation",
-      "xsdDatatype": "xsd:string",
+      "xsdDatatype": "xsd:anyURI",
       "minOccurs": "0",
       "maxOccurs": "50",
-      "selectPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject a-cd:hasDocumentation ?doc . ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ; smapit:URL ?stored . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ; smapit:URL ?stored . } } BIND(STR(?stored) AS $value) }",
-      "insertPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a crm:E18_Physical_Thing ; crm:P70i_is_documented_in ?document ; a-cd:hasDocumentation ?doc . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ; a-cd:isDocumentationOf $subject ; smapit:URL ?valueIri . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/document/\", ENCODE_FOR_URI(?siteKey))) AS ?document) BIND(STR($value) AS ?raw) BIND(IF(REGEX(?raw, \"^https?://\", \"i\"), ?raw, IF(STRSTARTS(?raw, \"/assets/\"), CONCAT(\"http://localhost:10214\", ?raw), IF(STRSTARTS(?raw, \"assets/\"), CONCAT(\"http://localhost:10214/\", ?raw), ?raw))) AS ?normalized) BIND(IRI(?normalized) AS ?valueIri) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/GraphicOrCartographicDocumentation/\", ENCODE_FOR_URI(?siteKey), \"-\", SHA512(?normalized))) AS ?doc) }",
-      "deletePattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?doc smapit:URL ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject a-cd:hasDocumentation ?doc . ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ; smapit:URL ?old . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ; smapit:URL ?old . } } }"
+      "selectPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject a-cd:hasDocumentation ?doc . ?doc rdf:type a-cd:GraphicOrCartographicDocumentation ; smapit:URL ?value . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc rdf:type a-cd:GraphicOrCartographicDocumentation ; smapit:URL ?value . } } }",
+      "insertPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a crm:E18_Physical_Thing ; crm:P70i_is_documented_in ?document ; a-cd:hasDocumentation ?doc . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc rdf:type a-cd:GraphicOrCartographicDocumentation ; a-cd:isDocumentationOf $subject ; smapit:URL $value . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/document/\", ENCODE_FOR_URI(?siteKey))) AS ?document) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/GraphicOrCartographicDocumentation/\", ENCODE_FOR_URI(?siteKey), \"-\", SHA512(STR($value)))) AS ?doc) }",
+      "deletePattern": "PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?doc smapit:URL $value . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?doc smapit:URL $value . } }"
     }
   ]'
 >
@@ -609,76 +609,26 @@
       </bs-tab>
 
       <bs-tab event-key="site-pictures" title="Site Pictures">
-        <div style="color:#666; padding:8px 0;">Upload to runtime, then paste the returned path (e.g. <code>assets/your-image.jpg</code>) and save with the resource.</div>
-        <mp-direct-file-uploader default-storage-id="runtime" default-folder="/" default-object-kind="assets"></mp-direct-file-uploader>
-        <semantic-form-text-input for="site_picture_file" label="Uploaded image path / URI"></semantic-form-text-input>
-        <div style="margin-top:10px;">
-          <strong>Already linked pictures</strong>
-          <semantic-query query='
-PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
-PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
-
-SELECT DISTINCT ?preview WHERE {
-  BIND(<[[this]]> AS ?subject)
-  GRAPH <file://filtered_ravenna.rdf-12-12-2025-02-05-27> {
-    ?subject a crm:E18_Physical_Thing ;
-             crm:P70i_is_documented_in ?document .
-    ?document a crm:E31_Document ;
-              pico:preview ?preview .
-  }
-}
-ORDER BY ?preview LIMIT 50' template='{{> insertPicturesList}}'>
-            <template id="insertPicturesList">
-              {{#if bindings}}
-                <ul style="padding-left:18px; margin:8px 0 0;">
-                  {{#each bindings}}
-                    <li><a href="{{preview.value}}" target="_blank" rel="noopener">{{preview.value}}</a></li>
-                  {{/each}}
-                </ul>
-              {{else}}
-                <div style="color:#666; margin-top:6px;">No pictures linked yet.</div>
-              {{/if}}
-            </template>
-          </semantic-query>
+        <div style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px;">
+          <label>Site Photographs (Preview/Depiction)</label>
+          <semantic-form-file-input
+              for="site_picture_file"
+              context-uri="https://w3id.org/sirius/resource/assets/pictures"
+              storage="default"
+              temp-storage="tmp">
+          </semantic-form-file-input>
         </div>
       </bs-tab>
 
       <bs-tab event-key="cartographic-docs" title="Cartographic Documentation">
-        <div style="color:#666; padding:8px 0;">Upload to runtime, then paste the returned path (e.g. <code>assets/your-doc.jpg</code>) and save with the resource.</div>
-        <mp-direct-file-uploader default-storage-id="runtime" default-folder="/" default-object-kind="assets"></mp-direct-file-uploader>
-        <semantic-form-text-input for="cartographic_doc_file" label="Uploaded cartographic path / URI"></semantic-form-text-input>
-        <div style="margin-top:10px;">
-          <strong>Already linked cartographic files</strong>
-          <semantic-query query='
-PREFIX crm:   <http://www.cidoc-crm.org/cidoc-crm/>
-PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX a-cd:  <https://w3id.org/arco/ontology/context-description/>
-PREFIX smapit: <https://w3id.org/italia/onto/SM/>
-
-SELECT DISTINCT ?doc ?docURL WHERE {
-  BIND(<[[this]]> AS ?subject)
-  GRAPH <file://filtered_ravenna.rdf-12-12-2025-02-05-27> {
-    ?subject a crm:E18_Physical_Thing ;
-             crm:P70i_is_documented_in ?document .
-    ?document a crm:E31_Document ;
-              a-cd:hasDocumentation ?doc .
-    ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
-         smapit:URL ?docURL .
-  }
-}
-ORDER BY ?doc LIMIT 50' template='{{> insertCartoList}}'>
-            <template id="insertCartoList">
-              {{#if bindings}}
-                <ul style="padding-left:18px; margin:8px 0 0;">
-                  {{#each bindings}}
-                    <li><a href="{{docURL.value}}" target="_blank" rel="noopener">{{docURL.value}}</a></li>
-                  {{/each}}
-                </ul>
-              {{else}}
-                <div style="color:#666; margin-top:6px;">No cartographic files linked yet.</div>
-              {{/if}}
-            </template>
-          </semantic-query>
+        <div style="margin-bottom: 20px;">
+          <label>Cartographic &amp; Graphic Documentation</label>
+          <semantic-form-file-input
+              for="cartographic_doc_file"
+              context-uri="https://w3id.org/sirius/resource/assets/maps"
+              storage="default"
+              temp-storage="tmp">
+          </semantic-form-file-input>
         </div>
       </bs-tab>
     </bs-tabs>
@@ -687,7 +637,7 @@ ORDER BY ?doc LIMIT 50' template='{{> insertCartoList}}'>
 
     <div class="btn-group">
       <button name="reset" class="btn btn-default">Reset</button>
-      <button name="submit" class="btn btn-action">Save</button>
+      <button name="submit" class="btn btn-primary">Save Site Resources</button>
     </div>
   </bs-panel>
 </semantic-form>
