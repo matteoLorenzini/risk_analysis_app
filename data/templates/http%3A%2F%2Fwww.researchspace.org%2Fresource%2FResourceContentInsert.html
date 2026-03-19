@@ -459,6 +459,28 @@
       "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> $value . $value a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/stakeholders> . } }",
       "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> $value . } } WHERE {}",
       "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> $value . } } WHERE {}"
+    },
+    {
+      "id": "site_picture_file",
+      "label": "Site Picture File",
+      "description": "Upload a picture and associate it as pico:preview of the site document",
+      "xsdDatatype": "xsd:anyURI",
+      "minOccurs": "0",
+      "maxOccurs": "50",
+      "selectPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT DISTINCT ?value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject pico:preview ?value . } UNION { $subject foaf:depiction ?value . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; pico:preview ?value . } } }",
+      "insertPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a crm:E18_Physical_Thing ; crm:P70i_is_documented_in ?document ; pico:preview $value ; foaf:depiction $value . ?document a crm:E31_Document ; pico:preview $value . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/document/\", ENCODE_FOR_URI(?siteKey))) AS ?document) }",
+      "deletePattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject pico:preview ?old . $subject foaf:depiction ?old . ?document pico:preview ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject pico:preview ?old . } UNION { $subject foaf:depiction ?old . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; pico:preview ?old . } } FILTER(?old = $value) }"
+    },
+    {
+      "id": "cartographic_doc_file",
+      "label": "Cartographic Document File",
+      "description": "Upload cartographic documentation and associate it through a-cd:hasDocumentation",
+      "xsdDatatype": "xsd:anyURI",
+      "minOccurs": "0",
+      "maxOccurs": "50",
+      "selectPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject a-cd:hasDocumentation ?doc . ?doc rdf:type a-cd:GraphicOrCartographicDocumentation ; smapit:URL ?value . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc rdf:type a-cd:GraphicOrCartographicDocumentation ; smapit:URL ?value . } } }",
+      "insertPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a crm:E18_Physical_Thing ; crm:P70i_is_documented_in ?document ; a-cd:hasDocumentation ?doc . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc rdf:type a-cd:GraphicOrCartographicDocumentation ; a-cd:isDocumentationOf $subject ; smapit:URL $value . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/document/\", ENCODE_FOR_URI(?siteKey))) AS ?document) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/GraphicOrCartographicDocumentation/\", ENCODE_FOR_URI(?siteKey), \"-\", SHA512(STR($value)))) AS ?doc) }",
+      "deletePattern": "PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?doc smapit:URL $value . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?doc smapit:URL $value . } }"
     }
   ]'
 >
@@ -587,11 +609,63 @@
       </bs-tab>
 
       <bs-tab event-key="site-pictures" title="Site Pictures">
-        <div style="color:#666; padding:8px 0;">Site Pictures fields can be configured here.</div>
+        <div style="margin-top: 5px;">
+          <semantic-form-file-input
+            for='site_picture_file'
+            label='Image file'
+            render-header='false'
+            from-url-or-drop='true'
+            accept-pattern='image/jpg,image/jpeg,image/png,image/tiff,image/gif'
+            storage='images'
+            temp-storage='tmp'
+            name-predicate-iri='http://www.researchspace.org/ontology/PX_has_file_name'
+            media-type-predicate-iri='http://www.researchspace.org/ontology/PX_has_media_type'
+            resource-query='PREFIX rs: <http://www.researchspace.org/ontology/>
+                            CONSTRUCT {
+                              ?__resourceIri__ a rs:EX_File.
+                              ?__resourceIri__ rs:PX_has_file_name ?__fileName__.
+                              ?__resourceIri__ rs:PX_has_media_type ?__mediaType__.
+                            } WHERE {}'
+            generate-iri-query='SELECT ?resourceIri {
+                                  BIND(IRI(CONCAT(STR(Default:), "EX_File/", ?__fileName__)) AS ?resourceIri) .
+                                }'>
+            <div className='placeholder-item'>
+              <rs-icon icon-type='rounded' icon-name='upload' class='upload_icon' symbol='true'></rs-icon>
+              <p>Drag image <span>or </span><span class='text-link'>click to upload</span></p>
+              <div>Supported image format: .jpg .jpeg .png .tiff .gif</div>
+            </div>
+          </semantic-form-file-input>
+        </div>
       </bs-tab>
 
       <bs-tab event-key="cartographic-docs" title="Cartographic Documentation">
-        <div style="color:#666; padding:8px 0;">Cartographic Documentation fields can be configured here.</div>
+        <div style="margin-top: 5px;">
+          <semantic-form-file-input
+            for='cartographic_doc_file'
+            label='Document file'
+            render-header='false'
+            from-url-or-drop='true'
+            accept-pattern='image/jpg,image/jpeg,image/png,image/tiff,image/gif'
+            storage='images'
+            temp-storage='tmp'
+            name-predicate-iri='http://www.researchspace.org/ontology/PX_has_file_name'
+            media-type-predicate-iri='http://www.researchspace.org/ontology/PX_has_media_type'
+            resource-query='PREFIX rs: <http://www.researchspace.org/ontology/>
+                            CONSTRUCT {
+                              ?__resourceIri__ a rs:EX_File.
+                              ?__resourceIri__ rs:PX_has_file_name ?__fileName__.
+                              ?__resourceIri__ rs:PX_has_media_type ?__mediaType__.
+                            } WHERE {}'
+            generate-iri-query='SELECT ?resourceIri {
+                                  BIND(IRI(CONCAT(STR(Default:), "EX_File/", ?__fileName__)) AS ?resourceIri) .
+                                }'>
+            <div className='placeholder-item'>
+              <rs-icon icon-type='rounded' icon-name='upload' class='upload_icon' symbol='true'></rs-icon>
+              <p>Drag image <span>or </span><span class='text-link'>click to upload</span></p>
+              <div>Supported image format: .jpg .jpeg .png .tiff .gif</div>
+            </div>
+          </semantic-form-file-input>
+        </div>
       </bs-tab>
     </bs-tabs>
 
