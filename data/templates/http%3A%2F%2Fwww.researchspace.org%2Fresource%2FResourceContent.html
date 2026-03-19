@@ -50,8 +50,9 @@ PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
 PREFIX arco: <https://w3id.org/arco/ontology/arco/>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX rs: <http://www.researchspace.org/ontology/>
 
-SELECT DISTINCT ?subject ?document ?preview
+SELECT DISTINCT ?subject ?document ?preview ?previewIiif
 WHERE {
   BIND(<[[this]]> AS ?subject)
 
@@ -79,6 +80,15 @@ WHERE {
     ?subject rdf:type arco:ArchitecturalOrLandscapeHeritage ;
              pico:preview ?preview .
   }
+
+  OPTIONAL { ?preview rs:PX_has_file_name ?previewFileName . }
+  BIND(
+    IF(
+      BOUND(?previewFileName),
+      CONCAT('/proxy/IIIF/2/', ENCODE_FOR_URI(STR(?previewFileName)), '/full/!700,700/0/default.jpg'),
+      ''
+    ) AS ?previewIiif
+  )
 }
 ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
           <template id="headerPreview">
@@ -86,7 +96,11 @@ ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
               {{#if preview.value}}
                 <div class="detail-thumb" style="margin-bottom:8px;">
                   <a href="{{preview.value}}" target="_blank" rel="noopener">
-                    <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:240px; max-height:160px; display:block;" />
+                    {{#if previewIiif.value}}
+                      <img src="{{previewIiif.value}}" alt="Preview" style="max-width:240px; max-height:160px; object-fit:cover; border-radius:4px; display:block;" onerror="this.onerror=null;this.style.display='none';" />
+                    {{else}}
+                      <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:240px; max-height:160px; display:block;" />
+                    {{/if}}
                   </a>
                 </div>
               {{/if}}
@@ -205,8 +219,9 @@ ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
 PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
+PREFIX rs: <http://www.researchspace.org/ontology/>
 
-SELECT DISTINCT ?preview WHERE {
+SELECT DISTINCT ?preview ?previewIiif WHERE {
   BIND(<[[this]]> AS ?subject)
   ?subject a crm:E18_Physical_Thing .
   OPTIONAL {
@@ -221,6 +236,14 @@ SELECT DISTINCT ?preview WHERE {
     }
   }
   FILTER(BOUND(?preview))
+  OPTIONAL { ?preview rs:PX_has_file_name ?previewFileName . }
+  BIND(
+    IF(
+      BOUND(?previewFileName),
+      CONCAT('/proxy/IIIF/2/', ENCODE_FOR_URI(STR(?previewFileName)), '/full/!700,700/0/default.jpg'),
+      ''
+    ) AS ?previewIiif
+  )
 } ORDER BY ?preview'
                   template='{{> picturesGrid}}'>
                   <template id="picturesGrid">
@@ -262,7 +285,11 @@ SELECT DISTINCT ?preview WHERE {
                           {{#if preview.value}}
                             <div class="site-picture-item">
                               <a href="{{preview.value}}" target="_blank" rel="noopener">
-                                <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:100%; max-height:480px; display:block;" />
+                                {{#if previewIiif.value}}
+                                  <img src="{{previewIiif.value}}" alt="Preview" loading="lazy" style="max-width:100%; max-height:480px; display:block;" onerror="this.onerror=null;this.style.display='none';" />
+                                {{else}}
+                                  <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:100%; max-height:480px; display:block;" />
+                                {{/if}}
                               </a>
                             </div>
                           {{/if}}
