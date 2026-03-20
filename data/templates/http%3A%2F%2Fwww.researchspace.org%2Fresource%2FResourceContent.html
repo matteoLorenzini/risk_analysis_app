@@ -233,6 +233,7 @@ PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX rs: <http://www.researchspace.org/ontology/>
+PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/>
 
 SELECT DISTINCT ?preview ?previewIiif WHERE {
   BIND(<[[this]]> AS ?subject)
@@ -246,6 +247,8 @@ SELECT DISTINCT ?preview ?previewIiif WHERE {
     UNION
     {
       ?subject crm:P138i_has_representation ?preview .
+      FILTER NOT EXISTS { ?preview rdf:type a-cd:GraphicOrCartographicDocumentation . }
+      FILTER NOT EXISTS { ?preview crm:P2_has_type a-cd:GraphicOrCartographicDocumentation . }
     }
   }
   FILTER(BOUND(?preview))
@@ -362,7 +365,13 @@ SELECT DISTINCT ?doc ?docIiif WHERE {
   OPTIONAL {
     {
       ?subject crm:P138i_has_representation ?doc .
-      ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
+      {
+        ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
+      }
+      UNION
+      {
+        ?doc crm:P2_has_type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
+      }
     }
     UNION
     {
