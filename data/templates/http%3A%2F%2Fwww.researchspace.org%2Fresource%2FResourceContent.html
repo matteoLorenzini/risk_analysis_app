@@ -353,38 +353,53 @@ PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX crm:  <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/>
 PREFIX smapit: <https://w3id.org/italia/onto/SM/>
+PREFIX rs: <http://www.researchspace.org/ontology/>
 
-SELECT DISTINCT ?subject ?document ?doc ?docURL ?docStr ?docImageStr WHERE {
+SELECT DISTINCT ?doc ?docIiif WHERE {
   BIND(<[[this]]> AS ?subject)
   ?subject a crm:E18_Physical_Thing .
 
   OPTIONAL {
-    ?subject crm:P70i_is_documented_in ?document .
-    ?document a crm:E31_Document .
+    {
+      ?subject crm:P138i_has_representation ?doc .
+      ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
+    }
+    UNION
+    {
+      ?subject a-cd:hasDocumentation ?docNode .
+      ?docNode rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
+               smapit:URL ?doc .
+    }
+    UNION
+    {
+      ?subject crm:P70i_is_documented_in ?document .
+      ?document a crm:E31_Document ;
+                a-cd:hasDocumentation ?docNode .
+      ?docNode rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
+               smapit:URL ?doc .
+    }
   }
 
-  {
-    ?subject crm:P138i_has_representation ?doc .
-    ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
-    BIND(?doc AS ?docURL)
-  }
-  UNION
-  {
-    ?subject a-cd:hasDocumentation ?doc .
-    ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
-         smapit:URL ?docURL .
-  }
-  UNION
-  {
-    ?subject crm:P70i_is_documented_in ?document2 .
-    ?document2 a crm:E31_Document ;
-               a-cd:hasDocumentation ?doc .
-    ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
-         smapit:URL ?docURL .
-  }
-
-  BIND(STRAFTER(STR(?docURL), "") AS ?docStr)
-  BIND(IF(REGEX(?docStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?docStr, "") AS ?docImageStr)
+  FILTER(BOUND(?doc))
+  BIND(
+    IF(
+      STRSTARTS(STR(?doc), "http://"),
+      IRI(CONCAT("https://", STRAFTER(STR(?doc), "http://"))),
+      ?doc
+    ) AS ?docSafe
+  )
+  OPTIONAL { ?doc rs:PX_has_file_name ?docFileName . }
+  BIND(STR(?doc) AS ?docStr)
+  BIND(STR(?docSafe) AS ?docSafeStr)
+  BIND(IF(REGEX(?docStr, "/resource/EX_File/", "i"), REPLACE(?docStr, "^.*/EX_File/", ""), "") AS ?docFileFromIri)
+  BIND(COALESCE(STR(?docFileName), ?docFileFromIri, "") AS ?docFileAny)
+  BIND(
+    IF(
+      STRLEN(?docFileAny) > 0,
+      CONCAT("/proxy/IIIF/2/", ENCODE_FOR_URI(?docFileAny), "/full/!700,700/0/default.jpg"),
+      IF(REGEX(?docSafeStr, "^https://", "i"), ?docSafeStr, "")
+    ) AS ?docIiif
+  )
 }
 ORDER BY ?doc LIMIT 50' template='{{> cartoGrid}}'>
                    <template id="cartoGrid">
@@ -403,20 +418,18 @@ ORDER BY ?doc LIMIT 50' template='{{> cartoGrid}}'>
                            <div class="carto-item">
                              {{#with this}}
                                <div class="carto-thumb">
-                                 {{#if docImageStr.value}}
-                                   <a href="{{docURL.value}}" target="_blank" rel="noopener">
-                                     <img src="{{docURL.value}}" alt="Cartographic doc" loading="lazy"
+                                 {{#if docIiif.value}}
+                                   <a href="{{docIiif.value}}" target="_blank" rel="noopener">
+                                     <img src="{{docIiif.value}}" alt="Cartographic doc" loading="lazy"
                                           onerror="this.onerror=null;this.src='/images/help/thenounproject/noun_1113333.svg';" />
                                    </a>
                                  {{else}}
-                                   {{#if docURL.value}}
-                                     <a href="{{docURL.value}}" target="_blank" rel="noopener">
-                                       <mp-resource-thumbnail iri="{{docURL.value}}" no-image-uri="/images/help/thenounproject/noun_1113333.svg" />
+                                   {{#if doc.value}}
+                                     <a href="{{doc.value}}" target="_blank" rel="noopener">
+                                       <mp-resource-thumbnail iri="{{doc.value}}" no-image-uri="/images/help/thenounproject/noun_1113333.svg" />
                                      </a>
                                    {{else}}
-                                     <a href="{{doc.value}}">
-                                       <img src="/images/help/thenounproject/noun_1113333.svg" alt="No doc" style="width:72px;height:72px;object-fit:contain;" />
-                                     </a>
+                                     <img src="/images/help/thenounproject/noun_1113333.svg" alt="No doc" style="width:72px;height:72px;object-fit:contain;" />
                                    {{/if}}
                                  {{/if}}
                                </div>
