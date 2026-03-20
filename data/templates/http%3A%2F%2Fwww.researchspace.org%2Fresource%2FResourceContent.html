@@ -356,21 +356,35 @@ PREFIX smapit: <https://w3id.org/italia/onto/SM/>
 
 SELECT DISTINCT ?subject ?document ?doc ?docURL ?docStr ?docImageStr WHERE {
   BIND(<[[this]]> AS ?subject)
-
-  # Sirius site -> normalized ArCo document
-  ?subject a crm:E18_Physical_Thing ;
-           crm:P70i_is_documented_in ?document .
-  ?document a crm:E31_Document .
-
-  # follow documentation links and restrict to GraphicOrCartographicDocumentation
-  ?document a-cd:hasDocumentation ?doc .
-  ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
+  ?subject a crm:E18_Physical_Thing .
 
   OPTIONAL {
-    ?doc smapit:URL ?docURL .
-    BIND(STRAFTER(STR(?docURL), "") AS ?docStr)
-    BIND( IF(REGEX(?docStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?docStr, "" ) AS ?docImageStr )
+    ?subject crm:P70i_is_documented_in ?document .
+    ?document a crm:E31_Document .
   }
+
+  {
+    ?subject crm:P138i_has_representation ?doc .
+    ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
+    BIND(?doc AS ?docURL)
+  }
+  UNION
+  {
+    ?subject a-cd:hasDocumentation ?doc .
+    ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
+         smapit:URL ?docURL .
+  }
+  UNION
+  {
+    ?subject crm:P70i_is_documented_in ?document2 .
+    ?document2 a crm:E31_Document ;
+               a-cd:hasDocumentation ?doc .
+    ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
+         smapit:URL ?docURL .
+  }
+
+  BIND(STRAFTER(STR(?docURL), "") AS ?docStr)
+  BIND(IF(REGEX(?docStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?docStr, "") AS ?docImageStr)
 }
 ORDER BY ?doc LIMIT 50' template='{{> cartoGrid}}'>
                    <template id="cartoGrid">
