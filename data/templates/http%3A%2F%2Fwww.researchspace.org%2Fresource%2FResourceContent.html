@@ -81,15 +81,23 @@ WHERE {
              pico:preview ?preview .
   }
 
+  BIND(
+    IF(
+      STRSTARTS(STR(?preview), "http://"),
+      IRI(CONCAT("https://", STRAFTER(STR(?preview), "http://"))),
+      ?preview
+    ) AS ?previewSafe
+  )
   OPTIONAL { ?preview rs:PX_has_file_name ?previewFileName . }
   BIND(STR(?preview) AS ?previewStr)
+  BIND(STR(?previewSafe) AS ?previewSafeStr)
   BIND(IF(REGEX(?previewStr, "/resource/EX_File/", "i"), REPLACE(?previewStr, "^.*/EX_File/", ""), "") AS ?previewFileFromIri)
   BIND(COALESCE(STR(?previewFileName), ?previewFileFromIri, "") AS ?previewFileAny)
   BIND(
     IF(
       STRLEN(?previewFileAny) > 0,
       CONCAT("/proxy/IIIF/2/", ENCODE_FOR_URI(?previewFileAny), "/full/!700,700/0/default.jpg"),
-      IF(REGEX(?previewStr, "^https://", "i"), ?previewStr, "")
+      IF(REGEX(?previewSafeStr, "^https://", "i"), ?previewSafeStr, "")
     ) AS ?previewIiif
   )
 }
@@ -241,15 +249,23 @@ SELECT DISTINCT ?preview ?previewIiif WHERE {
     }
   }
   FILTER(BOUND(?preview))
+  BIND(
+    IF(
+      STRSTARTS(STR(?preview), "http://"),
+      IRI(CONCAT("https://", STRAFTER(STR(?preview), "http://"))),
+      ?preview
+    ) AS ?previewSafe
+  )
   OPTIONAL { ?preview rs:PX_has_file_name ?previewFileName . }
   BIND(STR(?preview) AS ?previewStr)
+  BIND(STR(?previewSafe) AS ?previewSafeStr)
   BIND(IF(REGEX(?previewStr, "/resource/EX_File/", "i"), REPLACE(?previewStr, "^.*/EX_File/", ""), "") AS ?previewFileFromIri)
   BIND(COALESCE(STR(?previewFileName), ?previewFileFromIri, "") AS ?previewFileAny)
   BIND(
     IF(
       STRLEN(?previewFileAny) > 0,
       CONCAT("/proxy/IIIF/2/", ENCODE_FOR_URI(?previewFileAny), "/full/!700,700/0/default.jpg"),
-      IF(REGEX(?previewStr, "^https://", "i"), ?previewStr, "")
+      IF(REGEX(?previewSafeStr, "^https://", "i"), ?previewSafeStr, "")
     ) AS ?previewIiif
   )
 } ORDER BY ?preview'
