@@ -103,7 +103,9 @@ ORDER BY ?subject LIMIT 1' template='{{> headerPreview}}'>
                       <img src="{{previewIiif.value}}" alt="Preview" style="max-width:240px; max-height:160px; object-fit:cover; border-radius:4px; display:block;" />
                     </a>
                   {{else}}
-                    <img src="/images/help/thenounproject/noun_1113333.svg" alt="No preview" style="max-width:240px; max-height:160px; object-fit:contain; border-radius:4px; display:block;" />
+                    <a href="{{preview.value}}" target="_blank" rel="noopener">
+                      <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:240px; max-height:160px; display:block;" />
+                    </a>
                   {{/if}}
                 </div>
               {{/if}}
@@ -295,7 +297,9 @@ SELECT DISTINCT ?preview ?previewIiif WHERE {
                                   <img src="{{previewIiif.value}}" alt="Preview" loading="lazy" style="max-width:100%; max-height:480px; display:block;" />
                                 </a>
                               {{else}}
-                                <img src="/images/help/thenounproject/noun_1113333.svg" alt="No preview" style="max-width:100%; max-height:480px; display:block;" />
+                                <a href="{{preview.value}}" target="_blank" rel="noopener">
+                                  <mp-resource-thumbnail iri='{{preview.value}}' no-image-uri='/images/help/thenounproject/noun_1113333.svg' style="max-width:100%; max-height:480px; display:block;" />
+                                </a>
                               {{/if}}
                             </div>
                           {{/if}}
