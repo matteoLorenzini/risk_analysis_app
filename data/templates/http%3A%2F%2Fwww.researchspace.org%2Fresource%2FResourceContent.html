@@ -362,34 +362,46 @@ SELECT DISTINCT ?doc ?docIiif WHERE {
   BIND(<[[this]]> AS ?subject)
   ?subject a crm:E18_Physical_Thing .
 
-  OPTIONAL {
+  {
+    ?subject a-cd:hasDocumentation ?docNode .
+    ?docNode rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
+             smapit:URL ?doc .
+  }
+  UNION
+  {
+    ?subject crm:P70i_is_documented_in ?document .
+    ?document a crm:E31_Document ;
+              a-cd:hasDocumentation ?docNode .
+    ?docNode rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
+             smapit:URL ?doc .
+  }
+  UNION
+  {
+    ?subject crm:P138i_has_representation ?doc .
     {
-      ?subject crm:P138i_has_representation ?doc .
-      {
-        ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
-      }
-      UNION
-      {
-        ?doc crm:P2_has_type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
-      }
+      ?doc rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
     }
     UNION
+    {
+      ?doc crm:P2_has_type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> .
+    }
     {
       ?subject a-cd:hasDocumentation ?docNode .
-      ?docNode rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
-               smapit:URL ?doc .
+      ?docNode smapit:URL ?doc .
     }
     UNION
     {
-      ?subject crm:P70i_is_documented_in ?document .
-      ?document a crm:E31_Document ;
-                a-cd:hasDocumentation ?docNode .
-      ?docNode rdf:type <https://w3id.org/arco/ontology/context-description/GraphicOrCartographicDocumentation> ;
+      ?subject crm:P70i_is_documented_in ?document2 .
+      ?document2 a-cd:hasDocumentation ?docNode .
+      ?docNode smapit:URL ?doc .
+    }
+    UNION
+    {
+      ?docNode a-cd:isDocumentationOf ?subject ;
                smapit:URL ?doc .
     }
   }
 
-  FILTER(BOUND(?doc))
   BIND(
     IF(
       STRSTARTS(STR(?doc), "http://"),
