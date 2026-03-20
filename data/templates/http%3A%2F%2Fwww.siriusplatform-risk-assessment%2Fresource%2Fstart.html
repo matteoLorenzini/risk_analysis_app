@@ -71,8 +71,10 @@
         <bs-col md="10" class="bso-component card-container horizontal-scroll">
             <semantic-query
                 query='PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
+                   PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-                       PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
+                   PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
+                   PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/>
 
 SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
   {
@@ -82,9 +84,17 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
       ?appellation a crm:E41_Appellation ;
                   skos:prefLabel ?label .
       OPTIONAL {
-        ?subject crm:P70i_is_documented_in ?document .
-        ?document a crm:E31_Document .
-        OPTIONAL { ?document pico:preview ?preview_ . }
+        {
+          ?subject crm:P70i_is_documented_in ?document .
+          ?document a crm:E31_Document .
+          OPTIONAL { ?document pico:preview ?preview_ . }
+        }
+        UNION
+        {
+          ?subject crm:P138i_has_representation ?preview_ .
+          FILTER NOT EXISTS { ?preview_ rdf:type a-cd:GraphicOrCartographicDocumentation . }
+          FILTER NOT EXISTS { ?preview_ crm:P2_has_type a-cd:GraphicOrCartographicDocumentation . }
+        }
       }
       BIND(DAY(NOW()) AS ?day)
       BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?rand_)
