@@ -76,7 +76,7 @@
                    PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
                    PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/>
 
-SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
+SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewImageStr ?rand WHERE {
   {
     SELECT ?subject ?label (SAMPLE(?preview_) AS ?preview) (SAMPLE(?rand_) AS ?rand) WHERE {
       ?subject a crm:E18_Physical_Thing ;
@@ -103,7 +103,8 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
   }
 
   BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
-  BIND( IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i") && !REGEX(?previewStr, "/resource/EX_File/", "i"), ?previewStr, "" ) AS ?previewImageStr )
+  BIND(IF(STRSTARTS(?previewStr, "http://"), REPLACE(?previewStr, "^http://", "https://"), ?previewStr) AS ?previewSafeStr)
+  BIND( IF(REGEX(?previewSafeStr, "\\.(jpg|jpeg|png|gif|webp)$", "i") && !REGEX(?previewSafeStr, "/resource/EX_File/", "i"), ?previewSafeStr, "" ) AS ?previewImageStr )
 } ORDER BY ?rand LIMIT 10' template='{{> siteCardGrid}}'>
               <template id="siteCardGrid">
               <style>
@@ -124,8 +125,8 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
                       <div class="thumb">
                         {{#with this}}
                           {{#if previewImageStr.value}}
-                            <a href="{{preview.value}}" target="_blank" rel="noopener">
-                              <img src="{{preview.value}}" alt="{{label.value}}" loading="lazy"
+                            <a href="{{previewSafeStr.value}}" target="_blank" rel="noopener">
+                              <img src="{{previewSafeStr.value}}" alt="{{label.value}}" loading="lazy"
                                    onerror="this.onerror=null;this.src='/images/help/thenounproject/noun_1113333.svg';this.style.objectFit='contain';" />
                             </a>
                           {{else}}
