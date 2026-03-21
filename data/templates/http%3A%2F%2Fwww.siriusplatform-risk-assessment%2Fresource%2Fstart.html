@@ -74,9 +74,10 @@
                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                        PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
                    PREFIX pico: <http://data.cochrane.org/ontologies/pico/>
+                   PREFIX rs: <http://www.researchspace.org/ontology/>
                    PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/>
 
-SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewImageStr ?rand WHERE {
+SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previewImageStr ?rand WHERE {
   {
     SELECT ?subject ?label (SAMPLE(?preview_) AS ?preview) (SAMPLE(?rand_) AS ?rand) WHERE {
       ?subject a crm:E18_Physical_Thing ;
@@ -102,9 +103,25 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewImageStr ?ra
     GROUP BY ?subject ?label
   }
 
-  BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
-  BIND(IF(STRSTARTS(?previewStr, "http://"), REPLACE(?previewStr, "^http://", "https://"), ?previewStr) AS ?previewSafeStr)
-  BIND( IF(REGEX(?previewSafeStr, "\\.(jpg|jpeg|png|gif|webp)$", "i") && !REGEX(?previewSafeStr, "/resource/EX_File/", "i"), ?previewSafeStr, "" ) AS ?previewImageStr )
+  BIND(IF(BOUND(?preview), STR(?preview), "") AS ?previewStr)
+  BIND(
+    IF(
+      STRSTARTS(?previewStr, "http://"),
+      CONCAT("https://", STRAFTER(?previewStr, "http://")),
+      ?previewStr
+    ) AS ?previewSafeStr
+  )
+  OPTIONAL { ?preview rs:PX_has_file_name ?previewFileName . }
+  BIND(IF(REGEX(?previewStr, "/resource/EX_File/", "i"), REPLACE(?previewStr, "^.*/EX_File/", ""), "") AS ?previewFileFromIri)
+  BIND(COALESCE(STR(?previewFileName), ?previewFileFromIri, "") AS ?previewFileAny)
+  BIND(
+    IF(
+      STRLEN(?previewFileAny) > 0,
+      CONCAT("/proxy/IIIF/2/", ENCODE_FOR_URI(?previewFileAny), "/full/!700,700/0/default.jpg"),
+      IF(REGEX(?previewSafeStr, "^https://", "i"), ?previewSafeStr, "")
+    ) AS ?previewIiif
+  )
+  BIND(IF(STRLEN(?previewIiif) > 0, ?previewIiif, "") AS ?previewImageStr)
 } ORDER BY ?rand LIMIT 10' template='{{> siteCardGrid}}'>
               <template id="siteCardGrid">
               <style>
@@ -126,7 +143,7 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewImageStr ?ra
                         {{#with this}}
                           {{#if previewImageStr.value}}
                             <a href="{{previewSafeStr.value}}" target="_blank" rel="noopener">
-                              <img src="{{previewSafeStr.value}}" alt="{{label.value}}" loading="lazy"
+                              <img src="{{previewIiif.value}}" alt="{{label.value}}" loading="lazy"
                                    onerror="this.onerror=null;this.src='/images/help/thenounproject/noun_1113333.svg';this.style.objectFit='contain';" />
                             </a>
                           {{else}}
