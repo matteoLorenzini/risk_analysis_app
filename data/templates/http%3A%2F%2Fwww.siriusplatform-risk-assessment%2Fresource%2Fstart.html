@@ -103,7 +103,7 @@ SELECT ?subject ?label ?preview ?previewStr ?previewImageStr ?rand WHERE {
   }
 
   BIND(STRAFTER(STR(?preview), "") AS ?previewStr)
-  BIND( IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i"), ?previewStr, "" ) AS ?previewImageStr )
+  BIND( IF(REGEX(?previewStr, "\\.(jpg|jpeg|png|gif|webp)$", "i") && !REGEX(?previewStr, "/resource/EX_File/", "i"), ?previewStr, "" ) AS ?previewImageStr )
 } ORDER BY ?rand LIMIT 10' template='{{> siteCardGrid}}'>
               <template id="siteCardGrid">
               <style>
