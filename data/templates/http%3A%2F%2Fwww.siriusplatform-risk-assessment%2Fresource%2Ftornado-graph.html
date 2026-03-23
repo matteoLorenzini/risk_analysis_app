@@ -24,16 +24,14 @@ WHERE {
     WHERE {
       ?subject ^cidoc:P31_has_modified ?event .
       OPTIONAL {
-        OPTIONAL {
-          ?event cidoc:P2_has_type ?eventType .
-          ?eventType skos:prefLabel ?eventTypeLabel .
-          FILTER(LANG(?eventTypeLabel) = "en" || LANG(?eventTypeLabel) = "")
-        }
-        OPTIONAL {
-          ?event rdfs:label ?eventLabel .
-        }
-        BIND(COALESCE(?eventTypeLabel, ?eventLabel) AS ?event_name)
+        ?event cidoc:P2_has_type ?eventType .
+        ?eventType skos:prefLabel ?eventTypeLabel .
+        FILTER(LANG(?eventTypeLabel) = "en" || LANG(?eventTypeLabel) = "")
       }
+      OPTIONAL {
+        ?event rdfs:label ?eventLabel .
+      }
+      BIND(COALESCE(?eventTypeLabel, ?eventLabel) AS ?event_name)
 
       {
         GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {

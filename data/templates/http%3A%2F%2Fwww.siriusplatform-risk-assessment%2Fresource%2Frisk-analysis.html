@@ -28,16 +28,14 @@ WHERE {
 
   # Event name: prefer event-type thesaurus label, fallback to event rdfs:label
   OPTIONAL {
-    OPTIONAL {
-      ?event base:P2_has_type ?eventType .
-      ?eventType skos:prefLabel ?eventTypeLabel .
-      FILTER(LANG(?eventTypeLabel) = "en" || LANG(?eventTypeLabel) = "")
-    }
-    OPTIONAL {
-      ?event rdfs:label ?eventLabel .
-    }
-    BIND(COALESCE(?eventTypeLabel, ?eventLabel) AS ?event_name)
+    ?event base:P2_has_type ?eventType .
+    ?eventType skos:prefLabel ?eventTypeLabel .
+    FILTER(LANG(?eventTypeLabel) = "en" || LANG(?eventTypeLabel) = "")
   }
+  OPTIONAL {
+    ?event rdfs:label ?eventLabel .
+  }
+  BIND(COALESCE(?eventTypeLabel, ?eventLabel) AS ?event_name)
 
   # Risk Analysis description tied to this event and subject
   OPTIONAL {
