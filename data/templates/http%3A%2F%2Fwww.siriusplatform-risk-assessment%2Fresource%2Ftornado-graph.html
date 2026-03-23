@@ -24,10 +24,15 @@ WHERE {
     WHERE {
       ?subject ^cidoc:P31_has_modified ?event .
       OPTIONAL {
-        ?event cidoc:P2_has_type ?eventType .
-        ?eventType skos:prefLabel ?eventPrefLabel .
-        FILTER(LANG(?eventPrefLabel) = "en" || LANG(?eventPrefLabel) = "")
-        BIND(STR(?eventPrefLabel) AS ?event_name)
+        OPTIONAL {
+          ?event cidoc:P2_has_type ?eventType .
+          ?eventType skos:prefLabel ?eventTypeLabel .
+          FILTER(LANG(?eventTypeLabel) = "en" || LANG(?eventTypeLabel) = "")
+        }
+        OPTIONAL {
+          ?event rdfs:label ?eventLabel .
+        }
+        BIND(COALESCE(?eventTypeLabel, ?eventLabel) AS ?event_name)
       }
 
       {
