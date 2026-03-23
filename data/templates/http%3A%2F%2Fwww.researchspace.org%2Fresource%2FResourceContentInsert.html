@@ -264,28 +264,26 @@
       "insertPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> INSERT { GRAPH <file://E89_nara.rdf-15-01-2026-10-21-05> { ?analysis a base:E89_Propositional_Object ; base:P2_has_type <https://w3id.org/sirius/nara-grid> ; base:P129_is_about $subject ; base:P148_has_component ?va . ?va a base:E89_Propositional_Object ; base:P129_is_about $subject ; base:P3_has_note $value ; base:P67_refers_to ?dimPO, ?aspPO ; base:P1_is_identified_by ?idNode . ?dimPO a base:E89_Propositional_Object ; rdfs:label \"scientific\"@en . ?aspPO a base:E89_Propositional_Object ; rdfs:label \"Spirit & Feelings\"@en . ?idNode a base:E42_Identifier .  } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/nara-grid-analysis/site/\", ENCODE_FOR_URI(?siteKey))) AS ?analysis) BIND(IRI(CONCAT(\"https://w3id.org/sirius/value-aspect/site/\", ENCODE_FOR_URI(?siteKey), \"/d/4/a/6\")) AS ?va) BIND(IRI(CONCAT(\"https://w3id.org/sirius/nara-grid/site/\", ENCODE_FOR_URI(?siteKey), \"/d/4/a/6\")) AS ?idNode) BIND(IRI(CONCAT(\"https://w3id.org/sirius/dimension/id/4/propositionalobject/site/\", ENCODE_FOR_URI(?siteKey), \"/a/6\")) AS ?dimPO) BIND(IRI(CONCAT(\"https://w3id.org/sirius/aspect/id/6/propositionalobject/site/\", ENCODE_FOR_URI(?siteKey), \"/d/4\")) AS ?aspPO) }",
       "deletePattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> DELETE { GRAPH <file://E89_nara.rdf-15-01-2026-10-21-05> { ?va base:P3_has_note ?old .  } } WHERE { GRAPH <file://E89_nara.rdf-15-01-2026-10-21-05> { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/value-aspect/site/\", ENCODE_FOR_URI(?siteKey), \"/d/4/a/6\")) AS ?va) OPTIONAL { ?va base:P3_has_note ?old . }  } }"
     },
-  {
-  "id": "risk_agent",
-  "label": "Risk Agent",
-  "xsdDatatype": "xsd:anyURI",
-  "minOccurs": "0",
-  "maxOccurs": "1",
-  "valueSetPattern": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> PREFIX agent: <https://w3id.org/sirius/thesaurus/agent/> SELECT DISTINCT $value $label WHERE { GRAPH <file://thesaurus_agenti_eventi_prefix.ttl-10-03-2026-12-43-47> { $value a skos:Concept ; skos:prefLabel ?prefLabel . FILTER(STRSTARTS(STR($value), STR(agent:))) FILTER(LANG(?prefLabel) = \"en\" || LANG(?prefLabel) = \"\") BIND(STR(?prefLabel) AS $label) } } ORDER BY LCASE($label)",
-  "selectPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> SELECT $value WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?event a base:E5_Event ; base:P31_has_modified $subject ; base:P11_had_participant $value . } }",
-  "insertPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX skos: <http://www.w3.org/2004/02/skos/core#> INSERT { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?riskAnalysis a base:E89_Propositional_Object ; base:P2_has_type <https://w3id.org/sirius/risk-analysis> ; base:P129_is_about $subject ; base:P129_is_about ?event . ?event a base:E5_Event ; base:P31_has_modified $subject ; base:P11_had_participant ?actor . ?actor a base:E39_Actor ; rdfs:label ?agentLabel . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/risk-analysis/site/\", ENCODE_FOR_URI(?siteKey))) AS ?riskAnalysis) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) BIND($value AS ?actor) OPTIONAL { GRAPH <file://thesaurus_agenti_eventi_prefix.ttl-10-03-2026-12-43-47> { ?actor skos:prefLabel ?agentLabelGraph . FILTER(LANG(?agentLabelGraph) = \"en\" || LANG(?agentLabelGraph) = \"\") } } OPTIONAL { ?actor skos:prefLabel ?agentLabelDefault . FILTER(LANG(?agentLabelDefault) = \"en\" || LANG(?agentLabelDefault) = \"\") } BIND(COALESCE(?agentLabelGraph, ?agentLabelDefault, STRAFTER(STR(?actor), \"/agent/\")) AS ?agentLabel) }",
-  "deletePattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> DELETE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?event base:P11_had_participant ?oldValue . } } WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?event a base:E5_Event ; base:P31_has_modified $subject ; base:P11_had_participant ?oldValue . } }"
-},
-   {
-  "id": "event_name",
-  "label": "Event Name",
-  "xsdDatatype": "xsd:anyURI",
-  "minOccurs": "0",
-  "maxOccurs": "1",
-  "valueSetPattern": "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> PREFIX event: <https://w3id.org/sirius/thesaurus/event/> SELECT DISTINCT $value $label WHERE { GRAPH <file://thesaurus_agenti_eventi_prefix.ttl-10-03-2026-12-43-47> { $value a skos:Concept ; skos:prefLabel ?prefLabel . FILTER(STRSTARTS(STR($value), STR(event:))) FILTER(LANG(?prefLabel) = \"en\" || LANG(?prefLabel) = \"\") BIND(STR(?prefLabel) AS $label) } } ORDER BY LCASE($label)",
-  "selectPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> SELECT $value WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?event a base:E5_Event ; base:P31_has_modified $subject ; base:P2_has_type $value . } }",
-  "insertPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX skos: <http://www.w3.org/2004/02/skos/core#> INSERT { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?riskAnalysis a base:E89_Propositional_Object ; base:P2_has_type <https://w3id.org/sirius/risk-analysis> ; base:P129_is_about $subject ; base:P129_is_about ?event . ?event a base:E5_Event ; base:P31_has_modified $subject ; base:P2_has_type $value ; rdfs:label ?eventLabel . $value a base:E55_Type ; rdfs:label ?eventLabel . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/risk-analysis/site/\", ENCODE_FOR_URI(?siteKey))) AS ?riskAnalysis) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) OPTIONAL { GRAPH <file://thesaurus_agenti_eventi_prefix.ttl-10-03-2026-12-43-47> { $value skos:prefLabel ?eventLabelGraph . FILTER(LANG(?eventLabelGraph) = \"en\" || LANG(?eventLabelGraph) = \"\") } } OPTIONAL { $value skos:prefLabel ?eventLabelDefault . FILTER(LANG(?eventLabelDefault) = \"en\" || LANG(?eventLabelDefault) = \"\") } OPTIONAL { $subject rdfs:label ?subjectLabel . } BIND(COALESCE(?subjectLabel, ?eventLabelGraph, ?eventLabelDefault, STRAFTER(STR($value), \"/event/\")) AS ?eventLabel) }",
-  "deletePattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> DELETE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?event base:P2_has_type ?oldValue . ?event rdfs:label ?oldLabel . } } WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?event a base:E5_Event ; base:P31_has_modified $subject ; base:P2_has_type ?oldValue . OPTIONAL { ?event rdfs:label ?oldLabel . } } }"
-},
+    {
+      "id": "risk_agent",
+      "label": "Risk Agent",
+      "xsdDatatype": "xsd:string",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT $value WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) OPTIONAL { ?event base:P11_had_participant ?actor . ?actor rdfs:label $value . }  } }",
+      "insertPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/> INSERT { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?riskAnalysis a base:E89_Propositional_Object ; base:P2_has_type <https://w3id.org/sirius/risk-analysis> ; base:P129_is_about $subject ; base:P129_is_about ?event . ?event a base:E5_Event ; base:P31_has_modified $subject ; base:P11_had_participant ?actor . ?actor a base:E39_Actor ; rdfs:label $value . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/risk-analysis/site/\", ENCODE_FOR_URI(?siteKey))) AS ?riskAnalysis) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) BIND(IRI(CONCAT(\"https://w3id.org/sirius/agent/\", ENCODE_FOR_URI(STR($value)))) AS ?actor) }",
+      "deletePattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> DELETE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?actor rdfs:label ?old . } } WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) ?event base:P11_had_participant ?actor . ?actor rdfs:label ?old .  } }"
+    },
+    {
+      "id": "event_name",
+      "label": "Event Name",
+      "xsdDatatype": "xsd:string",
+      "minOccurs": "0",
+      "maxOccurs": "1",
+      "selectPattern": "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT $value WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) OPTIONAL { ?event rdfs:label $value . }  } }",
+      "insertPattern": "PREFIX base: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> INSERT { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?riskAnalysis a base:E89_Propositional_Object ; base:P2_has_type <https://w3id.org/sirius/risk-analysis> ; base:P129_is_about $subject ; base:P129_is_about ?event . ?event a base:E5_Event ; base:P31_has_modified $subject ; rdfs:label $value ; base:P2_has_type ?eventType . ?eventType a base:E55_Type ; rdfs:label $value . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/risk-analysis/site/\", ENCODE_FOR_URI(?siteKey))) AS ?riskAnalysis) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/\", ENCODE_FOR_URI(STR($value)))) AS ?eventType) }",
+      "deletePattern": "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> DELETE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { ?event rdfs:label ?old . } } WHERE { GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/event/site/\", ENCODE_FOR_URI(?siteKey))) AS ?event) ?event rdfs:label ?old .  } }"
+    },
     {
       "id": "risk_desc",
       "label": "Risk Description",
@@ -461,28 +459,6 @@
       "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> $value . $value a <http://www.cidoc-crm.org/cidoc-crm/E74_Group> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/stakeholders> . } }",
       "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> $value . } } WHERE {}",
       "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P105_right_held_by> $value . } } WHERE {}"
-    },
-    {
-      "id": "site_picture_file",
-      "label": "Site Picture File",
-      "description": "Upload a picture and associate it as pico:preview of the site document",
-      "xsdDatatype": "xsd:anyURI",
-      "minOccurs": "0",
-      "maxOccurs": "50",
-      "selectPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> SELECT DISTINCT ?value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject pico:preview ?value . } UNION { $subject foaf:depiction ?value . } UNION { $subject crm:P138i_has_representation ?value . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; pico:preview ?value . } } }",
-      "insertPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a crm:E18_Physical_Thing ; crm:P70i_is_documented_in ?document ; crm:P138i_has_representation $value ; pico:preview $value ; foaf:depiction $value . ?document a crm:E31_Document ; pico:preview $value . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/document/\", ENCODE_FOR_URI(?siteKey))) AS ?document) }",
-      "deletePattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX pico: <http://data.cochrane.org/ontologies/pico/> PREFIX foaf: <http://xmlns.com/foaf/0.1/> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject pico:preview ?old . $subject foaf:depiction ?old . $subject crm:P138i_has_representation ?old . ?document pico:preview ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject pico:preview ?old . } UNION { $subject foaf:depiction ?old . } UNION { $subject crm:P138i_has_representation ?old . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; pico:preview ?old . } } FILTER(?old = $value) }"
-    },
-    {
-      "id": "cartographic_doc_file",
-      "label": "Cartographic Document File",
-      "description": "Upload cartographic documentation and associate it through a-cd:hasDocumentation",
-      "xsdDatatype": "xsd:anyURI",
-      "minOccurs": "0",
-      "maxOccurs": "50",
-      "selectPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { { $subject crm:P138i_has_representation ?value . ?value rdf:type a-cd:GraphicOrCartographicDocumentation . } UNION { $subject a-cd:hasDocumentation ?doc . ?doc rdf:type a-cd:GraphicOrCartographicDocumentation ; smapit:URL ?value . } UNION { $subject crm:P70i_is_documented_in ?document . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc rdf:type a-cd:GraphicOrCartographicDocumentation ; smapit:URL ?value . } } }",
-      "insertPattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a crm:E18_Physical_Thing ; crm:P138i_has_representation $value ; crm:P70i_is_documented_in ?document ; a-cd:hasDocumentation ?doc . ?document a crm:E31_Document ; a-cd:hasDocumentation ?doc . ?doc rdf:type a-cd:GraphicOrCartographicDocumentation ; a-cd:isDocumentationOf $subject ; smapit:URL $value . $value rdf:type a-cd:GraphicOrCartographicDocumentation ; crm:P2_has_type a-cd:GraphicOrCartographicDocumentation . } } WHERE { BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/document/\", ENCODE_FOR_URI(?siteKey))) AS ?document) BIND(IRI(CONCAT(\"https://w3id.org/sirius/resource/GraphicOrCartographicDocumentation/\", ENCODE_FOR_URI(?siteKey), \"-\", SHA512(STR($value)))) AS ?doc) }",
-      "deletePattern": "PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/> PREFIX a-cd: <https://w3id.org/arco/ontology/context-description/> PREFIX smapit: <https://w3id.org/italia/onto/SM/> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject crm:P138i_has_representation $value . $subject a-cd:hasDocumentation ?doc . ?document a-cd:hasDocumentation ?doc . ?doc a-cd:isDocumentationOf $subject ; smapit:URL $value . $value rdf:type a-cd:GraphicOrCartographicDocumentation ; crm:P2_has_type a-cd:GraphicOrCartographicDocumentation . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { OPTIONAL { $subject crm:P138i_has_representation $value . } OPTIONAL { $subject a-cd:hasDocumentation ?doc . ?doc smapit:URL $value . OPTIONAL { ?doc a-cd:isDocumentationOf $subject . } } OPTIONAL { $subject crm:P70i_is_documented_in ?document . ?document a-cd:hasDocumentation ?doc . ?doc smapit:URL $value . } OPTIONAL { $value rdf:type a-cd:GraphicOrCartographicDocumentation . } OPTIONAL { $value crm:P2_has_type a-cd:GraphicOrCartographicDocumentation . } } }"
     }
   ]'
 >
@@ -611,63 +587,11 @@
       </bs-tab>
 
       <bs-tab event-key="site-pictures" title="Site Pictures">
-        <div style="margin-top: 5px;">
-          <semantic-form-file-input
-            for='site_picture_file'
-            label='Image file'
-            render-header='false'
-            from-url-or-drop='true'
-            accept-pattern='image/jpg,image/jpeg,image/png,image/tiff,image/gif'
-            storage='images'
-            temp-storage='tmp'
-            name-predicate-iri='http://www.researchspace.org/ontology/PX_has_file_name'
-            media-type-predicate-iri='http://www.researchspace.org/ontology/PX_has_media_type'
-            resource-query='PREFIX rs: <http://www.researchspace.org/ontology/>
-                            CONSTRUCT {
-                              ?__resourceIri__ a rs:EX_File.
-                              ?__resourceIri__ rs:PX_has_file_name ?__fileName__.
-                              ?__resourceIri__ rs:PX_has_media_type ?__mediaType__.
-                            } WHERE {}'
-            generate-iri-query='SELECT ?resourceIri {
-                                  BIND(IRI(CONCAT(STR(Default:), "EX_File/", ?__fileName__)) AS ?resourceIri) .
-                                }'>
-            <div className='placeholder-item'>
-              <rs-icon icon-type='rounded' icon-name='upload' class='upload_icon' symbol='true'></rs-icon>
-              <p>Drag image <span>or </span><span class='text-link'>click to upload</span></p>
-              <div>Supported image format: .jpg .jpeg .png .tiff .gif</div>
-            </div>
-          </semantic-form-file-input>
-        </div>
+        <div style="color:#666; padding:8px 0;">Site Pictures fields can be configured here.</div>
       </bs-tab>
 
       <bs-tab event-key="cartographic-docs" title="Cartographic Documentation">
-        <div style="margin-top: 5px;">
-          <semantic-form-file-input
-            for='cartographic_doc_file'
-            label='Document file'
-            render-header='false'
-            from-url-or-drop='true'
-            accept-pattern='image/jpg,image/jpeg,image/png,image/tiff,image/gif'
-            storage='images'
-            temp-storage='tmp'
-            name-predicate-iri='http://www.researchspace.org/ontology/PX_has_file_name'
-            media-type-predicate-iri='http://www.researchspace.org/ontology/PX_has_media_type'
-            resource-query='PREFIX rs: <http://www.researchspace.org/ontology/>
-                            CONSTRUCT {
-                              ?__resourceIri__ a rs:EX_File.
-                              ?__resourceIri__ rs:PX_has_file_name ?__fileName__.
-                              ?__resourceIri__ rs:PX_has_media_type ?__mediaType__.
-                            } WHERE {}'
-            generate-iri-query='SELECT ?resourceIri {
-                                  BIND(IRI(CONCAT(STR(Default:), "EX_File/", ?__fileName__)) AS ?resourceIri) .
-                                }'>
-            <div className='placeholder-item'>
-              <rs-icon icon-type='rounded' icon-name='upload' class='upload_icon' symbol='true'></rs-icon>
-              <p>Drag image <span>or </span><span class='text-link'>click to upload</span></p>
-              <div>Supported image format: .jpg .jpeg .png .tiff .gif</div>
-            </div>
-          </semantic-form-file-input>
-        </div>
+        <div style="color:#666; padding:8px 0;">Cartographic Documentation fields can be configured here.</div>
       </bs-tab>
     </bs-tabs>
 
