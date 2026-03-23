@@ -5,6 +5,7 @@ PREFIX cidoc:  <http://www.cidoc-crm.org/cidoc-crm/>
 PREFIX crmsci: <http://www.ics.forth.gr/isl/CRMsci/>
 PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
 
 SELECT
   ?subject
@@ -22,7 +23,12 @@ WHERE {
       (AVG(?score) AS ?magnitudo)
     WHERE {
       ?subject ^cidoc:P31_has_modified ?event .
-      OPTIONAL { ?event rdfs:label ?event_name . }
+      OPTIONAL {
+        ?event cidoc:P2_has_type ?eventType .
+        ?eventType skos:prefLabel ?eventPrefLabel .
+        FILTER(LANG(?eventPrefLabel) = "en" || LANG(?eventPrefLabel) = "")
+        BIND(STR(?eventPrefLabel) AS ?event_name)
+      }
 
       {
         GRAPH <file://E89_risk.rdf-15-01-2026-10-21-25> {
