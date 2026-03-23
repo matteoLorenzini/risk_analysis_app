@@ -488,7 +488,7 @@ ORDER BY ?doc LIMIT 50' template='{{> cartoGrid}}'>
         <div class="rs-copy-IRI">Copy IRI</div>
       </mp-copy-to-clipboard>
       <mp-sparql-download
-        query='CONSTRUCT { ?s ?p ?o } WHERE { { BIND(<[[this]]> AS ?s) ?s ?p ?o } UNION { ?s ?p <[[this]]> . BIND(<[[this]]> AS ?o) } }'
+        query='CONSTRUCT { ?s ?p ?o } WHERE { BIND(<[[this]]> AS ?root) { ?root ?p ?o . BIND(?root AS ?s) } UNION { ?s ?p ?root . BIND(?root AS ?o) } UNION { ?n ?p1 ?root . ?n ?p ?o . BIND(?n AS ?s) } UNION { ?root ?p1 ?n . ?n ?p ?o . BIND(?n AS ?s) } }'
         header='application/ld+json'
         filename='resource-graph.jsonld'>
         <button class="btn btn-default">Download JSON-LD</button>
