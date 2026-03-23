@@ -487,6 +487,12 @@ ORDER BY ?doc LIMIT 50' template='{{> cartoGrid}}'>
       <mp-copy-to-clipboard text='[[this]]'>
         <div class="rs-copy-IRI">Copy IRI</div>
       </mp-copy-to-clipboard>
+      <mp-sparql-download
+        query='CONSTRUCT { ?s ?p ?o } WHERE { { BIND(<[[this]]> AS ?s) ?s ?p ?o } UNION { ?s ?p <[[this]]> . BIND(<[[this]]> AS ?o) } }'
+        header='application/ld+json'
+        filename='resource-graph.jsonld'>
+        <button class="btn btn-default">Download JSON-LD</button>
+      </mp-sparql-download>
       <div class="statements">Statements</div>
     </div>
   </div>
