@@ -21,7 +21,7 @@
   "id": "denominazione_insert",
   "label": "Denominazione",
   "description": "CIDOC-CRM: P1_is_identified_by -> E41_Appellation -> skos:prefLabel",
-  "xsdDatatype": "rdf:langString",
+  "xsdDatatype": "xsd:anyURI",
   "minOccurs": "1",
   "maxOccurs": "1",
   "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
