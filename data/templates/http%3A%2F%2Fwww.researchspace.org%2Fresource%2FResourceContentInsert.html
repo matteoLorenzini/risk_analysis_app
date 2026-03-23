@@ -1,6 +1,6 @@
 <semantic-form
   persistence='{"type":"sparql","repository":"default"}'
-  new-subject-template="https://w3id.org/sirius/cultural-heritage-site/id/{{UUID}}"
+  new-subject-template="https://w3id.org/sirius/cultural-heritage-site/{{UUID}}"
   post-action="redirect"
   browser-persistence="true"
   form-id="example-1"
@@ -18,16 +18,16 @@
       "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a $value } } WHERE {}"
     },
     {
-      "id": "denominazione_insert",
-      "label": "Denominazione",
-      "description": "CIDOC-CRM: P1_is_identified_by -> E41_Appellation -> skos:prefLabel",
-      "xsdDatatype": "rdf:langString",
-      "minOccurs": "1",
-      "maxOccurs": "1",
-      "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
-      "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/cultural-heritage-site> ; <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?existing . ?existing a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . } } BIND(COALESCE(?existing, IRI(CONCAT(STR($subject), \"/appellation/\", STRUUID()))) AS ?appellation) }",
-      "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } }"
-    },
+  "id": "denominazione_insert",
+  "label": "Denominazione",
+  "description": "CIDOC-CRM: P1_is_identified_by -> E41_Appellation -> skos:prefLabel",
+  "xsdDatatype": "rdf:langString",
+  "minOccurs": "1",
+  "maxOccurs": "1",
+  "selectPattern": "SELECT $value WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . } }",
+  "insertPattern": "INSERT { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject a <http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing> ; <http://www.cidoc-crm.org/cidoc-crm/P2_has_type> <https://w3id.org/sirius/cultural-heritage-site> ; <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation ; <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?identifier . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> $value . ?identifier a <http://www.cidoc-crm.org/cidoc-crm/E42_Identifier> . } } WHERE { OPTIONAL { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?existingAppellation . ?existingAppellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> . } } BIND(COALESCE(?existingAppellation, IRI(CONCAT(\"urn:uuid:\", STRUUID()))) AS ?appellation) BIND(REPLACE(STR($subject), \"^.*/\", \"\") AS ?siteKey) BIND(IRI(CONCAT(\"https://w3id.org/sirius/site/id/\", ENCODE_FOR_URI(?siteKey))) AS ?identifier) }",
+  "deletePattern": "DELETE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { ?appellation <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } } WHERE { GRAPH <file://E18_Ravenna.rdf-14-12-2025-08-23-25> { $subject <http://www.cidoc-crm.org/cidoc-crm/P1_is_identified_by> ?appellation . ?appellation a <http://www.cidoc-crm.org/cidoc-crm/E41_Appellation> ; <http://www.w3.org/2004/02/skos/core#prefLabel> ?old . } }"
+},
     {
       "id": "tipologia_insert",
       "label": "Tipologia",
