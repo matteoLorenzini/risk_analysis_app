@@ -52,9 +52,11 @@
             <semantic-link iri="http://www.siriusplatform-risk-assessment/resource/start" class="btn btn-primary" title="Open start" style="margin-right:8px;">
                 Open start
             </semantic-link>
-            <semantic-link iri="http://www.researchspace.org/resource/ResourceContentInsert" class="btn btn-default" title="Insert risk analysis">
-                Open insert
-            </semantic-link>
+      <mp-has-permission permission="api:ldp:*">
+        <semantic-link iri="http://www.researchspace.org/resource/ResourceContentInsert" class="btn btn-default" title="Insert risk analysis">
+          Open insert
+        </semantic-link>
+      </mp-has-permission>
         </bs-col>
     </bs-row>
 </div>
