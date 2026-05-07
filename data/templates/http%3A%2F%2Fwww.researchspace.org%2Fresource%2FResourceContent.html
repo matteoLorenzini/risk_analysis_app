@@ -34,11 +34,13 @@
                 <rs-icon icon-type="rounded" icon-name="info" symbol="true"></rs-icon>
               </button>
             </mp-event-trigger>
-            <semantic-link-container uri='http://www.researchspace.org/resource/ResourceContentEditE18' urlqueryparam-resource='[[this]]'>
-              <button type="button" title="Author Resource in Form">
-                <rs-icon icon-type="rounded" icon-name="edit_note" symbol="true"></rs-icon>
-              </button>
-            </semantic-link-container>
+            <mp-has-permission permission="api:ldp:*">
+              <semantic-link-container uri='http://www.researchspace.org/resource/ResourceContentEditE18' urlqueryparam-resource='[[this]]'>
+                <button type="button" title="Author Resource in Form">
+                  <rs-icon icon-type="rounded" icon-name="edit_note" symbol="true"></rs-icon>
+                </button>
+              </semantic-link-container>
+            </mp-has-permission>
           </div>
         </div>
         <!-- Header content with image (if available) and resource primary information -->
