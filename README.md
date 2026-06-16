@@ -1,4 +1,4 @@
-# risk_analysis_app
+# Sirius Risk Analysis
 
 Sirius Risk Analysis application package for ResearchSpace.  
 This repository contains the templates, configuration, and static assets used to browse cultural heritage entities and run risk-analysis workflows (including scale-based scoring, magnitude, and uncertainty views).
