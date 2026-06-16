@@ -1,52 +1,44 @@
 # risk_analysis_app
 
-Repository for the Sirius risk analysis application templates and configuration.
+Sirius Risk Analysis application package for ResearchSpace.  
+This repository contains the templates, configuration, and static assets used to browse cultural heritage entities and run risk-analysis workflows (including scale-based scoring, magnitude, and uncertainty views).
 
-## CI/CD
+## What this project contains
 
-This repo now uses GitHub-hosted runners (no committed `actions-runner` binaries). A workflow at `.github/workflows/deploy.yml` can optionally build and push a Docker image to GHCR when a `Dockerfile` is present.
+- `data/templates/`: main UI templates (start page, structured search pages, risk-analysis views, insert forms, and utility pages).
+- `ldp/configurations/`: LDP resource configuration files.
+- `icons/` and `assets/images/icons/`: custom and platform icon assets used by the UI.
+- `file/` and `images/`: optional local/static media used by the runtime.
+- `.github/workflows/deploy.yml`: deployment workflow that syncs changed runtime files.
 
-### Adding a Dockerfile
+## Application scope
 
-If you want the image build to run, add a `Dockerfile` at the repository root. Example minimal placeholder:
+The app is built around semantic data in CIDOC CRM-style models and provides:
 
-```dockerfile
-FROM nginx:1.27-alpine
-COPY data/templates /usr/share/nginx/html/templates
-```
+- Start and landing pages for navigating Sites, Places, Agents, Events, and Site Types.
+- Structured search templates for domain entities.
+- Risk analysis interfaces with event-level assessment tables and score ranges.
+- Insert/edit templates for creating or enriching risk analysis content in ResearchSpace.
 
-Commit the file; the next push to `main` will build and push `ghcr.io/<OWNER>/risk-analysis-app:<SHA>`.
+## Research scope (project context)
 
-### Registry Authentication & Permissions
+This ResearchSpace app supports cultural heritage Disaster Risk Management (DRM) by turning fragmented assessment records into interoperable semantic data.
 
-The workflow uses the built-in `GITHUB_TOKEN` for GHCR (packages: write). If you target another registry, add appropriate secrets (`REGISTRY_USERNAME`, `REGISTRY_PASSWORD`) and update the login step.
+The broader project scope is to:
 
-### Ignore Local Runner Artifacts
+- Harmonize heterogeneous documentation through an ETL workflow (extract, transform, load).
+- Apply semantic enrichment with CIDOC-CRM compliant modelling, controlled vocabularies, and project thesauri (risk agents and heritage typologies).
+- Enable integration and querying of resulting knowledge graphs in ResearchSpace for cross-dataset exploration and comparison.
+- Support event-centric risk representation (assets, hazards, actors, documentary evidence, and quantitative evaluations) for decision-oriented conservation analysis.
 
-If you recreate a local self-hosted runner directory on your machine, ensure it is ignored. Add (or update) `.gitignore` with:
+The workflow was validated on cultural heritage sites in Ravenna (Italy), showing operational robustness and scalability for territorial-level risk analysis and prioritization.
 
-```gitignore
-actions-runner/
-```
+## Deployment
 
-### Manual Dispatch Inputs
+On push to `main` (or manual workflow dispatch), GitHub Actions runs `.github/workflows/deploy.yml`, which:
 
-You can manually trigger the workflow with:
+1. Checks out this repository.
+2. Copies changed files from `data/`, `ldp/`, and optional `file/` + `images/` into the configured ResearchSpace runtime-data directory.
+3. Verifies the local service endpoint (`http://localhost:10214/`) is responding.
 
-* `build_image` (true/false) – skip or run image build/push
-* `image_tag` – override default SHA tag
-* `registry` – change container registry host (default `ghcr.io`)
-
-### Post-Deployment Health (Future)
-
-Health checks from the prior self-hosted workflow were removed. Reintroduce them once a remote deployment target is defined (e.g., SSH to a host, `docker pull` + `docker compose up -d`).
-
-## Next Steps
-
-1. Add a real Dockerfile aligned with ResearchSpace runtime.
-2. Introduce deployment job (e.g., `deploy` needs host credentials / environment secrets).
-3. Add basic automated tests for SPARQL template integrity (placeholder script).
-
----
-
-Generated cleanup: removed previously committed self-hosted runner artifacts.
+The workflow is designed for a self-hosted runner with access to the target runtime path.
