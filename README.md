@@ -42,3 +42,4 @@ On push to `main` (or manual workflow dispatch), GitHub Actions runs `.github/wo
 3. Verifies the local service endpoint (`http://localhost:10214/`) is responding.
 
 The workflow is designed for a self-hosted runner with access to the target runtime path.
+On Ubuntu/self-hosted runners, it performs the same sync behavior as a local Windows `run.cmd`: recursively update runtime files from this repo while keeping extra runtime files untouched.

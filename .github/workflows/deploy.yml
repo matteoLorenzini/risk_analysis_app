@@ -15,56 +15,61 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set paths
-        shell: powershell
+        shell: bash
         run: |
-          $composeRoot = "C:\Users\matte\researchspace-docker-desktop-main\researchspace-docker-desktop-main"
-          $runtimeTarget = Join-Path $composeRoot "researchspace\runtime-data"
-          
-          "COMPOSE_ROOT=$composeRoot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          "RUNTIME_TARGET=$runtimeTarget" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          "SERVICE_NAME=researchspace" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          compose_root="/home/mlorenzini/researchspace-docker-desktop-main"
+          runtime_target="${compose_root}/researchspace/runtime-data"
+
+          echo "COMPOSE_ROOT=${compose_root}" >> "$GITHUB_ENV"
+          echo "RUNTIME_TARGET=${runtime_target}" >> "$GITHUB_ENV"
+          echo "SERVICE_NAME=researchspace" >> "$GITHUB_ENV"
 
       - name: Sync changed files only
-        shell: powershell
+        shell: bash
         run: |
-          $target = $env:RUNTIME_TARGET
-          Write-Host "Syncing changed files to: $target"
-          
-          if (!(Test-Path $target)) { 
-            Write-Error "Runtime directory not found: $target"
+          target="$RUNTIME_TARGET"
+          echo "Syncing changed files to: $target"
+
+          if [[ ! -d "$target" ]]; then
+            echo "Runtime directory not found: $target" >&2
             exit 1
+          fi
+
+          sync_dir() {
+            src="$1"
+            dst="$2"
+
+            if [[ ! -d "$src" ]]; then
+              return 0
+            fi
+
+            mkdir -p "$dst"
+
+            # Match robocopy behavior: copy recursively, do not delete extras, do not overwrite newer target files.
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --update "$src/" "$dst/"
+            else
+              cp -ru "$src/." "$dst/"
+            fi
           }
-          
-          # Sync only changed files, don't delete anything
-          # /XO = exclude older (don't overwrite newer files)
-          # /XX = exclude extra (don't delete files that don't exist in source)
-          robocopy "$PWD\data" "$target\data" /E /XO /XX /NFL /NDL /NJH /NJS /NP
-          robocopy "$PWD\ldp" "$target\ldp" /E /XO /XX /NFL /NDL /NJH /NJS /NP
-          
-          if (Test-Path "$PWD\file") { 
-            robocopy "$PWD\file" "$target\file" /E /XO /XX /NFL /NDL /NJH /NJS /NP 
-          }
-          if (Test-Path "$PWD\images") { 
-            robocopy "$PWD\images" "$target\images" /E /XO /XX /NFL /NDL /NJH /NJS /NP 
-          }
-          
-          if ($LASTEXITCODE -gt 7) { 
-            Write-Error "Sync failed with code $LASTEXITCODE"
-            exit 1
-          }
-          $global:LASTEXITCODE = 0
-          
-          Write-Host "Sync complete - only changed files updated"
+
+          sync_dir "$PWD/data" "$target/data"
+          sync_dir "$PWD/ldp" "$target/ldp"
+          sync_dir "$PWD/file" "$target/file"
+          sync_dir "$PWD/images" "$target/images"
+
+          echo "Sync complete - only changed files updated"
 
       - name: Verify deployment
-        shell: powershell
+        shell: bash
         run: |
-          $url = "http://localhost:10214/"
-          try {
-            $response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
-            Write-Host "Service is responding (HTTP $($response.StatusCode))"
-            Write-Host "Deployment successful - files updated without restart"
-          } catch {
-            Write-Error "Service is not responding at $url"
+          url="http://localhost:10214/"
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$url" || true)
+
+          if [[ "$status_code" =~ ^[0-9]{3}$ ]] && [[ "$status_code" -lt 500 ]]; then
+            echo "Service is responding (HTTP $status_code)"
+            echo "Deployment successful - files updated without restart"
+          else
+            echo "Service is not responding at $url (HTTP ${status_code:-n/a})" >&2
             exit 1
-          }
+          fi
