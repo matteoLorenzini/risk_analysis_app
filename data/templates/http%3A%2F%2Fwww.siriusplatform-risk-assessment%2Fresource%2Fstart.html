@@ -311,7 +311,7 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
                 query="PREFIX crm: <http://www.cidoc-crm.org/cidoc-crm/>
                        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-                       SELECT DISTINCT ?subject ?label ?icon ?iconSvg (COUNT(?event) as ?eventCount) WHERE {
+                       SELECT DISTINCT ?subject ?label ?iconClass (COUNT(?event) as ?eventCount) WHERE {
                            ?subject a crm:E39_Actor ;
                                    rdfs:label ?label .
                            OPTIONAL {
@@ -320,47 +320,27 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
                            }
 
                            BIND(
-                             IF(?label = 'Physical_Forces', '/file/icons/rs-icons/seismometer-square-svgrepo-com.svg',
-                               IF(?label = 'Fire', '/file/icons/rs-icons/fire-svgrepo-com.svg',
-                                 IF(?label = 'Water', '/file/icons/rs-icons/water-fee-svgrepo-com.svg',
-                                   IF(?label = 'Pests', '/file/icons/rs-icons/bug-svgrepo-com.svg',
-                                     IF(?label = 'Pollutants', '/file/icons/rs-icons/gas-mask-svgrepo-com.svg',
-                                       IF(?label = 'Light_UV_IR', '/file/icons/rs-icons/light-bulb-1-svgrepo-com.svg',
-                                         IF(?label = 'Dissociation', '/file/icons/rs-icons/split-branch-svgrepo-com.svg',
-                                           IF(?label = 'Incorrect_RH', '/file/icons/rs-icons/humidity-svgrepo-com.svg',
-                                             '/file/icons/rs-icons/actor.svg'
-                                           )
+                             IF(?label = 'Physical_Forces', 'physical_forces',
+                               IF(?label = 'Fire', 'fire',
+                                 IF(?label = 'Water', 'water',
+                                   IF(?label = 'Pests', 'pests',
+                                     IF(?label = 'Pollutants', 'pollutants',
+                                       IF(?label = 'Light_UV_IR', 'light_uv_ir',
+                                         IF(?label = 'Dissociation', 'dissociation',
+                                           IF(?label = 'Incorrect_RH', 'incorrect_rh', 'default')
                                          )
                                        )
                                      )
                                    )
                                  )
                                )
-                             ) AS ?icon
-                           )
-
-                           BIND(
-                             IF(?label = 'Physical_Forces', 'data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%23455a64%22/%3E%3Ctext x=%2232%22 y=%2239%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22white%22 font-family=%22Arial%22%3EPF%3C/text%3E%3C/svg%3E',
-                               IF(?label = 'Fire', 'data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%23e53935%22/%3E%3Ctext x=%2232%22 y=%2239%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22white%22 font-family=%22Arial%22%3EF%3C/text%3E%3C/svg%3E',
-                                 IF(?label = 'Water', 'data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%231e88e5%22/%3E%3Ctext x=%2232%22 y=%2239%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22white%22 font-family=%22Arial%22%3EW%3C/text%3E%3C/svg%3E',
-                                   IF(?label = 'Pests', 'data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%236d4c41%22/%3E%3Ctext x=%2232%22 y=%2239%22 text-anchor=%22middle%22 font-size=%2218%22 fill=%22white%22 font-family=%22Arial%22%3EPe%3C/text%3E%3C/svg%3E',
-                                     IF(?label = 'Pollutants', 'data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%23f9a825%22/%3E%3Ctext x=%2232%22 y=%2239%22 text-anchor=%22middle%22 font-size=%2218%22 fill=%22white%22 font-family=%22Arial%22%3EPo%3C/text%3E%3C/svg%3E',
-                                       IF(?label = 'Light_UV_IR', 'data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%23fbc02d%22/%3E%3Ctext x=%2232%22 y=%2239%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22white%22 font-family=%22Arial%22%3EL%3C/text%3E%3C/svg%3E',
-                                         IF(?label = 'Dissociation', 'data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%23546e7a%22/%3E%3Ctext x=%2232%22 y=%2239%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22white%22 font-family=%22Arial%22%3ED%3C/text%3E%3C/svg%3E',
-                                           IF(?label = 'Incorrect_RH', 'data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%230277bd%22/%3E%3Ctext x=%2232%22 y=%2239%22 text-anchor=%22middle%22 font-size=%2216%22 fill=%22white%22 font-family=%22Arial%22%3ERH%3C/text%3E%3C/svg%3E', 'data:image/svg+xml;utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ccircle cx=%2232%22 cy=%2232%22 r=%2228%22 fill=%22%2390a4ae%22/%3E%3Ctext x=%2232%22 y=%2239%22 text-anchor=%22middle%22 font-size=%2220%22 fill=%22white%22 font-family=%22Arial%22%3EA%3C/text%3E%3C/svg%3E')
-                                         )
-                                       )
-                                     )
-                                   )
-                                 )
-                               )
-                             ) AS ?iconSvg
+                             ) AS ?iconClass
                            )
 
                            BIND(DAY(NOW()) as ?day)
                            BIND(SHA512(CONCAT(STR(?day), STR(?subject))) AS ?random)
                        }
-                       GROUP BY ?subject ?label ?icon ?iconSvg ?random
+                       GROUP BY ?subject ?label ?iconClass ?random
                        ORDER BY ?random
                        LIMIT 10"
                 template="{{> agentCardGrid}}"
@@ -377,11 +357,26 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
     </style>
 
     {{#if bindings}}
+      <svg width="0" height="0" style="position:absolute">
+        <defs>
+          <symbol id="ico-physical_forces" viewBox="0 0 64 64"><circle cx="32" cy="32" r="18" fill="none" stroke="#546e7a" stroke-width="3"/><circle cx="32" cy="32" r="10" fill="none" stroke="#78909c" stroke-width="3"/><circle cx="32" cy="32" r="3" fill="#37474f"/></symbol>
+          <symbol id="ico-fire" viewBox="0 0 64 64"><path fill="#ef6c00" d="M32 6c2 10-6 12-6 22 0 6 4 10 10 10 7 0 12-5 12-12 0-9-7-13-9-20-4 4-5 8-7 12 0-4 0-8 0-12z"/><path fill="#ffb300" d="M32 28c-4 4-6 7-6 11 0 4 3 7 7 7s7-3 7-7c0-4-3-7-8-11z"/></symbol>
+          <symbol id="ico-water" viewBox="0 0 64 64"><path fill="#1e88e5" d="M32 8C24 19 18 26 18 36a14 14 0 0 0 28 0c0-10-6-17-14-28z"/></symbol>
+          <symbol id="ico-pests" viewBox="0 0 64 64"><ellipse cx="32" cy="34" rx="12" ry="10" fill="#6d4c41"/><circle cx="32" cy="22" r="6" fill="#8d6e63"/><path d="M20 34h-8M52 34h-8M21 40h-8M51 40h-8M21 28h-8M51 28h-8" stroke="#5d4037" stroke-width="3" stroke-linecap="round"/></symbol>
+          <symbol id="ico-pollutants" viewBox="0 0 64 64"><path d="M32 8L56 52H8z" fill="#fdd835" stroke="#f9a825" stroke-width="3"/><circle cx="32" cy="35" r="8" fill="none" stroke="#212121" stroke-width="3"/><circle cx="32" cy="35" r="2.5" fill="#212121"/></symbol>
+          <symbol id="ico-light_uv_ir" viewBox="0 0 64 64"><path fill="#fbc02d" d="M32 10a14 14 0 0 0-9 25c2 2 3 5 3 8h12c0-3 1-6 3-8a14 14 0 0 0-9-25z"/><rect x="26" y="44" width="12" height="8" rx="2" fill="#757575"/></symbol>
+          <symbol id="ico-dissociation" viewBox="0 0 64 64"><path d="M12 32h20M32 32l10-10M32 32l10 10M42 22h10M42 42h10" stroke="#455a64" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+          <symbol id="ico-incorrect_rh" viewBox="0 0 64 64"><path fill="#4fc3f7" d="M24 10c-6 8-10 13-10 20a10 10 0 1 0 20 0c0-7-4-12-10-20z"/><path d="M40 20l10 16M50 20L40 36" stroke="#0277bd" stroke-width="4" stroke-linecap="round"/><circle cx="40" cy="22" r="3" fill="#0277bd"/><circle cx="50" cy="34" r="3" fill="#0277bd"/></symbol>
+          <symbol id="ico-default" viewBox="0 0 64 64"><circle cx="32" cy="22" r="10" fill="#90a4ae"/><path d="M14 52c2-10 10-16 18-16s16 6 18 16" fill="#90a4ae"/></symbol>
+        </defs>
+      </svg>
       <div class="agent-grid">
         {{#each bindings}}
           <div class="agent-card">
             <div class="thumb" title="{{label.value}}">
-              <img src="{{iconSvg.value}}" alt="{{label.value}} icon" loading="lazy" />
+              <svg viewBox="0 0 64 64" aria-label="{{label.value}} icon">
+                <use href="#ico-{{iconClass.value}}"></use>
+              </svg>
             </div>
             <div class="label">
               <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
