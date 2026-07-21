@@ -363,10 +363,8 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
         {{#each bindings}}
           <div class="agent-card">
             <div class="thumb">
-              <!-- use mp-resource-thumbnail so ResearchSpace renders resource thumbnail and uses ?icon as fallback -->
-              <mp-resource-thumbnail iri="{{subject.value}}"
-                                    no-image-uri="{{icon.value}}"
-                                    style="max-width:56px; max-height:56px; display:block;" />
+              <img src="{{icon.value}}" alt="{{label.value}} icon" loading="lazy"
+                   onerror="this.onerror=null;this.src='/assets/images/icons/rs-icons/actor.svg';" />
             </div>
             <div class="label">
               <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
