@@ -104,13 +104,7 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
   }
 
   BIND(IF(BOUND(?preview), STR(?preview), "") AS ?previewStr)
-  BIND(
-    IF(
-      STRSTARTS(LCASE(?previewStr), "http://"),
-      CONCAT("https://", SUBSTR(?previewStr, 8)),
-      ?previewStr
-    ) AS ?previewSafeStr
-  )
+  BIND(REPLACE(?previewStr, "^http://", "https://", "i") AS ?previewSafeStr)
   OPTIONAL { ?preview rs:PX_has_file_name ?previewFileName . }
   BIND(IF(REGEX(?previewStr, "/resource/EX_File/", "i"), REPLACE(?previewStr, "^.*/EX_File/", ""), "") AS ?previewFileFromIri)
   BIND(COALESCE(STR(?previewFileName), ?previewFileFromIri, "") AS ?previewFileAny)
@@ -118,7 +112,7 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
     IF(
       STRLEN(?previewFileAny) > 0,
       CONCAT("/proxy/IIIF/2/", ENCODE_FOR_URI(?previewFileAny), "/full/!700,700/0/default.jpg"),
-      ""
+      IF(REGEX(?previewSafeStr, "^https://", "i"), ?previewSafeStr, "")
     ) AS ?previewIiif
   )
   BIND(IF(STRLEN(?previewIiif) > 0, ?previewIiif, "") AS ?previewImageStr)
