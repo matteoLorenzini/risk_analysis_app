@@ -104,13 +104,7 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
   }
 
   BIND(IF(BOUND(?preview), STR(?preview), "") AS ?previewStr)
-  BIND(
-    IF(
-      STRSTARTS(?previewStr, "http://"),
-      CONCAT("https://", STRAFTER(?previewStr, "http://")),
-      ?previewStr
-    ) AS ?previewSafeStr
-  )
+  BIND(REPLACE(?previewStr, "^http://", "https://", "i") AS ?previewSafeStr)
   OPTIONAL { ?preview rs:PX_has_file_name ?previewFileName . }
   BIND(IF(REGEX(?previewStr, "/resource/EX_File/", "i"), REPLACE(?previewStr, "^.*/EX_File/", ""), "") AS ?previewFileFromIri)
   BIND(COALESCE(STR(?previewFileName), ?previewFileFromIri, "") AS ?previewFileAny)
@@ -148,9 +142,9 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
                             </a>
                           {{else}}
                             {{#if preview.value}}
-                              <!-- preview exists but is not a direct image URL: use platform thumbnail rendering -->
+                              <!-- render thumbnail from subject to avoid loading arbitrary preview IRIs -->
                               <a href="{{subject.value}}">
-                                <mp-resource-thumbnail iri="{{preview.value}}" no-image-uri="/images/help/thenounproject/noun_1113333.svg" />
+                                <mp-resource-thumbnail iri="{{subject.value}}" no-image-uri="/images/help/thenounproject/noun_1113333.svg" />
                               </a>
                             {{else}}
                               <!-- no preview at all: show static icon to avoid fetch/errors -->
@@ -325,16 +319,17 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
                                      crm:P11_had_participant ?subject .
                            }
 
+                           BIND(LCASE(REPLACE(STR(?label), "\\s+", "_")) AS ?labelKey)
                            BIND(
-                             IF(?label = 'Physical_Forces', '/assets/images/icons/rs-icons/seismometer-square-svgrepo-com.svg',
-                               IF(?label = 'Fire', '/assets/images/icons/rs-icons/fire-svgrepo-com.svg',
-                                 IF(?label = 'Water', '/assets/images/icons/rs-icons/water-fee-svgrepo-com.svg',
-                                   IF(?label = 'Pests', '/assets/images/icons/rs-icons/bug-svgrepo-com.svg',
-                                     IF(?label = 'Pollutants', '/assets/images/icons/rs-icons/gas-mask-svgrepo-com.svg',
-                                       IF(?label = 'Light_UV_IR', '/assets/images/icons/rs-icons/light-bulb-1-svgrepo-com.svg',
-                                         IF(?label = 'Dissociation', '/assets/images/icons/rs-icons/split-branch-svgrepo-com.svg',
-                                           IF(?label = 'Incorrect_RH', '/assets/images/icons/rs-icons/humidity-svgrepo-com.svg',
-                                             '/assets/images/icons/rs-icons/default.svg'
+                             IF(?labelKey = 'physical_forces', '/assets/images/icons/rs-icons/seismometer-square-svgrepo-com.svg',
+                               IF(?labelKey = 'fire', '/assets/images/icons/rs-icons/fire-svgrepo-com.svg',
+                                 IF(?labelKey = 'water', '/assets/images/icons/rs-icons/water-fee-svgrepo-com.svg',
+                                   IF(?labelKey = 'pests', '/assets/images/icons/rs-icons/bug-svgrepo-com.svg',
+                                     IF(?labelKey = 'pollutants', '/assets/images/icons/rs-icons/gas-mask-svgrepo-com.svg',
+                                       IF(?labelKey = 'light_uv_ir', '/assets/images/icons/rs-icons/light-bulb-1-svgrepo-com.svg',
+                                         IF(?labelKey = 'dissociation', '/assets/images/icons/rs-icons/split-branch-svgrepo-com.svg',
+                                           IF(?labelKey = 'incorrect_rh', '/assets/images/icons/rs-icons/humidity-svgrepo-com.svg',
+                                             '/assets/images/icons/rs-icons/actor.svg'
                                            )
                                          )
                                        )
@@ -369,10 +364,8 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
         {{#each bindings}}
           <div class="agent-card">
             <div class="thumb">
-              <!-- use mp-resource-thumbnail so ResearchSpace renders resource thumbnail and uses ?icon as fallback -->
-              <mp-resource-thumbnail iri="{{subject.value}}"
-                                    no-image-uri="{{icon.value}}"
-                                    style="max-width:56px; max-height:56px; display:block;" />
+              <img src="{{icon.value}}" alt="{{label.value}} icon" loading="lazy"
+                   onerror="this.onerror=null;this.src='/assets/images/icons/rs-icons/actor.svg';" />
             </div>
             <div class="label">
               <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
