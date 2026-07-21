@@ -319,7 +319,7 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
                                      crm:P11_had_participant ?subject .
                            }
 
-                           BIND(LCASE(REPLACE(STR(?label), "\\s+", "_")) AS ?labelKey)
+                           BIND(LCASE(REPLACE(STR(?label), ' ', '_')) AS ?labelKey)
                            BIND(
                              IF(?labelKey = 'physical_forces', '/assets/images/icons/rs-icons/seismometer-square-svgrepo-com.svg',
                                IF(?labelKey = 'fire', '/assets/images/icons/rs-icons/fire-svgrepo-com.svg',
