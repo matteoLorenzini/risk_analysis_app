@@ -236,8 +236,10 @@
                           
                           <div style="height:140px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;">
                             <a href="{{subject.value}}" target="_blank" rel="noopener">
-                              <img src="{{icon.value}}" alt="{{value.value}} icon" loading="lazy"
+                              <img src="/assets/images/icons/rs-icons/actor.svg" alt="{{value.value}} icon" loading="lazy"
+                                   data-label="{{value.value}}"
                                    style="max-width:100%; max-height:140px; display:block; object-fit:contain;"
+                                   onload="var map={'Physical_Forces':'/assets/images/icons/rs-icons/seismometer-square-svgrepo-com.svg','Fire':'/assets/images/icons/rs-icons/fire-svgrepo-com.svg','Water':'/assets/images/icons/rs-icons/water-fee-svgrepo-com.svg','Pests':'/assets/images/icons/rs-icons/bug-svgrepo-com.svg','Pollutants':'/assets/images/icons/rs-icons/gas-mask-svgrepo-com.svg','Light_UV_IR':'/assets/images/icons/rs-icons/light-bulb-1-svgrepo-com.svg','Dissociation':'/assets/images/icons/rs-icons/split-branch-svgrepo-com.svg','Incorrect_RH':'/assets/images/icons/rs-icons/humidity-svgrepo-com.svg'};var label=(this.getAttribute('data-label')||'').replace(/ /g,'_');if(!this.getAttribute('data-icon-resolved')){this.setAttribute('data-icon-resolved','1');this.src=map[label]||'/assets/images/icons/rs-icons/actor.svg';}"
                                    onerror="this.onerror=null;this.src='/assets/images/icons/rs-icons/actor.svg';" />
                             </a>
                           </div>
