@@ -364,7 +364,8 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
           <div class="agent-card">
             <div class="thumb">
               <img src="{{icon.value}}" alt="{{label.value}} icon" loading="lazy"
-                   onerror="this.onerror=null;this.src='/assets/images/icons/rs-icons/actor.svg';" />
+                   data-icon="{{icon.value}}"
+                   onerror="var i=parseInt(this.getAttribute('data-try')||'0',10);var p=(this.getAttribute('data-icon')||'').replace(/^https?:\/\/[^/]+/i,'');var b=['','../','/resource/'];if(i<b.length){this.setAttribute('data-try',String(i+1));this.src=b[i]+p.replace(/^\//,'');}else{this.onerror=null;this.src='/assets/images/icons/rs-icons/actor.svg';}" />
             </div>
             <div class="label">
               <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
