@@ -319,17 +319,16 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
                                      crm:P11_had_participant ?subject .
                            }
 
-                           BIND(REPLACE(STR(?label), ' ', '_') AS ?labelNorm)
                            BIND(
-                             IF(?labelNorm = 'Physical_Forces', '/assets/images/icons/rs-icons/seismometer-square-svgrepo-com.svg',
-                               IF(?labelNorm = 'Fire', '/assets/images/icons/rs-icons/fire-svgrepo-com.svg',
-                                 IF(?labelNorm = 'Water', '/assets/images/icons/rs-icons/water-fee-svgrepo-com.svg',
-                                   IF(?labelNorm = 'Pests', '/assets/images/icons/rs-icons/bug-svgrepo-com.svg',
-                                     IF(?labelNorm = 'Pollutants', '/assets/images/icons/rs-icons/gas-mask-svgrepo-com.svg',
-                                       IF(?labelNorm = 'Light_UV_IR', '/assets/images/icons/rs-icons/light-bulb-1-svgrepo-com.svg',
-                                         IF(?labelNorm = 'Dissociation', '/assets/images/icons/rs-icons/split-branch-svgrepo-com.svg',
-                                           IF(?labelNorm = 'Incorrect_RH', '/assets/images/icons/rs-icons/humidity-svgrepo-com.svg',
-                                             '/assets/images/icons/rs-icons/actor.svg'
+                             IF(?label = 'Physical_Forces', '/assets/images/icons/rs-icons/seismometer-square-svgrepo-com.svg',
+                               IF(?label = 'Fire', '/assets/images/icons/rs-icons/fire-svgrepo-com.svg',
+                                 IF(?label = 'Water', '/assets/images/icons/rs-icons/water-fee-svgrepo-com.svg',
+                                   IF(?label = 'Pests', '/assets/images/icons/rs-icons/bug-svgrepo-com.svg',
+                                     IF(?label = 'Pollutants', '/assets/images/icons/rs-icons/gas-mask-svgrepo-com.svg',
+                                       IF(?label = 'Light_UV_IR', '/assets/images/icons/rs-icons/light-bulb-1-svgrepo-com.svg',
+                                         IF(?label = 'Dissociation', '/assets/images/icons/rs-icons/split-branch-svgrepo-com.svg',
+                                           IF(?label = 'Incorrect_RH', '/assets/images/icons/rs-icons/humidity-svgrepo-com.svg',
+                                             '/assets/images/icons/rs-icons/default.svg'
                                            )
                                          )
                                        )
@@ -364,8 +363,10 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
         {{#each bindings}}
           <div class="agent-card">
             <div class="thumb">
-                  <img src="{{icon.value}}" alt="{{label.value}} icon" loading="lazy"
-                    onerror="this.onerror=null;this.src='/assets/images/icons/rs-icons/actor.svg';" />
+              <!-- use mp-resource-thumbnail so ResearchSpace renders resource thumbnail and uses ?icon as fallback -->
+              <mp-resource-thumbnail iri="{{subject.value}}"
+                                    no-image-uri="{{icon.value}}"
+                                    style="max-width:56px; max-height:56px; display:block;" />
             </div>
             <div class="label">
               <semantic-link iri="{{subject.value}}">{{label.value}}</semantic-link>
