@@ -321,7 +321,7 @@ SELECT ?subject ?label ?preview ?previewStr ?previewSafeStr ?previewIiif ?previe
 
                            BIND(REPLACE(STR(?label), ' ', '_') AS ?labelNorm)
                            BIND(
-                             IF(?labelNorm = 'Physical_Forces', '/icons/seismometer-square-svgrepo-com.svg',
+                             IF(?labelNorm = 'Physical_Forces', '/home/mlorenzini/risk_analysis_app/icons/seismometer-square-svgrepo-com.svg',
                                IF(?labelNorm = 'Fire', 'icons/fire-svgrepo-com.svg',
                                  IF(?labelNorm = 'Water', '/assets/images/icons/rs-icons/water-fee-svgrepo-com.svg',
                                    IF(?labelNorm = 'Pests', '/assets/images/icons/rs-icons/bug-svgrepo-com.svg',
