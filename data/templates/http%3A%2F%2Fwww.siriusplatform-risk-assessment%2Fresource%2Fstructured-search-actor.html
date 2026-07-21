@@ -21,42 +21,42 @@
       {
         "iri":"<http://www.cidoc-crm.org/cidoc-crm/E39_Actor>",
         "label":"Actor",
-        "thumbnail": "../assets/images/icons/rs-icons/actor.svg"
+        "thumbnail": "/file/icons/rs-icons/actor.svg"
       },  
       {
         "iri":"<http://www.cidoc-crm.org/cidoc-crm/E18_Physical_Thing>",
         "label":"Site",
-        "thumbnail": "../assets/images/icons/rs-icons/place.svg"
+        "thumbnail": "/file/icons/rs-icons/place.svg"
       },
       {
         "iri":"<http://www.cidoc-crm.org/cidoc-crm/E55_Type>",
         "label":"Site Type",
-        "thumbnail": "../assets/images/icons/rs-icons/concept.svg"
+        "thumbnail": "/file/icons/rs-icons/concept.svg"
       },
       {
         "iri":"<http://www.cidoc-crm.org/cidoc-crm/E89_Propositional_Object>",
         "label":"Agent",
-        "thumbnail": "../assets/images/icons/rs-icons/actor.svg"
+        "thumbnail": "/file/icons/rs-icons/actor.svg"
       },
       {
         "iri":"<http://www.siriusplatform-risk-assessment/extensions/crmsci/S21_Measurement>",
         "label":"Magnitude Score",
-        "thumbnail": "../assets/images/icons/rs-icons/decimal.svg"
+        "thumbnail": "/file/icons/rs-icons/decimal.svg"
       },
       {
         "iri": "<http://www.w3.org/2001/XMLSchema#Decimal>",
         "label": "Height",
-        "thumbnail": "../assets/images/icons/rs-icons/height.svg"
+        "thumbnail": "/file/icons/rs-icons/height.svg"
       },
       {
         "iri":"<http://www.cidoc-crm.org/cidoc-crm/E5_Event>",
         "label":"Event",
-        "thumbnail": "../assets/images/icons/rs-icons/event.svg"
+        "thumbnail": "/file/icons/rs-icons/event.svg"
       },
       {
       "iri":"<http://www.cidoc-crm.org/cidoc-crm/E53_Place>",
       "label":"Place",
-      "thumbnail": "../assets/images/icons/rs-icons/place.svg"
+      "thumbnail": "/file/icons/rs-icons/place.svg"
     }
     ],
     
@@ -200,15 +200,15 @@
 
                       BIND(REPLACE(STR(?value), " ", "_") AS ?valueNorm)
                       BIND(
-                        IF(?valueNorm = "Physical_Forces", "/assets/images/icons/rs-icons/seismometer-square-svgrepo-com.svg",
-                          IF(?valueNorm = "Fire",            "/assets/images/icons/rs-icons/fire-svgrepo-com.svg",
-                            IF(?valueNorm = "Water",           "/assets/images/icons/rs-icons/water-fee-svgrepo-com.svg",
-                              IF(?valueNorm = "Pests",           "/assets/images/icons/rs-icons/bug-svgrepo-com.svg",
-                                IF(?valueNorm = "Pollutants",      "/assets/images/icons/rs-icons/gas-mask-svgrepo-com.svg",
-                                  IF(?valueNorm = "Light_UV_IR",     "/assets/images/icons/rs-icons/light-bulb-1-svgrepo-com.svg",
-                                    IF(?valueNorm = "Dissociation",    "/assets/images/icons/rs-icons/split-branch-svgrepo-com.svg",
-                                      IF(?valueNorm = "Incorrect_RH",    "/assets/images/icons/rs-icons/humidity-svgrepo-com.svg",
-                                        "/assets/images/icons/rs-icons/actor.svg"
+                        IF(?valueNorm = "Physical_Forces", "/file/icons/rs-icons/seismometer-square-svgrepo-com.svg",
+                          IF(?valueNorm = "Fire",            "/file/icons/rs-icons/fire-svgrepo-com.svg",
+                            IF(?valueNorm = "Water",           "/file/icons/rs-icons/water-fee-svgrepo-com.svg",
+                              IF(?valueNorm = "Pests",           "/file/icons/rs-icons/bug-svgrepo-com.svg",
+                                IF(?valueNorm = "Pollutants",      "/file/icons/rs-icons/gas-mask-svgrepo-com.svg",
+                                  IF(?valueNorm = "Light_UV_IR",     "/file/icons/rs-icons/light-bulb-1-svgrepo-com.svg",
+                                    IF(?valueNorm = "Dissociation",    "/file/icons/rs-icons/split-branch-svgrepo-com.svg",
+                                      IF(?valueNorm = "Incorrect_RH",    "/file/icons/rs-icons/humidity-svgrepo-com.svg",
+                                        "/file/icons/rs-icons/actor.svg"
                                       )
                                     )
                                   )
@@ -237,9 +237,8 @@
                           <div style="height:140px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;">
                             <a href="{{subject.value}}" target="_blank" rel="noopener">
                               <img src="{{icon.value}}" alt="{{value.value}} icon" loading="lazy"
-                                data-icon="{{icon.value}}"
                                 style="max-width:100%; max-height:140px; display:block; object-fit:contain;"
-                                onerror="var i=parseInt(this.getAttribute('data-try')||'0',10);var p=(this.getAttribute('data-icon')||'').replace(/^https?:\/\/[^/]+/i,'');var b=['','../','/resource/'];if(i<b.length){this.setAttribute('data-try',String(i+1));this.src=b[i]+p.replace(/^\//,'');}else{this.onerror=null;this.src='/assets/images/icons/rs-icons/actor.svg';}" />
+                                onerror="this.onerror=null;this.src='/file/icons/rs-icons/actor.svg';" />
                             </a>
                           </div>
 
